@@ -82,7 +82,7 @@ Mar 2014 – Mar 2019
 - AI and LLM: OpenAI, LangChain, Qwen3, Local AI Agents, Whisper, Stable Diffusion
 - Automation: WhatsApp Business API, Telegram Bot API, Python schedulers/cron
 - IoT and Hardware: ESP32, Arduino, Raspberry Pi, Solum ESL, OEPL, MQTT
-- UI and UX: Figma, Material 3, TailwindCSS, Responsive/Adaptive design
+- UI and UX: Material 3, TailwindCSS, Responsive/Adaptive design
 - Networking: MikroTik RouterOS, WireGuard, MQTT, NAT, VPN
 - Databases: MySQL, Hive, ObjectBox, Firebase, MongoDB
 - Cloud and DevOps: Docker, Docker Compose, GitHub Actions, PM2, Nginx, GCP, AWS, Azure

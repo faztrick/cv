@@ -1,125 +1,266 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MUHAMMED FASIL PV - CV</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>MUHAMMED FASIL PV</h1>
-            <p>Software developer | AI & IoT Developer | MVVM & Automation Expert</p>
-            <p>Dubai, UAE | +971 555923545 | <a href="mailto:faztrick@gmail.com">faztrick@gmail.com</a> | <a href="https://faztrick.com" target="_blank">faztrick.com</a></p>
-            <p>GitHub: <a href="https://github.com/faztrick" target="_blank">github.com/faztrick</a> | LinkedIn: <a href="https://linkedin.com/in/faztrick" target="_blank">linkedin.com/in/faztrick</a></p>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="description" content="Portfolio of Muhammed Fasil PV — Software Developer, AI & IoT Developer, MVVM & Automation Expert in Dubai, UAE" />
+        <title>Muhammed Fasil PV — Portfolio</title>
+
+        <!-- Icons -->
+        <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+
+        <!-- Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+        <!-- Styles -->
+        <link rel="stylesheet" href="style.css" />
+    </head>
+    <body>
+        <div class="bg fx-gradient"></div>
+
+        <!-- Header / Nav -->
+        <header class="site-header">
+            <div class="container row between center-y">
+                <a class="brand" href="#home" aria-label="Home">
+                    <span class="brand__logo" aria-hidden="true">MF</span>
+                    <span class="brand__name">Muhammed Fasil PV</span>
+                </a>
+
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <i class="ri-menu-3-line"></i>
+                </button>
+
+                <nav class="nav" aria-label="Primary">
+                    <a href="#home" class="nav__link"><i class="ri-home-5-line"></i><span>Home</span></a>
+                    <a href="#about" class="nav__link"><i class="ri-user-3-line"></i><span>About</span></a>
+                    <a href="#skills" class="nav__link"><i class="ri-flashlight-line"></i><span>Skills</span></a>
+                    <a href="#projects" class="nav__link"><i class="ri-apps-2-line"></i><span>Projects</span></a>
+                    <a href="#experience" class="nav__link"><i class="ri-timeline-view"></i><span>Experience</span></a>
+                    <a href="#contact" class="nav__link"><i class="ri-send-plane-2-line"></i><span>Contact</span></a>
+                </nav>
+            </div>
         </header>
 
-        <section>
-            <h2>Professional Summary</h2>
-            <p>Innovative <b>Software developer</b> with 13+ years of experience designing and deploying scalable, intelligent enterprise systems. Specialized in <b>AI-driven automation</b>, <b>IoT ecosystems</b>, <b>MVVM developments</b>, and real-time retail infrastructures spanning cloud and edge. Delivered production systems across ERP, QMS, POS, and IoT automation with strong DevOps practices. Expert in <b>Flutter</b>, <b>Node.js</b>, <b>Python</b>, <b>PHP</b>, and <b>WPF (.NET)</b>. Built AI agents, chat automation (WhatsApp/Telegram), and secure retail networks using MikroTik and Dockerized microservices. Proven leadership in development planning, full‑stack development, and CI/CD.</p>
-        </section>
+        <!-- Hero -->
+        <main id="home" class="hero container">
+            <div class="hero__content reveal">
+                <p class="eyebrow"><i class="ri-sparkling-2-line"></i> Software Developer • AI & IoT • MVVM</p>
+                <h1 class="hero__title">
+                    Building intelligent systems for retail, ERP, and automation
+                </h1>
+                <p class="hero__subtitle">
+                    13+ years creating AI‑driven automation, IoT ecosystems, and resilient cloud‑edge platforms. I craft robust, secure, and delightful experiences end‑to‑end.
+                </p>
+                <div class="cta">
+                    <a class="btn btn--primary" href="#projects"><i class="ri-rocket-2-line"></i> View Projects</a>
+                    <a class="btn btn--ghost" href="mailto:faztrick@gmail.com"><i class="ri-mail-line"></i> Contact</a>
+                </div>
+                <div class="social">
+                      <a class="icon-btn" href="https://github.com/faztrick" target="_blank" rel="noreferrer noopener" aria-label="GitHub"><i class="ri-github-line"></i></a>
+                      <a class="icon-btn" href="https://linkedin.com/in/faztrick" target="_blank" rel="noreferrer noopener" aria-label="LinkedIn"><i class="ri-linkedin-line"></i></a>
+                      <a class="icon-btn" href="https://faztrick.com" target="_blank" rel="noreferrer noopener" aria-label="Website"><i class="ri-global-line"></i></a>
+                    <a class="icon-btn" href="tel:+971555923545" aria-label="Call"><i class="ri-phone-line"></i></a>
+                </div>
+            </div>
+        </main>
 
-        <section>
-            <h2>Core Competencies</h2>
-            <ul>
-                <li><b>Software development and MVVM</b> for <b>Flutter</b>, <b>Node.js</b>, and <b>WPF</b></li>
-                <li><b>AI Agents and LLM Integration</b>: OpenAI, LangChain, Qwen3, local AI</li>
-                <li><b>IoT Development</b>: ESP32, Raspberry Pi, Arduino, ESL, MQTT</li>
-                <li><b>Chat and Workflow Automation</b>: WhatsApp Business API, Telegram Bot API</li>
-                <li><b>Networking and Infrastructure</b>: MikroTik RouterOS, WireGuard, NAT/DHCP, VPN, MQTT</li>
-                <li><b>DevOps and Cloud</b>: Docker Compose, GitHub Actions, PM2, Nginx, GCP, AWS, Azure</li>
-                <li><b>Database Design and Optimization</b>: MySQL indexing, caching, profiling, replication; hybrid sync</li>
-                <li><b>Security and Authentication</b>: JWT, OAuth2, HTTPS, SSL, access policies</li>
-            </ul>
-        </section>
-<br>
-<br>
-
-        <section>
-            <h2>Professional Experience</h2>
-            <article>
-                <h3><b>Software developer</b> — Idol Technology LLC (Dubai, UAE)</h3>
-                <p><em>Aug 2024 – Present</em></p>
-                <ul>
-                    <li>Developed <b>IdolMEA</b>, a next‑generation <b>ERP</b> integrating <b>POS</b>, <b>QMS</b>, <b>IoT automation</b>, and <b>AI vision</b> modules.</li>
-                    <li>Built <b>IdolQueue (i‑QMS)</b> in <b>Flutter (MVVM)</b> and <b>Node.js</b> with <b>Hive</b> offline sync, <b>MQTT</b> event control, and multi‑branch monitoring.</li>
-                    <li>Developed <b>WhatsApp Business</b> and <b>Telegram</b> automation for queue alerts, AI responses, and service updates.</li>
-                    <li>Deployed <b>IdolVPN mesh</b> using <b>MikroTik WireGuard</b> enabling secure multi‑branch communication and API routing.</li>
-                    <li>Integrated <b>AI theft detection (YOLO)</b> in self‑checkout kiosks; automated alerts with <b>LED/GPIO</b> via <b>AIDL</b>.</li>
-                    <li>Designed <b>LampAidlInterface (Kotlin + Flutter IPC)</b> for Android retail LED device control.</li>
-                    <li>Created <b>hybrid cloud sync engine (MySQL ↔ Hive)</b> for offline‑first analytics and reporting.</li>
-                </ul>
-            </article>
-            <article>
-                <h3><b>Senior Software developer</b> — Screl Info Pvt Ltd (India / UAE Branch)</h3>
-                <p><em>Apr 2019 – Jan 2024</em></p>
-                <ul>
-                    <li>Designed and delivered <b>SincA ERP</b>: modular hybrid development (<b>Flutter</b> + <b>Node.js</b> + <b>AI backend in Python</b>).</li>
-                    <li>Implemented <b>AI dashboards</b>, <b>OCR parsing</b>, and prediction engines using <b>TensorFlow</b> and <b>OpenAI APIs</b>.</li>
-                    <li>Built <b>WhatsApp</b> and <b>Telegram</b> automation bots for notifications, invoice tracking, and support chat.</li>
-                    <li>Deployed <b>Dockerized local servers</b> synchronized with <b>GCP APIs</b>; implemented <b>CI/CD pipelines</b>.</li>
-                    <li>Designed <b>AI queue prediction</b>, <b>dynamic pricing logic</b>, and <b>custom module generators</b>.</li>
-                    <li>Mentored multi‑location dev teams on <b>MVVM</b>, <b>modular API design</b>, and <b>DevOps workflows</b>.</li>
-                </ul>
-            </article>
-            <article>
-                <h3><b>Software Developer</b> — Sincap Info Pvt Ltd (Calicut, India)</h3>
-                <p><em>Mar 2014 – Mar 2019</em></p>
-                <ul>
-                    <li>Developed <b>ERP</b>, <b>accounting</b>, and <b>billing systems</b> using <b>WPF (C#)</b>, <b>PHP</b>, and <b>SQL Server</b>.</li>
-                    <li>Built admin and reporting portals with <b>PHP</b>, <b>RESTful JSON endpoints</b>, and <b>role‑based dashboards</b>.</li>
-                    <li>Improved <b>UI/UX performance</b>, introduced <b>caching</b>, and <b>modularized</b> critical components.</li>
-                    <li>Provided enterprise client support (50+ businesses), <b>database optimization</b>, and <b>automated reporting</b>.</li>
-                </ul>
-            </article>
-        </section>
-
-        <section>
-            <h2>Major Projects</h2>
-            <ul>
-                <li><b>IdolMEA ERP</b>: Centralized ERP for retail/service—POS, booking, QMS, IoT device control, AI reporting.</li>
-                <li><b>IdolQueue (i‑QMS)</b>: Smart queue management—Flutter + Node.js with MQTT‑based automation.</li>
-                <li><b>Self‑Checkout AI Kiosk</b>: Android kiosk integrating YOLO detection and LED/GPIO control.</li>
-                <li><b>IdolVPN Network</b>: Multi‑branch VPN mesh using MikroTik WireGuard for secure operations.</li>
-                <li><b>BookzNow</b>: Flutter MVVM service booking platform for salons and clinics.</li>
-                <li><b>Vlogfied App</b>: Video‑based restaurant discovery with AI content classification and tagging.</li>
-                <li><b>ESL Tools (OEPL / Solum)</b>: Firmware flashing, tag testing jigs, MQTT‑based ESL control automation.</li>
-                <li><b>Local AI Agents</b>: On‑device OpenAI + Qwen3 agents for store and ERP automation.</li>
-            </ul>
-        </section>
-<br>
-<br>
-<br>
-<br>
-        <section>
-            <h2>Technical Skills</h2>
-            <ul>
-                <li><b>Languages</b>: Dart, JavaScript, TypeScript, C#, Python, PHP</li>
-                <li><b>Frameworks</b>: Flutter, Node.js, Express.js, .NET (WPF), TensorFlow, PyTorch</li>
-                <li><b>AI and LLM</b>: OpenAI, LangChain, Qwen3, Local AI Agents, Whisper, Stable Diffusion</li>
-                <li><b>Automation</b>: WhatsApp Business API, Telegram Bot API, Python schedulers/cron</li>
-                <li><b>IoT and Hardware</b>: ESP32, Arduino, Raspberry Pi, Solum ESL, OEPL, MQTT</li>
-                <li><b>UI and UX</b>: Figma, Material 3, TailwindCSS, Responsive/Adaptive design</li>
-                <li><b>Networking</b>: MikroTik RouterOS, WireGuard, MQTT, NAT, VPN</li>
-                <li><b>Databases</b>: MySQL, Hive, ObjectBox, Firebase, MongoDB</li>
-                <li><b>Cloud and DevOps</b>: Docker, Docker Compose, GitHub Actions, PM2, Nginx, GCP, AWS, Azure</li>
-                <li><b>Security</b>: JWT, OAuth2, HTTPS, SSL Certificates, VPN management</li>
+        <!-- About -->
+        <section id="about" class="section container reveal">
+            <div class="section__header">
+                <h2 class="section__title"><i class="ri-user-3-line"></i> About</h2>
+            </div>
+            <p class="lead">
+                Innovative software developer specialized in AI‑driven automation, IoT ecosystems, MVVM architecture, and cloud‑edge retail systems. Built production systems across ERP, QMS, POS, and automation with strong DevOps.
+            </p>
+            <ul class="chips">
+                <li class="chip">Flutter</li>
+                <li class="chip">Node.js</li>
+                <li class="chip">Python</li>
+                <li class="chip">PHP</li>
+                <li class="chip">WPF (.NET)</li>
+                <li class="chip">Docker</li>
+                <li class="chip">GitHub Actions</li>
             </ul>
         </section>
 
-        <section>
-            <h2>Education</h2>
-            <p>Diploma in Computer Engineering — JDT Islam Polytechnic, Calicut, Kerala, India</p>
-            <p><em>June 2010 – March 2013</em></p>
+        <!-- Skills -->
+        <section id="skills" class="section container reveal">
+            <div class="section__header">
+                <h2 class="section__title"><i class="ri-flashlight-line"></i> Core Skills</h2>
+            </div>
+            <div class="skills">
+                <div class="skill"><i class="ri-flutter-fill"></i><span>Flutter (MVVM)</span></div>
+                <div class="skill"><i class="ri-nodejs-line"></i><span>Node.js</span></div>
+                <div class="skill"><i class="ri-openai-line"></i><span>AI & LLMs</span></div>
+                <div class="skill"><i class="ri-cpu-line"></i><span>IoT / MQTT</span></div>
+                <div class="skill"><i class="ri-docker-line"></i><span>Docker / CI</span></div>
+                <div class="skill"><i class="ri-database-2-line"></i><span>MySQL / Hive</span></div>
+                <div class="skill"><i class="ri-shield-keyhole-line"></i><span>Auth / Security</span></div>
+                <div class="skill"><i class="ri-route-line"></i><span>MikroTik / VPN</span></div>
+            </div>
         </section>
 
-        <section>
-            <h2>Additional Information</h2>
-            <p>Nationality: Indian | Visa Status: Company Visa</p>
-            <p>Languages: English, Malayalam, Hindi</p>
-            <p>Portfolio: <a href="https://faztrick.com" target="_blank">faztrick.com</a></p>
+        <!-- Projects -->
+        <section id="projects" class="section container reveal">
+            <div class="section__header">
+                <h2 class="section__title"><i class="ri-apps-2-line"></i> Projects</h2>
+                <p class="section__subtitle">Selected work across ERP, QMS, IoT, and AI.</p>
+            </div>
+
+            <div class="grid cards">
+                <article class="card">
+                    <div class="card__icon"><i class="ri-store-2-line"></i></div>
+                    <h3 class="card__title">IdolMEA ERP</h3>
+                    <p class="card__text">Centralized ERP for retail/service — POS, booking, QMS, IoT device control, and AI reporting.</p>
+                    <div class="tags">
+                        <span class="tag">Flutter</span><span class="tag">Node.js</span><span class="tag">Docker</span>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card__icon"><i class="ri-qr-scan-2-line"></i></div>
+                    <h3 class="card__title">IdolQueue (i‑QMS)</h3>
+                    <p class="card__text">Smart queue management with Hive offline sync, MQTT automation, and multi‑branch monitoring.</p>
+                    <div class="tags">
+                        <span class="tag">Flutter</span><span class="tag">MQTT</span><span class="tag">Hive</span>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card__icon"><i class="ri-macbook-line"></i></div>
+                    <h3 class="card__title">Self‑Checkout AI Kiosk</h3>
+                    <p class="card__text">Android kiosk integrating YOLO theft detection and LED/GPIO automation via AIDL.</p>
+                    <div class="tags">
+                        <span class="tag">Android</span><span class="tag">YOLO</span><span class="tag">AIDL</span>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card__icon"><i class="ri-share-forward-line"></i></div>
+                    <h3 class="card__title">IdolVPN Mesh</h3>
+                    <p class="card__text">Secure multi‑branch VPN with MikroTik WireGuard enabling API routing and branch telemetry.</p>
+                    <div class="tags">
+                        <span class="tag">MikroTik</span><span class="tag">WireGuard</span><span class="tag">VPN</span>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card__icon"><i class="ri-robot-2-line"></i></div>
+                    <h3 class="card__title">Local AI Agents</h3>
+                    <p class="card__text">On‑device OpenAI + Qwen3 agents for ERP and store automation with privacy‑first design.</p>
+                    <div class="tags">
+                        <span class="tag">OpenAI</span><span class="tag">Qwen3</span><span class="tag">Python</span>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <div class="card__icon"><i class="ri-shopping-bag-3-line"></i></div>
+                    <h3 class="card__title">ESL Tools & Jigs</h3>
+                    <p class="card__text">Firmware flashing, tag testing rigs, and MQTT‑based ESL control automations.</p>
+                    <div class="tags">
+                        <span class="tag">ESP32</span><span class="tag">MQTT</span><span class="tag">Automation</span>
+                    </div>
+                </article>
+            </div>
         </section>
-    </div>
-</body>
-</html>
+
+        <!-- Experience -->
+        <section id="experience" class="section container reveal">
+            <div class="section__header">
+                <h2 class="section__title"><i class="ri-timeline-view"></i> Experience</h2>
+            </div>
+
+            <ol class="timeline">
+                <li class="timeline__item">
+                    <div class="timeline__dot"></div>
+                    <div class="timeline__content">
+                        <h3>Software Developer — Idol Technology LLC (Dubai, UAE)</h3>
+                        <p class="muted">Aug 2024 – Present</p>
+                        <ul>
+                            <li>Built IdolMEA ERP (POS, QMS, IoT, AI vision).</li>
+                            <li>Developed IdolQueue (Flutter MVVM + Node.js + Hive + MQTT).</li>
+                            <li>WhatsApp and Telegram automation for queue alerts and AI responses.</li>
+                            <li>Deployed MikroTik WireGuard mesh and integrated YOLO for kiosks.</li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="timeline__item">
+                    <div class="timeline__dot"></div>
+                    <div class="timeline__content">
+                        <h3>Senior Software Developer — Screl Info Pvt Ltd (India / UAE)</h3>
+                        <p class="muted">Apr 2019 – Jan 2024</p>
+                        <ul>
+                            <li>Delivered SincA ERP (Flutter + Node.js + Python AI backend).</li>
+                            <li>Implemented AI dashboards, OCR parsing, predictions.</li>
+                            <li>Dockerized deployments with CI/CD and multi‑site ops.</li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="timeline__item">
+                    <div class="timeline__dot"></div>
+                    <div class="timeline__content">
+                        <h3>Software Developer — Sincap Info Pvt Ltd (Calicut, India)</h3>
+                        <p class="muted">Mar 2014 – Mar 2019</p>
+                        <ul>
+                            <li>ERP, accounting, and billing systems in WPF, PHP, SQL Server.</li>
+                            <li>Role‑based portals and performance optimization.</li>
+                        </ul>
+                    </div>
+                </li>
+            </ol>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact" class="section container reveal">
+            <div class="section__header">
+                <h2 class="section__title"><i class="ri-send-plane-2-line"></i> Get in touch</h2>
+            </div>
+            <div class="contact">
+                <div class="contact__info">
+                    <p>Dubai, UAE</p>
+                    <p><a href="tel:+971555923545"><i class="ri-phone-line"></i> +971 555923545</a></p>
+                    <p><a href="mailto:faztrick@gmail.com"><i class="ri-mail-line"></i> faztrick@gmail.com</a></p>
+                </div>
+                <div class="cta">
+                    <a class="btn btn--primary" href="mailto:faztrick@gmail.com"><i class="ri-mail-send-line"></i> Email me</a>
+                      <a class="btn btn--ghost" href="https://linkedin.com/in/faztrick" target="_blank" rel="noreferrer noopener"><i class="ri-linkedin-box-line"></i> LinkedIn</a>
+                </div>
+            </div>
+        </section>
+
+        <footer class="site-footer">
+            <div class="container row between center-y">
+                <p class="muted">© <span id="y"></span> Muhammed Fasil PV</p>
+                <div class="social">
+                      <a class="icon-btn" href="https://github.com/faztrick" target="_blank" rel="noreferrer noopener" aria-label="GitHub"><i class="ri-github-line"></i></a>
+                      <a class="icon-btn" href="https://linkedin.com/in/faztrick" target="_blank" rel="noreferrer noopener" aria-label="LinkedIn"><i class="ri-linkedin-line"></i></a>
+                      <a class="icon-btn" href="https://faztrick.com" target="_blank" rel="noreferrer noopener" aria-label="Website"><i class="ri-global-line"></i></a>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            // Mobile nav toggle
+            const toggle = document.querySelector('.nav-toggle');
+            const nav = document.querySelector('.nav');
+            toggle?.addEventListener('click', () => {
+                nav?.classList.toggle('open');
+                toggle.classList.toggle('open');
+            });
+
+            // Reveal on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('visible');
+                });
+            }, { threshold: 0.15 });
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+            // Year in footer
+            const y = document.getElementById('y');
+            if (y) y.textContent = new Date().getFullYear();
+        </script>
+    </body>
+    </html>

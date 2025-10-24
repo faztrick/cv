@@ -83,7 +83,7 @@ Mar 2014 – Mar 2019
 - Frameworks: Flutter, Node.js/Express, .NET (WPF), TensorFlow, PyTorch
 - AI/LLM: OpenAI, LangChain, Qwen3, Whisper, Stable Diffusion
 - IoT/Hardware: ESP32, Arduino, Raspberry Pi, Solum ESL, OEPL, MQTT
-- UI/UX: Figma, Material 3, TailwindCSS, responsive/adaptive design
+- UI/UX: Material 3, TailwindCSS, responsive/adaptive design
 - Databases: MySQL, MongoDB, Firebase, ObjectBox, Hive
 - Cloud/DevOps: Docker, Compose, GitHub Actions, PM2, Nginx, GCP/AWS/Azure
 - Security: JWT, OAuth2, HTTPS/TLS, VPN management
