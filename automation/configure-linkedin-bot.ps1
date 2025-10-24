@@ -21,20 +21,20 @@ if (-not $Email) {
     $Password = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
         [Runtime.InteropServices.Marshal]::SecureStringToBSTR($Password)
     )
-    
+
     Write-Host "`nJob Search Preferences:" -ForegroundColor Yellow
     $keywordInput = Read-Host "Job Keyword (default: Software Architect)"
     if ($keywordInput) { $Keyword = $keywordInput }
-    
+
     $locationInput = Read-Host "Location (default: United Arab Emirates)"
     if ($locationInput) { $Location = $locationInput }
-    
+
     Write-Host "`nTime Period Options:"
     Write-Host "  1. Past 24 hours"
     Write-Host "  2. Past Week (recommended)"
     $periodChoice = Read-Host "Select (1 or 2, default: 2)"
     if ($periodChoice -eq "1") { $Period = "Past 24 hours" }
-    
+
     $pagesInput = Read-Host "Number of pages to process (default: 3)"
     if ($pagesInput) { $Pages = [int]$pagesInput }
 }

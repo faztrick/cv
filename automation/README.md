@@ -13,23 +13,56 @@ What you’ll set up
 
 Quick start (Windows PowerShell)
 
-1) Run the helper script to clone and prepare your choice:
-   - tools/setup-job-bot.ps1 (interactive)
+1) Clone the repos (one-time setup):
+   ```powershell
+   # LinkedIn Node.js (Puppeteer) - Recommended for beginners
+   .\tools\setup-job-bot.ps1 -RepoChoice LinkedInNode
+   
+   # LinkedIn Python (Selenium) - More features
+   .\tools\setup-job-bot.ps1 -RepoChoice LinkedInPython
+   
+   # Indeed Python
+   .\tools\setup-job-bot.ps1 -RepoChoice IndeedPython
+   ```
 
-2) Edit the repo’s config file:
-   - EasyApplyBot (LinkedIn Python): config.yaml (email, password, positions, locations, filters, uploads)
-   - LinkedIn Node (Puppeteer): config.json (creds and search criteria)
-   - indeed_bot (Python): config.yaml (base_url search, language, user_data_dir)
+2) Configure bots with helper scripts:
+   ```powershell
+   # LinkedIn Bot (Interactive config)
+   .\automation\configure-linkedin-bot.ps1
+   
+   # Indeed Bot (Interactive config)
+   .\automation\configure-indeed-bot.ps1
+   ```
+   
+   **Or edit config files manually:**
+   - EasyApplyBot (LinkedIn Python): `config.yaml` (email, password, positions, locations)
+   - LinkedIn Node (Puppeteer): `config.json` (creds and search criteria)
+   - Indeed Bot (Python): `config.yaml` (base_url search, language)
 
-3) Run locally (examples):
-   - LinkedIn Python
-     - Activate venv: .\.venv\Scripts\Activate.ps1
-     - Run: python .\main.py
-   - LinkedIn Node
-     - Run: node index.js
-   - Indeed Python
-     - Activate venv: .\.venv\Scripts\Activate.ps1
-     - Run: python .\indeed_bot.py
+3) Verify setup:
+   ```powershell
+   # Test LinkedIn bot
+   .\automation\test-linkedin-bot.ps1
+   
+   # Test Indeed bot
+   .\automation\test-indeed-bot.ps1
+   ```
+
+4) Run the bots:
+   ```powershell
+   # LinkedIn Node.js
+   cd automation\repos\linkedin-job-apply-automation
+   node index.js
+   
+   # LinkedIn Python
+   cd automation\repos\EasyApplyBot
+   .\.venv\Scripts\Activate.ps1
+   python .\main.py
+   
+   # Indeed Python
+   cd automation\repos\indeed_bot
+   python .\indeed_bot.py
+   ```
 
 Repo notes
 
@@ -39,9 +72,26 @@ Repo notes
   - Warns about account risk; educational use only
 - LinkedIn Puppeteer (Node)
   - config.json driven; basic bot that targets Easy Apply
+  - ⭐ **Recommended for beginners** - easier setup than Python version
+  - Full guide: `automation/LINKEDIN-BOT-READY.md`
 - indeed_bot (Python)
-  - Uses config.yaml; focuses on jobs with “Indeed Apply”
+  - Uses config.yaml; focuses on jobs with "Indeed Apply"
   - Stores session in user_data_dir to preserve login
+  - Uses Camoufox to bypass bot detection
+
+Helper scripts
+
+Located in `automation/`:
+
+- `configure-linkedin-bot.ps1` - Interactive LinkedIn bot configuration
+- `configure-indeed-bot.ps1` - Interactive Indeed bot configuration  
+- `test-linkedin-bot.ps1` - Pre-flight check for LinkedIn bot
+- `test-indeed-bot.ps1` - Pre-flight check for Indeed bot
+- `LINKEDIN-BOT-READY.md` - Complete LinkedIn bot guide (UAE-focused)
+
+Located in `tools/`:
+
+- `setup-job-bot.ps1` - Clone and setup repos (one-time)
 
 Centralized secrets (optional)
 

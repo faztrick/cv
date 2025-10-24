@@ -1,18 +1,20 @@
-# 🤖 LinkedIn Job Application Bot - Ready to Use!
+# 🤖 LinkedIn Job Application Bot - Ready to Use
 
 ## ✅ What's Set Up
 
 Your workspace now has a **fully configured LinkedIn job application automation bot** with:
 
 ### 📁 Files Created
+
 - `automation/repos/linkedin-job-apply-automation/` - Main bot (Puppeteer/Node.js)
 - `automation/configure-linkedin-bot.ps1` - Quick config helper
 - `automation/test-linkedin-bot.ps1` - Pre-flight check script
 - `automation/repos/linkedin-job-apply-automation/QUICKSTART.md` - Detailed guide
 
 ### 🎯 Pre-configured Settings
+
 - **Keyword**: Software Architect
-- **Location**: United Arab Emirates  
+- **Location**: United Arab Emirates
 - **Period**: Past Week
 - **Pages**: 3 (to start safely)
 - **Experience**: 5 years
@@ -24,13 +26,16 @@ Your workspace now has a **fully configured LinkedIn job application automation 
 ### Step 1: Configure Your Credentials
 
 **Option A - Interactive (Recommended)**
+
 ```powershell
 .\automation\configure-linkedin-bot.ps1
 ```
+
 Then follow the prompts to enter your email/password.
 
 **Option B - Manual**
 Edit `automation/repos/linkedin-job-apply-automation/config.json`:
+
 ```json
 {
     "email": "your-linkedin-email@example.com",
@@ -40,12 +45,15 @@ Edit `automation/repos/linkedin-job-apply-automation/config.json`:
 ```
 
 ### Step 2: Verify Setup
+
 ```powershell
 .\automation\test-linkedin-bot.ps1
 ```
+
 Should show all green checkmarks ✓
 
 ### Step 3: Run the Bot
+
 ```powershell
 cd automation\repos\linkedin-job-apply-automation
 node index.js
@@ -56,19 +64,22 @@ node index.js
 ## 🎨 Customize Your Search
 
 ### Popular UAE Keywords
+
 - Software Architect
-- Solutions Architect  
+- Solutions Architect
 - Cloud Architect (AWS/Azure)
 - Senior Software Engineer
 - Principal Engineer
 - Technical Lead
 
 ### UAE Locations
+
 - United Arab Emirates (all UAE)
 - Dubai, United Arab Emirates
 - Abu Dhabi, United Arab Emirates
 
 ### Search Period
+
 - `"Past 24 hours"` - Latest jobs only
 - `"Past Week"` - More results (recommended)
 
@@ -101,17 +112,20 @@ node index.js
 ## ⚠️ Important Warnings
 
 ### Legal/ToS
+
 - ⚠️ **May violate LinkedIn Terms of Service**
 - ⚠️ **LinkedIn may suspend your account**
 - ⚠️ **Use at your own risk**
 
 ### Technical Limitations
+
 - 🔴 Requires manual CAPTCHA solving
 - 🟡 May need intervention for complex forms
 - 🟡 Cannot upload custom resume per job
 - 🟢 Runs in visible mode (you can watch)
 
 ### Best Practices
+
 - ✅ Start with **3 pages** to test
 - ✅ Monitor the **first 5-10 applications**
 - ✅ Check for **CAPTCHAs** frequently
@@ -123,6 +137,7 @@ node index.js
 ## 🐛 Troubleshooting
 
 ### Bot Won't Start
+
 ```powershell
 # Check Node.js installed
 node --version
@@ -133,6 +148,7 @@ npm install
 ```
 
 ### Chrome Not Found
+
 ```powershell
 # Find your Chrome path
 Get-ChildItem "C:\Program Files\Google\Chrome\Application\chrome.exe"
@@ -141,11 +157,13 @@ Get-ChildItem "C:\Program Files\Google\Chrome\Application\chrome.exe"
 ```
 
 ### Login Fails
+
 - Check email/password in `config.json`
 - LinkedIn may require 2FA (add manual step)
 - Try logging in manually first
 
 ### Selectors Break
+
 - LinkedIn updates UI frequently
 - May need to update selectors in `index.js`
 - Check GitHub repo for updates
@@ -155,7 +173,9 @@ Get-ChildItem "C:\Program Files\Google\Chrome\Application\chrome.exe"
 ## 📈 Advanced Usage
 
 ### Multiple Job Searches
+
 Create separate config files:
+
 ```powershell
 # config-architect.json
 # config-engineer.json
@@ -163,13 +183,17 @@ node index.js config-architect.json
 ```
 
 ### Save Login Session (Optional)
+
 In `index.js`, uncomment:
+
 ```javascript
 userDataDir: "./userData",
 ```
+
 Then change `baseURL` to `https://www.linkedin.com/feed`
 
 ### Schedule with Task Scheduler
+
 Run daily at 9 AM to catch fresh postings
 
 ---
@@ -187,18 +211,20 @@ Run daily at 9 AM to catch fresh postings
 
 - **Quick Start**: `automation/repos/linkedin-job-apply-automation/QUICKSTART.md`
 - **Main README**: `automation/README.md`
-- **Original Repo**: https://github.com/adnanedrief/linkedin-job-apply-automation
+- **Original Repo**: <https://github.com/adnanedrief/linkedin-job-apply-automation>
 
 ---
 
 ## 🎯 Your Next Actions
 
 1. **Configure bot** with your LinkedIn credentials
+
    ```powershell
    .\automation\configure-linkedin-bot.ps1
    ```
 
 2. **Run pre-flight check**
+
    ```powershell
    .\automation\test-linkedin-bot.ps1
    ```
@@ -217,11 +243,11 @@ Run daily at 9 AM to catch fresh postings
 
 ## 💡 Pro Tips
 
-✨ **Timing**: Run early morning UAE time (6-8 AM) when fresh jobs post  
-✨ **Keywords**: Try variations like "Software Engineer" vs "Software Developer"  
-✨ **Review**: Manually review auto-applied jobs weekly  
-✨ **Customize**: Keep your LinkedIn profile updated - bot uses that data  
-✨ **Backup**: Apply manually to high-priority jobs  
+✨ **Timing**: Run early morning UAE time (6-8 AM) when fresh jobs post
+✨ **Keywords**: Try variations like "Software Engineer" vs "Software Developer"
+✨ **Review**: Manually review auto-applied jobs weekly
+✨ **Customize**: Keep your LinkedIn profile updated - bot uses that data
+✨ **Backup**: Apply manually to high-priority jobs
 
 ---
 
@@ -230,7 +256,7 @@ Run daily at 9 AM to catch fresh postings
 1. Check `QUICKSTART.md` in the bot folder
 2. Review console output for errors
 3. Run pre-flight check for diagnostics
-4. Original repo issues: https://github.com/adnanedrief/linkedin-job-apply-automation/issues
+4. Original repo issues: <https://github.com/adnanedrief/linkedin-job-apply-automation/issues>
 
 ---
 
