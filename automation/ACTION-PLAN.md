@@ -3,8 +3,9 @@
 ## ✅ Current Status
 
 **Both bots configured for:**
+
 - 🎯 **React Developer** roles
-- 🎯 **Flutter Developer** roles  
+- 🎯 **Flutter Developer** roles
 - 🎯 **AI Developer** roles
 - 📍 **Location**: Dubai, UAE
 
@@ -13,6 +14,7 @@
 ## 📋 Final Setup Checklist
 
 ### LinkedIn Bot (Node.js)
+
 - ✅ Repository cloned
 - ✅ Dependencies installed (Node.js, Puppeteer)
 - ✅ Chrome detected
@@ -22,6 +24,7 @@
 - ⚠️ **TODO**: Add your LinkedIn email/password to `config.json`
 
 ### Indeed Bot (Python)
+
 - ✅ Repository cloned
 - ✅ Python 3.10.6 detected
 - ✅ Config updated for React/Flutter/AI Developer
@@ -38,6 +41,7 @@
 ### Option 1: LinkedIn Bot (Easier Start)
 
 **Step 1: Add Credentials**
+
 ```powershell
 # Open config.json in editor
 code automation\repos\linkedin-job-apply-automation\config.json
@@ -48,12 +52,14 @@ code automation\repos\linkedin-job-apply-automation\config.json
 ```
 
 **Step 2: Run Bot**
+
 ```powershell
 cd automation\repos\linkedin-job-apply-automation
 node index.js
 ```
 
 **What happens:**
+
 - Chrome opens (visible)
 - Logs into LinkedIn
 - Searches: "React Developer OR Flutter Developer OR AI Developer"
@@ -66,13 +72,15 @@ node index.js
 ### Option 2: Indeed Bot (More Jobs)
 
 **Step 1: Install Dependencies**
+
 ```powershell
 cd automation\repos\indeed_bot
 pip install -r requirements.txt
 ```
 
 **Step 2: Prepare Indeed Profile**
-1. Go to https://ae.indeed.com
+
+1. Go to <https://ae.indeed.com>
 2. Create/login to account
 3. Upload your CV/resume
 4. Complete profile:
@@ -82,17 +90,21 @@ pip install -r requirements.txt
    - Work experience
 
 **Step 3: First Run (Login)**
+
 ```powershell
 python indeed_bot.py
 ```
+
 - Browser opens
 - Login manually when prompted
 - Close bot after successful login
 
 **Step 4: Run Bot (Auto-Apply)**
+
 ```powershell
 python indeed_bot.py
 ```
+
 - Uses saved session
 - Searches: "React Flutter AI Developer"
 - Location: Dubai
@@ -104,12 +116,14 @@ python indeed_bot.py
 ## 📊 Expected Results
 
 ### LinkedIn Bot
+
 - **Target**: 125 applications
 - **Success rate**: 60-80% (depends on form complexity)
 - **Time**: 15-30 minutes
 - **Issues**: CAPTCHAs may require manual solving
 
 ### Indeed Bot
+
 - **Target**: 100 applications
 - **Success rate**: 70-90% (better bot detection bypass)
 - **Time**: 30-60 minutes
@@ -137,6 +151,7 @@ Edit `automation/repos/linkedin-job-apply-automation/config.json`:
 ### Customize Indeed Search
 
 Run configuration helper:
+
 ```powershell
 .\automation\configure-indeed-bot.ps1
 
@@ -150,30 +165,37 @@ end: 200  # More jobs
 ## 🎯 Recommended Strategy
 
 ### Week 1: Test Phase
+
 **Day 1 (Today)**
+
 - LinkedIn: Add credentials, run with 3 pages (75 jobs)
 - Monitor first 10 applications manually
 
 **Day 2**
+
 - Review applied jobs on LinkedIn
 - Check for responses/views
 - Adjust keyword if needed
 
 **Day 3**
+
 - Install Indeed dependencies
 - Setup Indeed profile
 - Run Indeed bot with 20 jobs (test)
 
 **Day 4**
+
 - Review Indeed applications
 - If successful, scale to 50 jobs
 
 **Day 5**
+
 - LinkedIn: 5 pages (125 jobs)
 - Indeed: 100 jobs
 - Review and optimize
 
 ### Week 2+: Full Automation
+
 - **Morning**: LinkedIn bot (5 pages)
 - **Evening**: Indeed bot (100 jobs)
 - **Daily**: Check responses, interview invites
@@ -184,24 +206,28 @@ end: 200  # More jobs
 ## ⚠️ Safety & Best Practices
 
 ### Rate Limiting
+
 - ✅ Start small (3 pages LinkedIn, 20 jobs Indeed)
 - ✅ Gradually increase volume
 - ✅ Don't run multiple times per day
 - ✅ Alternate between platforms
 
 ### Quality Control
+
 - ✅ Check first 10 applications manually
 - ✅ Verify profile data is correct
 - ✅ Keep LinkedIn/Indeed profiles updated
 - ✅ Manually apply to dream jobs
 
 ### Account Safety
+
 - ✅ Use strong, unique passwords
 - ✅ Enable 2FA (may need manual login)
 - ✅ Don't share credentials
 - ✅ Monitor for account warnings
 
 ### Legal/Ethical
+
 - ⚠️ May violate ToS - use at own risk
 - ⚠️ Not responsible for account suspension
 - ⚠️ Review applications - bot is assistance, not replacement
@@ -277,6 +303,7 @@ Create a simple tracking spreadsheet:
 **Right Now:**
 
 1. **LinkedIn Bot** (5 minutes setup):
+
    ```powershell
    code automation\repos\linkedin-job-apply-automation\config.json
    # Add your email/password
@@ -287,6 +314,7 @@ Create a simple tracking spreadsheet:
 2. **Watch it work!** Chrome opens, you can see it apply to jobs
 
 3. **While LinkedIn runs, prepare Indeed**:
+
    ```powershell
    cd automation\repos\indeed_bot
    pip install -r requirements.txt
@@ -311,6 +339,6 @@ Create a simple tracking spreadsheet:
 
 ---
 
-*Last Updated: October 24, 2025*  
-*Configuration: React/Flutter/AI Developer | Dubai, UAE*  
+*Last Updated: October 24, 2025*
+*Configuration: React/Flutter/AI Developer | Dubai, UAE*
 *LinkedIn: 5 pages | Indeed: 100 jobs*

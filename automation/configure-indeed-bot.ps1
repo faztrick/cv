@@ -1,11 +1,12 @@
 # Quick Configuration Helper for Indeed Job Bot
 param(
-  [string]$JobTitle = "Software Architect",
+  [string]$JobTitle = "React Flutter Developer",
   [string]$Location = "Dubai",
   [ValidateSet("ae", "us", "uk", "fr", "de", "sa")]
   [string]$Country = "ae",
   [int]$StartPage = 0,
-  [int]$EndPage = 100
+  [int]$EndPage = 100,
+  [int]$PostedWithinDays = 14
 )
 
 $configPath = "E:\cv\automation\repos\indeed_bot\config.yaml"
@@ -34,6 +35,9 @@ if (-not $PSBoundParameters.ContainsKey('JobTitle')) {
 
   $endInput = Read-Host "Jobs to process (default: 100)"
   if ($endInput) { $EndPage = [int]$endInput }
+
+  $daysInput = Read-Host "Posted within how many days? (default: 14)"
+  if ($daysInput) { $PostedWithinDays = [int]$daysInput }
 }
 
 # Build Indeed URL based on country
@@ -49,7 +53,7 @@ $domainMap = @{
 $domain = $domainMap[$Country]
 $encodedJob = [System.Web.HttpUtility]::UrlEncode($JobTitle)
 $encodedLocation = [System.Web.HttpUtility]::UrlEncode($Location)
-$baseUrl = "https://$domain/jobs?q=$encodedJob&l=$encodedLocation&sc=0kf%3Aattr%28DSQF7%29%3B"
+$baseUrl = "https://$domain/jobs?q=$encodedJob&l=$encodedLocation&fromage=$PostedWithinDays"
 
 # Create config content
 $configContent = @"
@@ -76,6 +80,7 @@ Write-Host "  Job Title: $JobTitle" -ForegroundColor White
 Write-Host "  Location: $Location" -ForegroundColor White
 Write-Host "  Country: $Country ($domain)" -ForegroundColor White
 Write-Host "  Pages: $StartPage to $EndPage" -ForegroundColor White
+Write-Host "  Posted within: $PostedWithinDays days" -ForegroundColor White
 Write-Host "`n  Search URL:" -ForegroundColor Cyan
 Write-Host "  $baseUrl" -ForegroundColor Gray
 
