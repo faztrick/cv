@@ -14,51 +14,55 @@ What you’ll set up
 Quick start (Windows PowerShell)
 
 1) Clone the repos (one-time setup):
+
    ```powershell
    # LinkedIn Node.js (Puppeteer) - Recommended for beginners
    .\tools\setup-job-bot.ps1 -RepoChoice LinkedInNode
-   
+
    # LinkedIn Python (Selenium) - More features
    .\tools\setup-job-bot.ps1 -RepoChoice LinkedInPython
-   
+
    # Indeed Python
    .\tools\setup-job-bot.ps1 -RepoChoice IndeedPython
    ```
 
 2) Configure bots with helper scripts:
+
    ```powershell
    # LinkedIn Bot (Interactive config)
    .\automation\configure-linkedin-bot.ps1
-   
+
    # Indeed Bot (Interactive config)
    .\automation\configure-indeed-bot.ps1
    ```
-   
+
    **Or edit config files manually:**
    - EasyApplyBot (LinkedIn Python): `config.yaml` (email, password, positions, locations)
    - LinkedIn Node (Puppeteer): `config.json` (creds and search criteria)
    - Indeed Bot (Python): `config.yaml` (base_url search, language)
 
 3) Verify setup:
+
    ```powershell
    # Test LinkedIn bot
    .\automation\test-linkedin-bot.ps1
-   
+
    # Test Indeed bot
    .\automation\test-indeed-bot.ps1
    ```
 
 4) Run the bots:
+
    ```powershell
    # LinkedIn Node.js
    cd automation\repos\linkedin-job-apply-automation
    node index.js
-   
+
    # LinkedIn Python
    cd automation\repos\EasyApplyBot
    .\.venv\Scripts\Activate.ps1
    python .\main.py
-   
+
    # Indeed Python
    cd automation\repos\indeed_bot
    python .\indeed_bot.py
@@ -84,7 +88,7 @@ Helper scripts
 Located in `automation/`:
 
 - `configure-linkedin-bot.ps1` - Interactive LinkedIn bot configuration
-- `configure-indeed-bot.ps1` - Interactive Indeed bot configuration  
+- `configure-indeed-bot.ps1` - Interactive Indeed bot configuration
 - `test-linkedin-bot.ps1` - Pre-flight check for LinkedIn bot
 - `test-indeed-bot.ps1` - Pre-flight check for Indeed bot
 - `LINKEDIN-BOT-READY.md` - Complete LinkedIn bot guide (UAE-focused)
