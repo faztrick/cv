@@ -1,0 +1,33 @@
+# Cover Letter — Emirates Group Principal Solutions Architect (Offer, Order & Distribution)
+
+Date: 2025-10-24
+
+Hiring Manager
+Emirates Group
+Dubai, United Arab Emirates
+
+Subject: Application for Principal Solutions Architect (Offer, Order & Distribution)
+
+Dear Hiring Manager,
+
+I’m applying for the Principal Solutions Architect (Offer, Order & Distribution) role. I bring 13+ years of end‑to‑end architecture experience across transactional systems (ERP, POS, QMS) and high‑reliability integrations (IoT automation, secure networks), with a strong focus on event‑driven microservices, API‑first design, and operational excellence.
+
+How I can help OOD modernisation:
+
+- Domain‑ready architecture: Designed and delivered microservices for complex transactional flows with clear boundaries, idempotency, and eventual consistency where appropriate.
+- API and integration patterns: Led API‑first designs, versioning, and backward‑compatible rollouts; implemented edge/API gateways, JWT/OAuth2, and robust rate‑limit/quotas.
+- Event‑driven systems: Built pub/sub patterns for decoupling and resilience; employed message semantics and retries/dead‑lettering to protect business flows.
+- Production reliability: Containerized workloads, CI/CD (GitHub Actions), blue/green and canary release patterns, and deep operational telemetry.
+- Cross‑functional leadership: Partnered with product and operations to translate commercial goals into measurable SLAs/SLOs, and coached teams on design trade‑offs.
+
+While my past work has spanned multiple industries, the architectural challenges of retailing and order management are familiar: consistency models, inventory/availability orchestration, pricing/offer logic, and high‑volume integration surfaces. I can help codify reference architectures and build enablement that accelerates teams while maintaining safety, performance, and maintainability.
+
+I’d be glad to discuss how I can contribute to Emirates Group’s OOD roadmap and help deliver a resilient, evolvable retail platform.
+
+Sincerely,
+
+Muhammed Fasil PV
+Dubai, UAE
++971 555923545
+[faztrick@gmail.com](mailto:faztrick@gmail.com)
+[faztrick.com](https://faztrick.com)

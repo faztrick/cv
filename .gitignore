@@ -1,0 +1,32 @@
+# Windows reserved filenames
+nul
+NUL
+
+# Python virtual environments
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+
+# Node modules
+node_modules/
+.npm/
+
+# Environment files
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Automation repos (optional - uncomment to ignore cloned repos)
+# automation/repos/

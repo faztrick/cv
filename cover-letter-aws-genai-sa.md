@@ -1,0 +1,33 @@
+# Cover Letter — AWS Senior Solutions Architect (Generative AI, Startups)
+
+Date: 2025-10-24
+
+Hiring Manager
+Amazon Web Services (AWS)
+Dubai, United Arab Emirates
+
+Subject: Application for Senior Solutions Architect, Generative AI, Startups (Dubai)
+
+Dear Hiring Manager,
+
+I’m writing to express my interest in the Senior Solutions Architect, Generative AI, Startups role in Dubai. With 13+ years designing and shipping scalable systems across ERP, POS, QMS, and IoT automation—and hands‑on experience building AI agents (OpenAI, LangChain, Qwen3), Python- and Node.js‑based services, and event‑driven microservices—I’m excited to help AWS Startups accelerate GenAI adoption with well‑architected solutions.
+
+How I align to your needs:
+
+- Customer outcomes first: Led architecture for IdolMEA (ERP unifying POS, QMS, IoT, and AI vision), translating ambiguous requirements into clear reference architectures and roadmaps.
+- Practical GenAI: Built agentic workflows with OpenAI/Qwen3, Whisper for speech, and retrieval over domain data; strong focus on safe prompts, guardrails, and observable pipelines.
+- Builder mindset: Delivered Dockerized microservices with CI/CD (GitHub Actions), secured ingress via Nginx/TLS, and operationalized with PM2 and metrics.
+- Startup empathy: Shipped fast with small teams, cut scope intelligently, and coached cross‑functional partners on MVP-first delivery.
+- Breadth to depth: Comfortable whiteboarding target states with founders as well as diving deep into Python/Node, containerization, and API design.
+
+I enjoy the mix of advisory, enablement, and hands-on prototyping that your Startup SA team emphasizes—working backwards from customer priorities to define clear reference patterns (e.g., RAG patterns, safety/observability baselines), then enabling teams through workshops, docs, and exemplars.
+
+I’d welcome the chance to discuss how I can help your Dubai startup portfolio build secure, performant GenAI applications on AWS. I’m available in the UAE and ready to engage immediately.
+
+Sincerely,
+
+Muhammed Fasil PV
+Dubai, UAE
++971 555923545
+[faztrick@gmail.com](mailto:faztrick@gmail.com)
+[faztrick.com](https://faztrick.com)

@@ -1,0 +1,191 @@
+{
+  "theme": {
+    "name": "CV Dark",
+    "version": "1.0.0"
+  },
+  "metadata": {
+    "source": "Generated for Figma via Tokens Studio",
+    "author": "Muhammed Fasil PV"
+  },
+  "tokens": {
+    "color": {
+      "surface": {
+        "value": "#0B0F14",
+        "type": "color"
+      },
+      "surfaceAlt": {
+        "value": "#10151B",
+        "type": "color"
+      },
+      "primary": {
+        "value": "#4CC2FF",
+        "type": "color"
+      },
+      "accent": {
+        "value": "#A1E3A1",
+        "type": "color"
+      },
+      "onSurface": {
+        "value": "#E8EEF5",
+        "type": "color"
+      },
+      "onSurfaceMuted": {
+        "value": "#B7C2CF",
+        "type": "color"
+      },
+      "divider": {
+        "value": "#1B2430",
+        "type": "color"
+      }
+    },
+    "size": {
+      "font": {
+        "display": {
+          "value": 56,
+          "type": "fontSizes"
+        },
+        "h1": {
+          "value": 24,
+          "type": "fontSizes"
+        },
+        "h2": {
+          "value": 18,
+          "type": "fontSizes"
+        },
+        "body": {
+          "value": 14,
+          "type": "fontSizes"
+        },
+        "caption": {
+          "value": 12,
+          "type": "fontSizes"
+        }
+      },
+      "lineHeight": {
+        "display": {
+          "value": 64,
+          "type": "lineHeights"
+        },
+        "h1": {
+          "value": 32,
+          "type": "lineHeights"
+        },
+        "h2": {
+          "value": 28,
+          "type": "lineHeights"
+        },
+        "body": {
+          "value": 22,
+          "type": "lineHeights"
+        },
+        "caption": {
+          "value": 18,
+          "type": "lineHeights"
+        }
+      },
+      "radius": {
+        "card": {
+          "value": 12,
+          "type": "borderRadius"
+        },
+        "pill": {
+          "value": 999,
+          "type": "borderRadius"
+        }
+      },
+      "spacing": {
+        "xs": {
+          "value": 4,
+          "type": "spacing"
+        },
+        "sm": {
+          "value": 8,
+          "type": "spacing"
+        },
+        "md": {
+          "value": 12,
+          "type": "spacing"
+        },
+        "lg": {
+          "value": 16,
+          "type": "spacing"
+        },
+        "xl": {
+          "value": 24,
+          "type": "spacing"
+        },
+        "xxl": {
+          "value": 32,
+          "type": "spacing"
+        }
+      }
+    },
+    "fontFamilies": {
+      "primary": {
+        "value": "Inter, 'SF Pro Text', -apple-system, system-ui",
+        "type": "fontFamilies"
+      }
+    },
+    "fontWeights": {
+      "regular": {
+        "value": "Regular",
+        "type": "fontWeights"
+      },
+      "medium": {
+        "value": "Medium",
+        "type": "fontWeights"
+      },
+      "semibold": {
+        "value": "SemiBold",
+        "type": "fontWeights"
+      }
+    },
+    "typography": {
+      "display": {
+        "value": {
+          "fontFamily": "{fontFamilies.primary}",
+          "fontWeight": "{fontWeights.semibold}",
+          "fontSize": "{size.font.display}",
+          "lineHeight": "{size.lineHeight.display}"
+        },
+        "type": "typography"
+      },
+      "h1": {
+        "value": {
+          "fontFamily": "{fontFamilies.primary}",
+          "fontWeight": "{fontWeights.semibold}",
+          "fontSize": "{size.font.h1}",
+          "lineHeight": "{size.lineHeight.h1}"
+        },
+        "type": "typography"
+      },
+      "h2": {
+        "value": {
+          "fontFamily": "{fontFamilies.primary}",
+          "fontWeight": "{fontWeights.medium}",
+          "fontSize": "{size.font.h2}",
+          "lineHeight": "{size.lineHeight.h2}"
+        },
+        "type": "typography"
+      },
+      "body": {
+        "value": {
+          "fontFamily": "{fontFamilies.primary}",
+          "fontWeight": "{fontWeights.regular}",
+          "fontSize": "{size.font.body}",
+          "lineHeight": "{size.lineHeight.body}"
+        },
+        "type": "typography"
+      },
+      "caption": {
+        "value": {
+          "fontFamily": "{fontFamilies.primary}",
+          "fontWeight": "{fontWeights.regular}",
+          "fontSize": "{size.font.caption}",
+          "lineHeight": "{size.lineHeight.caption}"
+        },
+        "type": "typography"
+      }
+    }
+  }
+}

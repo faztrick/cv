@@ -1,0 +1,18 @@
+Subject: Application – Software Engineer (Backend/Full‑Stack) – Muhammed Fasil PV
+
+Hi {{Name}},
+
+I’m a Dubai‑based Software Architect and hands‑on engineer with 13+ years building production systems (ERP/POS/QMS/IoT) using TypeScript/Node.js, Flutter, Python, and Docker. I’m immediately available in UAE (Company Visa) and interested in opportunities for Software Engineer (Backend/Full‑Stack) at {{Company}}.
+
+Highlights:
+• Built modular Node.js/TypeScript APIs with offline‑first sync, MQTT automation, and secure WireGuard connectivity across branches.
+• Delivered AI integrations (YOLO, Whisper) and chat automation (WhatsApp/Telegram) to streamline operations.
+• Strong DevOps: Docker/Compose, PM2, Nginx, GitHub Actions; MySQL/MongoDB/Firebase on cloud and edge.
+
+Attached are my resume and a brief cover letter. Happy to share code samples and discuss how I can contribute.
+
+Thank you,
+
+Muhammed Fasil PV
+Dubai, UAE | +971 555923545 | faztrick@gmail.com
+LinkedIn: https://linkedin.com/in/faztrick | GitHub: https://github.com/faztrick | Portfolio: https://faztrick.com

@@ -1,0 +1,33 @@
+# Cover Letter — Vanderlande Solution Architect (Airports)
+
+Date: 2025-10-24
+
+Hiring Manager
+Vanderlande Industries B.V.
+Dubai, United Arab Emirates
+
+Subject: Application for Solution Architect — Airports (Dubai)
+
+Dear Hiring Manager,
+
+I’m excited to apply for the Solution Architect role (JR32890). I bring 13+ years designing and shipping systems that translate complex requirements into reliable, testable solutions—spanning ERP, POS, QMS, and IoT automation—with strong experience in system integration, acceptance, and operational readiness.
+
+Fit for your role:
+
+- From concept to acceptance: Led system requirement capture, authored solution designs, and drove system/integration testing through acceptance.
+- Systems integration mindset: Integrated mechanical/electronic/LLC/HLC‑like domains via secure APIs and messaging; automated device control (GPIO/LED) and telemetry.
+- Operational performance: Containerized services, implemented CI/CD (GitHub Actions), observability dashboards, and playbooks for incident response.
+- Reliability and safety: Emphasis on hazard awareness, configuration control, and change management for production environments.
+- Coaching and consistency: Documented standards/patterns and mentored engineers; maintained architectural consistency across multi‑disciplinary teams.
+
+Your Airports business unit’s mission—translating operational concepts into robust system designs—aligns strongly with my background. I’m comfortable steering compliancy analyses, coordinating with mono‑disciplinary teams, and ensuring a consistent solution architecture throughout delivery.
+
+I’d welcome the opportunity to contribute to your airport logistics projects in Dubai and beyond.
+
+Sincerely,
+
+Muhammed Fasil PV
+Dubai, UAE
++971 555923545
+[faztrick@gmail.com](mailto:faztrick@gmail.com)
+[faztrick.com](https://faztrick.com)
