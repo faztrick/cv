@@ -28,5 +28,5 @@ node_modules/
 .DS_Store
 Thumbs.db
 
-# Automation repos (optional - uncomment to ignore cloned repos)
-# automation/repos/
+# Automation repos (external repos cloned locally)
+automation/repos/*/
