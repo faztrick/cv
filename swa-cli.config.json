@@ -1,0 +1,15 @@
+{
+  "$schema": "https://aka.ms/azure/static-web-apps-cli/schema",
+  "configurations": {
+    "cv-portfolio": {
+      "appLocation": "./public",
+      "outputLocation": "./public",
+      "appBuildCommand": "",
+      "apiBuildCommand": "",
+      "apiLocation": "",
+      "deploy": {
+        "outputLocation": "./public"
+      }
+    }
+  }
+}
