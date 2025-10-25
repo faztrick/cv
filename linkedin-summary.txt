@@ -1,6 +1,6 @@
 I'm a Software Architect and AI & IoT Systems Engineer with 13+ years of experience building scalable, intelligent systems across ERP, POS, QMS, and retail IoT automation. I design for the real world: resilient edge + cloud hybrid architectures, secure networking infrastructure, and fast feedback loops that keep operations running smoothly.
 
-Currently based in Dubai, UAE, I bridge hardware and software to create production-ready systems that blend AI-driven automation with IoT ecosystems. My work spans the entire stack—from embedded firmware on ESP32/Raspberry Pi to cloud microservices with DevOps automation.
+Currently at Idol Technology LLC (Dubai, UAE) since Aug 2024, I bridge hardware and software to create production-ready systems that blend AI-driven automation with IoT ecosystems. My work spans the entire stack—from embedded firmware on ESP32/Raspberry Pi to cloud microservices with DevOps automation.
 
 🛠️ TECHNICAL EXPERTISE:
 • Languages: Dart, TypeScript/JavaScript, Python, C#, PHP, Kotlin
@@ -38,9 +38,9 @@ Currently based in Dubai, UAE, I bridge hardware and software to create producti
 **SincA ERP** (Previous role at Screl Info Pvt Ltd, Apr 2019 - Jan 2024) — Designed and deployed comprehensive ERP with AI dashboards, OCR systems, predictive models, and automated WhatsApp/Telegram bots for customer interaction.
 
 💼 PROFESSIONAL EXPERIENCE:
-• **Software Engineer** (Dubai, UAE) | Aug 2024 - Present
-• **Senior Software Engineer** (India/UAE) | Apr 2019 - Jan 2024
-• **Software Developer** (Calicut, India) | Mar 2014 - Mar 2019
+• **Idol Technology LLC** (Dubai, UAE) — Software Engineer | Aug 2024 - Present
+• **Screl Info Pvt Ltd** (India/UAE) — Senior Software Engineer | Apr 2019 - Jan 2024
+• **Sincap Info Pvt Ltd** (Calicut, India) — Software Developer | Mar 2014 - Mar 2019
 
 🌟 LEADERSHIP & INNOVATION:
 • Led cross-location developer teams (India/UAE) with hybrid CI/CD pipelines
@@ -58,7 +58,7 @@ Currently based in Dubai, UAE, I bridge hardware and software to create producti
 
 🏆 RECOGNITION:
 • Gitex Dubai 2024: Showcased AI-powered Self-Checkout Kiosk prototype
-• Internal R&D Recognition: Edge AI automation project of the year
+• Internal R&D Recognition (Idol Technology): Edge AI automation project of the year
 • Featured in developer community showcases for IoT + AI fusion
 • Delivered solutions for 50+ enterprise clients across retail, healthcare, and hospitality
 
