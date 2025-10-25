@@ -32,7 +32,7 @@ body {
   background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 a {
@@ -45,10 +45,12 @@ a:hover {
   text-decoration: underline;
 }
 
+/* A4 optimized container (210mm x 297mm) */
 .container {
-  max-width: 900px;
+  max-width: 210mm; /* A4 width */
+  min-height: 297mm; /* A4 height */
   margin: 24px auto;
-  padding: 40px 48px;
+  padding: 15mm 12mm; /* Standard A4 margins */
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
@@ -363,15 +365,179 @@ footer p {
   }
 }
 
+/* A4 Page Setup for PDF Export */
+@page {
+  size: A4;
+  margin: 15mm 12mm;
+}
+
 @media print {
   body {
     background: #ffffff;
-    color: #0f172a;
+    color: #000000;
+    font-size: 11pt;
+    margin: 0;
+    padding: 0;
   }
 
   .container {
+    max-width: 100%;
     margin: 0;
+    padding: 0;
     box-shadow: none;
+    border: none;
     border-radius: 0;
+    background: white;
+  }
+
+  /* Remove gradients and shadows for clean PDF */
+  header {
+    border-bottom: 2px solid #000;
+    box-shadow: none;
+  }
+
+  header h1 {
+    color: #000;
+    background: none;
+    -webkit-text-fill-color: initial;
+  }
+
+  h2 {
+    color: #000;
+    border-bottom: 2px solid #000;
+    page-break-after: avoid;
+  }
+
+  h2::before {
+    background: #000;
+    box-shadow: none;
+  }
+
+  h3 {
+    color: #000;
+    page-break-after: avoid;
+  }
+
+  /* Prevent page breaks inside elements */
+  article,
+  .job,
+  .education-item,
+  .skill-category {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Allow page breaks between sections when needed */
+  section {
+    page-break-inside: auto;
+  }
+
+  /* Remove background colors and hover effects */
+  article {
+    background: transparent;
+    border-left: 2px solid #000;
+    box-shadow: none;
+    padding: 8px 0 8px 12px;
+    margin-top: 12px;
+  }
+
+  article:hover {
+    background: transparent;
+    transform: none;
+  }
+
+  .tech-stack {
+    background: transparent;
+    border-left: 2px solid #000;
+    padding: 6px 12px;
+  }
+
+  /* Remove colored backgrounds */
+  .chip {
+    background: transparent;
+    border: 1px solid #000;
+    color: #000;
+  }
+
+  /* Ensure links are visible */
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+
+  a[href]:after {
+    content: none; /* Don't print URLs after links */
+  }
+
+  /* Optimize spacing for A4 */
+  section {
+    margin-top: 16px;
+  }
+
+  ul {
+    margin-left: 16px;
+  }
+
+  li {
+    margin: 3px 0;
+    color: #000;
+  }
+
+  li::marker {
+    color: #000;
+  }
+
+  /* Remove all shadows */
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Ensure proper A4 fitting */
+  header {
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+  }
+
+  .contact-info p {
+    margin: 2px 0;
+  }
+
+  /* Grid layout for print */
+  .grid,
+  .skills .grid,
+  .skills-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px 16px;
+  }
+}
+
+/* PDF Export Optimization (when printing to PDF) */
+@media print and (color) {
+  /* Optional: Keep some subtle colors for PDF if desired */
+  body {
+    color: #1a1a1a;
+  }
+
+  header h1 {
+    color: #0891b2;
+  }
+
+  h2 {
+    color: #075985;
+    border-bottom-color: #06b6d4;
+  }
+
+  h2::before {
+    background: #06b6d4;
+  }
+
+  article {
+    border-left-color: #06b6d4;
+  }
+
+  .tech-stack {
+    background: #f0f9ff;
+    border-left-color: #06b6d4;
   }
 }
