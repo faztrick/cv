@@ -7,10 +7,10 @@ This playbook helps you apply fast and track outcomes for Software Engineer role
 ## 1) Prepare assets
 
 - Export to PDF:
-  - `resume-uae.md` → Resume (UAE)
-  - `cover-letter-uae-software.md` → Cover letter
+  - `resumes/variants/resume-uae.md` → Resume (UAE)
+  - `cover-letters/cover-letter-uae-software.md` → Cover letter
 - Email body: `emails/uae-generic-software.txt`
-- Links helper: `send-mail-links.md` → Generic Gmail compose link
+- Links helper: `docs/send-mail-links.md` → Generic Gmail compose link
 - Portfolio: <https://faztrick.com>, GitHub: <https://github.com/faztrick>, LinkedIn: <https://linkedin.com/in/faztrick>
 
 Tip: Keep a `docs/` folder (local) with the latest PDFs to drag‑and‑drop.
@@ -37,7 +37,7 @@ Filters to use:
 - For LinkedIn Easy Apply: upload resume PDF, include short note referencing your cover letter (paste from email body if note field allows).
 - For portals: attach resume PDF; where cover letters are optional, paste the first 1–2 paragraphs from `cover-letter-uae-software.md`.
 - For direct email postings:
-  1. Open the generic Gmail link in `send-mail-links.md`.
+  1. Open the generic Gmail link in `docs/send-mail-links.md`.
   2. Paste body from `emails/uae-generic-software.txt`.
   3. Attach PDFs (resume + cover letter) and send.
 

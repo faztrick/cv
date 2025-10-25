@@ -26,7 +26,8 @@ if (-not (Test-Command "az")) {
   Write-Host "✗ Azure CLI not found!" -ForegroundColor Red
   Write-Host ""
   Write-Host "Please install Azure CLI first:" -ForegroundColor Yellow
-  Write-Host "  Option 1: Run .\setup-azure.ps1 (as Administrator)" -ForegroundColor White
+  Write-Host "  Option 1: From repo root, run .\\scripts\\setup-azure.ps1 (as Administrator)" -ForegroundColor White
+  Write-Host "            Or if you're already in the scripts folder, run .\\setup-azure.ps1" -ForegroundColor White
   Write-Host "  Option 2: Download from https://aka.ms/installazurecliwindows" -ForegroundColor White
   Write-Host ""
   pause
@@ -200,7 +201,7 @@ else {
   Write-Host "Then run this script again." -ForegroundColor White
   Write-Host ""
   Write-Host "Alternative: Set up GitHub Actions for automatic deployment" -ForegroundColor Cyan
-  Write-Host "See AZURE-DEPLOYMENT.md for instructions" -ForegroundColor White
+  Write-Host "See docs/AZURE-DEPLOYMENT.md for instructions" -ForegroundColor White
 }
 
 Write-Host ""
@@ -221,7 +222,7 @@ if ($openBrowser -ne "n" -and $openBrowser -ne "N") {
 Write-Host ""
 Write-Host "Next Steps:" -ForegroundColor Green
 Write-Host "1. View your portfolio at: https://$swaUrl" -ForegroundColor White
-Write-Host "2. Set up custom domain (see AZURE-DEPLOYMENT.md)" -ForegroundColor White
+Write-Host "2. Set up custom domain (see docs/AZURE-DEPLOYMENT.md)" -ForegroundColor White
 Write-Host "3. Configure GitHub Actions for auto-deployment (optional)" -ForegroundColor White
 Write-Host ""
 

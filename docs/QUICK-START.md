@@ -8,7 +8,7 @@
 
 ```powershell
 cd E:\cv
-.\setup-azure.ps1
+.\scripts\setup-azure.ps1
 ```
 
 This installs Azure CLI and Static Web Apps CLI automatically.
@@ -23,7 +23,7 @@ This installs Azure CLI and Static Web Apps CLI automatically.
 
 ```powershell
 cd E:\cv
-.\deploy-azure.ps1
+.\scripts\deploy-azure.ps1
 ```
 
 The interactive wizard will:
@@ -66,7 +66,7 @@ az login
 
 # Deploy (one command!)
 cd E:\cv
-.\deploy-azure.ps1
+.\scripts\deploy-azure.ps1
 ```
 
 ---
@@ -83,7 +83,7 @@ cd E:\cv
 
 **Azure CLI not found?**
 
-- Run `.\setup-azure.ps1` as Administrator
+- Run `.\scripts\setup-azure.ps1` as Administrator
 - Or download from <https://aka.ms/installazurecliwindows>
 
 **Node.js not installed?**

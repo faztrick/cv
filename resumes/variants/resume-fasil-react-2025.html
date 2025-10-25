@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MUHAMMED FASIL PV — Senior Frontend (React) | Software Architect</title>
+  <style>
+    /* ===== A4 PDF-OPTIMIZED LAYOUT ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    @page { size: A4; margin: 0; }
+
+    body {
+      font-family: "Calibri", "Segoe UI", Arial, sans-serif;
+      font-size: 11pt;
+      line-height: 1.45;
+      color: #1f2937;
+      background: #ffffff;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      width: 210mm; min-height: 297mm; margin: 0 auto; background: #fff; position: relative; page-break-after: always;
+      display: flex; flex-direction: column;
+    }
+    .page:last-child { page-break-after: auto; }
+
+    /* ===== HEADER ===== */
+    .header { background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%); color: #fff; padding: 22px 36px; text-align: center; }
+    .name { font-size: 28pt; font-weight: 800; letter-spacing: .5px; margin-bottom: 6px; }
+    .title { font-size: 13pt; font-weight: 500; opacity: .95; }
+    .contact-bar { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin-top: 10px; font-size: 10pt; }
+    .contact-item { display: flex; align-items: center; gap: 6px; }
+    .contact-item::before { content: "•"; opacity: .9; }
+
+    /* ===== GRID ===== */
+    .wrap { display: grid; grid-template-columns: 280px 1fr; min-height: calc(297mm - 120px); }
+    .sidebar { background: #f8fafc; border-right: 2px solid #e2e8f0; padding: 26px 22px; }
+    .content { padding: 26px 32px; }
+
+    /* ===== SECTION TITLES ===== */
+    .side-title, .section-title {
+      font-weight: 800; letter-spacing: .5px; text-transform: uppercase; color: #0f172a; margin-bottom: 12px;
+      padding-bottom: 6px; border-bottom: 3px solid #2563eb; display: flex; align-items: center; gap: 8px;
+    }
+    .side-title::before, .section-title::before { content: ""; width: 4px; height: 18px; background: #2563eb; border-radius: 2px; }
+
+    /* ===== LISTS ===== */
+    .list { list-style: none; }
+    .li { position: relative; padding-left: 14px; margin: 3px 0; color: #334155; }
+    .li::before { content: "▸"; position: absolute; left: 0; color: #2563eb; font-weight: 700; }
+
+    /* ===== SUMMARY ===== */
+    .summary { background: #eef2ff; border-left: 4px solid #2563eb; padding: 14px; border-radius: 6px; color: #334155; }
+
+    /* ===== EXPERIENCE ===== */
+    .exp { margin-bottom: 20px; page-break-inside: avoid; }
+    .exp-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 6px; }
+    .role { font-weight: 800; font-size: 12.5pt; color: #0f172a; }
+    .company { color: #2563eb; font-weight: 700; margin-top: 2px; }
+    .duration { white-space: nowrap; background: #dbeafe; color: #1e3a8a; padding: 3px 10px; border-radius: 12px; font-size: 10pt; font-weight: 700; }
+    .bullets { list-style: none; margin-top: 6px; }
+    .bullets li { position: relative; padding-left: 18px; margin: 4px 0; color: #374151; }
+    .bullets li::before { content: "→"; position: absolute; left: 0; color: #2563eb; font-weight: 800; }
+
+    /* ===== TAGS ===== */
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .tag { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; border-radius: 14px; padding: 3px 10px; font-size: 9.5pt; font-weight: 700; }
+
+    /* ===== CARDS ===== */
+    .card { background: #f1f5f9; border-left: 3px solid #2563eb; border-radius: 6px; padding: 12px; page-break-inside: avoid; }
+
+    /* ===== FOOTER ===== */
+    .footer { margin-top: auto; text-align: center; background: #0f172a; color: #fff; padding: 12px 30px; font-size: 9pt; }
+
+    /* ===== PRINT ===== */
+    @media print {
+      .page { box-shadow: none; }
+      .exp, .card { page-break-inside: avoid; }
+    }
+    @media screen {
+      body { background: #e2e8f0; padding: 18px; }
+      .page { box-shadow: 0 0 18px rgba(0,0,0,.12); margin-bottom: 18px; }
+    }
+
+    /* Helper headings */
+    .subh3 { font-size: 11pt; font-weight: 800; color: #0f172a; margin-bottom: 6px; }
+
+    /* Utility spacers & helpers */
+    .mb-12 { margin-bottom: 12px; }
+    .mb-10 { margin-bottom: 10px; }
+    .mb-16 { margin-bottom: 16px; }
+    .mt-14 { margin-top: 14px; }
+    .muted { color: #64748b; }
+    .keywords-text { font-size: 9.5pt; color: #374151; }
+  </style>
+</head>
+<body>
+  <!-- ===== PAGE 1 ===== -->
+  <section class="page">
+    <header class="header">
+      <h1 class="name">MUHAMMED FASIL PV</h1>
+      <p class="title">Senior Frontend (React) Developer · Software Architect</p>
+      <div class="contact-bar">
+        <div class="contact-item">Dubai, UAE</div>
+        <div class="contact-item">+971 555923545</div>
+        <div class="contact-item">faztrick@gmail.com</div>
+        <div class="contact-item">faztrick.com</div>
+        <div class="contact-item">linkedin.com/in/faztrick</div>
+        <div class="contact-item">github.com/faztrick</div>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <!-- ===== SIDEBAR ===== -->
+      <aside class="sidebar">
+        <h2 class="side-title">Core Skills</h2>
+        <div class="card mb-12">
+          <div class="subh3">Frontend & UI</div>
+          <ul class="list">
+            <li class="li">React, TypeScript, JavaScript (ES6+)</li>
+            <li class="li">HTML5, CSS3, SCSS/SASS, Tailwind CSS</li>
+            <li class="li">Design Systems, Accessibility (WCAG)</li>
+            <li class="li">Next.js, Vite, Storybook</li>
+            <li class="li">Redux Toolkit, React Query, Zustand</li>
+          </ul>
+        </div>
+
+        <div class="card mb-12">
+          <div class="subh3">Testing & Quality</div>
+          <ul class="list">
+            <li class="li">Jest, React Testing Library</li>
+            <li class="li">Cypress, Playwright (E2E)</li>
+            <li class="li">Performance Profiling, Lighthouse</li>
+          </ul>
+        </div>
+
+        <div class="card mb-12">
+          <div class="subh3">Backend, Cloud & DevOps</div>
+          <ul class="list">
+            <li class="li">Node.js, Express, REST, GraphQL</li>
+            <li class="li">Docker, Docker Compose, Nginx</li>
+            <li class="li">CI/CD (GitHub Actions), PM2</li>
+            <li class="li">Azure, AWS, GCP</li>
+          </ul>
+        </div>
+
+        <div class="card mb-12">
+          <div class="subh3">AI, IoT & Automation</div>
+          <ul class="list">
+            <li class="li">OpenAI, LangChain, Qwen3, local AI</li>
+            <li class="li">YOLO vision, OCR, Whisper</li>
+            <li class="li">ESP32, Raspberry Pi, MQTT</li>
+            <li class="li">WhatsApp/Telegram automation</li>
+            <li class="li">MikroTik RouterOS, WireGuard</li>
+          </ul>
+        </div>
+
+        <h2 class="side-title mt-14">Languages</h2>
+        <ul class="list mb-12">
+          <li class="li">English</li>
+          <li class="li">Malayalam</li>
+          <li class="li">Hindi</li>
+        </ul>
+
+        <h2 class="side-title">Education</h2>
+        <div class="card">
+          <div class="subh3">Diploma in Computer Engineering</div>
+          <div>JDT Islam Polytechnic, Calicut, India</div>
+          <div class="muted">June 2010 – March 2013</div>
+        </div>
+      </aside>
+
+      <!-- ===== CONTENT ===== -->
+      <main class="content">
+        <h2 class="section-title">Professional Summary</h2>
+        <div class="summary mb-16">
+          Software Architect and Senior Frontend developer with <strong>13+ years</strong> building production systems across ERP, QMS, POS and IoT. I specialize in <strong>React + TypeScript</strong> for clean, scalable UI, and bring deep hands-on expertise in <strong>AI-driven automation, MQTT/IoT</strong>, and robust <strong>DevOps</strong>. I translate complex workflows into fast, maintainable interfaces, design design-systems that scale, and ship reliable software end‑to‑end with testing, performance, and security built in.
+        </div>
+
+        <h2 class="section-title">Professional Experience</h2>
+
+        <section class="exp">
+          <div class="exp-head">
+            <div>
+              <div class="role">Software Architect</div>
+              <div class="company">Idol Technology LLC — Dubai, UAE</div>
+            </div>
+            <div class="duration">Aug 2024 – Present</div>
+          </div>
+          <ul class="bullets">
+            <li>Architected IdolMEA ERP integrating POS, QMS, IoT automation and AI vision modules across branches.</li>
+            <li>Built IdolQueue (i‑QMS) with offline-first sync and MQTT event control; multi‑branch monitoring and alerts.</li>
+            <li>Implemented WhatsApp Business and Telegram automation for queue alerts, AI responses and service updates.</li>
+            <li>Deployed MikroTik WireGuard mesh (IdolVPN) for secure multi‑branch API routing and operations.</li>
+            <li>Integrated YOLO theft detection for self‑checkout kiosks; automated LED/GPIO controls via Android AIDL.</li>
+            <li>Designed Kotlin–Flutter IPC (LampAidlInterface) for Android retail LED device control.</li>
+            <li>Engineered hybrid cloud sync (MySQL ↔ Hive) for offline‑first analytics and reporting.</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">Architecture</span><span class="tag">Flutter MVVM</span><span class="tag">Node.js</span><span class="tag">MQTT</span><span class="tag">AI Vision</span><span class="tag">MikroTik</span>
+          </div>
+        </section>
+
+        <section class="exp">
+          <div class="exp-head">
+            <div>
+              <div class="role">Senior Software Architect</div>
+              <div class="company">Screl Info Pvt Ltd — India / UAE</div>
+            </div>
+            <div class="duration">Apr 2019 – Jan 2024</div>
+          </div>
+          <ul class="bullets">
+            <li>Designed and delivered SincA ERP (Flutter + Node.js + Python AI backend) with modular hybrid architecture.</li>
+            <li>Implemented AI dashboards, OCR parsing and prediction engines using TensorFlow and OpenAI APIs.</li>
+            <li>Built WhatsApp/Telegram automation for notifications, invoice tracking and support chat.</li>
+            <li>Dockerized local servers synchronized with cloud APIs; implemented CI/CD and edge deployments.</li>
+            <li>Mentored teams on MVVM, modular API design and DevOps workflows across multiple locations.</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">AI/LLM</span><span class="tag">Docker</span><span class="tag">CI/CD</span><span class="tag">OCR</span><span class="tag">OpenAI</span>
+          </div>
+        </section>
+
+        <section class="exp">
+          <div class="exp-head">
+            <div>
+              <div class="role">Software Developer</div>
+              <div class="company">Sincap Info Pvt Ltd — Calicut, India</div>
+            </div>
+            <div class="duration">Mar 2014 – Mar 2019</div>
+          </div>
+          <ul class="bullets">
+            <li>Developed ERP, accounting and billing systems using WPF (C#), PHP and SQL Server.</li>
+            <li>Built admin and reporting portals with PHP and RESTful JSON endpoints with role‑based dashboards.</li>
+            <li>Improved UI/UX performance, introduced caching, and modularized critical components.</li>
+            <li>Provided enterprise client support (50+ businesses), database optimization and automated reporting.</li>
+          </ul>
+          <div class="tags">
+            <span class="tag">WPF</span><span class="tag">PHP</span><span class="tag">SQL Server</span><span class="tag">REST</span>
+          </div>
+        </section>
+
+        <h2 class="section-title">Selected Projects</h2>
+        <section class="exp">
+          <div class="card mb-10">
+            <div class="subh3">IdolMEA ERP</div>
+            <ul class="bullets">
+              <li>Centralized ERP for retail/service — POS, booking, QMS, IoT device control, AI reporting.</li>
+            </ul>
+            <div class="tags"><span class="tag">ERP</span><span class="tag">POS</span><span class="tag">IoT</span><span class="tag">AI</span></div>
+          </div>
+          <div class="card mb-10">
+            <div class="subh3">IdolQueue (i‑QMS)</div>
+            <ul class="bullets">
+              <li>Smart queue management with MQTT‑based automation, offline‑first sync and multi‑branch control.</li>
+            </ul>
+            <div class="tags"><span class="tag">Flutter</span><span class="tag">Node.js</span><span class="tag">MQTT</span></div>
+          </div>
+          <div class="card mb-10">
+            <div class="subh3">Self‑Checkout AI Kiosk</div>
+            <ul class="bullets">
+              <li>Android kiosk integrating YOLO detection and LED/GPIO control via AIDL for loss prevention.</li>
+            </ul>
+            <div class="tags"><span class="tag">YOLO</span><span class="tag">Android</span><span class="tag">AIDL</span></div>
+          </div>
+          <div class="card">
+            <div class="subh3">IdolVPN Network</div>
+            <ul class="bullets">
+              <li>MikroTik WireGuard mesh enabling secure multi‑branch communication and API routing.</li>
+            </ul>
+            <div class="tags"><span class="tag">MikroTik</span><span class="tag">WireGuard</span></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="footer">
+      <p><strong>React‑first frontend builder with architecture depth</strong> · Available for full‑time roles · Dubai, UAE</p>
+      <p>Contact: faztrick@gmail.com · +971 555923545 · faztrick.com</p>
+    </footer>
+  </section>
+
+  <!-- ===== PAGE 2 ===== -->
+  <section class="page">
+    <div class="wrap">
+      <aside class="sidebar">
+        <h2 class="side-title">UI Focus (React)</h2>
+        <div class="card mb-12">
+          <ul class="list">
+            <li class="li">Reusable component design with TypeScript and hooks</li>
+            <li class="li">State patterns: RTK slices, Query caching, Zustand stores</li>
+            <li class="li">Design systems, theming, dark‑mode, responsive layouts</li>
+            <li class="li">Perf: memoization, virtualization, code‑splitting</li>
+            <li class="li">Testing: RTL unit + Cypress/Playwright E2E</li>
+          </ul>
+        </div>
+
+        <h2 class="side-title">Tooling</h2>
+        <div class="card">
+          <ul class="list">
+            <li class="li">Vite/webpack, Storybook, ESLint/Prettier</li>
+            <li class="li">GitHub Actions CI, semantic releases</li>
+            <li class="li">Dockerized dev/test environments</li>
+          </ul>
+        </div>
+
+        <h2 class="side-title mt-14">Keywords</h2>
+        <div class="card">
+          <div class="keywords-text">
+            Flutter, MVVM, Node.js, Express, WPF, .NET, Python, PHP, TypeScript, React, LLM, LangChain, OpenAI, Qwen3, YOLO, MQTT, ESP32, Raspberry Pi, Arduino, ESL, OEPL, MikroTik, WireGuard, Docker, Docker Compose, PM2, Nginx, GitHub Actions, GCP, AWS, Azure, MySQL, Hive, ObjectBox, Firebase, MongoDB, JWT, OAuth2, HTTPS, SSL, CI/CD, ERP, POS, QMS, IoT, Automation, Edge, Retail, Microservices
+          </div>
+        </div>
+      </aside>
+
+      <main class="content">
+        <h2 class="section-title">Key Achievements</h2>
+        <section class="exp">
+          <div class="card mb-10">
+            <div class="subh3">End‑to‑End Architecture → Delivery</div>
+            <ul class="bullets">
+              <li>Planned, designed and shipped multi‑module ERP and QMS with secure networking and offline analytics.</li>
+              <li>Balanced edge deployments with cloud APIs; standardized CI/CD for reproducible releases.</li>
+            </ul>
+          </div>
+          <div class="card mb-10">
+            <div class="subh3">Automation & AI</div>
+            <ul class="bullets">
+              <li>Integrated LLMs, OCR and YOLO pipelines for automation, predictive insights and loss prevention.</li>
+              <li>Built WhatsApp/Telegram chat automations for operations, alerts and customer updates.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="subh3">Reliability & Performance</div>
+            <ul class="bullets">
+              <li>Introduced app profiling, caching and message‑driven patterns; reduced latency and support issues.</li>
+              <li>Established testing strategy (unit → E2E) with CI gates for safer, faster delivery.</li>
+            </ul>
+          </div>
+        </section>
+
+        <h2 class="section-title">Professional Development</h2>
+        <section class="exp">
+          <div class="card">
+            <div class="subh3">Continuous Learning</div>
+            <ul class="bullets">
+              <li>Track React/TypeScript releases, TC39 proposals and performance techniques.</li>
+              <li>Experiment with Module Federation, PWAs and local AI agents for UX acceleration.</li>
+              <li>Write and share patterns for state, effects and error boundaries.</li>
+            </ul>
+          </div>
+        </section>
+
+        <h2 class="section-title">Links</h2>
+        <section class="exp">
+          <ul class="bullets">
+            <li>Portfolio: <strong>faztrick.com</strong></li>
+            <li>GitHub: <strong>github.com/faztrick</strong></li>
+            <li>LinkedIn: <strong>linkedin.com/in/faztrick</strong></li>
+          </ul>
+        </section>
+      </main>
+    </div>
+
+    <footer class="footer">
+      <p>© 2025 — MUHAMMED FASIL PV</p>
+    </footer>
+  </section>
+
+  <script>
+    // Enable Ctrl/Cmd+P to print
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
+        e.preventDefault();
+        window.print();
+      }
+    });
+  </script>
+</body>
+</html>

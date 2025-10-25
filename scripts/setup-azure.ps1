@@ -88,7 +88,8 @@ Write-Host ""
 
 Write-Host "Next Steps:" -ForegroundColor Green
 Write-Host "1. Close and reopen PowerShell (to refresh environment variables)" -ForegroundColor White
-Write-Host "2. Run: .\deploy-azure.ps1" -ForegroundColor White
+Write-Host "2. From repo root, run: .\\scripts\\deploy-azure.ps1" -ForegroundColor White
+Write-Host "   Or if you're in this folder, run: .\\deploy-azure.ps1" -ForegroundColor White
 Write-Host "3. Follow the prompts to deploy your portfolio" -ForegroundColor White
 Write-Host ""
 

@@ -36,7 +36,7 @@ if ($readyDomains.Count -eq 0) {
   Write-Host "⚠️  No domains are ready yet" -ForegroundColor Yellow
   Write-Host ""
   Write-Host "Please update name servers at your registrar first." -ForegroundColor White
-  Write-Host "See NAME-SERVERS.md for details." -ForegroundColor White
+  Write-Host "See docs/NAME-SERVERS.md for details." -ForegroundColor White
   Write-Host ""
   pause
   exit

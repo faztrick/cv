@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MUHAMMED FASIL PV — Backend Architect (Java Platform Fit) | Software Architect</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    @page { size: A4; margin: 0; }
+    body { font-family: "Calibri", "Segoe UI", Arial, sans-serif; font-size: 11pt; line-height: 1.45; color: #0f172a; background: #ffffff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { width: 210mm; min-height: 297mm; margin: 0 auto; background: #fff; position: relative; page-break-after: always; display: flex; flex-direction: column; }
+    .page:last-child { page-break-after: auto; }
+    .header { background: linear-gradient(135deg, #1e293b 0%, #f59e0b 100%); color: #fff; padding: 22px 36px; text-align: center; }
+    .name { font-size: 28pt; font-weight: 800; letter-spacing: .5px; margin-bottom: 6px; }
+    .title { font-size: 13pt; font-weight: 500; opacity: .95; }
+    .contact-bar { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin-top: 10px; font-size: 10pt; }
+    .contact-item { display: flex; align-items: center; gap: 6px; }
+    .contact-item::before { content: "•"; opacity: .9; }
+    .wrap { display: grid; grid-template-columns: 280px 1fr; min-height: calc(297mm - 120px); }
+    .sidebar { background: #f8fafc; border-right: 2px solid #e2e8f0; padding: 26px 22px; }
+    .content { padding: 26px 32px; }
+    .side-title, .section-title { font-weight: 800; letter-spacing: .5px; text-transform: uppercase; color: #0f172a; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 3px solid #f59e0b; display: flex; align-items: center; gap: 8px; }
+    .side-title::before, .section-title::before { content: ""; width: 4px; height: 18px; background: #f59e0b; border-radius: 2px; }
+    .list { list-style: none; }
+    .li { position: relative; padding-left: 14px; margin: 3px 0; color: #334155; }
+    .li::before { content: "▸"; position: absolute; left: 0; color: #f59e0b; font-weight: 700; }
+    .summary { background: #fff7ed; border-left: 4px solid #f59e0b; padding: 14px; border-radius: 6px; color: #334155; }
+    .exp { margin-bottom: 20px; page-break-inside: avoid; }
+    .exp-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 6px; }
+    .role { font-weight: 800; font-size: 12.5pt; color: #0f172a; }
+    .company { color: #d97706; font-weight: 700; margin-top: 2px; }
+    .duration { white-space: nowrap; background: #fde68a; color: #92400e; padding: 3px 10px; border-radius: 12px; font-size: 10pt; font-weight: 700; }
+    .bullets { list-style: none; margin-top: 6px; }
+    .bullets li { position: relative; padding-left: 18px; margin: 4px 0; color: #374151; }
+    .bullets li::before { content: "→"; position: absolute; left: 0; color: #f59e0b; font-weight: 800; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .tag { background: #fde68a; color: #92400e; border: 1px solid #fcd34d; border-radius: 14px; padding: 3px 10px; font-size: 9.5pt; font-weight: 700; }
+    .card { background: #f1f5f9; border-left: 3px solid #f59e0b; border-radius: 6px; padding: 12px; page-break-inside: avoid; }
+    .footer { margin-top: auto; text-align: center; background: #1e293b; color: #fff; padding: 12px 30px; font-size: 9pt; }
+    @media print { .page { box-shadow: none; } .exp, .card { page-break-inside: avoid; } }
+    @media screen { body { background: #e2e8f0; padding: 18px; } .page { box-shadow: 0 0 18px rgba(0,0,0,.12); margin-bottom: 18px; } }
+    .subh3 { font-size: 11pt; font-weight: 800; color: #0f172a; margin-bottom: 6px; }
+    .mb-12 { margin-bottom: 12px; } .mb-10 { margin-bottom: 10px; } .mb-16 { margin-bottom: 16px; } .mt-14 { margin-top: 14px; }
+    .muted { color: #64748b; } .keywords-text { font-size: 9.5pt; color: #374151; }
+  </style>
+</head>
+<body>
+  <section class="page">
+    <header class="header">
+      <h1 class="name">MUHAMMED FASIL PV</h1>
+      <p class="title">Backend Architect (Java Platform Fit) · Software Architect</p>
+      <div class="contact-bar">
+        <div class="contact-item">Dubai, UAE</div>
+        <div class="contact-item">+971 555923545</div>
+        <div class="contact-item">faztrick@gmail.com</div>
+        <div class="contact-item">faztrick.com</div>
+        <div class="contact-item">linkedin.com/in/faztrick</div>
+        <div class="contact-item">github.com/faztrick</div>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <aside class="sidebar">
+        <h2 class="side-title">Core Skills</h2>
+        <div class="card mb-12">
+          <div class="subh3">API Contracts & Interop</div>
+          <ul class="list">
+            <li class="li">REST/GraphQL, OpenAPI/JSON Schema</li>
+            <li class="li">Auth (JWT/OAuth2), RBAC</li>
+            <li class="li">Message flows, schedulers</li>
+          </ul>
+        </div>
+        <div class="card mb-12">
+          <div class="subh3">Backends & Data</div>
+          <ul class="list">
+            <li class="li">Node.js services, Python workers</li>
+            <li class="li">MySQL, MongoDB, Hive</li>
+            <li class="li">Caching & background jobs</li>
+          </ul>
+        </div>
+        <div class="card mb-12">
+          <div class="subh3">Frontend & Apps</div>
+          <ul class="list">
+            <li class="li">React, TypeScript, Next.js</li>
+            <li class="li">Flutter (MVVM)</li>
+          </ul>
+        </div>
+        <div class="card mb-12">
+          <div class="subh3">DevOps</div>
+          <ul class="list">
+            <li class="li">Docker, PM2, Nginx</li>
+            <li class="li">GitHub Actions CI/CD</li>
+          </ul>
+        </div>
+        <h2 class="side-title mt-14">Languages</h2>
+        <ul class="list mb-12"><li class="li">English</li><li class="li">Malayalam</li><li class="li">Hindi</li></ul>
+        <h2 class="side-title">Education</h2>
+        <div class="card"><div class="subh3">Diploma in Computer Engineering</div><div>JDT Islam Polytechnic, Calicut, India</div><div class="muted">June 2010 – March 2013</div></div>
+      </aside>
+
+      <main class="content">
+        <h2 class="section-title">Professional Summary</h2>
+        <div class="summary mb-16">
+          Software Architect delivering ERP/QMS/POS systems with robust <strong>API contracts</strong>, <strong>auth</strong> and <strong>observability</strong>. While my services are primarily in Node.js and Python, I design <strong>platform‑agnostic</strong> interfaces (OpenAPI/JSON Schema) and deployment patterns that integrate cleanly with <strong>Java backends</strong> and enterprise environments.
+        </div>
+
+        <h2 class="section-title">Professional Experience</h2>
+        <section class="exp">
+          <div class="exp-head"><div><div class="role">Software Architect</div><div class="company">Idol Technology LLC — Dubai, UAE</div></div><div class="duration">Aug 2024 – Present</div></div>
+          <ul class="bullets">
+            <li>Defined API contracts and gateways for IdolMEA ERP and i‑QMS; enabled cross‑stack consumption.</li>
+            <li>Introduced standards for auth, error models and versioning compatible with Java services.</li>
+            <li>Hardened deployments with Docker/PM2/Nginx and CI/CD.</li>
+          </ul>
+          <div class="tags"><span class="tag">OpenAPI</span><span class="tag">REST</span><span class="tag">Auth</span><span class="tag">Docker</span></div>
+        </section>
+        <section class="exp">
+          <div class="exp-head"><div><div class="role">Senior Software Architect</div><div class="company">Screl Info Pvt Ltd — India / UAE</div></div><div class="duration">Apr 2019 – Jan 2024</div></div>
+          <ul class="bullets">
+            <li>Delivered ERP services with clear API schemas and integration patterns.</li>
+            <li>Implemented staging/production parity and release automation.</li>
+          </ul>
+          <div class="tags"><span class="tag">Schemas</span><span class="tag">CI/CD</span></div>
+        </section>
+        <section class="exp">
+          <div class="exp-head"><div><div class="role">Software Developer</div><div class="company">Sincap Info Pvt Ltd — Calicut, India</div></div><div class="duration">Mar 2014 – Mar 2019</div></div>
+          <ul class="bullets"><li>Built WPF apps and REST endpoints; collaborated on platform integrations.</li></ul>
+          <div class="tags"><span class="tag">WPF</span><span class="tag">REST</span></div>
+        </section>
+
+        <h2 class="section-title">Selected Projects</h2>
+        <section class="exp">
+          <div class="card mb-10"><div class="subh3">IdolMEA ERP</div><ul class="bullets"><li>ERP platform with API gateway, standardized contracts and auth for interop with enterprise stacks.</li></ul><div class="tags"><span class="tag">OpenAPI</span><span class="tag">REST</span><span class="tag">Auth</span></div></div>
+          <div class="card mb-10"><div class="subh3">IdolQueue (i‑QMS)</div><ul class="bullets"><li>Queue management with versioned APIs, message flows and offline‑first clients.</li></ul><div class="tags"><span class="tag">APIs</span><span class="tag">MQTT</span></div></div>
+          <div class="card mb-10"><div class="subh3">Self‑Checkout Kiosk</div><ul class="bullets"><li>Service endpoints and event ingestion compatible with Java services.</li></ul><div class="tags"><span class="tag">Contracts</span><span class="tag">Events</span></div></div>
+          <div class="card"><div class="subh3">IdolVPN Network</div><ul class="bullets"><li>Secure branch mesh enabling cross‑service communication and API routing.</li></ul><div class="tags"><span class="tag">WireGuard</span><span class="tag">Nginx</span></div></div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="footer"><p><strong>OpenAPI • Auth • Interop</strong> · Dubai · faztrick@gmail.com · +971 555923545</p></footer>
+  </section>
+
+  <section class="page">
+    <div class="wrap">
+      <aside class="sidebar">
+        <h2 class="side-title">Platform Fit: Java Backends</h2>
+        <div class="card mb-12"><ul class="list"><li class="li">Contracts first: OpenAPI, JSON schemas</li><li class="li">Security: JWT/OAuth2, scope/RBAC</li><li class="li">Compatibility with Spring‑style controllers</li><li class="li">Messaging, schedulers, retries</li></ul></div>
+        <h2 class="side-title">Tooling</h2>
+        <div class="card"><ul class="list"><li class="li">CI/CD, semantic versioning</li><li class="li">Docker images and gateways</li><li class="li">Observability and tracing</li></ul></div>
+        <h2 class="side-title mt-14">Keywords</h2>
+        <div class="card"><div class="keywords-text">OpenAPI, JSON Schema, REST, GraphQL, JWT, OAuth2, Node.js, Python, MySQL, MongoDB, Docker, PM2, Nginx, GitHub Actions, React, TypeScript, Flutter, MQTT, WireGuard, MikroTik, ERP, POS, QMS</div></div>
+      </aside>
+      <main class="content">
+        <h2 class="section-title">Key Achievements</h2>
+        <section class="exp">
+          <div class="card mb-10"><div class="subh3">Contract‑first Delivery</div><ul class="bullets"><li>Reduced integration issues by formalizing OpenAPI specs and error models.</li><li>Enabled parallel frontend/backend development.</li></ul></div>
+          <div class="card mb-10"><div class="subh3">Operational Readiness</div><ul class="bullets"><li>Standardized environments, rollouts and observability.</li><li>Shortened MTTR with logs and dashboards.</li></ul></div>
+          <div class="card"><div class="subh3">Cross‑stack Collaboration</div><ul class="bullets"><li>Worked with Java teams using shared API contracts and release cadence.</li></ul></div>
+        </section>
+        <h2 class="section-title">Links</h2>
+        <section class="exp"><ul class="bullets"><li>Portfolio: <strong>faztrick.com</strong></li><li>GitHub: <strong>github.com/faztrick</strong></li><li>LinkedIn: <strong>linkedin.com/in/faztrick</strong></li></ul></section>
+      </main>
+    </div>
+    <footer class="footer"><p>© 2025 — MUHAMMED FASIL PV</p></footer>
+  </section>
+
+  <script>
+    document.addEventListener('keydown', function(e){ if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='p'){ e.preventDefault(); window.print(); } });
+  </script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MUHAMMED FASIL PV — AI/Automation Engineer | Software Architect</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    @page { size: A4; margin: 0; }
+    body { font-family: "Calibri", "Segoe UI", Arial, sans-serif; font-size: 11pt; line-height: 1.45; color: #1f2937; background: #ffffff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page { width: 210mm; min-height: 297mm; margin: 0 auto; background: #fff; position: relative; page-break-after: always; display: flex; flex-direction: column; }
+    .page:last-child { page-break-after: auto; }
+    .header { background: linear-gradient(135deg, #052e16 0%, #16a34a 100%); color: #fff; padding: 22px 36px; text-align: center; }
+    .name { font-size: 28pt; font-weight: 800; letter-spacing: .5px; margin-bottom: 6px; }
+    .title { font-size: 13pt; font-weight: 500; opacity: .95; }
+    .contact-bar { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin-top: 10px; font-size: 10pt; }
+    .contact-item { display: flex; align-items: center; gap: 6px; }
+    .contact-item::before { content: "•"; opacity: .9; }
+    .wrap { display: grid; grid-template-columns: 280px 1fr; min-height: calc(297mm - 120px); }
+    .sidebar { background: #f8fafc; border-right: 2px solid #e2e8f0; padding: 26px 22px; }
+    .content { padding: 26px 32px; }
+    .side-title, .section-title { font-weight: 800; letter-spacing: .5px; text-transform: uppercase; color: #0f172a; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 3px solid #16a34a; display: flex; align-items: center; gap: 8px; }
+    .side-title::before, .section-title::before { content: ""; width: 4px; height: 18px; background: #16a34a; border-radius: 2px; }
+    .list { list-style: none; }
+    .li { position: relative; padding-left: 14px; margin: 3px 0; color: #334155; }
+    .li::before { content: "▸"; position: absolute; left: 0; color: #16a34a; font-weight: 700; }
+    .summary { background: #ecfdf5; border-left: 4px solid #16a34a; padding: 14px; border-radius: 6px; color: #334155; }
+    .exp { margin-bottom: 20px; page-break-inside: avoid; }
+    .exp-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 6px; }
+    .role { font-weight: 800; font-size: 12.5pt; color: #0f172a; }
+    .company { color: #16a34a; font-weight: 700; margin-top: 2px; }
+    .duration { white-space: nowrap; background: #bbf7d0; color: #065f46; padding: 3px 10px; border-radius: 12px; font-size: 10pt; font-weight: 700; }
+    .bullets { list-style: none; margin-top: 6px; }
+    .bullets li { position: relative; padding-left: 18px; margin: 4px 0; color: #374151; }
+    .bullets li::before { content: "→"; position: absolute; left: 0; color: #16a34a; font-weight: 800; }
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+    .tag { background: #bbf7d0; color: #065f46; border: 1px solid #86efac; border-radius: 14px; padding: 3px 10px; font-size: 9.5pt; font-weight: 700; }
+    .card { background: #f1f5f9; border-left: 3px solid #16a34a; border-radius: 6px; padding: 12px; page-break-inside: avoid; }
+    .footer { margin-top: auto; text-align: center; background: #052e16; color: #fff; padding: 12px 30px; font-size: 9pt; }
+    @media print { .page { box-shadow: none; } .exp, .card { page-break-inside: avoid; } }
+    @media screen { body { background: #e2e8f0; padding: 18px; } .page { box-shadow: 0 0 18px rgba(0,0,0,.12); margin-bottom: 18px; } }
+    .subh3 { font-size: 11pt; font-weight: 800; color: #0f172a; margin-bottom: 6px; }
+    .mb-12 { margin-bottom: 12px; } .mb-10 { margin-bottom: 10px; } .mb-16 { margin-bottom: 16px; } .mt-14 { margin-top: 14px; }
+    .muted { color: #64748b; } .keywords-text { font-size: 9.5pt; color: #374151; }
+  </style>
+</head>
+<body>
+  <section class="page">
+    <header class="header">
+      <h1 class="name">MUHAMMED FASIL PV</h1>
+      <p class="title">AI/Automation Engineer · Software Architect</p>
+      <div class="contact-bar">
+        <div class="contact-item">Dubai, UAE</div>
+        <div class="contact-item">+971 555923545</div>
+        <div class="contact-item">faztrick@gmail.com</div>
+        <div class="contact-item">faztrick.com</div>
+        <div class="contact-item">linkedin.com/in/faztrick</div>
+        <div class="contact-item">github.com/faztrick</div>
+      </div>
+    </header>
+
+    <div class="wrap">
+      <aside class="sidebar">
+        <h2 class="side-title">Core Skills</h2>
+        <div class="card mb-12">
+          <div class="subh3">AI, Vision & Automation</div>
+          <ul class="list">
+            <li class="li">LLMs: OpenAI, LangChain, Qwen3, local agents</li>
+            <li class="li">Vision/OCR: YOLO, TensorFlow, Whisper</li>
+            <li class="li">Chat Automation: WhatsApp Business, Telegram</li>
+            <li class="li">Pipelines & Schedulers, Prompt Ops</li>
+          </ul>
+        </div>
+        <div class="card mb-12">
+          <div class="subh3">IoT & Edge</div>
+          <ul class="list">
+            <li class="li">ESP32, Raspberry Pi, Arduino</li>
+            <li class="li">MQTT, device control, ESL tooling</li>
+            <li class="li">MikroTik RouterOS, WireGuard</li>
+          </ul>
+        </div>
+        <div class="card mb-12">
+          <div class="subh3">Frontend & UI</div>
+          <ul class="list">
+            <li class="li">React, TypeScript, JavaScript (ES6+)</li>
+            <li class="li">Flutter (MVVM), Next.js, Vite, Storybook</li>
+            <li class="li">Design Systems, Accessibility (WCAG)</li>
+            <li class="li">Redux Toolkit, React Query, Zustand</li>
+          </ul>
+        </div>
+        <div class="card mb-12">
+          <div class="subh3">Backend & DevOps</div>
+          <ul class="list">
+            <li class="li">Node.js, Express, REST, GraphQL</li>
+            <li class="li">Docker/Compose, Nginx, PM2</li>
+            <li class="li">CI/CD (GitHub Actions), Cloud: Azure/AWS/GCP</li>
+          </ul>
+        </div>
+        <h2 class="side-title mt-14">Languages</h2>
+        <ul class="list mb-12">
+          <li class="li">English</li><li class="li">Malayalam</li><li class="li">Hindi</li>
+        </ul>
+        <h2 class="side-title">Education</h2>
+        <div class="card">
+          <div class="subh3">Diploma in Computer Engineering</div>
+          <div>JDT Islam Polytechnic, Calicut, India</div>
+          <div class="muted">June 2010 – March 2013</div>
+        </div>
+      </aside>
+
+      <main class="content">
+        <h2 class="section-title">Professional Summary</h2>
+        <div class="summary mb-16">
+          Software Architect focused on <strong>AI/Automation</strong> and <strong>IoT/Edge</strong>, delivering real‑world systems for ERP, QMS, POS and retail analytics. Built <strong>LLM‑powered agents</strong>, <strong>YOLO vision</strong> pipelines and <strong>chat automation</strong> across WhatsApp/Telegram. Pair this with production‑grade <strong>React/Flutter UIs</strong>, resilient <strong>Node.js</strong> services, and secure <strong>MikroTik + WireGuard</strong> networks to ship reliable, testable software end‑to‑end.
+        </div>
+
+        <h2 class="section-title">Professional Experience</h2>
+        <section class="exp">
+          <div class="exp-head"><div><div class="role">Software Architect</div><div class="company">Idol Technology LLC — Dubai, UAE</div></div><div class="duration">Aug 2024 – Present</div></div>
+          <ul class="bullets">
+            <li>Architected IdolMEA ERP integrating POS, QMS, IoT automation and AI vision modules across branches.</li>
+            <li>Built IdolQueue (i‑QMS) with offline‑first sync and MQTT event control; multi‑branch monitoring and alerts.</li>
+            <li>Implemented WhatsApp Business and Telegram automation for queue alerts, AI responses and service updates.</li>
+            <li>Integrated YOLO theft detection for self‑checkout kiosks; automated LED/GPIO controls via Android AIDL.</li>
+            <li>Engineered hybrid cloud sync (MySQL ↔ Hive) for offline‑first analytics and reporting.</li>
+          </ul>
+          <div class="tags"><span class="tag">LLM</span><span class="tag">YOLO</span><span class="tag">MQTT</span><span class="tag">WhatsApp</span><span class="tag">MikroTik</span></div>
+        </section>
+        <section class="exp">
+          <div class="exp-head"><div><div class="role">Senior Software Architect</div><div class="company">Screl Info Pvt Ltd — India / UAE</div></div><div class="duration">Apr 2019 – Jan 2024</div></div>
+          <ul class="bullets">
+            <li>Delivered SincA ERP (Flutter + Node.js + Python AI backend) with modular hybrid architecture.</li>
+            <li>Implemented AI dashboards, OCR parsing and prediction engines using TensorFlow and OpenAI APIs.</li>
+            <li>Built WhatsApp/Telegram automation for notifications, invoice tracking and support chat.</li>
+            <li>Dockerized local servers synchronized with cloud APIs; implemented CI/CD and edge deployments.</li>
+          </ul>
+          <div class="tags"><span class="tag">OpenAI</span><span class="tag">TensorFlow</span><span class="tag">Docker</span><span class="tag">CI/CD</span></div>
+        </section>
+        <section class="exp">
+          <div class="exp-head"><div><div class="role">Software Developer</div><div class="company">Sincap Info Pvt Ltd — Calicut, India</div></div><div class="duration">Mar 2014 – Mar 2019</div></div>
+          <ul class="bullets">
+            <li>Developed ERP, accounting and billing systems using WPF (C#), PHP and SQL Server.</li>
+            <li>Built admin and reporting portals with PHP and RESTful JSON endpoints with role‑based dashboards.</li>
+          </ul>
+          <div class="tags"><span class="tag">WPF</span><span class="tag">REST</span></div>
+        </section>
+
+        <h2 class="section-title">Selected Projects</h2>
+        <section class="exp">
+          <div class="card mb-10"><div class="subh3">Self‑Checkout AI Kiosk</div><ul class="bullets"><li>Android kiosk integrating YOLO detection and LED/GPIO control via AIDL for loss prevention.</li></ul><div class="tags"><span class="tag">YOLO</span><span class="tag">Android</span><span class="tag">AIDL</span></div></div>
+          <div class="card mb-10"><div class="subh3">IdolMEA ERP</div><ul class="bullets"><li>Centralized ERP for retail/service — POS, booking, QMS, IoT device control, AI reporting.</li></ul><div class="tags"><span class="tag">ERP</span><span class="tag">AI</span><span class="tag">IoT</span></div></div>
+          <div class="card mb-10"><div class="subh3">IdolQueue (i‑QMS)</div><ul class="bullets"><li>Smart queue management with MQTT‑based automation, offline‑first sync and multi‑branch control.</li></ul><div class="tags"><span class="tag">MQTT</span><span class="tag">Flutter</span></div></div>
+          <div class="card"><div class="subh3">IdolVPN Network</div><ul class="bullets"><li>MikroTik WireGuard mesh enabling secure multi‑branch communication and API routing.</li></ul><div class="tags"><span class="tag">MikroTik</span><span class="tag">WireGuard</span></div></div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="footer"><p><strong>AI + Automation across vision, chat and edge</strong> · Dubai, UAE · Contact: faztrick@gmail.com · +971 555923545</p></footer>
+  </section>
+
+  <section class="page">
+    <div class="wrap">
+      <aside class="sidebar">
+        <h2 class="side-title">AI Focus</h2>
+        <div class="card mb-12"><ul class="list"><li class="li">LLM orchestration, prompt strategies, retrieval flows</li><li class="li">Vision/OCR pipelines, streaming inference at edge</li><li class="li">Chatbots: WhatsApp/Telegram for ops & support</li><li class="li">Safety, logging, metrics and evaluation</li></ul></div>
+        <h2 class="side-title">Tooling</h2>
+        <div class="card"><ul class="list"><li class="li">Python/Node runtimes, schedulers</li><li class="li">Dockerized workers, message queues</li><li class="li">GitHub Actions CI, semantic releases</li></ul></div>
+        <h2 class="side-title mt-14">Keywords</h2>
+        <div class="card"><div class="keywords-text">OpenAI, LangChain, Qwen3, TensorFlow, YOLO, Whisper, MQTT, ESP32, Raspberry Pi, WhatsApp Business API, Telegram Bot API, Docker, PM2, Nginx, GitHub Actions, Azure, AWS, GCP, React, Flutter, Node.js, REST, GraphQL, MikroTik, WireGuard, MySQL, Hive, Firebase, MongoDB, JWT, OAuth2, HTTPS, SSL, ERP, POS, QMS, IoT</div></div>
+      </aside>
+      <main class="content">
+        <h2 class="section-title">Key Achievements</h2>
+        <section class="exp">
+          <div class="card mb-10"><div class="subh3">Automation at Scale</div><ul class="bullets"><li>Orchestrated LLM + OCR + YOLO flows for operational automation and insights.</li><li>Reduced manual interventions via chat‑driven workflows and proactive alerts.</li></ul></div>
+          <div class="card mb-10"><div class="subh3">Edge Reliability</div><ul class="bullets"><li>Deployed inference and MQTT control at store edge; resilient to network variance.</li><li>Standardized CI/CD and logging for rapid triage and safe rollouts.</li></ul></div>
+          <div class="card"><div class="subh3">Measurable Quality</div><ul class="bullets"><li>Established test strategies from unit to E2E; tracked accuracy and latency metrics.</li><li>Set up evaluation loops and dashboards for model and system performance.</li></ul></div>
+        </section>
+        <h2 class="section-title">Links</h2>
+        <section class="exp"><ul class="bullets"><li>Portfolio: <strong>faztrick.com</strong></li><li>GitHub: <strong>github.com/faztrick</strong></li><li>LinkedIn: <strong>linkedin.com/in/faztrick</strong></li></ul></section>
+      </main>
+    </div>
+    <footer class="footer"><p>© 2025 — MUHAMMED FASIL PV</p></footer>
+  </section>
+
+  <script>
+    document.addEventListener('keydown', function(e){ if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='p'){ e.preventDefault(); window.print(); } });
+  </script>
+</body>
+</html>

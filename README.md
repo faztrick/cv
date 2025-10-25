@@ -1,21 +1,33 @@
 # CV Kit for Muhammed Fasil PV
 
-This folder contains an ATS‑friendly resume, a visual resume, LinkedIn summary text, a GitHub profile snippet, and a reusable cover letter template. All content is based on the details you provided.
+Everything is now organized into a clean folder layout with a single, unified resume source. Use the master resume for updates; variants and cover letters live in their own folders.
 
-## Files
+## Folder layout
 
-- `resume-ATS.md` — Clean, parser‑friendly resume (no emojis/tables). Use this for online submissions.
-- `resume-visual.md` — Slightly styled resume for sharing as PDF.
-- `linkedin-summary.txt` — Paste into your LinkedIn “About” section.
-- `github-profile-readme.md` — Drop into a new repo named `faztrick` as `README.md` or adapt for your profile repo.
-- `cover-letter-template.md` — Tweak placeholders and export per role.
+- `resumes/`
+  - `resume.md` — Master, ATS‑friendly resume (single source of truth)
+  - `variants/` — Styled and role‑specific variants (HTML/MD/PDF)
+- `cover-letters/` — All role‑specific cover letters and templates
+- `docs/` — Deployment notes, quick starts, and helper docs
+- `scripts/` — PowerShell scripts for setup/deploy/utilities
+- `automation/` — Job application bots and helpers (unchanged)
+- `public/` — Static site assets (unchanged)
+- `assets/`, `emails/`, `tools/` — Supporting files (unchanged)
+
+## Key files
+
+- Master resume: `resumes/resume.md`
+- Visual/HTML/PDF variants: `resumes/variants/*`
+- Cover letter template and role letters: `cover-letters/*`
+- LinkedIn summary: `linkedin-summary.txt`
+- GitHub profile snippet: `docs/github-profile-readme.md`
 
 ## Export to PDF (Windows, VS Code)
 
 Option 1 — VS Code extension:
 
 1. Install “Markdown PDF” (yzane.markdown-pdf).
-2. Open `resume-visual.md`.
+2. Open `resumes/resume.md` (ATS) or `resumes/variants/resume-visual.md` (styled).
 3. Right‑click → “Markdown PDF: Export (pdf)”.
 
 Option 2 — Print to PDF:
@@ -26,22 +38,22 @@ Option 2 — Print to PDF:
 Option 3 — Pandoc (if installed):
 
 ```powershell
-# Export ATS version to PDF (requires pandoc + a PDF engine like wkhtmltopdf or LaTeX)
-pandoc "e:\cv\resume-ATS.md" -o "e:\cv\resume-ATS.pdf"
+# Export ATS master to PDF (requires pandoc + a PDF engine like wkhtmltopdf or LaTeX)
+pandoc "e:\cv\resumes\resume.md" -o "e:\cv\resumes\resume.pdf"
 
-# Export visual version to PDF
-pandoc "e:\cv\resume-visual.md" -o "e:\cv\resume-visual.pdf"
+# Export visual variant to PDF
+pandoc "e:\cv\resumes\variants\resume-visual.md" -o "e:\cv\resumes\variants\resume-visual.pdf"
 ```
 
 ## Tips for tailoring
 
-- Keep `resume-ATS.md` for portals; avoid images, tables, and complex layouts.
-- Mirror job descriptions: add relevant keywords in the “Keywords (ATS)” section of the ATS resume.
-- For roles emphasizing AI or IoT, move those bullets to the top of Experience and Projects.
+- Keep `resumes/resume.md` clean for portals; avoid images, tables, and complex layouts.
+- Mirror job descriptions: add relevant keywords in the “Keywords (ATS)” section of the master resume.
+- For AI/IoT‑heavy roles, move the most relevant bullets to the top of Experience/Projects in your current variant.
 - Replace placeholder LinkedIn URL if needed: `https://linkedin.com/in/faztrick`.
 
 ## Next steps
 
-- Create targeted variants per role (e.g., `resume-ATS-ai.md`, `resume-ATS-iot.md`).
+- Create targeted variants under `resumes/variants/` (e.g., `resume-ai.md`, `resume-iot.md`).
 - Add a Projects PDF with 1–2 screenshots per project when emailing recruiters.
 - Keep a concise 3–4 sentence pitch ready for messages/intro calls.

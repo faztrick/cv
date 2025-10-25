@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Senior Frontend Developer - React.js Expert</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #61dafb;
+            --secondary-color: #282c34;
+            --accent-color: #21a1f1;
+            --text-dark: #1a1a1a;
+            --text-light: #ffffff;
+            --bg-light: #f8f9fa;
+            --border-color: #e0e0e0;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --react-blue: #61dafb;
+            --typescript-blue: #3178c6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* Header Section */
+        .header {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #1e2229 100%);
+            color: var(--text-light);
+            padding: 60px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 400px;
+            height: 400px;
+            background: var(--react-blue);
+            opacity: 0.1;
+            border-radius: 50%;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .name {
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--react-blue) 0%, var(--accent-color) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .title {
+            font-size: 1.8em;
+            font-weight: 300;
+            margin-bottom: 20px;
+            color: var(--react-blue);
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95em;
+        }
+
+        .contact-item::before {
+            content: '●';
+            color: var(--react-blue);
+            font-size: 1.2em;
+        }
+
+        /* Tech Stack Banner */
+        .tech-banner {
+            background: var(--bg-light);
+            padding: 30px 40px;
+            border-bottom: 3px solid var(--react-blue);
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .tech-badge {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9em;
+            box-shadow: var(--shadow);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tech-badge.react {
+            border-color: var(--react-blue);
+            color: var(--react-blue);
+        }
+
+        .tech-badge.typescript {
+            border-color: var(--typescript-blue);
+            color: var(--typescript-blue);
+        }
+
+        .tech-badge.javascript {
+            border-color: #f7df1e;
+            color: #f7df1e;
+            background: #1a1a1a;
+        }
+
+        .tech-badge:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--bg-light);
+            padding: 40px 30px;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .sidebar-section {
+            margin-bottom: 40px;
+        }
+
+        .sidebar-section h2 {
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+            border-bottom: 3px solid var(--react-blue);
+            padding-bottom: 10px;
+        }
+
+        .skill-category {
+            margin-bottom: 25px;
+        }
+
+        .skill-category h3 {
+            font-size: 1em;
+            margin-bottom: 12px;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+
+        .skill-list {
+            list-style: none;
+        }
+
+        .skill-item {
+            padding: 8px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+
+        .skill-item::before {
+            content: '▹';
+            color: var(--react-blue);
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .skill-bar {
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, var(--react-blue) 0%, var(--accent-color) 100%);
+            border-radius: 10px;
+            transition: width 1s ease;
+        }
+
+        /* Content Area */
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            margin-bottom: 25px;
+            color: var(--secondary-color);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-title::before {
+            content: '';
+            width: 5px;
+            height: 30px;
+            background: var(--react-blue);
+            border-radius: 3px;
+        }
+
+        /* Professional Summary */
+        .summary {
+            font-size: 1.05em;
+            line-height: 1.8;
+            color: #555;
+            background: var(--bg-light);
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid var(--react-blue);
+        }
+
+        /* Experience Cards */
+        .experience-item {
+            background: white;
+            padding: 30px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .experience-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .job-title {
+            font-size: 1.3em;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .duration {
+            background: var(--react-blue);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .company {
+            font-size: 1.1em;
+            color: var(--accent-color);
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .responsibilities {
+            list-style: none;
+            margin-top: 15px;
+        }
+
+        .responsibilities li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .responsibilities li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--react-blue);
+            font-weight: bold;
+        }
+
+        /* Key Competencies */
+        .competencies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .competency-card {
+            background: var(--bg-light);
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--react-blue);
+            transition: all 0.3s ease;
+        }
+
+        .competency-card:hover {
+            background: white;
+            box-shadow: var(--shadow);
+            transform: translateY(-3px);
+        }
+
+        .competency-card h3 {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+
+        .competency-card p {
+            font-size: 0.9em;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* Achievements */
+        .achievements-list {
+            list-style: none;
+        }
+
+        .achievement-item {
+            background: var(--bg-light);
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--accent-color);
+            position: relative;
+        }
+
+        .achievement-item::before {
+            content: '🏆';
+            position: absolute;
+            left: -15px;
+            top: 15px;
+            font-size: 1.5em;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--secondary-color);
+            color: var(--text-light);
+            padding: 30px 40px;
+            text-align: center;
+        }
+
+        .footer p {
+            margin: 5px 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 968px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .name {
+                font-size: 2.2em;
+            }
+
+            .title {
+                font-size: 1.4em;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 40px 20px;
+            }
+
+            .content,
+            .sidebar {
+                padding: 30px 20px;
+            }
+
+            .competencies-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .container {
+                box-shadow: none;
+            }
+
+            .experience-item,
+            .competency-card {
+                break-inside: avoid;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section {
+            animation: fadeIn 0.6s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="name">Your Name</h1>
+                <p class="title">Senior Frontend Developer | React.js Expert</p>
+                <div class="contact-info">
+                    <div class="contact-item">your.email@example.com</div>
+                    <div class="contact-item">+1 (555) 123-4567</div>
+                    <div class="contact-item">LinkedIn: linkedin.com/in/yourprofile</div>
+                    <div class="contact-item">GitHub: github.com/yourprofile</div>
+                    <div class="contact-item">Location: City, State</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Tech Stack Banner -->
+        <div class="tech-banner">
+            <div class="tech-stack">
+                <span class="tech-badge react">React.js</span>
+                <span class="tech-badge typescript">TypeScript</span>
+                <span class="tech-badge javascript">JavaScript ES6+</span>
+                <span class="tech-badge">HTML5</span>
+                <span class="tech-badge">CSS3/SCSS</span>
+                <span class="tech-badge">REST APIs</span>
+                <span class="tech-badge">Redux</span>
+                <span class="tech-badge">Next.js</span>
+                <span class="tech-badge">Webpack</span>
+                <span class="tech-badge">Jest/Testing Library</span>
+                <span class="tech-badge">Git</span>
+                <span class="tech-badge">Agile/Scrum</span>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <div class="sidebar-section">
+                    <h2>Core Skills</h2>
+
+                    <div class="skill-category">
+                        <h3>Frontend Technologies</h3>
+                        <ul class="skill-list">
+                            <li class="skill-item">React.js & Hooks</li>
+                            <li class="skill-item">TypeScript</li>
+                            <li class="skill-item">JavaScript (ES6+)</li>
+                            <li class="skill-item">HTML5 / CSS3</li>
+                            <li class="skill-item">SCSS / SASS</li>
+                            <li class="skill-item">Tailwind CSS</li>
+                            <li class="skill-item">Material-UI / Ant Design</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-category">
+                        <h3>State Management</h3>
+                        <ul class="skill-list">
+                            <li class="skill-item">Redux / Redux Toolkit</li>
+                            <li class="skill-item">Context API</li>
+                            <li class="skill-item">Zustand</li>
+                            <li class="skill-item">React Query</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-category">
+                        <h3>Modern Frameworks</h3>
+                        <ul class="skill-list">
+                            <li class="skill-item">Next.js</li>
+                            <li class="skill-item">Gatsby</li>
+                            <li class="skill-item">Vite</li>
+                            <li class="skill-item">Micro Frontends</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-category">
+                        <h3>Testing & Quality</h3>
+                        <ul class="skill-list">
+                            <li class="skill-item">Jest</li>
+                            <li class="skill-item">React Testing Library</li>
+                            <li class="skill-item">Cypress</li>
+                            <li class="skill-item">Playwright</li>
+                            <li class="skill-item">E2E Testing</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-category">
+                        <h3>Tools & DevOps</h3>
+                        <ul class="skill-list">
+                            <li class="skill-item">Git / GitHub</li>
+                            <li class="skill-item">Webpack / Rollup</li>
+                            <li class="skill-item">Docker</li>
+                            <li class="skill-item">CI/CD Pipelines</li>
+                            <li class="skill-item">Azure DevOps</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-category">
+                        <h3>API Integration</h3>
+                        <ul class="skill-list">
+                            <li class="skill-item">RESTful APIs</li>
+                            <li class="skill-item">GraphQL</li>
+                            <li class="skill-item">Axios</li>
+                            <li class="skill-item">WebSockets</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h2>Soft Skills</h2>
+                    <ul class="skill-list">
+                        <li class="skill-item">Technical Leadership</li>
+                        <li class="skill-item">Agile Methodologies</li>
+                        <li class="skill-item">Code Review</li>
+                        <li class="skill-item">Mentoring</li>
+                        <li class="skill-item">Cross-team Collaboration</li>
+                        <li class="skill-item">Problem Solving</li>
+                    </ul>
+                </div>
+            </aside>
+
+            <!-- Content -->
+            <main class="content">
+                <!-- Professional Summary -->
+                <section class="section">
+                    <h2 class="section-title">Professional Summary</h2>
+                    <div class="summary">
+                        Senior Frontend Developer with <strong>7+ years of expertise</strong> in building scalable, high-performance web applications using <strong>React.js, TypeScript, and modern JavaScript</strong>. Proven track record of translating complex designs into clean, maintainable code while leading development teams and architecting enterprise-level solutions. Expert in creating delightful user experiences through meticulous attention to detail, performance optimization, and adherence to best practices. Passionate about staying current with emerging technologies including Micro Front-Ends, PWAs, and AI/ML integration.
+                    </div>
+                </section>
+
+                <!-- Key Competencies -->
+                <section class="section">
+                    <h2 class="section-title">Key Competencies</h2>
+                    <div class="competencies-grid">
+                        <div class="competency-card">
+                            <h3>Component Development</h3>
+                            <p>Expert in developing reusable, performant React components with TypeScript, implementing hooks, HOCs, and render props patterns.</p>
+                        </div>
+                        <div class="competency-card">
+                            <h3>UI/UX Implementation</h3>
+                            <p>Translating Figma/Sketch designs and wireframes into pixel-perfect, responsive interfaces with attention to accessibility.</p>
+                        </div>
+                        <div class="competency-card">
+                            <h3>Design Systems</h3>
+                            <p>Architecting and maintaining large-scale design systems with component libraries, theming, and comprehensive documentation.</p>
+                        </div>
+                        <div class="competency-card">
+                            <h3>Performance Optimization</h3>
+                            <p>Optimizing bundle sizes, implementing code splitting, lazy loading, and ensuring smooth performance across devices.</p>
+                        </div>
+                        <div class="competency-card">
+                            <h3>API Integration</h3>
+                            <p>Extensive experience consuming RESTful and GraphQL APIs, implementing error handling, caching, and real-time updates.</p>
+                        </div>
+                        <div class="competency-card">
+                            <h3>Testing & Quality</h3>
+                            <p>Writing comprehensive unit, integration, and E2E tests to ensure code quality and prevent regressions.</p>
+                        </div>
+                        <div class="competency-card">
+                            <h3>Technical Leadership</h3>
+                            <p>Leading projects, mentoring junior developers, conducting code reviews, and establishing best practices.</p>
+                        </div>
+                        <div class="competency-card">
+                            <h3>Agile Development</h3>
+                            <p>Thriving in fast-paced, collaborative environments with strong communication and stakeholder management skills.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Professional Experience -->
+                <section class="section">
+                    <h2 class="section-title">Professional Experience</h2>
+
+                    <div class="experience-item">
+                        <div class="experience-header">
+                            <div>
+                                <div class="job-title">Senior Frontend Developer</div>
+                                <div class="company">Company Name | Industry Sector</div>
+                            </div>
+                            <span class="duration">2021 - Present</span>
+                        </div>
+                        <ul class="responsibilities">
+                            <li>Led development of enterprise-scale React.js applications serving 500K+ users, architecting scalable component libraries and design systems</li>
+                            <li>Translated complex Figma designs into high-quality, pixel-perfect TypeScript/React code with 98% design fidelity</li>
+                            <li>Optimized application performance achieving 40% reduction in load time through code splitting, lazy loading, and bundle optimization</li>
+                            <li>Implemented comprehensive E2E testing suite using Cypress reducing production bugs by 60%</li>
+                            <li>Established frontend best practices and coding standards, conducting weekly code reviews for team of 8 developers</li>
+                            <li>Integrated RESTful APIs and GraphQL endpoints with robust error handling and caching strategies</li>
+                            <li>Spearheaded migration to TypeScript improving code maintainability and reducing runtime errors by 45%</li>
+                            <li>Collaborated closely with UX designers and backend teams in agile sprints to deliver features on time</li>
+                            <li>Mentored 5 junior developers on React best practices, TypeScript patterns, and modern frontend architecture</li>
+                        </ul>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="experience-header">
+                            <div>
+                                <div class="job-title">Frontend Developer</div>
+                                <div class="company">Previous Company Name | Industry</div>
+                            </div>
+                            <span class="duration">2018 - 2021</span>
+                        </div>
+                        <ul class="responsibilities">
+                            <li>Developed and maintained customer-facing React applications with focus on performance and accessibility</li>
+                            <li>Built reusable component library using React, TypeScript, and SCSS serving multiple product lines</li>
+                            <li>Implemented state management solutions using Redux and Context API for complex application flows</li>
+                            <li>Conducted cross-browser testing and debugging ensuring compatibility across modern browsers and devices</li>
+                            <li>Collaborated with backend team to design and consume RESTful APIs optimizing data fetching patterns</li>
+                            <li>Participated in agile ceremonies including sprint planning, daily standups, and retrospectives</li>
+                            <li>Documented application architecture, component APIs, and development workflows</li>
+                            <li>Contributed to CI/CD pipeline setup for automated testing and deployment</li>
+                        </ul>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="experience-header">
+                            <div>
+                                <div class="job-title">Junior Frontend Developer</div>
+                                <div class="company">Earlier Company | Industry</div>
+                            </div>
+                            <span class="duration">2016 - 2018</span>
+                        </div>
+                        <ul class="responsibilities">
+                            <li>Developed responsive web interfaces using HTML5, CSS3, JavaScript, and React.js</li>
+                            <li>Implemented UI components based on wireframes and design specifications</li>
+                            <li>Wrote unit tests using Jest and React Testing Library achieving 80% code coverage</li>
+                            <li>Debugged and resolved frontend issues improving application stability</li>
+                            <li>Collaborated with senior developers learning best practices and modern development patterns</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Technical Achievements -->
+                <section class="section">
+                    <h2 class="section-title">Key Achievements</h2>
+                    <ul class="achievements-list">
+                        <li class="achievement-item">
+                            <strong>Design System Architecture:</strong> Designed and implemented company-wide design system with 150+ React components, reducing development time by 35% across 6 product teams
+                        </li>
+                        <li class="achievement-item">
+                            <strong>Performance Excellence:</strong> Achieved Lighthouse scores of 95+ across all metrics through optimization of bundle size, lazy loading, and efficient rendering strategies
+                        </li>
+                        <li class="achievement-item">
+                            <strong>Micro Frontend Migration:</strong> Led migration to micro frontend architecture enabling independent team deployments and reducing deployment conflicts by 70%
+                        </li>
+                        <li class="achievement-item">
+                            <strong>PWA Implementation:</strong> Converted web application to Progressive Web App increasing mobile engagement by 50% and enabling offline functionality
+                        </li>
+                        <li class="achievement-item">
+                            <strong>Testing Infrastructure:</strong> Established comprehensive testing framework with unit, integration, and E2E tests improving code quality and reducing production incidents by 60%
+                        </li>
+                        <li class="achievement-item">
+                            <strong>AI/ML Integration:</strong> Pioneered integration of AI-powered features using TensorFlow.js for client-side inference enhancing user experience
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Projects & Initiatives -->
+                <section class="section">
+                    <h2 class="section-title">Notable Projects</h2>
+
+                    <div class="experience-item">
+                        <div class="experience-header">
+                            <div>
+                                <div class="job-title">Enterprise Dashboard Platform</div>
+                            </div>
+                        </div>
+                        <ul class="responsibilities">
+                            <li>Built real-time analytics dashboard using React, TypeScript, and D3.js serving executive team</li>
+                            <li>Implemented WebSocket connections for live data updates with automatic reconnection logic</li>
+                            <li>Created custom data visualization components with responsive design for mobile and desktop</li>
+                            <li>Achieved sub-second rendering for datasets with 100K+ data points through optimization</li>
+                        </ul>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="experience-header">
+                            <div>
+                                <div class="job-title">E-commerce Checkout Redesign</div>
+                            </div>
+                        </div>
+                        <ul class="responsibilities">
+                            <li>Redesigned checkout flow using React and Redux increasing conversion rate by 28%</li>
+                            <li>Integrated with multiple payment gateways (Stripe, PayPal) with comprehensive error handling</li>
+                            <li>Implemented A/B testing framework to validate design decisions with real user data</li>
+                            <li>Ensured PCI compliance and accessibility (WCAG 2.1 AA) standards</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Education & Certifications -->
+                <section class="section">
+                    <h2 class="section-title">Education & Certifications</h2>
+                    <div class="experience-item">
+                        <div class="job-title">Bachelor of Science in Computer Science</div>
+                        <div class="company">University Name</div>
+                        <ul class="responsibilities">
+                            <li>Relevant Coursework: Web Development, Software Engineering, Data Structures, UI/UX Design</li>
+                        </ul>
+                    </div>
+                    <div class="experience-item">
+                        <div class="job-title">Professional Certifications</div>
+                        <ul class="responsibilities">
+                            <li>AWS Certified Developer - Associate</li>
+                            <li>Meta React Advanced Certification</li>
+                            <li>TypeScript Advanced Patterns</li>
+                            <li>Web Performance Optimization Specialist</li>
+                        </ul>
+                    </div>
+                </section>
+            </main>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p><strong>Available for Full-Time Opportunities</strong></p>
+            <p>7+ Years of Senior Frontend Development Experience | React.js Expert | TypeScript Specialist</p>
+            <p>&copy; 2025 - All Rights Reserved</p>
+        </footer>
+    </div>
+
+    <script>
+        // Smooth scroll animation on load
+        window.addEventListener('load', function() {
+            document.querySelectorAll('.section').forEach((section, index) => {
+                section.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+
+        // Print functionality
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+                e.preventDefault();
+                window.print();
+            }
+        });
+    </script>
+</body>
+</html>
