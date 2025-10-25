@@ -1,25 +1,100 @@
 # CV & Job Search Toolkit
 
-> **Node.js application for automated job search, email generation, and application tracking**
+> **AI-powered job search automation with CV-based auto-fill, smart matching, and personalized email generation**
 > Muhammed Fasil PV - Software Engineer - Dubai, UAE
 
-## 🚀 Quick Start
+## ✨ NEW: CV-Powered Automation
+
+**Your resume now powers everything!** Auto-fill applications, match jobs, and generate personalized emails using YOUR actual CV data.
+
+### Quick Start (5 Minutes)
 
 ```bash
-# Install dependencies (if any are added)
+# Install dependencies
 npm install
 
-# Show help menu
-npm start
+# 1. Parse your CV
+npm run parse-cv
 
-# Generate job application emails
-npm run generate-emails
+# 2. Search jobs (with match scores!)
+npm run indeed-search "Software Engineer"
+npm run linkedin-search "AI Engineer"
 
-# View job search profile
-npm run job-agent
+# 3. Generate personalized email
+npm run smart-email "AI Engineer" "Careem"
 
-# Clean Puppeteer cache
-npm run clean-cache
+# 4. Auto-fill application
+npm run auto-fill apply "https://www.bayt.com/job/..."
+
+# 5. Track applications
+npm run indeed-stats
+```
+
+📖 **[Read What's New](WHATS-NEW.md)** | **[Quick Start Guide](QUICK-START-CV-POWERED.md)** | **[Complete Documentation](JOB-SEARCH-CV-INTEGRATION.md)**
+
+## 🎯 Key Features
+
+### 🤖 CV-Based Auto-Fill
+- ✅ Auto-fill forms on Indeed, LinkedIn, Bayt, Naukrigulf, GulfTalent
+- ✅ Uses YOUR actual CV data (no manual typing!)
+- ✅ Automatic resume upload
+- ✅ Smart field detection across all platforms
+
+### 🎯 Smart Job Matching
+- ✅ Match score (0-100%) for each job
+- ✅ Highlights YOUR matched skills
+- ✅ Filters by relevance
+- ✅ Multi-platform search
+
+### ✉️ Personalized Emails
+- ✅ Highlights YOUR relevant experience
+- ✅ Selects YOUR matching projects
+- ✅ 3 tone options (professional, enthusiastic, technical)
+- ✅ Batch generation
+
+### 📊 Application Tracking
+- ✅ Automatic tracking
+- ✅ Analytics by platform, status, company
+- ✅ Match score history
+
+## 🚀 NPM Scripts
+
+### CV & Parsing
+```bash
+npm run parse-cv              # Parse resume.md and extract all data
+```
+
+### Job Search
+```bash
+npm run indeed-search         # Search Indeed UAE with CV matching
+npm run linkedin-search       # Search LinkedIn Easy Apply jobs
+npm run job-search            # Search all platforms (Indeed, LinkedIn, Bayt)
+```
+
+### Auto-Apply
+```bash
+npm run indeed-apply          # Auto-apply to Indeed jobs (dry run)
+npm run linkedin-apply        # LinkedIn Easy Apply automation
+npm run auto-fill             # Universal auto-fill for any platform
+```
+
+### Email Generation
+```bash
+npm run smart-email           # Generate personalized email
+npm run email-variants        # Generate 3 tone variants
+npm run batch-emails          # Batch generate for multiple jobs
+```
+
+### Tracking & Stats
+```bash
+npm run indeed-stats          # View Indeed application statistics
+```
+
+### Legacy Scripts
+```bash
+npm run generate-emails       # Original email generator
+npm run job-agent             # View job search profile
+npm run clean-cache           # Clean Puppeteer cache
 ```
 
 ## 📁 Project Structure

@@ -434,6 +434,113 @@ async function searchAllPlatforms(query, options = {}) {
   return allJobs;
 }
 
+function parseCliOptions(args) {
+  const defaultPlatforms = ['linkedin', 'indeed', 'bayt'];
+  const consumedIndexes = new Set();
+
+  const options = {
+    searchMode: false,
+    queryTokens: [],
+    maxPerPlatform: 10,
+    platforms: defaultPlatforms
+  };
+
+  const collectTokens = (startIndex) => {
+    const tokens = [];
+    let index = startIndex;
+
+    while (index < args.length && !args[index].startsWith('-')) {
+      tokens.push(args[index]);
+      consumedIndexes.add(index);
+      index += 1;
+    }
+
+    return { tokens, nextIndex: index - 1 };
+  };
+
+  for (let i = 0; i < args.length; i += 1) {
+    const arg = args[i];
+
+    switch (arg) {
+      case '--search':
+      case '-s':
+      case '--query': {
+        options.searchMode = true;
+        consumedIndexes.add(i);
+
+        const { tokens, nextIndex } = collectTokens(i + 1);
+        if (tokens.length > 0) {
+          options.queryTokens.push(...tokens);
+        }
+
+        i = nextIndex;
+        break;
+      }
+
+      case '--max': {
+        consumedIndexes.add(i);
+
+        const value = args[i + 1];
+        if (value && !value.startsWith('-')) {
+          const parsed = parseInt(value, 10);
+          if (!Number.isNaN(parsed) && parsed > 0) {
+            options.maxPerPlatform = parsed;
+          }
+          consumedIndexes.add(i + 1);
+          i += 1;
+        }
+
+        break;
+      }
+
+      case '--platforms': {
+        consumedIndexes.add(i);
+
+        const value = args[i + 1];
+        if (value && !value.startsWith('-')) {
+          const parsedPlatforms = value
+            .split(',')
+            .map((platform) => platform.trim().toLowerCase())
+            .filter(Boolean);
+
+          if (parsedPlatforms.length > 0) {
+            options.platforms = parsedPlatforms;
+          }
+
+          consumedIndexes.add(i + 1);
+          i += 1;
+        }
+
+        break;
+      }
+
+      default:
+        break;
+    }
+  }
+
+  if (options.queryTokens.length === 0) {
+    const fallbackTokens = args.filter((arg, index) => !consumedIndexes.has(index) && !arg.startsWith('-'));
+
+    if (fallbackTokens.length > 0) {
+      options.searchMode = true;
+      options.queryTokens.push(...fallbackTokens);
+    }
+  }
+
+  const query = options.queryTokens.join(' ').trim() || 'Software Engineer Dubai';
+  const platforms = Array.isArray(options.platforms) && options.platforms.length > 0
+    ? options.platforms
+    : defaultPlatforms;
+
+  return {
+    searchMode: options.searchMode,
+    query,
+    maxPerPlatform: options.maxPerPlatform,
+    platforms
+  };
+}
+
 /**
  * Save jobs to CSV file
  */
@@ -471,20 +578,19 @@ function displayJobs(jobs) {
 async function main() {
   const args = process.argv.slice(2);
 
-  if (args.includes('--search') || args.includes('-s')) {
+  const cliOptions = parseCliOptions(args);
+
+  if (cliOptions.searchMode) {
     if (!puppeteer) {
       console.error('\n❌ Puppeteer is required for job search functionality');
       console.log('📦 Install with: npm install puppeteer\n');
       process.exit(1);
     }
 
-    const queryIndex = args.findIndex(arg => arg === '--search' || arg === '-s');
-    const query = args[queryIndex + 1] || 'Software Engineer Dubai';
-
     try {
-      const jobs = await searchAllPlatforms(query, {
-        maxPerPlatform: 10,
-        platforms: ['linkedin', 'indeed', 'bayt']
+      const jobs = await searchAllPlatforms(cliOptions.query, {
+        maxPerPlatform: cliOptions.maxPerPlatform,
+        platforms: cliOptions.platforms
       });
 
       displayJobs(jobs);
