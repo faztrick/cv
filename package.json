@@ -48,10 +48,10 @@
   "author": "Muhammed Fasil PV <faztrick@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "puppeteer": "^21.6.0"
+    "puppeteer": "^24.26.1"
   },
   "optionalDependencies": {
-    "puppeteer": "^21.6.0"
+    "puppeteer": "^24.26.1"
   },
   "devDependencies": {},
   "engines": {
