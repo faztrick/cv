@@ -1,0 +1,377 @@
+/*
+  Shared CV styles (compact + variants)
+  Author: Muhammed Fasil PV
+*/
+
+:root {
+  --surface: #ffffff;
+  --surface-muted: #f0f9ff;
+  --border: #bae6fd;
+  --shadow: 0 4px 12px rgba(14, 165, 233, 0.08), 0 1px 3px rgba(14, 165, 233, 0.06);
+  --text: #0c4a6e;
+  --text-muted: #0369a1;
+  --heading: #075985;
+  --link: #0ea5e9;
+  --link-hover: #38bdf8;
+  --accent: #06b6d4;
+  --accent-bg: #cffafe;
+  --accent-border: #22d3ee;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
+  color: var(--text);
+  background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 15px;
+}
+
+a {
+  color: var(--link);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--link-hover);
+  text-decoration: underline;
+}
+
+.container {
+  max-width: 900px;
+  margin: 24px auto;
+  padding: 40px 48px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+}
+
+header {
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 3px solid #06b6d4;
+  box-shadow: 0 2px 4px rgba(6, 182, 212, 0.1);
+}
+
+header h1 {
+  margin: 0 0 8px;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--heading);
+  background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+header p {
+  margin: 4px 0;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+header p strong {
+  color: var(--heading);
+  font-weight: 600;
+}
+
+.top-links {
+  margin-top: 6px;
+}
+
+.top-links a {
+  margin-right: 12px;
+}
+
+section {
+  margin-top: 28px;
+}
+
+section:first-of-type {
+  margin-top: 0;
+}
+
+h2 {
+  margin: 0 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #06b6d4;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #075985;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+h2::before {
+  content: "";
+  width: 4px;
+  height: 20px;
+  background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%);
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(6, 182, 212, 0.3);
+}
+
+h3 {
+  margin: 18px 0 8px;
+  font-size: 1.02rem;
+  color: var(--text);
+}
+
+p {
+  margin: 10px 0 0;
+  color: #1e293b;
+}
+
+ul {
+  margin: 8px 0 0 18px;
+  padding: 0;
+}
+
+li {
+  margin: 5px 0;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+li::marker {
+  color: #06b6d4;
+  font-weight: 700;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 24px;
+}
+
+.skills .grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.skill-category h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0891b2;
+  text-shadow: 0 1px 2px rgba(6, 182, 212, 0.1);
+}
+
+.skill-category ul {
+  margin: 0;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 20px;
+}
+
+.skills-grid p {
+  margin: 8px 0;
+  line-height: 1.6;
+}
+
+.contact-info {
+  margin-top: 8px;
+}
+
+.contact-info p {
+  margin: 4px 0;
+}
+
+.job-title {
+  font-size: 1.1rem;
+  margin-top: 6px;
+}
+
+.job-header h3 {
+  margin: 0 0 4px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--heading);
+}
+
+.job-header .company {
+  margin: 2px 0;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.job-header .duration {
+  margin: 2px 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.achievements {
+  margin-top: 10px;
+}
+
+.tech-stack {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: #cffafe;
+  border-left: 3px solid #06b6d4;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  color: #0c4a6e;
+}
+
+.education-item h3 {
+  margin: 0 0 4px;
+}
+
+.education-item .school {
+  font-weight: 600;
+  color: var(--text);
+  margin: 2px 0;
+}
+
+.education-item .duration {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 2px 0 8px;
+}
+
+article {
+  margin-top: 16px;
+  padding: 16px;
+  background: #f0f9ff;
+  border-left: 3px solid #06b6d4;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+article:hover {
+  background: #cffafe;
+  border-left-color: #22d3ee;
+  transform: translateX(2px);
+  box-shadow: 0 2px 8px rgba(6, 182, 212, 0.15);
+}
+
+article p {
+  margin: 0;
+  font-weight: 600;
+  color: var(--heading);
+}
+
+article ul {
+  margin-top: 10px;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  background: var(--surface);
+}
+
+th,
+td {
+  border: 1px solid var(--border);
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+thead th {
+  background: var(--surface-muted);
+}
+
+blockquote {
+  margin: 16px 0;
+  padding: 16px 20px;
+  background: var(--surface-muted);
+  border-left: 4px solid var(--link);
+  border-radius: 12px;
+  color: #1e293b;
+}
+
+.chips {
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: 6px;
+  background: #cffafe;
+  border: 1px solid #22d3ee;
+  color: #0891b2;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.chip:hover {
+  background: #06b6d4;
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(6, 182, 212, 0.3);
+}
+
+footer {
+  margin-top: 32px;
+  color: var(--text-muted);
+}
+
+footer p {
+  margin: 0;
+}
+
+@media (max-width: 720px) {
+  .container {
+    padding: 24px;
+    margin: 16px;
+  }
+
+  .grid,
+  .skills .grid,
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  header h1 {
+    font-size: 1.8rem;
+  }
+
+  .job-title {
+    font-size: 1rem;
+  }
+}
+
+@media print {
+  body {
+    background: #ffffff;
+    color: #0f172a;
+  }
+
+  .container {
+    margin: 0;
+    box-shadow: none;
+    border-radius: 0;
+  }
+}

@@ -1,170 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MUHAMMED FASIL PV — .NET/WPF (C#) Engineer | Software Architect</title>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    @page { size: A4; margin: 0; }
-    body { font-family: "Calibri", "Segoe UI", Arial, sans-serif; font-size: 11pt; line-height: 1.45; color: #111827; background: #ffffff; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .page { width: 210mm; min-height: 297mm; margin: 0 auto; background: #fff; position: relative; page-break-after: always; display: flex; flex-direction: column; }
-    .page:last-child { page-break-after: auto; }
-    .header { background: linear-gradient(135deg, #1f2937 0%, #60a5fa 100%); color: #fff; padding: 22px 36px; text-align: center; }
-    .name { font-size: 28pt; font-weight: 800; letter-spacing: .5px; margin-bottom: 6px; }
-    .title { font-size: 13pt; font-weight: 500; opacity: .95; }
-    .contact-bar { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin-top: 10px; font-size: 10pt; }
-    .contact-item { display: flex; align-items: center; gap: 6px; }
-    .contact-item::before { content: "•"; opacity: .9; }
-    .wrap { display: grid; grid-template-columns: 280px 1fr; min-height: calc(297mm - 120px); }
-    .sidebar { background: #f8fafc; border-right: 2px solid #e2e8f0; padding: 26px 22px; }
-    .content { padding: 26px 32px; }
-    .side-title, .section-title { font-weight: 800; letter-spacing: .5px; text-transform: uppercase; color: #0f172a; margin-bottom: 12px; padding-bottom: 6px; border-bottom: 3px solid #60a5fa; display: flex; align-items: center; gap: 8px; }
-    .side-title::before, .section-title::before { content: ""; width: 4px; height: 18px; background: #60a5fa; border-radius: 2px; }
-    .list { list-style: none; }
-    .li { position: relative; padding-left: 14px; margin: 3px 0; color: #374151; }
-    .li::before { content: "▸"; position: absolute; left: 0; color: #60a5fa; font-weight: 700; }
-    .summary { background: #eff6ff; border-left: 4px solid #60a5fa; padding: 14px; border-radius: 6px; color: #334155; }
-    .exp { margin-bottom: 20px; page-break-inside: avoid; }
-    .exp-head { display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; margin-bottom: 6px; }
-    .role { font-weight: 800; font-size: 12.5pt; color: #0f172a; }
-    .company { color: #3b82f6; font-weight: 700; margin-top: 2px; }
-    .duration { white-space: nowrap; background: #bfdbfe; color: #1e3a8a; padding: 3px 10px; border-radius: 12px; font-size: 10pt; font-weight: 700; }
-    .bullets { list-style: none; margin-top: 6px; }
-    .bullets li { position: relative; padding-left: 18px; margin: 4px 0; color: #374151; }
-    .bullets li::before { content: "→"; position: absolute; left: 0; color: #60a5fa; font-weight: 800; }
-    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-    .tag { background: #bfdbfe; color: #1e3a8a; border: 1px solid #93c5fd; border-radius: 14px; padding: 3px 10px; font-size: 9.5pt; font-weight: 700; }
-    .card { background: #f1f5f9; border-left: 3px solid #60a5fa; border-radius: 6px; padding: 12px; page-break-inside: avoid; }
-    .footer { margin-top: auto; text-align: center; background: #1f2937; color: #fff; padding: 12px 30px; font-size: 9pt; }
-    @media print { .page { box-shadow: none; } .exp, .card { page-break-inside: avoid; } }
-    @media screen { body { background: #e2e8f0; padding: 18px; } .page { box-shadow: 0 0 18px rgba(0,0,0,.12); margin-bottom: 18px; } }
-    .subh3 { font-size: 11pt; font-weight: 800; color: #0f172a; margin-bottom: 6px; }
-    .mb-12 { margin-bottom: 12px; } .mb-10 { margin-bottom: 10px; } .mb-16 { margin-bottom: 16px; } .mt-14 { margin-top: 14px; }
-    .muted { color: #64748b; } .keywords-text { font-size: 9.5pt; color: #374151; }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MUHAMMED FASIL PV — Compact CV</title>
+  <link rel="stylesheet" href="../../public/cv.css">
 </head>
+
 <body>
-  <section class="page">
-    <header class="header">
-      <h1 class="name">MUHAMMED FASIL PV</h1>
-      <p class="title">.NET/WPF (C#) Engineer · Software Architect</p>
-      <div class="contact-bar">
-        <div class="contact-item">Dubai, UAE</div>
-        <div class="contact-item">+971 555923545</div>
-        <div class="contact-item">faztrick@gmail.com</div>
-        <div class="contact-item">faztrick.com</div>
-        <div class="contact-item">linkedin.com/in/faztrick</div>
-        <div class="contact-item">github.com/faztrick</div>
-      </div>
+  <div class="container">
+    <header>
+      <h1>MUHAMMED FASIL PV</h1>
+      <p><strong>Software Engineer | AI/Automation &amp; IoT Systems | Retail Edge Infrastructure</strong></p>
+      <p>Dubai, UAE · +971 555923545 · <a href="mailto:faztrick@gmail.com">faztrick@gmail.com</a> · <a href="https://faztrick.com" target="_blank" rel="noreferrer noopener">faztrick.com</a></p>
+      <p>GitHub: <a href="https://github.com/faztrick" target="_blank" rel="noreferrer noopener">github.com/faztrick</a> · LinkedIn: <a href="https://linkedin.com/in/faztrick" target="_blank" rel="noreferrer noopener">linkedin.com/in/faztrick</a></p>
+      <p class="muted top-links"><a href="/cv-full.html">View full CV</a></p>
     </header>
 
-    <div class="wrap">
-      <aside class="sidebar">
-        <h2 class="side-title">Core Skills</h2>
-        <div class="card mb-12">
-          <div class="subh3">WPF & Desktop</div>
-          <ul class="list">
-            <li class="li">WPF (C#), MVVM patterns</li>
-            <li class="li">Data binding, templating</li>
-            <li class="li">Reporting, dashboards</li>
-          </ul>
-        </div>
-        <div class="card mb-12">
-          <div class="subh3">Web & Apps</div>
-          <ul class="list">
-            <li class="li">React, TypeScript, Next.js</li>
-            <li class="li">Flutter (MVVM)</li>
-          </ul>
-        </div>
-        <div class="card mb-12">
-          <div class="subh3">Backend & DevOps</div>
-          <ul class="list">
-            <li class="li">Node.js, Express, REST</li>
-            <li class="li">Docker, PM2, Nginx</li>
-            <li class="li">CI/CD (GitHub Actions)</li>
-          </ul>
-        </div>
-        <div class="card mb-12">
-          <div class="subh3">AI/IoT</div>
-          <ul class="list">
-            <li class="li">OpenAI, OCR, YOLO</li>
-            <li class="li">MQTT, ESP32, Raspberry Pi</li>
-          </ul>
-        </div>
-        <h2 class="side-title mt-14">Languages</h2>
-        <ul class="list mb-12"><li class="li">English</li><li class="li">Malayalam</li><li class="li">Hindi</li></ul>
-        <h2 class="side-title">Education</h2>
-        <div class="card"><div class="subh3">Diploma in Computer Engineering</div><div>JDT Islam Polytechnic, Calicut, India</div><div class="muted">June 2010 – March 2013</div></div>
-      </aside>
+    <section>
+      <h2>Professional Summary</h2>
+      <p>Software Engineer focused on AI/Automation and IoT/Edge delivering real-world systems for ERP, POS, QMS, and retail analytics across the GCC. Build LLM-powered agents, YOLO vision pipelines, and chat automation across WhatsApp Business and Telegram.</p>
+      <p>Pair production-grade Flutter/React UIs, resilient Node.js microservices, and secure MikroTik + WireGuard networks to ship reliable, observable software end-to-end.</p>
+    </section>
 
-      <main class="content">
-        <h2 class="section-title">Professional Summary</h2>
-        <div class="summary mb-16">
-          Software Engineer with a strong foundation in <strong>WPF (C#)</strong> and <strong>MVVM</strong> for business systems, later expanding into <strong>React</strong>, <strong>Flutter</strong> and <strong>Node.js</strong>. Delivered ERP, accounting and billing modules with robust UIs, reporting and desktop performance. Modernized stacks with containerized services and selective AI/IoT integrations.
-        </div>
+    <section>
+      <h2>Core Competencies</h2>
+      <div class="grid">
+        <ul>
+          <li>LLM orchestration (OpenAI, LangChain, Qwen3)</li>
+          <li>YOLO vision, Whisper &amp; OCR automation</li>
+          <li>Flutter (MVVM), React, WPF (.NET)</li>
+          <li>Automation flows: WhatsApp Business, Telegram</li>
+        </ul>
+        <ul>
+          <li>Node.js &amp; Express microservices, GraphQL/REST APIs</li>
+          <li>Edge IoT: ESP32/ESP‑S3, Raspberry Pi, MQTT</li>
+          <li>MikroTik RouterOS, WireGuard VPN mesh</li>
+          <li>Docker/Compose, PM2, GitHub Actions, Nginx</li>
+        </ul>
+      </div>
+    </section>
 
-        <h2 class="section-title">Professional Experience</h2>
-        <section class="exp">
-          <div class="exp-head"><div><div class="role">Software Developer</div><div class="company">Sincap Info Pvt Ltd — Calicut, India</div></div><div class="duration">Mar 2014 – Mar 2019</div></div>
-          <ul class="bullets">
-            <li>Developed ERP, accounting and billing systems using WPF (C#) with MVVM.</li>
-            <li>Built reporting dashboards and admin portals; implemented REST endpoints.</li>
-          </ul>
-          <div class="tags"><span class="tag">WPF</span><span class="tag">MVVM</span><span class="tag">REST</span></div>
-        </section>
-        <section class="exp">
-          <div class="exp-head"><div><div class="role">Senior Software Architect</div><div class="company">Screl Info Pvt Ltd — India / UAE</div></div><div class="duration">Apr 2019 – Jan 2024</div></div>
-          <ul class="bullets">
-            <li>Modernized ERP components; introduced React web and Flutter mobile apps.</li>
-            <li>Containerized backends; improved deployment reliability and monitoring.</li>
-          </ul>
-          <div class="tags"><span class="tag">React</span><span class="tag">Flutter</span><span class="tag">Docker</span></div>
-        </section>
-        <section class="exp">
-          <div class="exp-head"><div><div class="role">Software Architect</div><div class="company">Idol Technology LLC — Dubai, UAE</div></div><div class="duration">Aug 2024 – Present</div></div>
-          <ul class="bullets">
-            <li>Architected IdolMEA ERP with modern UIs and device integrations.</li>
-            <li>Built i‑QMS with offline‑first clients; integrated MQTT and Android AIDL.</li>
-          </ul>
-          <div class="tags"><span class="tag">ERP</span><span class="tag">MQTT</span><span class="tag">AIDL</span></div>
-        </section>
+    <section>
+      <h2>Experience</h2>
+      <article>
+        <p><strong>Software Engineer — Idol Technology LLC (Dubai, UAE)</strong> <span class="muted">· Aug 2024 – Present</span></p>
+        <ul>
+          <li>Architected IdolMEA ERP integrating POS, QMS, IoT automation and AI vision across branches.</li>
+          <li>Built IdolQueue (Flutter + Node.js) with offline-first sync, MQTT automation and multi-branch dashboards.</li>
+          <li>Implemented WhatsApp Business and Telegram automation for queue alerts, AI responses and service updates.</li>
+          <li>Integrated YOLO theft detection with Android AIDL LED/GPIO controls for self-checkout kiosks.</li>
+          <li>Engineered hybrid cloud sync (MySQL ↔ Hive) enabling offline analytics and disaster recovery.</li>
+        </ul>
+      </article>
+      <article>
+        <p><strong>Senior Software Engineer — Screl Info Pvt Ltd (India / UAE)</strong> <span class="muted">· Apr 2019 – Jan 2024</span></p>
+        <ul>
+          <li>Delivered SincA ERP (Flutter + Node.js + Python AI backend) with modular hybrid architecture.</li>
+          <li>Implemented AI dashboards, OCR parsing and prediction engines using TensorFlow and OpenAI APIs.</li>
+          <li>Automated WhatsApp/Telegram workflows for notifications, invoice tracking and support chat.</li>
+          <li>Dockerized local servers synchronized with cloud APIs; established CI/CD and edge deployments.</li>
+        </ul>
+      </article>
+      <article>
+        <p><strong>Software Developer — Sincap Info Pvt Ltd (Calicut, India)</strong> <span class="muted">· Mar 2014 – Mar 2019</span></p>
+        <ul>
+          <li>Developed ERP, accounting and billing systems using WPF (C#), PHP and SQL Server.</li>
+          <li>Built admin and reporting portals with RESTful JSON endpoints and role-based dashboards.</li>
+        </ul>
+      </article>
+    </section>
 
-        <h2 class="section-title">Selected Projects</h2>
-        <section class="exp">
-          <div class="card mb-10"><div class="subh3">Legacy WPF ERP Modules</div><ul class="bullets"><li>Accounting, billing, and admin modules with MVVM, reporting and security.</li></ul><div class="tags"><span class="tag">WPF</span><span class="tag">MVVM</span></div></div>
-          <div class="card mb-10"><div class="subh3">IdolMEA ERP</div><ul class="bullets"><li>ERP platform with modern web/mobile UIs and device control.</li></ul><div class="tags"><span class="tag">React</span><span class="tag">Flutter</span></div></div>
-          <div class="card mb-10"><div class="subh3">IdolQueue (i‑QMS)</div><ul class="bullets"><li>Smart queueing with offline‑first sync and MQTT events.</li></ul><div class="tags"><span class="tag">Flutter</span><span class="tag">MQTT</span></div></div>
-          <div class="card"><div class="subh3">Self‑Checkout Kiosk</div><ul class="bullets"><li>Android kiosk with AIDL integrations and GPIO control.</li></ul><div class="tags"><span class="tag">Android</span><span class="tag">AIDL</span></div></div>
-        </section>
-      </main>
-    </div>
+    <section>
+      <h2>Major Projects</h2>
+      <ul>
+        <li>Self-Checkout AI Kiosk — YOLO vision plus Android AIDL LED/GPIO control for loss prevention.</li>
+        <li>IdolMEA ERP — Retail ERP integrating POS, IoT automation and AI analytics.</li>
+        <li>IdolQueue (i‑QMS) — Offline-first queue automation (Flutter + Node.js + MQTT).</li>
+        <li>IdolVPN Network — MikroTik WireGuard mesh powering secure branch connectivity.</li>
+        <li>Local AI Agents — Edge-hosted LLM copilots for retail operations and support.</li>
+        <li>Hybrid Sync Engine — MySQL ↔ Hive delta tracking for POS continuity.</li>
+      </ul>
+    </section>
 
-    <footer class="footer"><p><strong>WPF/MVVM • Modern Web & Mobile</strong> · Dubai · faztrick@gmail.com · +971 555923545</p></footer>
-  </section>
+    <section>
+      <h2>Technical Skills</h2>
+      <div class="grid">
+        <ul>
+          <li><strong>Languages:</strong> Dart, TypeScript, JavaScript, Python, C#, PHP</li>
+          <li><strong>Frameworks:</strong> Flutter, React, Node.js, Express, .NET (WPF), LangChain</li>
+          <li><strong>AI/ML:</strong> OpenAI, Qwen3, YOLOv8, Whisper, TensorFlow, PyTorch</li>
+        </ul>
+        <ul>
+          <li><strong>Cloud/DevOps:</strong> Docker, PM2, Nginx, GitHub Actions, GCP/AWS/Azure</li>
+          <li><strong>Networking:</strong> MikroTik RouterOS, WireGuard, VPN automation</li>
+          <li><strong>Data/Sync:</strong> MySQL, Hive, ObjectBox, Firebase, MongoDB</li>
+        </ul>
+      </div>
+    </section>
 
-  <section class="page">
-    <div class="wrap">
-      <aside class="sidebar">
-        <h2 class="side-title">Desktop Focus</h2>
-        <div class="card mb-12"><ul class="list"><li class="li">MVVM with clean separation</li><li class="li">Data binding & validation</li><li class="li">Reporting, exports, printing</li><li class="li">Interop with REST backends</li></ul></div>
-        <h2 class="side-title">Tooling</h2>
-        <div class="card"><ul class="list"><li class="li">Git, CI/CD, code reviews</li><li class="li">Containers for local services</li><li class="li">Monitoring & telemetry</li></ul></div>
-        <h2 class="side-title mt-14">Keywords</h2>
-        <div class="card"><div class="keywords-text">WPF, C#, MVVM, XAML, Reporting, REST, React, TypeScript, Flutter, Node.js, Docker, PM2, Nginx, GitHub Actions, MQTT, ESP32, Android AIDL, OpenAI, OCR, ERP, POS, QMS</div></div>
-      </aside>
-      <main class="content">
-        <h2 class="section-title">Key Achievements</h2>
-        <section class="exp"><div class="card mb-10"><div class="subh3">Quality Desktop UX</div><ul class="bullets"><li>Structured MVVM and reusable templates for consistent UX.</li><li>Reduced defects via layered tests and review gates.</li></ul></div><div class="card mb-10"><div class="subh3">Modernization</div><ul class="bullets"><li>Introduced web/mobile fronts while keeping stable desktop flows.</li><li>Containerized services for reliable local and remote deployments.</li></ul></div><div class="card"><div class="subh3">Operational Reliability</div><ul class="bullets"><li>Established logging, metrics and runbooks across environments.</li></ul></div></section>
-        <h2 class="section-title">Links</h2>
-        <section class="exp"><ul class="bullets"><li>Portfolio: <strong>faztrick.com</strong></li><li>GitHub: <strong>github.com/faztrick</strong></li><li>LinkedIn: <strong>linkedin.com/in/faztrick</strong></li></ul></section>
-      </main>
-    </div>
-    <footer class="footer"><p>© 2025 — MUHAMMED FASIL PV</p></footer>
-  </section>
+    <section>
+      <h2>Education</h2>
+      <p><strong>Diploma in Computer Engineering</strong> — JDT Islam Polytechnic, Calicut, Kerala, India <span class="muted">· Jun 2010 – Mar 2013</span></p>
+    </section>
 
-  <script>
-    document.addEventListener('keydown', function(e){ if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='p'){ e.preventDefault(); window.print(); } });
-  </script>
+    <section>
+      <h2>Additional</h2>
+      <p>Nationality: Indian · Visa: Company Visa · Languages: English, Malayalam, Hindi · Portfolio: <a href="https://faztrick.com" target="_blank" rel="noreferrer noopener">faztrick.com</a> · Focus: Edge AI, retail automation, hybrid IoT deployments</p>
+    </section>
+  </div>
 </body>
+
 </html>

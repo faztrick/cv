@@ -1,0 +1,15 @@
+I’m a Software Architect with 13+ years of experience building scalable, intelligent systems across ERP, POS, QMS, and IoT automation. I design for the real world: resilient edge + cloud architectures, secure networking, and fast feedback loops that keep operations running smoothly.
+
+My toolkit spans Flutter (MVVM), Node.js/Express, Python, and WPF/.NET—paired with AI/LLM integrations like OpenAI, LangChain, and Qwen3. I’m equally comfortable designing MQTT device topologies for ESP32/Raspberry Pi as I am deploying Dockerized microservices with CI/CD and observability.
+
+Highlights:
+• Architected IdolMEA, a next-gen ERP unifying POS, QMS, IoT control, and AI vision modules.
+• Built IdolQueue (i‑QMS) in Flutter + Node.js with offline-first sync (Hive) and MQTT event automation.
+• Integrated YOLO-based detection into self-checkout kiosks with LED/GPIO control via AIDL.
+• Automated WhatsApp Business + Telegram workflows for alerts, notifications, and AI chat.
+• Deployed MikroTik WireGuard VPN meshes for secure, multi-branch networks.
+
+I enjoy leading teams, shaping modular architectures, and turning ambiguous requirements into systems that ship—and scale. If you’re building AI-enabled products, connected retail, or automation-heavy platforms, let’s connect.
+
+Keywords: Software Architecture, MVVM, Flutter, Node.js, Python, WPF, AI Agents, LLMs, OpenAI, LangChain, Qwen3, IoT, ESP32, Raspberry Pi, MQTT, MikroTik, WireGuard, Docker, CI/CD, ERP, POS, QMS, Edge, Retail, Automation
+

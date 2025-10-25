@@ -1,6 +1,6 @@
 # MUHAMMED FASIL PV
 
-**Software Architect | AI & IoT Systems Engineer | Retail Automation Specialist | MVVM & Infrastructure Expert**
+**Software Engineer | AI & IoT Systems Engineer | Retail Automation Specialist | MVVM & Infrastructure Expert**
 
 📍 Dubai, UAE | 📞 +971 555923545 | ✉️ [faztrick@gmail.com](mailto:faztrick@gmail.com)
 🌐 [https://faztrick.com](https://faztrick.com) | 🧠 [GitHub](https://github.com/faztrick) | 💼 [LinkedIn](https://linkedin.com/in/faztrick)
@@ -9,7 +9,7 @@
 
 ## 🧩 Professional Summary
 
-Innovative **Software Architect** with over **13 years of experience** in building intelligent, scalable, and distributed enterprise systems.
+Innovative **Software Engineer** with over **13 years of experience** in building intelligent, scalable, and distributed enterprise systems.
 Expert in **AI-driven automation**, **IoT ecosystems**, and **MVVM architecture** — with proven success across **ERP, QMS, POS, and retail IoT infrastructures**.
 Bridges hardware and software, creating hybrid cloud + local ecosystems that are **secure, real-time, and modular**.
 
@@ -34,7 +34,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ## 🏢 Professional Experience
 
-### **Software Architect — Idol Technology LLC (Dubai, UAE)**
+### **Software Engineer — Idol Technology LLC (Dubai, UAE)**
 
 📆 *Aug 2024 – Present*
 
@@ -48,7 +48,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ---
 
-### **Senior Software Architect — Screl Info Pvt Ltd (India / UAE)**
+### **Senior Software Engineer — Screl Info Pvt Ltd (India / UAE)**
 
 📆 *Apr 2019 – Jan 2024*
 

@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Applications Tracker - Muhammed Fasil PV</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px 40px;
+        }
+
+        .header h1 {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .stat {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .main-content {
+            padding: 30px 40px;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: transform 0.2s;
+            font-weight: 600;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-applied { background: #e3f2fd; color: #1976d2; }
+        .status-interview { background: #fff3e0; color: #f57c00; }
+        .status-offer { background: #e8f5e9; color: #388e3c; }
+        .status-rejected { background: #ffebee; color: #d32f2f; }
+        .status-followup { background: #f3e5f5; color: #7b1fa2; }
+
+        .action-btn {
+            padding: 5px 10px;
+            margin: 2px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: opacity 0.2s;
+        }
+
+        .action-btn:hover {
+            opacity: 0.8;
+        }
+
+        .edit-btn { background: #ffc107; color: #000; }
+        .delete-btn { background: #dc3545; color: white; }
+        .email-btn { background: #667eea; color: white; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            color: #667eea;
+        }
+
+        .close-btn {
+            font-size: 28px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: #999;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .export-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .search-filter {
+                flex-direction: column;
+            }
+
+            .search-filter input,
+            .search-filter select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Job Applications Tracker</h1>
+            <p>Track your Dubai job search progress - Muhammed Fasil PV</p>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-number" id="totalApps">0</div>
+                <div class="stat-label">Total Applications</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="interviewCount">0</div>
+                <div class="stat-label">Interviews</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="offerCount">0</div>
+                <div class="stat-label">Offers</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="followupCount">0</div>
+                <div class="stat-label">Need Follow-up</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="responseRate">0%</div>
+                <div class="stat-label">Response Rate</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="controls">
+                <div>
+                    <button class="btn btn-success" onclick="openModal()">+ Add Application</button>
+                    <button class="btn" onclick="exportData('csv')">Export CSV</button>
+                    <button class="btn" onclick="exportData('json')">Export JSON</button>
+                </div>
+                <div class="search-filter">
+                    <input type="text" id="searchInput" placeholder="Search companies..." onkeyup="filterTable()">
+                    <select id="statusFilter" onchange="filterTable()">
+                        <option value="">All Status</option>
+                        <option value="Applied">Applied</option>
+                        <option value="Interview">Interview</option>
+                        <option value="Follow-up">Follow-up</option>
+                        <option value="Offer">Offer</option>
+                        <option value="Rejected">Rejected</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table id="applicationsTable">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Company</th>
+                            <th>Position</th>
+                            <th>Platform</th>
+                            <th>Salary Range</th>
+                            <th>Status</th>
+                            <th>Follow-up</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Modal -->
+    <div class="modal" id="applicationModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Add Application</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            <form id="applicationForm">
+                <div class="form-group">
+                    <label>Date Applied</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label>Company Name</label>
+                    <input type="text" id="company" placeholder="e.g., Careem" required>
+                </div>
+                <div class="form-group">
+                    <label>Position Title</label>
+                    <input type="text" id="position" placeholder="e.g., Senior Software Engineer" required>
+                </div>
+                <div class="form-group">
+                    <label>Platform</label>
+                    <select id="platform">
+                        <option>LinkedIn</option>
+                        <option>Bayt.com</option>
+                        <option>GulfTalent</option>
+                        <option>Indeed UAE</option>
+                        <option>Direct</option>
+                        <option>Referral</option>
+                        <option>Recruiter</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Salary Range (AED)</label>
+                    <input type="text" id="salary" placeholder="e.g., 15000-20000">
+                </div>
+                <div class="form-group">
+                    <label>Job URL</label>
+                    <input type="text" id="jobUrl" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="status">
+                        <option>Applied</option>
+                        <option>Follow-up</option>
+                        <option>Interview</option>
+                        <option>Offer</option>
+                        <option>Rejected</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Follow-up Date</label>
+                    <input type="date" id="followup">
+                </div>
+                <div class="form-group">
+                    <label>Contact Person</label>
+                    <input type="text" id="contact" placeholder="e.g., Sarah Ahmed - Recruiter">
+                </div>
+                <div class="form-group">
+                    <label>Notes</label>
+                    <textarea id="notes" placeholder="Any additional notes..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Save Application</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let applications = [];
+        let editIndex = -1;
+
+        // Load from localStorage
+        function loadData() {
+            const saved = localStorage.getItem('jobApplications');
+            if (saved) {
+                applications = JSON.parse(saved);
+                renderTable();
+                updateStats();
+            } else {
+                // Add sample data
+                applications = [
+                    {
+                        date: '2025-10-25',
+                        company: 'Careem',
+                        position: 'Senior Software Engineer - AI',
+                        platform: 'LinkedIn',
+                        salary: '15000-20000',
+                        jobUrl: 'https://careers.careem.com',
+                        status: 'Applied',
+                        followup: '2025-11-01',
+                        contact: '',
+                        notes: 'Strong match for AI/ML role'
+                    }
+                ];
+                saveData();
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('jobApplications', JSON.stringify(applications));
+            updateStats();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            applications.forEach((app, index) => {
+                const row = tbody.insertRow();
+                const statusClass = 'status-' + app.status.toLowerCase().replace('-', '');
+
+                row.innerHTML = `
+                    <td>${formatDate(app.date)}</td>
+                    <td><strong>${app.company}</strong></td>
+                    <td>${app.position}</td>
+                    <td>${app.platform}</td>
+                    <td>${app.salary ? app.salary + ' AED' : '-'}</td>
+                    <td><span class="status-badge ${statusClass}">${app.status}</span></td>
+                    <td>${app.followup ? formatDate(app.followup) : '-'}</td>
+                    <td>
+                        <button class="action-btn email-btn" onclick="generateEmail(${index})">Email</button>
+                        <button class="action-btn edit-btn" onclick="editApplication(${index})">Edit</button>
+                        <button class="action-btn delete-btn" onclick="deleteApplication(${index})">Delete</button>
+                    </td>
+                `;
+            });
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '-';
+            const date = new Date(dateStr);
+            return date.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        function updateStats() {
+            const total = applications.length;
+            const interviews = applications.filter(a => a.status === 'Interview').length;
+            const offers = applications.filter(a => a.status === 'Offer').length;
+            const followups = applications.filter(a => {
+                if (!a.followup) return false;
+                const followupDate = new Date(a.followup);
+                const today = new Date();
+                return followupDate <= today && a.status === 'Applied';
+            }).length;
+
+            const responded = interviews + offers + applications.filter(a => a.status === 'Rejected').length;
+            const responseRate = total > 0 ? Math.round((responded / total) * 100) : 0;
+
+            document.getElementById('totalApps').textContent = total;
+            document.getElementById('interviewCount').textContent = interviews;
+            document.getElementById('offerCount').textContent = offers;
+            document.getElementById('followupCount').textContent = followups;
+            document.getElementById('responseRate').textContent = responseRate + '%';
+        }
+
+        function openModal() {
+            editIndex = -1;
+            document.getElementById('modalTitle').textContent = 'Add Application';
+            document.getElementById('applicationForm').reset();
+            document.getElementById('date').valueAsDate = new Date();
+            document.getElementById('applicationModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('applicationModal').classList.remove('active');
+        }
+
+        function editApplication(index) {
+            editIndex = index;
+            const app = applications[index];
+
+            document.getElementById('modalTitle').textContent = 'Edit Application';
+            document.getElementById('date').value = app.date;
+            document.getElementById('company').value = app.company;
+            document.getElementById('position').value = app.position;
+            document.getElementById('platform').value = app.platform;
+            document.getElementById('salary').value = app.salary;
+            document.getElementById('jobUrl').value = app.jobUrl;
+            document.getElementById('status').value = app.status;
+            document.getElementById('followup').value = app.followup;
+            document.getElementById('contact').value = app.contact;
+            document.getElementById('notes').value = app.notes;
+
+            document.getElementById('applicationModal').classList.add('active');
+        }
+
+        function deleteApplication(index) {
+            if (confirm('Are you sure you want to delete this application?')) {
+                applications.splice(index, 1);
+                saveData();
+                renderTable();
+            }
+        }
+
+        function generateEmail(index) {
+            const app = applications[index];
+            const url = `job-search.html?company=${encodeURIComponent(app.company)}&position=${encodeURIComponent(app.position)}`;
+            window.open(url, '_blank');
+        }
+
+        document.getElementById('applicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const appData = {
+                date: document.getElementById('date').value,
+                company: document.getElementById('company').value,
+                position: document.getElementById('position').value,
+                platform: document.getElementById('platform').value,
+                salary: document.getElementById('salary').value,
+                jobUrl: document.getElementById('jobUrl').value,
+                status: document.getElementById('status').value,
+                followup: document.getElementById('followup').value,
+                contact: document.getElementById('contact').value,
+                notes: document.getElementById('notes').value
+            };
+
+            if (editIndex >= 0) {
+                applications[editIndex] = appData;
+            } else {
+                applications.push(appData);
+            }
+
+            saveData();
+            renderTable();
+            closeModal();
+        });
+
+        function filterTable() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const rows = document.getElementById('tableBody').getElementsByTagName('tr');
+
+            Array.from(rows).forEach(row => {
+                const company = row.cells[1].textContent.toLowerCase();
+                const position = row.cells[2].textContent.toLowerCase();
+                const status = row.cells[5].textContent;
+
+                const matchesSearch = company.includes(searchTerm) || position.includes(searchTerm);
+                const matchesStatus = !statusFilter || status.includes(statusFilter);
+
+                row.style.display = matchesSearch && matchesStatus ? '' : 'none';
+            });
+        }
+
+        function exportData(format) {
+            if (format === 'csv') {
+                const csv = convertToCSV(applications);
+                downloadFile(csv, 'job-applications.csv', 'text/csv');
+            } else if (format === 'json') {
+                const json = JSON.stringify(applications, null, 2);
+                downloadFile(json, 'job-applications.json', 'application/json');
+            }
+        }
+
+        function convertToCSV(data) {
+            const headers = ['Date', 'Company', 'Position', 'Platform', 'Salary', 'Status', 'Follow-up', 'Contact', 'Job URL', 'Notes'];
+            const rows = data.map(app => [
+                app.date,
+                app.company,
+                app.position,
+                app.platform,
+                app.salary,
+                app.status,
+                app.followup,
+                app.contact,
+                app.jobUrl,
+                app.notes
+            ]);
+
+            return [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+        }
+
+        function downloadFile(content, filename, type) {
+            const blob = new Blob([content], { type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Auto-fill from URL params
+        window.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('company')) {
+                openModal();
+                document.getElementById('company').value = params.get('company');
+                document.getElementById('position').value = params.get('position') || '';
+            }
+        });
+
+        // Initialize
+        loadData();
+        renderTable();
+    </script>
+</body>
+</html>

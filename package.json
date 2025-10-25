@@ -1,0 +1,44 @@
+{
+  "name": "cv-job-search-toolkit",
+  "version": "1.0.0",
+  "description": "Job search toolkit with automated email generation, job tracking, and application management for Dubai positions",
+  "main": "index.js",
+  "type": "commonjs",
+  "directories": {
+    "doc": "docs",
+    "scripts": "scripts",
+    "automation": "automation"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "generate-emails": "node scripts/generate-job-emails.js",
+    "job-agent": "node scripts/job-search-agent.js",
+    "job-search": "node scripts/job-search-agent.js --search",
+    "clean-cache": "node scripts/delete-puppeteer-cache.js",
+    "install-puppeteer": "npm install puppeteer",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "job-search",
+    "email-automation",
+    "resume",
+    "cv",
+    "dubai",
+    "career",
+    "puppeteer",
+    "web-scraping",
+    "automation"
+  ],
+  "author": "Muhammed Fasil PV <faztrick@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^21.6.0"
+  },
+  "optionalDependencies": {
+    "puppeteer": "^21.6.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

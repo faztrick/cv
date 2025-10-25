@@ -1,7 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Read(//c/Users/faztrick/AppData/Roaming/Claude/**)"
+      "*"
     ],
     "deny": [],
     "ask": []

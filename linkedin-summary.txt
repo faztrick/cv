@@ -1,14 +1,73 @@
-I’m a Software Architect with 13+ years of experience building scalable, intelligent systems across ERP, POS, QMS, and IoT automation. I design for the real world: resilient edge + cloud architectures, secure networking, and fast feedback loops that keep operations running smoothly.
+I'm a Software Architect and AI & IoT Systems Engineer with 13+ years of experience building scalable, intelligent systems across ERP, POS, QMS, and retail IoT automation. I design for the real world: resilient edge + cloud hybrid architectures, secure networking infrastructure, and fast feedback loops that keep operations running smoothly.
 
-My toolkit spans Flutter (MVVM), Node.js/Express, Python, and WPF/.NET—paired with AI/LLM integrations like OpenAI, LangChain, and Qwen3. I’m equally comfortable designing MQTT device topologies for ESP32/Raspberry Pi as I am deploying Dockerized microservices with CI/CD and observability.
+Currently at Idol Technology LLC (Dubai, UAE) since Aug 2024, I bridge hardware and software to create production-ready systems that blend AI-driven automation with IoT ecosystems. My work spans the entire stack—from embedded firmware on ESP32/Raspberry Pi to cloud microservices with DevOps automation.
 
-Highlights:
-• Architected IdolMEA, a next-gen ERP unifying POS, QMS, IoT control, and AI vision modules.
-• Built IdolQueue (i‑QMS) in Flutter + Node.js with offline-first sync (Hive) and MQTT event automation.
-• Integrated YOLO-based detection into self-checkout kiosks with LED/GPIO control via AIDL.
-• Automated WhatsApp Business + Telegram workflows for alerts, notifications, and AI chat.
-• Deployed MikroTik WireGuard VPN meshes for secure, multi-branch networks.
+🛠️ TECHNICAL EXPERTISE:
+• Languages: Dart, TypeScript/JavaScript, Python, C#, PHP, Kotlin
+• Frameworks: Flutter (MVVM), Node.js/Express, .NET (WPF), LangChain
+• AI/ML: OpenAI, Qwen3, YOLOv8, Whisper, TensorFlow, PyTorch, Stable Diffusion
+• IoT/Hardware: ESP32, ESP-S3, Raspberry Pi, Arduino, Solum ESL, OEPL, MQTT brokers, UART, GPIO, AIDL IPC
+• Networking: MikroTik RouterOS, WireGuard VPN mesh, NAT, VLAN, DHCP, Firewall automation
+• DevOps/Cloud: Docker Compose, GitHub Actions, PM2, Nginx, GCP, AWS, Azure, Cloudflare tunnels
+• Database: MySQL optimization, Hive, ObjectBox, Firebase, MongoDB, hybrid sync engines
+• Security: JWT, OAuth2, HTTPS, SSL/TLS, access control, VPN routing policies
+• Automation: WhatsApp Business API, Telegram Bot API, Webhooks, schedulers
 
-I enjoy leading teams, shaping modular architectures, and turning ambiguous requirements into systems that ship—and scale. If you’re building AI-enabled products, connected retail, or automation-heavy platforms, let’s connect.
+🚀 KEY ACHIEVEMENTS & PROJECTS:
 
-Keywords: Software Architecture, MVVM, Flutter, Node.js, Python, WPF, AI Agents, LLMs, OpenAI, LangChain, Qwen3, IoT, ESP32, Raspberry Pi, MQTT, MikroTik, WireGuard, Docker, CI/CD, ERP, POS, QMS, Edge, Retail, Automation
+**IdolMEA ERP** — Next-gen retail ERP integrating POS, QMS, IoT automation, and AI vision modules into a unified hybrid cloud + edge platform.
+
+**IdolQueue (i-QMS)** — Smart queue management system built in Flutter + Node.js with Hive offline-first sync, MQTT event automation, multi-branch dashboards, and real-time WhatsApp/Telegram notifications.
+
+**AI Self-Checkout Kiosk** — Developed YOLO-based theft detection system with LED/GPIO feedback via Android AIDL interface, showcased at Gitex Dubai 2024.
+
+**IdolVPN Mesh Network** — Engineered secure 8+ node WireGuard VPN mesh over MikroTik routers for multi-branch retail communication, MQTT routing, and API access.
+
+**Hybrid Sync Engine** — Created offline-first delta tracking engine (MySQL ↔ Hive) for POS continuity with conflict resolution and automatic recovery.
+
+**LampAidlInterface** — Built Android Kotlin + Flutter IPC bridge for real-time LED and lamp automation in retail edge devices.
+
+**AI Queue Agent** — LangChain-based ERP assistant managing service queues via voice (Whisper) and text commands.
+
+**BookzNow** — Flutter MVVM booking platform for clinics/salons with Material 3 UI and real-time chatbots.
+
+**Vlogfied** — Video-based restaurant discovery app with AI content tagging and search.
+
+**ESL Tools** — Developed Solum/OEPL electronic shelf label management, ESP32 flash tools, and MQTT controllers.
+
+**SincA ERP** (Previous role at Screl Info Pvt Ltd, Apr 2019 - Jan 2024) — Designed and deployed comprehensive ERP with AI dashboards, OCR systems, predictive models, and automated WhatsApp/Telegram bots for customer interaction.
+
+💼 PROFESSIONAL EXPERIENCE:
+• **Idol Technology LLC** (Dubai, UAE) — Software Engineer | Aug 2024 - Present
+• **Screl Info Pvt Ltd** (India/UAE) — Senior Software Engineer | Apr 2019 - Jan 2024
+• **Sincap Info Pvt Ltd** (Calicut, India) — Software Developer | Mar 2014 - Mar 2019
+
+🌟 LEADERSHIP & INNOVATION:
+• Led cross-location developer teams (India/UAE) with hybrid CI/CD pipelines
+• Established multi-branch deployment pipelines with GitHub Actions and Docker
+• Conducted MVVM workshops and DevOps onboarding sessions
+• Designed infrastructure governance for ERP nodes and branch syncs
+• Mentored distributed teams in architecture, DevOps, and MVVM design
+
+🔬 RESEARCH & INNOVATION:
+• AI-Edge Retail Mesh: Hybrid inference + MQTT layer for low-latency AI automation
+• Offline-First ERP Engine: MySQL ↔ Hive replication with delta conflict resolution
+• Self-Healing VPN Network: MikroTik + WireGuard mesh with failover automation
+• Retail Vision System: AI-based detection integrated with hardware signaling
+• Local LLM Deployment: Qwen3/Phi/Llama running on edge devices
+
+🏆 RECOGNITION:
+• Gitex Dubai 2024: Showcased Idol Self-Checkout Kiosk prototype
+• Internal R&D Recognition (Idol Technology): Edge AI automation project of the year
+• Featured in developer community showcases for IoT + AI fusion
+• Delivered solutions for 50+ enterprise clients across retail, healthcare, and hospitality
+
+🎯 MY VISION:
+Build globally deployable AI-driven retail ecosystems where every device, queue, and operation communicates intelligently across secure hybrid networks—combining automation, edge AI, and human simplicity.
+
+I enjoy leading teams, shaping modular architectures, and turning ambiguous requirements into systems that ship—and scale. If you're building AI-enabled products, connected retail, automation-heavy platforms, or hybrid IoT solutions, let's connect!
+
+📍 Dubai, UAE | 📞 +971 555923545 | ✉️ faztrick@gmail.com
+🌐 https://faztrick.com | 🧠 GitHub: faztrick
+
+Keywords: Software Architecture, MVVM, Flutter, Node.js, Express, Python, WPF, .NET, AI Agents, LLMs, OpenAI, LangChain, Qwen3, YOLO, Whisper, TensorFlow, IoT, ESP32, Raspberry Pi, Arduino, MQTT, ESL, OEPL, MikroTik, WireGuard, Docker, CI/CD, GitHub Actions, MySQL, Hive, ObjectBox, Firebase, JWT, OAuth2, ERP, POS, QMS, Edge Computing, Retail Automation, Microservices, AI Vision, AIDL, Hybrid Sync, VPN, DevOps, Cloud, AWS, GCP, Azure

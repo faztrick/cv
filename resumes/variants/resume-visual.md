@@ -1,6 +1,6 @@
 # MUHAMMED FASIL PV
 
-Software Architect • AI & IoT Developer • MVVM & Automation Expert
+Software Engineer • AI & IoT Developer • MVVM & Automation Expert
 
 📍 Dubai, UAE  |  📞 +971 555923545  |  ✉️ <faztrick@gmail.com>  |  🌐 [faztrick.com](https://faztrick.com)
 💼 GitHub: [github.com/faztrick](https://github.com/faztrick)  |  🔗 LinkedIn: [linkedin.com/in/faztrick](https://linkedin.com/in/faztrick)
@@ -9,7 +9,7 @@ Software Architect • AI & IoT Developer • MVVM & Automation Expert
 
 ## Professional Summary
 
-Innovative Software Architect (13+ years) building scalable, intelligent systems across ERP, QMS, POS, and IoT automation. I specialize in AI‑driven automation, IoT device ecosystems, and MVVM architectures spanning cloud + edge. Comfortable moving from low‑level device control (ESP32, GPIO, MQTT) to high‑level AI agents (OpenAI, LangChain, Qwen3) and robust DevOps (Docker, CI/CD). I lead teams, ship production systems, and care deeply about reliability, security, and maintainability.
+Innovative Software Engineer (13+ years) building scalable, intelligent systems across ERP, QMS, POS, and IoT automation. I specialize in AI‑driven automation, IoT device ecosystems, and MVVM architectures spanning cloud + edge. Comfortable moving from low‑level device control (ESP32, GPIO, MQTT) to high‑level AI agents (OpenAI, LangChain, Qwen3) and robust DevOps (Docker, CI/CD). I lead teams, ship production systems, and care deeply about reliability, security, and maintainability.
 
 ---
 
@@ -28,7 +28,7 @@ Innovative Software Architect (13+ years) building scalable, intelligent systems
 
 ## Experience
 
-### Idol Technology LLC — Software Architect (Dubai, UAE)
+### Idol Technology LLC — Software Engineer (Dubai, UAE)
 
 Aug 2024 – Present
 
@@ -40,7 +40,7 @@ Aug 2024 – Present
 - Shipped LampAidlInterface (Kotlin + Flutter IPC) for retail LED device control.
 - Implemented MySQL ↔ Hive hybrid sync for offline‑first analytics/reporting.
 
-### Screl Info Pvt Ltd — Senior Software Architect (India / UAE Branch)
+### Screl Info Pvt Ltd — Senior Software Engineer (India / UAE Branch)
 
 Apr 2019 – Jan 2024
 

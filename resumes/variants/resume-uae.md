@@ -1,6 +1,6 @@
 # MUHAMMED FASIL PV
 
-Software Architect | AI & IoT Developer | MVVM & Automation Expert
+Software Engineer | AI & IoT Developer | MVVM & Automation Expert
 
 Dubai, UAE | +971 555923545 | <faztrick@gmail.com> | <https://faztrick.com>
 GitHub: <https://github.com/faztrick> | LinkedIn: <https://linkedin.com/in/faztrick>
@@ -9,13 +9,13 @@ GitHub: <https://github.com/faztrick> | LinkedIn: <https://linkedin.com/in/faztr
 
 ## Objective (UAE)
 
-Senior Software Architect targeting roles in Dubai/Abu Dhabi across AI-enabled platforms, IoT automation, and scalable mobile/web systems. Also open to Senior Software Engineer / Backend Engineer roles with hands-on delivery ownership. Immediately available in UAE (Company Visa). Open to onsite/hybrid.
+Senior Software Engineer targeting roles in Dubai/Abu Dhabi across AI-enabled platforms, IoT automation, and scalable mobile/web systems. Also open to Senior Software Engineer / Backend Engineer roles with hands-on delivery ownership. Immediately available in UAE (Company Visa). Open to onsite/hybrid.
 
 ---
 
 ## Professional Summary
 
-Innovative Software Architect with 13+ years designing and deploying scalable, intelligent enterprise systems. Specialized in AI-driven automation, IoT ecosystems, MVVM architectures, and real-time retail infrastructures across cloud and edge. Delivered production systems in ERP, QMS, POS, and IoT with strong DevOps practices. Expert in Flutter, Node.js, Python, PHP, and WPF (.NET). Built AI agents, chat automation (WhatsApp/Telegram), and secure retail networks with MikroTik and Dockerized microservices. Proven leadership in architecture, full‑stack delivery, and CI/CD.
+Innovative Software Engineer with 13+ years designing and deploying scalable, intelligent enterprise systems. Specialized in AI-driven automation, IoT ecosystems, MVVM architectures, and real-time retail infrastructures across cloud and edge. Delivered production systems in ERP, QMS, POS, and IoT with strong DevOps practices. Expert in Flutter, Node.js, Python, PHP, and WPF (.NET). Built AI agents, chat automation (WhatsApp/Telegram), and secure retail networks with MikroTik and Dockerized microservices. Proven leadership in architecture, full‑stack delivery, and CI/CD.
 
 ---
 
@@ -34,7 +34,7 @@ Innovative Software Architect with 13+ years designing and deploying scalable, i
 
 ## Experience
 
-### Software Architect — Idol Technology LLC (Dubai, UAE)
+### Software Engineer — Idol Technology LLC (Dubai, UAE)
 
 Aug 2024 – Present
 
@@ -45,7 +45,7 @@ Aug 2024 – Present
 - Integrated YOLO‑based theft detection in kiosks; LED/GPIO via Android AIDL IPC.
 - Designed hybrid cloud sync (MySQL ↔ Hive) for offline analytics and reporting.
 
-### Senior Software Architect — Screl Info Pvt Ltd (India / UAE Branch)
+### Senior Software Engineer — Screl Info Pvt Ltd (India / UAE Branch)
 
 Apr 2019 – Jan 2024
 
