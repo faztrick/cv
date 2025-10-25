@@ -1,7 +1,7 @@
 {
   "name": "cv-job-search-toolkit",
   "version": "1.0.0",
-  "description": "Job search toolkit with automated email generation, job tracking, and application management for Dubai positions",
+  "description": "AI-powered job search toolkit with CV-based auto-fill, smart matching, automated applications, and personalized email generation for Dubai positions",
   "main": "index.js",
   "type": "commonjs",
   "directories": {
@@ -16,6 +16,16 @@
     "job-search": "node scripts/job-search-agent.js --search",
     "clean-cache": "node scripts/delete-puppeteer-cache.js",
     "install-puppeteer": "npm install puppeteer",
+    "parse-cv": "node scripts/cv-parser.js",
+    "indeed-search": "node scripts/indeed-auto-apply.js search",
+    "indeed-apply": "node scripts/indeed-auto-apply.js apply",
+    "indeed-stats": "node scripts/indeed-auto-apply.js stats",
+    "linkedin-search": "node scripts/linkedin-auto-apply.js search",
+    "linkedin-apply": "node scripts/linkedin-auto-apply.js apply",
+    "auto-fill": "node scripts/universal-auto-fill.js",
+    "smart-email": "node scripts/smart-email-generator.js generate",
+    "email-variants": "node scripts/smart-email-generator.js variants",
+    "batch-emails": "node scripts/smart-email-generator.js batch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -27,7 +37,13 @@
     "career",
     "puppeteer",
     "web-scraping",
-    "automation"
+    "automation",
+    "auto-fill",
+    "indeed",
+    "linkedin",
+    "cv-parser",
+    "job-matching",
+    "ai-powered"
   ],
   "author": "Muhammed Fasil PV <faztrick@gmail.com>",
   "license": "ISC",
