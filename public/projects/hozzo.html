@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hozzo — Project Screenshots</title>
+    <meta name="description" content="Screenshots and details for Hozzo project." />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container row between center-y">
+        <a class="brand" href="../index.html#projects" aria-label="Back to projects">
+          <span class="brand__logo">MF</span>
+          <span class="brand__name">Back to Projects</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="section container reveal">
+      <div class="breadcrumbs">
+        <a href="../index.html">Home</a> <span class="sep">/</span>
+        <a href="../index.html#projects">Projects</a> <span class="sep">/</span>
+        <span>Hozzo</span>
+      </div>
+
+      <header class="project-hero">
+        <div class="project-hero__icon"><i class="ri-apps-2-line"></i></div>
+        <div class="project-hero__meta">
+          <h1 class="project-hero__title">Hozzo</h1>
+          <p class="muted">Modern mobile application showcasing innovative features and seamless user experience.</p>
+          <div class="tags"><span class="tag">Flutter</span><span class="tag">Mobile</span><span class="tag">UI/UX</span></div>
+        </div>
+      </header>
+
+      <section>
+        <div class="project-card__screenshots">
+          <div class="project-screenshot project-screenshot--small"><img src="../sc/hozzo/1c2777b93d37b569e4255cf3be518870.jpeg" alt="Hozzo Mobile screenshot"></div>
+          <div class="project-screenshot project-screenshot--medium"><img src="../sc/hozzo/20ec457f9f5ec4a5b26f8bbe57122c61.jpeg" alt="Hozzo Tablet screenshot"></div>
+          <div class="project-screenshot project-screenshot--large"><img src="../sc/hozzo/2e0e9942f759c744d2338f67b79d1581.jpeg" alt="Hozzo Desktop screenshot"></div>
+        </div>
+      </section>
+
+      <section class="additional-screenshots">
+        <h2 class="additional-screenshots__title">Additional Screenshots</h2>
+        <div class="additional-screenshots__grid">
+          <div class="additional-screenshot"><img src="../sc/hozzo/42df9ff011bb7b28abf458bd3deb55b3.jpeg" alt="Hozzo screenshot 4"></div>
+          <div class="additional-screenshot"><img src="../sc/hozzo/75b7d021fefe73d601460c70917765c0.jpeg" alt="Hozzo screenshot 5"></div>
+          <div class="additional-screenshot"><img src="../sc/hozzo/a21023d1b33dfd17d397e32f953d3678.jpeg" alt="Hozzo screenshot 6"></div>
+          <div class="additional-screenshot"><img src="../sc/hozzo/a6a09e892b36b4955b8f4ba0809cd43f.jpeg" alt="Hozzo screenshot 7"></div>
+          <div class="additional-screenshot"><img src="../sc/hozzo/e98e5d3712705e262da437561be6fa4a.jpeg" alt="Hozzo screenshot 8"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container row between center-y">
+        <p class="muted">© <span id="y"></span> Muhammed Fasil PV</p>
+      </div>
+    </footer>
+
+    <script>
+      const y = document.getElementById('y'); if (y) y.textContent = new Date().getFullYear();
+      const observer = new IntersectionObserver((entries) => entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: .15});
+      document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+    </script>
+  </body>
+</html>

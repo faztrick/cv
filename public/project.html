@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Project screenshots — Portfolio of Muhammed Fasil PV" />
+    <title>Project Screenshots — Muhammed Fasil PV</title>
+
+    <!-- Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+
+    <header class="site-header">
+      <div class="container row between center-y">
+        <a class="brand" href="/index.html#projects" aria-label="Back to projects">
+          <span class="brand__logo" aria-hidden="true">MF</span>
+          <span class="brand__name">Back to Projects</span>
+        </a>
+        <nav class="nav" aria-label="Secondary">
+          <a href="/index.html#home" class="nav__link"><i class="ri-home-5-line"></i><span>Home</span></a>
+          <a href="/index.html#projects" class="nav__link"><i class="ri-apps-2-line"></i><span>Projects</span></a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="section container reveal">
+      <div class="breadcrumbs">
+        <a href="/index.html">Home</a>
+        <span class="sep">/</span>
+        <a href="/index.html#projects">Projects</a>
+        <span class="sep">/</span>
+        <span id="crumb-title">Project</span>
+      </div>
+
+      <header class="project-hero">
+        <div class="project-hero__icon" id="project-icon" aria-hidden="true"><i class="ri-apps-2-line"></i></div>
+        <div class="project-hero__meta">
+          <h1 class="project-hero__title" id="project-title">Project</h1>
+          <p class="muted" id="project-desc">Screenshots for this project across mobile, tablet, and desktop.</p>
+          <div class="tags" id="project-tags"></div>
+        </div>
+      </header>
+
+      <section class="project-detail">
+        <div class="project-card__screenshots">
+          <div class="project-screenshot project-screenshot--small">
+            <div class="screenshot-placeholder" id="shot-mobile">
+              <i class="ri-smartphone-line"></i>
+              <span class="screen-label">Mobile</span>
+            </div>
+          </div>
+          <div class="project-screenshot project-screenshot--medium">
+            <div class="screenshot-placeholder" id="shot-tablet">
+              <i class="ri-tablet-line"></i>
+              <span class="screen-label">Tablet</span>
+            </div>
+          </div>
+          <div class="project-screenshot project-screenshot--large">
+            <div class="screenshot-placeholder" id="shot-desktop">
+              <i class="ri-macbook-line"></i>
+              <span class="screen-label">Desktop</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hint">
+          Tip: Replace placeholders with real screenshots by adding <code>img</code> URLs to the project data in this page's script.
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container row between center-y">
+        <p class="muted">© <span id="y"></span> Muhammed Fasil PV</p>
+        <div class="social">
+          <a class="icon-btn" href="https://github.com/faztrick" target="_blank" rel="noreferrer noopener" aria-label="GitHub"><i class="ri-github-line"></i></a>
+          <a class="icon-btn" href="https://linkedin.com/in/faztrick" target="_blank" rel="noreferrer noopener" aria-label="LinkedIn"><i class="ri-linkedin-line"></i></a>
+          <a class="icon-btn" href="https://faztrick.com" target="_blank" rel="noreferrer noopener" aria-label="Website"><i class="ri-global-line"></i></a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      const y = document.getElementById('y');
+      if (y) y.textContent = new Date().getFullYear();
+
+      const qs = new URLSearchParams(location.search);
+      const slug = (qs.get('p') || '').toLowerCase();
+
+      // Project dataset: add real image URLs to show actual screenshots
+      const projects = {
+        'idolmea-erp': {
+          title: 'IdolMEA ERP',
+          desc: 'Centralized ERP for retail/service — POS, booking, QMS, IoT device control, and AI reporting.',
+          icon: 'ri-store-2-line',
+          tags: ['Flutter','Node.js','Docker'],
+          images: { mobile: '', tablet: '', desktop: '' },
+        },
+        'idolqueue': {
+          title: 'IdolQueue (i‑QMS)',
+          desc: 'Smart queue management with offline sync, MQTT automation, and multi‑branch monitoring.',
+          icon: 'ri-qr-scan-2-line',
+          tags: ['Flutter','MQTT','Hive'],
+          images: { mobile: '', tablet: '', desktop: '' },
+        },
+        'kiosk': {
+          title: 'Self‑Checkout AI Kiosk',
+          desc: 'Android kiosk integrating YOLO theft detection and LED/GPIO automation via AIDL.',
+          icon: 'ri-macbook-line',
+          tags: ['Android','YOLO','AIDL'],
+          images: { mobile: '', tablet: '', desktop: '' },
+        },
+        'idolvpn': {
+          title: 'IdolVPN Mesh',
+          desc: 'Secure multi‑branch VPN with MikroTik WireGuard enabling API routing and branch telemetry.',
+          icon: 'ri-share-forward-line',
+          tags: ['MikroTik','WireGuard','VPN'],
+          images: { mobile: '', tablet: '', desktop: '' },
+        },
+        'agents': {
+          title: 'Local AI Agents',
+          desc: 'On‑device OpenAI + Qwen3 agents for ERP and store automation with privacy‑first design.',
+          icon: 'ri-robot-2-line',
+          tags: ['OpenAI','Qwen3','Python'],
+          images: { mobile: '', tablet: '', desktop: '' },
+        },
+        'esl': {
+          title: 'ESL Tools & Jigs',
+          desc: 'Firmware flashing, tag testing rigs, and MQTT‑based ESL control automations.',
+          icon: 'ri-shopping-bag-3-line',
+          tags: ['ESP32','MQTT','Automation'],
+          images: { mobile: '', tablet: '', desktop: '' },
+        },
+      };
+
+      const fallback = { title: 'Project', desc: 'Screenshots for this project across mobile, tablet, and desktop.', icon: 'ri-apps-2-line', tags: [], images: {} };
+      const data = projects[slug] || fallback;
+
+      document.getElementById('crumb-title').textContent = data.title;
+      document.getElementById('project-title').textContent = data.title;
+      document.getElementById('project-desc').textContent = data.desc;
+      document.getElementById('project-icon').innerHTML = `<i class="${data.icon}"></i>`;
+
+      const tagsEl = document.getElementById('project-tags');
+      if (tagsEl && data.tags) {
+        tagsEl.innerHTML = data.tags.map(t => `<span class="tag">${t}</span>`).join('');
+      }
+
+      function setImageOrIcon(id, url, fallbackIcon) {
+        const host = document.getElementById(id);
+        if (!host) return;
+        if (url) {
+          host.innerHTML = `<img src="${url}" alt="${data.title} ${id.replace('shot-','')} screenshot" />`;
+        } else {
+          host.innerHTML = `<i class="${fallbackIcon}"></i><span class="screen-label">${id.includes('mobile') ? 'Mobile' : id.includes('tablet') ? 'Tablet' : 'Desktop'}</span>`;
+        }
+      }
+
+      setImageOrIcon('shot-mobile', data.images.mobile, data.icon || 'ri-smartphone-line');
+      setImageOrIcon('shot-tablet', data.images.tablet, data.icon || 'ri-tablet-line');
+      setImageOrIcon('shot-desktop', data.images.desktop, data.icon || 'ri-macbook-line');
+    </script>
+  </body>
+</html>

@@ -23,6 +23,21 @@
     .chips { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-wrap: wrap; gap: 8px; }
     .chip { background: #f0f3f8; color: #334; padding: 4px 8px; border-radius: 999px; font-size: .9em; }
     footer { margin-top: 28px; }
+
+    /* Vlogfied gallery styles */
+    .project-block { background: #fff; border: 1px solid #eee; border-radius: 12px; padding: 14px; margin-top: 14px; }
+    .project-header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .project-title { margin: 0; font-size: 1.05rem; }
+    .badges { display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto; }
+    .badge-link { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border: 1px solid #e5e7eb; border-radius: 999px; color: #111; background: #fff; text-decoration: none; font-weight: 600; font-size: .9rem; }
+    .badge-link:hover { background: #f8fafc; }
+    .screenshot-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 12px; }
+    .shot { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 6px; display: flex; align-items: center; justify-content: center; }
+    .shot img { width: 100%; height: auto; border-radius: 6px; display: block; }
+    .subheading { margin: 14px 0 6px; font-weight: 700; font-size: .95rem; color: #333; }
+    .small { font-size: .9rem; color: #666; }
+    @media (max-width: 720px) { .screenshot-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 460px) { .screenshot-grid { grid-template-columns: 1fr; } }
   </style>
   <meta name="description" content="Full CV of Muhammed Fasil PV — Software Engineer, AI & IoT Systems Engineer, Retail Automation Specialist">
   <meta name="robots" content="index,follow">
@@ -113,6 +128,46 @@
         <li><strong>Local AI Agents:</strong> Offline AI agents (Qwen3/OpenAI) embedded into retail devices.</li>
         <li><strong>Hybrid Sync Engine:</strong> Offline‑first delta tracking (MySQL ↔ Hive) for POS continuity.</li>
       </ul>
+
+      <!-- Featured Gallery: Vlogfied -->
+      <div class="project-block" id="vlogfied">
+        <div class="project-header">
+          <h3 class="project-title">Vlogfied — App Store & Play Store Screenshots</h3>
+          <div class="badges">
+            <!-- Replace href values with actual store listing URLs when available -->
+            <a class="badge-link" href="https://vlogfied.com" target="_blank" rel="noreferrer noopener" title="Visit vlogfied.com">
+              <span>vlogfied.com</span>
+            </a>
+            <a class="badge-link" id="vlogfied-appstore" href="https://apps.apple.com/ae/app/vlogfied/id6742137796" target="_blank" rel="noreferrer noopener" title="App Store">
+              <span>App Store</span>
+            </a>
+            <a class="badge-link" id="vlogfied-playstore" href="https://play.google.com/store/apps/details?id=com.vlogfied.vlogfied" target="_blank" rel="noreferrer noopener" title="Google Play">
+              <span>Google Play</span>
+            </a>
+          </div>
+        </div>
+        <p class="small">Below are placeholders for all available screenshots from both stores. Paste the real screenshot URLs into the <code>src</code> attributes as you collect them.</p>
+
+        <div class="subheading">Apple App Store — Screenshots</div>
+        <div class="screenshot-grid" id="vlogfied-appstore-grid">
+          <div class="shot"><img src="sc/vlogfied/300x0w.webp" alt="Vlogfied App Store screenshot 1"></div>
+          <div class="shot"><img src="sc/vlogfied/300x0w (1).webp" alt="Vlogfied App Store screenshot 2"></div>
+          <div class="shot"><img src="sc/vlogfied/300x0w (2).webp" alt="Vlogfied App Store screenshot 3"></div>
+          <div class="shot"><img src="sc/vlogfied/300x0w (3).webp" alt="Vlogfied App Store screenshot 4"></div>
+          <div class="shot"><img src="sc/vlogfied/300x0w (4).webp" alt="Vlogfied App Store screenshot 5"></div>
+          <div class="shot"><img src="sc/vlogfied/1.webp" alt="Vlogfied App Store screenshot 6"></div>
+        </div>
+
+        <div class="subheading">Google Play — Screenshots</div>
+        <div class="screenshot-grid" id="vlogfied-playstore-grid">
+          <div class="shot"><img src="sc/vlogfied/unnamed.webp" alt="Vlogfied Play Store screenshot 1"></div>
+          <div class="shot"><img src="sc/vlogfied/unnamed (1).webp" alt="Vlogfied Play Store screenshot 2"></div>
+          <div class="shot"><img src="sc/vlogfied/unnamed (2).webp" alt="Vlogfied Play Store screenshot 3"></div>
+          <div class="shot"><img src="sc/vlogfied/unnamed (3).webp" alt="Vlogfied Play Store screenshot 4"></div>
+          <div class="shot"><img src="sc/vlogfied/unnamed (4).webp" alt="Vlogfied Play Store screenshot 5"></div>
+          <div class="shot"><img src="sc/vlogfied/unnamed (5).webp" alt="Vlogfied Play Store screenshot 6"></div>
+        </div>
+      </div>
     </section>
 
     <section>

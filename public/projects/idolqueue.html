@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>IdolQueue (i‑QMS) — Project Screenshots</title>
+    <meta name="description" content="Screenshots and details for IdolQueue (i‑QMS)." />
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container row between center-y">
+        <a class="brand" href="../index.html#projects" aria-label="Back to projects">
+          <span class="brand__logo">MF</span>
+          <span class="brand__name">Back to Projects</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="section container reveal">
+      <div class="breadcrumbs">
+        <a href="../index.html">Home</a> <span class="sep">/</span>
+        <a href="../index.html#projects">Projects</a> <span class="sep">/</span>
+        <span>IdolQueue (i‑QMS)</span>
+      </div>
+
+      <header class="project-hero">
+        <div class="project-hero__icon"><i class="ri-qr-scan-2-line"></i></div>
+        <div class="project-hero__meta">
+          <h1 class="project-hero__title">IdolQueue (i‑QMS)</h1>
+          <p class="muted">Smart queue management with Hive offline sync, MQTT automation, and multi‑branch monitoring.</p>
+          <div class="tags"><span class="tag">Flutter</span><span class="tag">MQTT</span><span class="tag">Hive</span></div>
+        </div>
+      </header>
+
+      <section>
+        <div class="project-card__screenshots">
+          <div class="project-screenshot project-screenshot--small"><div class="screenshot-placeholder"><i class="ri-smartphone-line"></i><span class="screen-label">Mobile</span></div></div>
+          <div class="project-screenshot project-screenshot--medium"><div class="screenshot-placeholder"><i class="ri-tablet-line"></i><span class="screen-label">Tablet</span></div></div>
+          <div class="project-screenshot project-screenshot--large"><div class="screenshot-placeholder"><i class="ri-macbook-line"></i><span class="screen-label">Desktop</span></div></div>
+        </div>
+        <p class="hint">Replace placeholders with actual screenshots by inserting <code>&lt;img src&gt;</code> inside each screenshot box.</p>
+      </section>
+
+      <section class="analytics-section">
+        <h2 class="analytics-section__title">
+          <i class="ri-line-chart-line"></i> Ticket Analytics Dashboard
+        </h2>
+        <p class="analytics-section__subtitle">Real-time analytics and reporting for queue management at Carrefour Food-to-Go</p>
+        <div class="analytics-section__iframe-wrapper">
+          <iframe src="ticket_report_F2go.html" class="analytics-iframe" title="Ticket Analytics Report"></iframe>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container row between center-y">
+        <p class="muted">© <span id="y"></span> Muhammed Fasil PV</p>
+      </div>
+    </footer>
+
+    <script>
+      const y = document.getElementById('y'); if (y) y.textContent = new Date().getFullYear();
+      const observer = new IntersectionObserver((entries) => entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); }), { threshold: .15});
+      document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+    </script>
+  </body>
+</html>
