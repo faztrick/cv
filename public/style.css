@@ -4,29 +4,39 @@
 */
 
 :root {
-    /* Light theme palette */
-    --bg: #f8fafc; /* background */
-    --panel: #ffffff; /* surfaces */
-    --panel-strong: #f3f4f6; /* subtle filled surface */
-    --text: #0f172a; /* slate-900 */
-    --muted: #6b7280; /* gray-500 */
-    --brand: #7c4dff; /* purple */
-    --brand-2: #00b7ff; /* cyan (slightly toned for light) */
-    --accent: #16a34a; /* green-600 */
-    --border: #e5e7eb; /* gray-200 */
+    /* Modern Color System */
+    --bg: #fafbfc;
+    --panel: #ffffff;
+    --panel-strong: #f5f7fa;
+    --text: #0f172a;
+    --text-strong: #020617;
+    --muted: #64748b;
+    --brand: #6366f1; /* indigo-500 */
+    --brand-2: #0ea5e9; /* sky-500 */
+    --accent: #10b981; /* emerald-500 */
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
 
+    /* Enhanced Design Tokens */
     --radius: 16px;
-    --radius-sm: 12px;
-    --shadow: 0 6px 20px rgba(2, 6, 23, 0.08);
-    --blur: saturate(120%) blur(6px);
+    --radius-sm: 10px;
+    --radius-lg: 20px;
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02);
+    --shadow: 0 4px 12px rgba(15, 23, 42, 0.06), 0 2px 4px rgba(15, 23, 42, 0.03);
+    --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.04);
+    --blur: saturate(130%) blur(8px);
 
+    /* Layout */
     --container: 1200px;
     --space-1: 6px;
     --space-2: 10px;
     --space-3: 16px;
     --space-4: 24px;
-    --space-5: 36px;
-    --space-6: 56px;
+    --space-5: 40px;
+    --space-6: 64px;
+
+    /* Typography */
+    --font-base: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 /* Base */
@@ -34,11 +44,14 @@
 html, body { height: 100%; }
 body {
     margin: 0;
-    font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: var(--font-base);
     color: var(--text);
-    background: linear-gradient(180deg, #ffffff, var(--bg));
+    background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: 16px;
+    line-height: 1.6;
+    letter-spacing: -0.011em;
 }
 
 img { max-width: 100%; display: block; }

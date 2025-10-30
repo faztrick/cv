@@ -91,28 +91,28 @@ a:hover {
 }
 
 header {
-  margin-bottom: 28px;
-  padding-bottom: 20px;
-  border-bottom: 3px solid #06b6d4;
-  box-shadow: 0 2px 4px rgba(6, 182, 212, 0.1);
+  margin-bottom: var(--space-2xl);
+  padding-bottom: var(--space-xl);
+  border-bottom: 2px solid var(--border-strong);
 }
 
 header h1 {
-  margin: 0 0 8px;
-  font-size: 2.2rem;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-md);
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   color: var(--heading);
-  background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+  background: linear-gradient(135deg, #0891b2 0%, #0284c7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 header p {
-  margin: 4px 0;
-  color: var(--text);
-  font-size: 0.95rem;
+  margin: var(--space-xs) 0;
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+  line-height: 1.5;
 }
 
 header p strong {
@@ -129,7 +129,7 @@ header p strong {
 }
 
 section {
-  margin-top: 28px;
+  margin-top: var(--space-2xl);
 }
 
 section:first-of-type {
@@ -137,71 +137,73 @@ section:first-of-type {
 }
 
 h2 {
-  margin: 0 0 14px;
-  padding-bottom: 10px;
-  border-bottom: 2px solid #06b6d4;
-  font-size: 1.2rem;
+  margin: 0 0 var(--space-lg);
+  padding-bottom: var(--space-md);
+  border-bottom: 2px solid var(--accent);
+  font-size: 1.25rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
-  color: #075985;
+  letter-spacing: -0.02em;
+  color: var(--heading);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-sm);
 }
 
 h2::before {
   content: "";
   width: 4px;
-  height: 20px;
-  background: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%);
-  border-radius: 2px;
-  box-shadow: 0 0 8px rgba(6, 182, 212, 0.3);
+  height: 22px;
+  background: linear-gradient(180deg, var(--accent) 0%, var(--accent-light) 100%);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 2px 4px rgba(8, 145, 178, 0.15);
 }
 
 h3 {
-  margin: 18px 0 8px;
-  font-size: 1.02rem;
-  color: var(--text);
+  margin: var(--space-lg) 0 var(--space-sm);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--heading);
+  letter-spacing: -0.01em;
 }
 
 p {
-  margin: 10px 0 0;
-  color: #1e293b;
+  margin: var(--space-md) 0 0;
+  color: var(--text);
+  line-height: 1.65;
 }
 
 ul {
-  margin: 8px 0 0 18px;
+  margin: var(--space-md) 0 0 var(--space-lg);
   padding: 0;
 }
 
 li {
-  margin: 5px 0;
+  margin: var(--space-sm) 0;
   color: var(--text);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 li::marker {
-  color: #06b6d4;
-  font-weight: 700;
+  color: var(--accent);
+  font-weight: 600;
 }
 
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px 24px;
+  gap: var(--space-md) var(--space-xl);
 }
 
 .skills .grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: var(--space-lg);
 }
 
 .skill-category h3 {
-  margin: 0 0 8px;
+  margin: 0 0 var(--space-sm);
   font-size: 1rem;
   font-weight: 700;
-  color: #0891b2;
-  text-shadow: 0 1px 2px rgba(6, 182, 212, 0.1);
+  color: var(--accent);
 }
 
 .skill-category ul {
@@ -211,12 +213,12 @@ li::marker {
 .skills-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px 20px;
+  gap: var(--space-md) var(--space-xl);
 }
 
 .skills-grid p {
-  margin: 8px 0;
-  line-height: 1.6;
+  margin: var(--space-sm) 0;
+  line-height: 1.65;
 }
 
 .contact-info {
@@ -256,13 +258,14 @@ li::marker {
 }
 
 .tech-stack {
-  margin-top: 12px;
-  padding: 10px 14px;
-  background: #cffafe;
-  border-left: 3px solid #06b6d4;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  color: #0c4a6e;
+  margin-top: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: var(--accent-bg);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius);
+  font-size: 0.875rem;
+  color: var(--text);
+  font-weight: 500;
 }
 
 .education-item h3 {
@@ -282,19 +285,20 @@ li::marker {
 }
 
 article {
-  margin-top: 16px;
-  padding: 16px;
-  background: #f0f9ff;
-  border-left: 3px solid #06b6d4;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+  margin-top: var(--space-lg);
+  padding: var(--space-lg);
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 article:hover {
-  background: #cffafe;
-  border-left-color: #22d3ee;
-  transform: translateX(2px);
-  box-shadow: 0 2px 8px rgba(6, 182, 212, 0.15);
+  background: var(--surface);
+  border-left-color: var(--accent-light);
+  transform: translateX(3px);
+  box-shadow: var(--shadow);
 }
 
 article p {
@@ -342,30 +346,32 @@ blockquote {
 .chips {
   list-style: none;
   padding: 0;
-  margin: 10px 0 0;
+  margin: var(--space-md) 0 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--space-sm);
 }
 
 .chip {
   display: inline-flex;
   align-items: center;
-  padding: 5px 12px;
-  border-radius: 6px;
-  background: #cffafe;
-  border: 1px solid #22d3ee;
-  color: #0891b2;
-  font-size: 0.85rem;
+  padding: 6px 14px;
+  border-radius: 99px;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  font-size: 0.8125rem;
   font-weight: 600;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: -0.01em;
 }
 
 .chip:hover {
-  background: #06b6d4;
+  background: var(--accent);
   color: white;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(6, 182, 212, 0.3);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(8, 145, 178, 0.25);
 }
 
 footer {
@@ -379,18 +385,24 @@ footer p {
 
 @media (max-width: 720px) {
   .container {
-    padding: 24px;
-    margin: 16px;
+    padding: var(--space-xl);
+    margin: var(--space-lg);
+    border-radius: var(--radius);
   }
 
   .grid,
   .skills .grid,
   .skills-grid {
     grid-template-columns: 1fr;
+    gap: var(--space-md);
   }
 
   header h1 {
-    font-size: 1.8rem;
+    font-size: 1.875rem;
+  }
+
+  h2 {
+    font-size: 1.125rem;
   }
 
   .job-title {
@@ -407,10 +419,11 @@ footer p {
 @media print {
   body {
     background: #ffffff;
-    color: #000000;
-    font-size: 11pt;
+    color: #1a1a1a;
+    font-size: 10.5pt;
     margin: 0;
     padding: 0;
+    letter-spacing: -0.005em;
   }
 
   .container {
@@ -423,22 +436,28 @@ footer p {
     background: white;
   }
 
-  /* Remove gradients and shadows for clean PDF */
+  /* Clean print styling */
   header {
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid #333;
     box-shadow: none;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
   }
 
   header h1 {
     color: #000;
     background: none;
     -webkit-text-fill-color: initial;
+    font-size: 26pt;
   }
 
   h2 {
     color: #000;
-    border-bottom: 2px solid #000;
+    border-bottom: 1.5px solid #000;
     page-break-after: avoid;
+    font-size: 14pt;
+    margin-top: 16px;
+    padding-bottom: 6px;
   }
 
   h2::before {
@@ -447,8 +466,9 @@ footer p {
   }
 
   h3 {
-    color: #000;
+    color: #1a1a1a;
     page-break-after: avoid;
+    font-size: 11.5pt;
   }
 
   /* Prevent page breaks inside elements */
