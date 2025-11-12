@@ -12,6 +12,7 @@
 
 const fs = require('fs');
 const path = require('path');
+try { require('dotenv').config(); } catch (_) {}
 
 let puppeteer;
 try {
@@ -34,7 +35,9 @@ const config = {
   ],
   linkedin: {
     jobsUrl: 'https://www.linkedin.com/jobs',
-    loginUrl: 'https://www.linkedin.com/login'
+    loginUrl: 'https://www.linkedin.com/login',
+    profileUrl: 'https://www.linkedin.com/in/', // base; append username if known
+    meEditUrl: 'https://www.linkedin.com/in/me/edit/intro/'
   },
   resumePath: path.join(__dirname, '..', 'resumes', 'resume.md'),
   trackingFile: path.join(__dirname, '..', 'linkedin-applications.json'),
@@ -42,8 +45,39 @@ const config = {
   credentials: {
     email: process.env.LINKEDIN_EMAIL || '',
     password: process.env.LINKEDIN_PASSWORD || ''
-  }
+  },
+  headless: false,
+  useSystemChrome: true,
+  chromeProfileDir: path.join(__dirname, '..', '.cache', 'chrome-profile')
 };
+
+function resolveChromeExecutable() {
+  if (!config.useSystemChrome) return undefined;
+  const candidates = [];
+  if (process.platform === 'win32') {
+    candidates.push(
+      'C\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe',
+      'C\\\\Program Files (x86)\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe'
+    );
+  } else if (process.platform === 'darwin') {
+    candidates.push('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome');
+  } else {
+    candidates.push('/usr/bin/google-chrome', '/usr/bin/chromium-browser', '/snap/bin/chromium');
+  }
+  for (const p of candidates) {
+    try { if (fs.existsSync(p)) return p; } catch (_) {}
+  }
+  return undefined;
+}
+
+async function launchBrowser({ headless = config.headless, persistProfile = true } = {}) {
+  if (!puppeteer) throw new Error('Puppeteer required');
+  let userDataDir = process.env.CHROME_USER_DATA_DIR && process.env.CHROME_USER_DATA_DIR.trim() ? process.env.CHROME_USER_DATA_DIR.trim() : undefined;
+  if (!userDataDir && persistProfile) userDataDir = config.chromeProfileDir;
+  if (userDataDir) { try { fs.mkdirSync(userDataDir, { recursive: true }); } catch (_) {} }
+  const executablePath = resolveChromeExecutable();
+  return puppeteer.launch({ headless, args: ['--no-sandbox','--disable-setuid-sandbox'], executablePath, userDataDir });
+}
 
 /**
  * Login to LinkedIn
@@ -92,10 +126,7 @@ async function searchLinkedInJobs(query, options = {}) {
 
   console.log(`\n🔍 Searching LinkedIn: "${query}" in ${location}`);
 
-  const browser = await puppeteer.launch({
-    headless: false,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  });
+  const browser = await launchBrowser({ headless: config.headless });
 
   const page = await browser.newPage();
   await page.setViewport({ width: 1920, height: 1080 });
@@ -212,10 +243,7 @@ async function easyApplyToJob(job, options = {}) {
 
   console.log(`\n📤 ${dryRun ? '[DRY RUN]' : 'Easy Applying to'}: ${job.title} at ${job.company}`);
 
-  const browser = await puppeteer.launch({
-    headless: false,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  });
+  const browser = await launchBrowser({ headless: config.headless });
 
   const page = await browser.newPage();
   await page.setViewport({ width: 1920, height: 1080 });
@@ -369,10 +397,7 @@ async function connectWithRecruiter(profileUrl, message) {
 
   console.log(`\n🤝 Connecting with recruiter: ${profileUrl}`);
 
-  const browser = await puppeteer.launch({
-    headless: false,
-    args: ['--no-sandbox']
-  });
+  const browser = await launchBrowser({ headless: config.headless });
 
   const page = await browser.newPage();
 
@@ -418,6 +443,129 @@ async function connectWithRecruiter(profileUrl, message) {
 
   } catch (error) {
     console.error('❌ Error:', error.message);
+    await browser.close();
+    return false;
+  }
+}
+
+/**
+ * Update LinkedIn profile Headline and About using CV data
+ */
+async function updateLinkedInProfile() {
+  if (!puppeteer) throw new Error('Puppeteer is required');
+
+  const browser = await launchBrowser({ headless: config.headless });
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1920, height: 1080 });
+
+  try {
+    // Load CV data
+    const { formData } = loadCVData();
+    const headline = (formData.currentTitle || '').slice(0, 220);
+    const about = (formData.summary || '').replace(/\s+/g, ' ').trim().slice(0, 2500);
+
+    // Login first
+    await loginToLinkedIn(page);
+
+    // Navigate to self profile
+    // Prefer direct edit URL, fallback to standard profile route
+    const profileEditCandidates = [
+      config.linkedin.meEditUrl,
+      'https://www.linkedin.com/in/me/',
+      'https://www.linkedin.com/feed/'
+    ];
+
+    let navigated = false;
+    for (const url of profileEditCandidates) {
+      try {
+        await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
+        navigated = true;
+        break;
+      } catch (_) {}
+    }
+    if (!navigated) throw new Error('Unable to reach LinkedIn profile');
+
+    // Try to open Intro (headline) edit dialog
+    const introEditSelectors = [
+      'button[aria-label*="Edit intro"]',
+      'button[aria-label*="Edit profile"]',
+      'button:has-text("Edit")'
+    ];
+
+    let openedIntro = false;
+    for (const sel of introEditSelectors) {
+      const btn = await page.$(sel);
+      if (btn) {
+        await btn.click().catch(() => {});
+        await page.waitForTimeout(1000);
+        openedIntro = true;
+        break;
+      }
+    }
+
+    // Update headline
+    if (openedIntro) {
+      const headlineSelectors = [
+        'input[name="headline"]',
+        'input[id*="headline"]',
+        'input[aria-label*="Headline"]'
+      ];
+      for (const sel of headlineSelectors) {
+        const input = await page.$(sel);
+        if (input) {
+          await input.click({ clickCount: 3 }).catch(() => {});
+          await input.type(headline).catch(() => {});
+          break;
+        }
+      }
+
+      // Save intro
+      const saveIntro = await page.$('button:has-text("Save"), button[aria-label*="Save"]');
+      if (saveIntro) await saveIntro.click().catch(() => {});
+      await page.waitForTimeout(1500);
+    }
+
+    // Open About edit dialog
+    const aboutEditSelectors = [
+      'button[aria-label*="Edit about"]',
+      'button:has-text("About") + * button:has-text("Edit")',
+      'section[id*="about"] button:has-text("Edit")'
+    ];
+    for (const sel of aboutEditSelectors) {
+      const btn = await page.$(sel);
+      if (btn) { await btn.click().catch(() => {}); await page.waitForTimeout(800); break; }
+    }
+
+    // Fill About text area
+    const aboutSelectors = [
+      'textarea[name="summary"]',
+      'div[role="dialog"] textarea',
+      'div[role="dialog"] div[role="textbox"]'
+    ];
+    for (const sel of aboutSelectors) {
+      const area = await page.$(sel);
+      if (area) {
+        // For contenteditable divs, use keyboard input
+        const tag = await page.evaluate(el => el.tagName.toLowerCase(), area).catch(() => '');
+        await area.click({ clickCount: 3 }).catch(() => {});
+        if (tag === 'textarea') {
+          await area.type(about).catch(() => {});
+        } else {
+          await page.keyboard.type(about).catch(() => {});
+        }
+        break;
+      }
+    }
+
+    // Save About
+    const saveAbout = await page.$('div[role="dialog"] button:has-text("Save"), button[aria-label*="Save"]');
+    if (saveAbout) await saveAbout.click().catch(() => {});
+    await page.waitForTimeout(1500);
+
+    await browser.close();
+    return true;
+  } catch (err) {
+    console.error('❌ Profile update error:', err.message);
     await browser.close();
     return false;
   }
@@ -504,11 +652,17 @@ async function main() {
         console.log(JSON.stringify(formData, null, 2));
         break;
 
+      case 'update-profile':
+        const updated = await updateLinkedInProfile();
+        console.log(updated ? '✅ LinkedIn profile updated (headline/About)' : '⚠️  Could not update profile');
+        break;
+
       default:
         console.log('\n📖 Usage:');
         console.log('  node linkedin-auto-apply.js search "AI Engineer"');
         console.log('  node linkedin-auto-apply.js apply');
         console.log('  node linkedin-auto-apply.js test-cv');
+        console.log('  node linkedin-auto-apply.js update-profile');
         console.log('');
         console.log('Set environment variables:');
         console.log('  LINKEDIN_EMAIL=your@email.com');
@@ -525,7 +679,8 @@ module.exports = {
   searchLinkedInJobs,
   easyApplyToJob,
   connectWithRecruiter,
-  autoLinkedInJobSearch
+  autoLinkedInJobSearch,
+  updateLinkedInProfile
 };
 
 if (require.main === module) {

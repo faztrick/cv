@@ -223,10 +223,32 @@ li::marker {
 
 .contact-info {
   margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 16px; /* row gap, column gap */
 }
 
 .contact-info p {
-  margin: 4px 0;
+  margin: 0; /* compact inline layout */
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* subtle separators between items on wide screens */
+.contact-info p:not(:last-child)::after {
+  content: "·";
+  color: var(--text-subtle);
+  margin-left: 12px;
+}
+
+.contact-info strong {
+  font-weight: 600;
+}
+
+.contact-info a {
+  white-space: nowrap;
 }
 
 .job-title {
@@ -408,6 +430,14 @@ footer p {
   .job-title {
     font-size: 1rem;
   }
+
+  /* stack contact items nicely on small screens and drop separators */
+  .contact-info {
+    gap: 4px 12px;
+  }
+  .contact-info p:not(:last-child)::after {
+    content: none;
+  }
 }
 
 /* A4 Page Setup for PDF Export */
@@ -554,6 +584,11 @@ footer p {
 
   .contact-info p {
     margin: 2px 0;
+  }
+
+  /* Print without separators for cleaner output */
+  .contact-info p:not(:last-child)::after {
+    content: none;
   }
 
   /* Grid layout for print */

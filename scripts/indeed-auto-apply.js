@@ -12,6 +12,8 @@
 
 const fs = require('fs');
 const path = require('path');
+// Load env vars if present
+try { require('dotenv').config(); } catch (_) {}
 
 // Check if Puppeteer is available
 let puppeteer;
@@ -49,8 +51,113 @@ const config = {
   },
   resumePath: path.join(__dirname, '..', 'resumes', 'resume.md'),
   resumePdfPath: path.join(__dirname, '..', 'resumes', 'resume-fasil-2025.pdf'),
-  trackingFile: path.join(__dirname, '..', 'indeed-applications.json')
+  trackingFile: path.join(__dirname, '..', 'indeed-applications.json'),
+  // Browser
+  headless: false,
+  useSystemChrome: true,
+  chromeProfileDir: path.join(__dirname, '..', '.cache', 'chrome-profile')
 };
+
+/** Resolve Chrome executable if available */
+function resolveChromeExecutable() {
+  if (!config.useSystemChrome) return undefined;
+  const candidates = [];
+  if (process.platform === 'win32') {
+    candidates.push(
+      'C\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe',
+      'C\\\\Program Files (x86)\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe'
+    );
+  } else if (process.platform === 'darwin') {
+    candidates.push('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome');
+  } else {
+    candidates.push('/usr/bin/google-chrome', '/usr/bin/chromium-browser', '/snap/bin/chromium');
+  }
+  for (const p of candidates) {
+    try { if (fs.existsSync(p)) return p; } catch (_) {}
+  }
+  return undefined;
+}
+
+/** Launch Puppeteer with optional persistent profile */
+async function launchBrowser({ headless = config.headless, persistProfile = true } = {}) {
+  if (!puppeteer) {
+    throw new Error('Puppeteer is required. Install with: npm install puppeteer');
+  }
+  let userDataDir = process.env.CHROME_USER_DATA_DIR && process.env.CHROME_USER_DATA_DIR.trim()
+    ? process.env.CHROME_USER_DATA_DIR.trim()
+    : undefined;
+  if (!userDataDir && persistProfile) {
+    userDataDir = config.chromeProfileDir;
+  }
+  if (userDataDir) {
+    try { fs.mkdirSync(userDataDir, { recursive: true }); } catch (_) {}
+  }
+  const executablePath = resolveChromeExecutable();
+  const browser = await puppeteer.launch({
+    headless,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    executablePath,
+    userDataDir
+  });
+  return browser;
+}
+
+/** Ensure resume PDF exists; if not, generate from public/cv.html */
+async function ensureResumePdf() {
+  if (fs.existsSync(config.resumePdfPath)) return config.resumePdfPath;
+  const publicDir = path.join(__dirname, '..', 'public');
+  const candidates = ['cv-full.html', 'cv.html'];
+  let htmlPath;
+  for (const name of candidates) {
+    const p = path.join(publicDir, name);
+    if (fs.existsSync(p)) { htmlPath = p; break; }
+  }
+  if (!htmlPath) return null;
+  const browser = await launchBrowser({ headless: true, persistProfile: false });
+  try {
+    const page = await browser.newPage();
+    const fileUrl = 'file:///' + htmlPath.replace(/\\\\/g, '/');
+    await page.goto(fileUrl, { waitUntil: 'networkidle0', timeout: 60000 });
+    fs.mkdirSync(path.dirname(config.resumePdfPath), { recursive: true });
+    await page.pdf({ path: config.resumePdfPath, format: 'A4', printBackground: true, margin: { top: '10mm', bottom: '10mm', left: '10mm', right: '10mm' } });
+    console.log(`📄 Generated resume PDF → ${config.resumePdfPath}`);
+    return config.resumePdfPath;
+  } catch (err) {
+    console.log('⚠️  Failed to generate resume PDF:', err.message);
+    return null;
+  } finally {
+    await browser.close();
+  }
+}
+
+/** Login to Indeed using env credentials */
+async function loginIndeed(page, { email, password } = {}) {
+  email = email || process.env.INDEED_EMAIL;
+  password = password || process.env.INDEED_PASSWORD;
+  if (!email || !password) {
+    console.log('⚠️  INDEED_EMAIL/INDEED_PASSWORD not set. Skipping login.');
+    return false;
+  }
+  console.log('🔐 Logging into Indeed...');
+  await page.goto(config.jobBoards.indeed.loginUrl, { waitUntil: 'networkidle2', timeout: 60000 });
+  try {
+    await page.waitForSelector('input[type="email"], input[name*="email"]', { timeout: 15000 });
+    await page.type('input[type="email"], input[name*="email"]', email, { delay: 50 });
+    const cont = await page.$('button[type="submit"], button:has-text("Continue")');
+    if (cont) await cont.click();
+    await page.waitForTimeout(800);
+    await page.waitForSelector('input[type="password"]', { timeout: 20000 });
+    await page.type('input[type="password"]', password, { delay: 50 });
+    const signin = await page.$('button[type="submit"], button:has-text("Sign in"), button:has-text("Log in")');
+    if (signin) await signin.click();
+    await page.waitForNavigation({ waitUntil: 'networkidle2', timeout: 60000 }).catch(() => {});
+    console.log('✅ Login flow completed (may require verification).');
+    return true;
+  } catch (e) {
+    console.log('⚠️  Login encountered an issue:', e.message);
+    return false;
+  }
+}
 
 /**
  * Load parsed CV data
@@ -82,10 +189,7 @@ async function searchIndeedJobs(query, options = {}) {
 
   console.log(`\n🔍 Searching Indeed UAE: "${query}" in ${location}`);
 
-  const browser = await puppeteer.launch({
-    headless: false, // Set to true for production
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  });
+  const browser = await launchBrowser({ headless: config.headless });
 
   const page = await browser.newPage();
   await page.setViewport({ width: 1920, height: 1080 });
@@ -244,15 +348,14 @@ async function applyToJob(job, options = {}) {
 
   console.log(`\n📤 ${dryRun ? '[DRY RUN]' : 'Applying to'}: ${job.title} at ${job.company}`);
 
-  const browser = await puppeteer.launch({
-    headless: false,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  });
+  const browser = await launchBrowser({ headless: config.headless });
 
   const page = await browser.newPage();
   await page.setViewport({ width: 1920, height: 1080 });
 
   try {
+    // Attempt login for authenticated apply flow
+    await loginIndeed(page).catch(() => {});
     // Navigate to job page
     await page.goto(job.url, { waitUntil: 'networkidle2', timeout: 30000 });
 
@@ -275,12 +378,13 @@ async function applyToJob(job, options = {}) {
     // Fill form
     await fillIndeedApplicationForm(page, formData);
 
-    // Upload resume if file input exists
-    if (fs.existsSync(config.resumePdfPath)) {
+    // Ensure resume PDF exists; attempt generation if missing
+    const resumePdf = await ensureResumePdf();
+    if (resumePdf && fs.existsSync(resumePdf)) {
       try {
         const fileInput = await page.$('input[type="file"]');
         if (fileInput) {
-          await fileInput.uploadFile(config.resumePdfPath);
+          await fileInput.uploadFile(resumePdf);
           console.log('📎 Resume uploaded');
         }
       } catch (err) {
@@ -359,6 +463,69 @@ function getApplicationStats() {
   });
 
   return stats;
+}
+
+/**
+ * Update Indeed profile resume by uploading latest PDF
+ */
+async function updateIndeedProfileResume() {
+  if (!puppeteer) {
+    throw new Error('Puppeteer is required. Install with: npm install puppeteer');
+  }
+
+  const resumePdf = await ensureResumePdf();
+  if (!resumePdf || !fs.existsSync(resumePdf)) {
+    throw new Error('Resume PDF not found and could not be generated.');
+  }
+
+  const browser = await launchBrowser({ headless: config.headless });
+  const page = await browser.newPage();
+  await page.setViewport({ width: 1920, height: 1080 });
+  try {
+    // Login
+    await loginIndeed(page);
+
+    // Candidate profile/resume management URLs to try
+    const profileUrls = [
+      'https://resumes.indeed.com/',
+      'https://profile.indeed.com/?hl=en&co=AE',
+      'https://my.indeed.com/p/myfiles'
+    ];
+
+    for (const url of profileUrls) {
+      await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 }).catch(() => {});
+
+      // Try direct file input first
+      let fileInput = await page.$('input[type="file"], input[name*="file"], input[id*="file"]');
+      if (!fileInput) {
+        // Click upload triggers to reveal the input
+        const triggers = await page.$$('button:has-text("Upload"), a:has-text("Upload"), label:has-text("Upload"), button[aria-label*="Upload"]');
+        if (triggers && triggers.length) {
+          await triggers[0].click().catch(() => {});
+          await page.waitForTimeout(1200);
+          fileInput = await page.$('input[type="file"]');
+        }
+      }
+
+      if (fileInput) {
+        await fileInput.uploadFile(resumePdf);
+        console.log('📎 Uploaded resume PDF to Indeed profile');
+        const saveBtn = await page.$('button:has-text("Save"), button:has-text("Upload"), button[type="submit"], div[role="dialog"] button:has-text("Done")');
+        if (saveBtn) { await saveBtn.click().catch(() => {}); }
+        await page.waitForTimeout(2000);
+        await browser.close();
+        return true;
+      }
+    }
+
+    console.log('⚠️  Could not locate resume upload area on profile');
+    await browser.close();
+    return false;
+  } catch (err) {
+    console.error('❌ Error updating profile resume:', err.message);
+    await browser.close();
+    return false;
+  }
 }
 
 /**
@@ -479,12 +646,20 @@ async function main() {
         console.log(formData);
         break;
 
+      case 'update-profile':
+        // Ensure resume and upload it to Indeed profile
+        await ensureResumePdf();
+        const updated = await updateIndeedProfileResume();
+        console.log(updated ? '✅ Profile resume updated' : '⚠️  Could not update profile resume');
+        break;
+
       default:
         console.log('\n📖 Usage:');
         console.log('  node indeed-auto-apply.js search "Software Engineer"');
         console.log('  node indeed-auto-apply.js apply');
         console.log('  node indeed-auto-apply.js stats');
         console.log('  node indeed-auto-apply.js test-cv');
+        console.log('  node indeed-auto-apply.js update-profile');
         console.log('');
     }
   } catch (error) {
@@ -500,7 +675,9 @@ module.exports = {
   fillIndeedApplicationForm,
   trackApplication,
   getApplicationStats,
-  autoJobSearch
+  autoJobSearch,
+  loginIndeed,
+  updateIndeedProfileResume
 };
 
 if (require.main === module) {

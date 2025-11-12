@@ -20,8 +20,10 @@
     "indeed-search": "node scripts/indeed-auto-apply.js search",
     "indeed-apply": "node scripts/indeed-auto-apply.js apply",
     "indeed-stats": "node scripts/indeed-auto-apply.js stats",
+    "indeed-update-profile": "node scripts/indeed-auto-apply.js update-profile",
     "linkedin-search": "node scripts/linkedin-auto-apply.js search",
     "linkedin-apply": "node scripts/linkedin-auto-apply.js apply",
+    "linkedin-update-profile": "node scripts/linkedin-auto-apply.js update-profile",
     "auto-fill": "node scripts/universal-auto-fill.js",
     "smart-email": "node scripts/smart-email-generator.js generate",
     "email-variants": "node scripts/smart-email-generator.js variants",
@@ -48,6 +50,7 @@
   "author": "Muhammed Fasil PV <faztrick@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.5",
     "puppeteer": "^24.26.1"
   },
   "optionalDependencies": {
