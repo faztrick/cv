@@ -360,7 +360,7 @@ function generateApplicationFormData(cvData) {
 
     // Salary expectations
     expectedSalary: '12000-18000 AED',
-    currentSalary: '',
+    currentSalary: '10000 AED',
     noticePeriod: 'Immediately Available',
 
     // Work authorization
