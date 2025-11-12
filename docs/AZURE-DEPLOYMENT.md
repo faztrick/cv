@@ -398,16 +398,6 @@ For a simple portfolio, the **Free tier** is sufficient.
 
 ---
 
-## Next Steps
-
-1. ✅ Deploy portfolio to Azure
-2. ✅ Configure custom domain
-3. ✅ Verify HTTPS certificate
-4. 🔄 Set up CI/CD with GitHub Actions (optional)
-5. 🔄 Add Azure Application Insights for analytics (optional)
-
----
-
 ## Useful Commands
 
 ```powershell
@@ -442,7 +432,159 @@ az staticwebapp delete \
 
 ---
 
-**Last Updated:** 2025-01-18
+## Observability (Application Insights)
+
+You can add end-to-end telemetry and live metrics with Azure Application Insights.
+
+### App Service (Image Server)
+
+```powershell
+# Create (or reuse) an Application Insights resource
+$AiName = "image-server-ai"
+az monitor app-insights component create \
+  --app $AiName \
+  --location $Location \
+  --resource-group $ResourceGroup \
+  --application-type web
+
+# Get the connection string
+$AIConn = az monitor app-insights component show \
+  --app $AiName \
+  --resource-group $ResourceGroup \
+  --query connectionString -o tsv
+
+# Add to App Service as an app setting
+az webapp config appsettings set \
+  --name $AppName \
+  --resource-group $ResourceGroup \
+  --settings APPLICATIONINSIGHTS_CONNECTION_STRING=$AIConn
+
+# Optional: enable logging to filesystem for quick diagnosis
+az webapp log config \
+  --name $AppName \
+  --resource-group $ResourceGroup \
+  --application-logging filesystem \
+  --detailed-error-messages true \
+  --failed-request-tracing true \
+  --web-server-logging filesystem
+```
+
+### Static Web Apps (Frontend)
+
+Static Web Apps integrates with Azure Monitor logs via "Diagnostic settings" in the Portal. To enable:
+
+1. Go to your Static Web App → Monitoring → Diagnostic settings
+2. Create a diagnostic setting and send logs/metrics to a Log Analytics workspace
+3. Use Kusto (KQL) queries to analyze requests, errors, and performance
+
+References: Static Web Apps diagnostics and logging documentation.
+
+---
+
+## CI/CD with GitHub Actions (Static Web Apps)
+
+Automate deployments from GitHub whenever you push to your branch.
+
+1. Generate a deployment token:
+
+```powershell
+az staticwebapp secrets list \
+  --name cv-portfolio \
+  --resource-group cv-portfolio-rg \
+  --query "properties.apiKey" -o tsv
+```
+
+2. Add the token as a repository secret named `AZURE_STATIC_WEB_APPS_API_TOKEN`.
+
+3. Create `.github/workflows/swa-deploy.yml` in your repo:
+
+```yaml
+name: Deploy Static Web App
+
+on:
+  push:
+    branches: [ cv ]
+  workflow_dispatch: {}
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          #### App paths
+          app_location: "/public"
+          output_location: "/public"
+```
+
+This mirrors your local `swa-cli.config.json` which points to `/public`.
+
+---
+
+## Store Images in Azure Blob Storage (Recommended)
+
+For production, store uploaded images in Blob Storage instead of the App Service filesystem.
+
+### Create storage account and container
+
+```powershell
+$StorageName = ("imgstore" + (Get-Random -Maximum 99999))
+az storage account create \
+  --name $StorageName \
+  --resource-group $ResourceGroup \
+  --location $Location \
+  --sku Standard_LRS \
+  --kind StorageV2
+
+# Get connection string
+$Conn = az storage account show-connection-string \
+  --name $StorageName \
+  --resource-group $ResourceGroup \
+  --query connectionString -o tsv
+
+# Create a private container for images
+az storage container create \
+  --name images \
+  --connection-string $Conn \
+  --auth-mode key
+
+# Save connection string to App Service settings
+az webapp config appsettings set \
+  --name $AppName \
+  --resource-group $ResourceGroup \
+  --settings BLOB_CONNECTION_STRING="$Conn" BLOB_CONTAINER=images
+```
+
+### App changes (high-level)
+
+- Use `@azure/storage-blob` to upload/download images
+- Generate short-lived SAS URLs for secure access if needed
+- Keep existing endpoints (`/v1/savebese64file`, gallery) but back them with Blob APIs
+
+This improves durability, scalability, and avoids quota limits of the App Service filesystem.
+
+---
+
+## Next Steps (updated)
+
+1. ✅ Deploy portfolio to Azure
+2. ✅ Configure custom domain
+3. ✅ Verify HTTPS certificate
+4. 🔄 Set up CI/CD with GitHub Actions
+5. 🔄 Enable Diagnostic settings / Application Insights
+6. 🔄 Migrate images to Azure Blob Storage
+7. 🔄 Add Log Analytics dashboards and alerts
+
+---
+
+**Last Updated:** 2025-11-12
 
 ```javascript
 require('dotenv').config();
