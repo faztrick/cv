@@ -81,7 +81,7 @@ a:hover {
 /* A4 optimized container (210mm x 297mm) */
 .container {
   max-width: 210mm;
-  min-height: 297mm;
+  /* min-height: 297mm; Removed to avoid excessive whitespace on screens */
   margin: var(--space-xl) auto;
   padding: 18mm 14mm;
   background: var(--surface);
@@ -91,8 +91,8 @@ a:hover {
 }
 
 header {
-  margin-bottom: var(--space-2xl);
-  padding-bottom: var(--space-xl);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-lg);
   border-bottom: 2px solid var(--border-strong);
 }
 
@@ -129,7 +129,7 @@ header p strong {
 }
 
 section {
-  margin-top: var(--space-2xl);
+  margin-top: var(--space-xl);
 }
 
 section:first-of-type {
@@ -137,8 +137,8 @@ section:first-of-type {
 }
 
 h2 {
-  margin: 0 0 var(--space-lg);
-  padding-bottom: var(--space-md);
+  margin: 0 0 var(--space-md);
+  padding-bottom: var(--space-sm);
   border-bottom: 2px solid var(--accent);
   font-size: 1.25rem;
   font-weight: 700;
