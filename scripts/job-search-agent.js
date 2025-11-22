@@ -30,7 +30,7 @@ const profile = {
   experience: "13+ years",
   email: "faztrick@gmail.com",
   phone: "+971 555923545",
-  website: "https://faztrick.com",
+  website: "https://uaecodes.com",
   linkedin: "https://linkedin.com/in/faztrick",
   github: "https://github.com/faztrick",
 

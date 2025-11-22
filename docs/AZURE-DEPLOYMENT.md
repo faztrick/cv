@@ -642,7 +642,7 @@ app.post('/v1/savebese64file', async (req, res) => {
 
     return res.status(200).json({
       message: "File saved successfully.",
-      url: `https://faztrick.com:2211/${api_key}/documents/${filename}`
+      url: `https://uaecodes.com:2211/${api_key}/documents/${filename}`
     });
   } catch (err) {
     console.log(err.message);
@@ -1070,8 +1070,8 @@ app.delete('/delete_images_by_uid/:uid', (req, res) => {
 });
 
 // SSL Configuration
-const privateKeyPath = '/etc/letsencrypt/live/faztrick.com/privkey.pem';
-const certificatePath = '/etc/letsencrypt/live/faztrick.com/fullchain.pem';
+const privateKeyPath = '/etc/letsencrypt/live/uaecodes.com/privkey.pem';
+const certificatePath = '/etc/letsencrypt/live/uaecodes.com/fullchain.pem';
 const environment = process.env.NODE_ENV || 'development';
 
 if (environment !== 'production' && environment !== 'development' && environment !== 'testing') {

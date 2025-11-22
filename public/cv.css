@@ -505,7 +505,8 @@ footer p {
   article,
   .job,
   .education-item,
-  .skill-category {
+  .skill-category,
+  li {
     page-break-inside: avoid;
     break-inside: avoid;
   }
@@ -513,6 +514,14 @@ footer p {
   /* Allow page breaks between sections when needed */
   section {
     page-break-inside: auto;
+    break-inside: auto;
+    orphans: 4;
+    widows: 4;
+  }
+
+  h2, h3 {
+    page-break-after: avoid;
+    break-after: avoid;
   }
 
   /* Remove background colors and hover effects */

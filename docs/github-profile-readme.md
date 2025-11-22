@@ -22,6 +22,6 @@ Dart, JavaScript/TypeScript, C#, Python, PHP • Flutter, Node.js/Express, WPF/.
 
 ## Contact
 
-- Website: [faztrick.com](https://faztrick.com)
+- Website: [uaecodes.com](https://uaecodes.com)
 - LinkedIn: [linkedin.com/in/faztrick](https://linkedin.com/in/faztrick)
 - Email: [faztrick@gmail.com](mailto:faztrick@gmail.com)

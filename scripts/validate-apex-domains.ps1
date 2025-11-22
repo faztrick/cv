@@ -2,7 +2,7 @@
 
 <#
 .SYNOPSIS
-    Validate apex domains (faztrick.com, fzbiz.com) for Azure Static Web Apps with HTTPS
+    Validate apex domains (uaecodes.com, faztrick.com, fzbiz.com) for Azure Static Web Apps with HTTPS
 .DESCRIPTION
     This script helps add and validate apex domains using TXT records in Azure DNS
 #>
@@ -13,7 +13,7 @@ Write-Host "==================================================" -ForegroundColor
 
 $resourceGroup = "cv-portfolio-rg"
 $staticWebApp = "cv-portfolio"
-$apexDomains = @("faztrick.com", "fzbiz.com")
+$apexDomains = @("uaecodes.com", "faztrick.com", "fzbiz.com")
 
 Write-Host "`nStep 1: Get Custom Domain Validation Token" -ForegroundColor Cyan
 Write-Host "==========================================`n" -ForegroundColor Cyan
@@ -57,6 +57,9 @@ Write-Host "`nStep 2: Alternative Method - Manual TXT Record" -ForegroundColor C
 Write-Host "==========================================`n" -ForegroundColor Cyan
 
 Write-Host "If you already have the validation token, run:" -ForegroundColor White
+Write-Host "`nFor uaecodes.com:" -ForegroundColor Yellow
+Write-Host "az network dns record-set txt add-record --resource-group $resourceGroup --zone-name uaecodes.com --record-set-name '@' --value 'YOUR-TOKEN-HERE'" -ForegroundColor Gray
+
 Write-Host "`nFor faztrick.com:" -ForegroundColor Yellow
 Write-Host "az network dns record-set txt add-record --resource-group $resourceGroup --zone-name faztrick.com --record-set-name '@' --value 'YOUR-TOKEN-HERE'" -ForegroundColor Gray
 
@@ -64,7 +67,9 @@ Write-Host "`nFor fzbiz.com:" -ForegroundColor Yellow
 Write-Host "az network dns record-set txt add-record --resource-group $resourceGroup --zone-name fzbiz.com --record-set-name '@' --value 'YOUR-TOKEN-HERE'" -ForegroundColor Gray
 
 Write-Host "`n`nStep 3: Verify HTTPS After Validation" -ForegroundColor Cyan
-Write-Host "==========================================`n" -ForegroundColor Cyan
+Write-Host "==========uaecodes.com" -ForegroundColor Cyan
+Write-Host "  https://uaecodes.com" -ForegroundColor Cyan
+Write-Host "  https://www.uaecodes.com" -ForegroundColor Cyan
 
 Write-Host "After successful validation, test your domains:" -ForegroundColor White
 Write-Host "  https://faztrick.com" -ForegroundColor Cyan
@@ -85,8 +90,10 @@ if ($response -ne "n" -and $response -ne "N") {
 
 Write-Host "`n==================================================" -ForegroundColor Cyan
 Write-Host "  Summary - What's Working Now" -ForegroundColor Yellow
-Write-Host "==================================================`n" -ForegroundColor Cyan
-
+Write-Host "✓ uaecodes.com - HTTPS Ready" -ForegroundColor Green
+Write-Host "✓ www.uaecodes.com - HTTPS Ready" -ForegroundColor Green
+Write-Host "✓ www.fzbiz.com - HTTPS Ready" -ForegroundColor Green
+Write-Host "⏳ uaecodes.com - Waiting for validation" -ForegroundColor Yellow
 Write-Host "✓ www.faztrick.com - HTTPS Ready" -ForegroundColor Green
 Write-Host "✓ www.fzbiz.com - HTTPS Ready" -ForegroundColor Green
 Write-Host "⏳ faztrick.com - Waiting for validation" -ForegroundColor Yellow

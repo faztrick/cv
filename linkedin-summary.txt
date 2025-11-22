@@ -68,6 +68,6 @@ Build globally deployable AI-driven retail ecosystems where every device, queue,
 I enjoy leading teams, shaping modular architectures, and turning ambiguous requirements into systems that ship—and scale. If you're building AI-enabled products, connected retail, automation-heavy platforms, or hybrid IoT solutions, let's connect!
 
 📍 Dubai, UAE | 📞 +971 555923545 | ✉️ faztrick@gmail.com
-🌐 https://faztrick.com | 🧠 GitHub: faztrick
+🌐 https://uaecodes.com | 🧠 GitHub: faztrick
 
 Keywords: Software Architecture, MVVM, Flutter, Node.js, Express, Python, WPF, .NET, AI Agents, LLMs, OpenAI, LangChain, Qwen3, YOLO, Whisper, TensorFlow, IoT, ESP32, Raspberry Pi, Arduino, MQTT, ESL, OEPL, MikroTik, WireGuard, Docker, CI/CD, GitHub Actions, MySQL, Hive, ObjectBox, Firebase, JWT, OAuth2, ERP, POS, QMS, Edge Computing, Retail Automation, Microservices, AI Vision, AIDL, Hybrid Sync, VPN, DevOps, Cloud, AWS, GCP, Azure

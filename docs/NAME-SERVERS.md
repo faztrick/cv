@@ -6,6 +6,21 @@ Go to your domain registrar (GoDaddy, Namecheap, etc.) and update the name serve
 
 ---
 
+## 📌 uaecodes.com
+
+**Update name servers to:**
+
+*(Run `scripts/setup-custom-domains.ps1` to get your specific Azure DNS servers)*
+
+```
+ns1-01.azure-dns.com
+ns2-01.azure-dns.net
+ns3-01.azure-dns.org
+ns4-01.azure-dns.info
+```
+
+---
+
 ## 📌 bookznow.com
 
 **Update name servers to:**

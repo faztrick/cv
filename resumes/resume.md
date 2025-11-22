@@ -3,7 +3,7 @@
 **Software Engineer | AI & IoT Systems Engineer | Retail Automation Specialist | MVVM & Infrastructure Expert**
 
 📍 Dubai, UAE | 📞 +971 555923545 | ✉️ [faztrick@gmail.com](mailto:faztrick@gmail.com)
-🌐 [https://faztrick.com](https://faztrick.com) | 🧠 [GitHub](https://github.com/faztrick) | 💼 [LinkedIn](https://linkedin.com/in/faztrick)
+🌐 [https://uaecodes.com](https://uaecodes.com) | 🧠 [GitHub](https://github.com/faztrick) | 💼 [LinkedIn](https://linkedin.com/in/faztrick)
 
 ---
 
@@ -209,7 +209,7 @@ JDT Islam Polytechnic, Calicut, Kerala, India
 - **Nationality:** Indian
 - **Visa:** Company Visa
 - **Languages:** English, Malayalam, Hindi
-- **Portfolio:** [https://faztrick.com](https://faztrick.com)
+- **Portfolio:** [https://uaecodes.com](https://uaecodes.com)
 - **Current Focus:** Edge AI, hybrid retail infrastructure, and IoT-led automation systems
 
 ---

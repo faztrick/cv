@@ -2,7 +2,7 @@
 
 Software Engineer | AI & IoT Developer | MVVM & Automation Expert
 
-Dubai, UAE | +971 555923545 | <faztrick@gmail.com> | <https://faztrick.com>
+Dubai, UAE | +971 555923545 | <faztrick@gmail.com> | <https://uaecodes.com>
 GitHub: <https://github.com/faztrick> | LinkedIn: <https://linkedin.com/in/faztrick>
 
 ---
@@ -101,7 +101,7 @@ June 2010 – March 2013
 
 - Nationality: Indian | Visa: Company Visa
 - Languages: English, Malayalam, Hindi
-- Portfolio: <https://faztrick.com>
+- Portfolio: <https://uaecodes.com>
 
 ---
 

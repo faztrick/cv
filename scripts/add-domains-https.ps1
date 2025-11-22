@@ -1,5 +1,5 @@
 # Add Custom Domains with HTTPS to Azure Static Web Apps
-# Automated script for faztrick.com, fzbiz.com, bookznow.com
+# Automated script for uaecodes.com, faztrick.com, fzbiz.com, bookznow.com
 
 Write-Host "==================================================" -ForegroundColor Cyan
 Write-Host "  Add Custom Domains with HTTPS/SSL" -ForegroundColor Cyan
@@ -15,7 +15,7 @@ Write-Host "Step 1: Checking DNS Propagation" -ForegroundColor Green
 Write-Host "----------------------------------------" -ForegroundColor Gray
 Write-Host ""
 
-$domains = @("faztrick.com", "fzbiz.com", "bookznow.com")
+$domains = @("uaecodes.com", "faztrick.com", "fzbiz.com", "bookznow.com")
 $readyDomains = @()
 
 foreach ($domain in $domains) {

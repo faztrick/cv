@@ -11,7 +11,7 @@ param(
   [string]$AppName = "image-server-$(Get-Random -Maximum 9999)",
   [string]$ResourceGroup = "image-server-rg",
   [string]$Location = "centralus",
-  [string]$CustomDomain = "faztrick.com"
+  [string]$CustomDomain = "uaecodes.com"
 )
 
 Write-Host "`n==================================================" -ForegroundColor Cyan

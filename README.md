@@ -35,24 +35,28 @@ npm run indeed-stats
 ## 🎯 Key Features
 
 ### 🤖 CV-Based Auto-Fill
+
 - ✅ Auto-fill forms on Indeed, LinkedIn, Bayt, Naukrigulf, GulfTalent
 - ✅ Uses YOUR actual CV data (no manual typing!)
 - ✅ Automatic resume upload
 - ✅ Smart field detection across all platforms
 
 ### 🎯 Smart Job Matching
+
 - ✅ Match score (0-100%) for each job
 - ✅ Highlights YOUR matched skills
 - ✅ Filters by relevance
 - ✅ Multi-platform search
 
 ### ✉️ Personalized Emails
+
 - ✅ Highlights YOUR relevant experience
 - ✅ Selects YOUR matching projects
 - ✅ 3 tone options (professional, enthusiastic, technical)
 - ✅ Batch generation
 
 ### 📊 Application Tracking
+
 - ✅ Automatic tracking
 - ✅ Analytics by platform, status, company
 - ✅ Match score history
@@ -60,11 +64,13 @@ npm run indeed-stats
 ## 🚀 NPM Scripts
 
 ### CV & Parsing
+
 ```bash
 npm run parse-cv              # Parse resume.md and extract all data
 ```
 
 ### Job Search
+
 ```bash
 npm run indeed-search         # Search Indeed UAE with CV matching
 npm run linkedin-search       # Search LinkedIn Easy Apply jobs
@@ -72,6 +78,7 @@ npm run job-search            # Search all platforms (Indeed, LinkedIn, Bayt)
 ```
 
 ### Auto-Apply
+
 ```bash
 npm run indeed-apply          # Auto-apply to Indeed jobs (dry run)
 npm run linkedin-apply        # LinkedIn Easy Apply automation
@@ -79,6 +86,7 @@ npm run auto-fill             # Universal auto-fill for any platform
 ```
 
 ### Email Generation
+
 ```bash
 npm run smart-email           # Generate personalized email
 npm run email-variants        # Generate 3 tone variants
@@ -86,11 +94,13 @@ npm run batch-emails          # Batch generate for multiple jobs
 ```
 
 ### Tracking & Stats
+
 ```bash
 npm run indeed-stats          # View Indeed application statistics
 ```
 
 ### Legacy Scripts
+
 ```bash
 npm run generate-emails       # Original email generator
 npm run job-agent             # View job search profile
@@ -314,7 +324,7 @@ Use `job-tracker-uae.csv` to track applications:
 
 ## 🔗 Quick Links
 
-- **Website**: <https://faztrick.com>
+- **Website**: <https://uaecodes.com>
 - **LinkedIn**: <https://linkedin.com/in/faztrick>
 - **GitHub**: <https://github.com/faztrick>
 - **Email**: <faztrick@gmail.com>

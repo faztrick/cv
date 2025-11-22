@@ -4,7 +4,7 @@
 .SYNOPSIS
     Add custom domain to Azure App Service
 .DESCRIPTION
-    Configures custom domain (faztrick.com) with HTTPS/SSL for the image server
+    Configures custom domain (uaecodes.com) with HTTPS/SSL for the image server
 #>
 
 param(
@@ -15,7 +15,7 @@ param(
   [string]$ResourceGroup = "image-server-rg",
 
   [Parameter(Mandatory = $false)]
-  [string]$CustomDomain = "faztrick.com"
+  [string]$CustomDomain = "uaecodes.com"
 )
 
 Write-Host "`n==================================================" -ForegroundColor Cyan

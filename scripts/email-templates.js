@@ -37,7 +37,7 @@ Best regards,
 Muhammed Fasil PV
 +971 555923545
 faztrick@gmail.com
-https://faztrick.com
+https://uaecodes.com
 LinkedIn: linkedin.com/in/faztrick
 `.trim();
 
@@ -69,7 +69,7 @@ Thank you for your time and consideration.
 Best regards,
 Muhammed Fasil PV
 +971 555923545 | faztrick@gmail.com
-https://faztrick.com
+https://uaecodes.com
 `.trim();
 
 // Template 3: Follow-up Email
@@ -125,7 +125,7 @@ Available for a call this week if you'd like to connect.
 Best,
 Fasil
 +971 555923545 | faztrick@gmail.com
-Portfolio: faztrick.com
+Portfolio: uaecodes.com
 `.trim();
 
 // Template 5: Direct CEO/CTO Outreach
@@ -154,7 +154,7 @@ Best regards,
 Muhammed Fasil PV
 Software Engineer | AI & IoT Systems Engineer
 +971 555923545 | faztrick@gmail.com
-https://faztrick.com | linkedin.com/in/faztrick
+https://uaecodes.com | linkedin.com/in/faztrick
 `.trim();
 
 // Template 6: Thank You Email (Post-Interview)

@@ -56,7 +56,7 @@ app.post('/v1/savebese64file', async (req, res) => {
     const base64Data = body.file ?? "";
     const basePath = 'data/';
     const userPath = path.join(basePath, api_key);
-    const appDomain = process.env.APP_DOMAIN || 'faztrick.com';
+    const appDomain = process.env.APP_DOMAIN || 'uaecodes.com';
 
     console.log(`Filename= ${filename}`);
 

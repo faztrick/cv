@@ -30,4 +30,4 @@ Muhammed Fasil PV
 Dubai, UAE
 +971 555923545
 [faztrick@gmail.com](mailto:faztrick@gmail.com)
-[faztrick.com](https://faztrick.com)
+[uaecodes.com](https://uaecodes.com)

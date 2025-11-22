@@ -11,7 +11,7 @@ This playbook helps you apply fast and track outcomes for Software Engineer role
   - `cover-letters/cover-letter-uae-software.md` → Cover letter
 - Email body: `emails/uae-generic-software.txt`
 - Links helper: `docs/send-mail-links.md` → Generic Gmail compose link
-- Portfolio: <https://faztrick.com>, GitHub: <https://github.com/faztrick>, LinkedIn: <https://linkedin.com/in/faztrick>
+- Portfolio: <https://uaecodes.com>, GitHub: <https://github.com/faztrick>, LinkedIn: <https://linkedin.com/in/faztrick>
 
 Tip: Keep a `docs/` folder (local) with the latest PDFs to drag‑and‑drop.
 

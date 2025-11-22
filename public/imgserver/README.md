@@ -6,7 +6,7 @@ Complete guide for deploying the image server to Azure App Service with custom d
 
 - Azure CLI installed and configured
 - Azure subscription
-- Custom domain (e.g., faztrick.com) with DNS access
+- Custom domain (e.g., uaecodes.com) with DNS access
 - Node.js 18+ locally (for testing)
 
 ## 🚀 Quick Start
@@ -51,7 +51,7 @@ Create a `.env` file (or configure in Azure):
 NODE_ENV=production
 HTTP_PORT=80
 HTTPS_PORT=443
-APP_DOMAIN=faztrick.com
+APP_DOMAIN=uaecodes.com
 MAX_FILE_SIZE=30mb
 ```
 
@@ -60,7 +60,7 @@ MAX_FILE_SIZE=30mb
 The deployment script automatically configures:
 
 - `NODE_ENV=production`
-- `APP_DOMAIN=faztrick.com`
+- `APP_DOMAIN=uaecodes.com`
 - `MAX_FILE_SIZE=30mb`
 - `WEBSITE_NODE_DEFAULT_VERSION=~20`
 - `SCM_DO_BUILD_DURING_DEPLOYMENT=true`
@@ -113,7 +113,7 @@ az webapp config appsettings set `
     --resource-group $ResourceGroup `
     --settings `
         NODE_ENV=production `
-        APP_DOMAIN=faztrick.com `
+        APP_DOMAIN=uaecodes.com `
         MAX_FILE_SIZE=30mb `
         WEBSITE_NODE_DEFAULT_VERSION=~20 `
         SCM_DO_BUILD_DURING_DEPLOYMENT=true
@@ -166,14 +166,14 @@ $defaultHostname = az webapp show `
 # Add TXT record for verification
 az network dns record-set txt add-record `
     --resource-group cv-portfolio-rg `
-    --zone-name faztrick.com `
+    --zone-name uaecodes.com `
     --record-set-name "asuid" `
     --value $verificationId
 
 # Add CNAME record (or A record for apex domain)
 az network dns record-set cname set-record `
     --resource-group cv-portfolio-rg `
-    --zone-name faztrick.com `
+    --zone-name uaecodes.com `
     --record-set-name "@" `
     --cname $defaultHostname
 ```
@@ -182,8 +182,8 @@ az network dns record-set cname set-record `
 
 | Type | Name | Value |
 |------|------|-------|
-| TXT | asuid.faztrick.com | [verification ID from above] |
-| CNAME | @ or faztrick.com | [default hostname].azurewebsites.net |
+| TXT | asuid.uaecodes.com | [verification ID from above] |
+| CNAME | @ or uaecodes.com | [default hostname].azurewebsites.net |
 
 #### Add Domain to App Service
 
@@ -192,13 +192,13 @@ az network dns record-set cname set-record `
 az webapp config hostname add `
     --webapp-name $AppName `
     --resource-group $ResourceGroup `
-    --hostname faztrick.com
+    --hostname uaecodes.com
 
 # Create managed SSL certificate (free)
 az webapp config ssl create `
     --name $AppName `
     --resource-group $ResourceGroup `
-    --hostname faztrick.com
+    --hostname uaecodes.com
 
 # Verify SSL binding
 az webapp config ssl list `
@@ -228,10 +228,10 @@ Start-Process "$url/showallimg"
 
 ```powershell
 # Test HTTPS
-Invoke-WebRequest "https://faztrick.com/health"
+Invoke-WebRequest "https://uaecodes.com/health"
 
 # Test gallery
-Start-Process "https://faztrick.com/showallimg"
+Start-Process "https://uaecodes.com/showallimg"
 ```
 
 ### Test API Endpoints
@@ -245,7 +245,7 @@ $body = @{
 } | ConvertTo-Json
 
 Invoke-RestMethod `
-    -Uri "https://faztrick.com/v1/savebese64file" `
+    -Uri "https://uaecodes.com/v1/savebese64file" `
     -Method Post `
     -Body $body `
     -ContentType "application/json"

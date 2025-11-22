@@ -2,7 +2,7 @@
 
 <#
 .SYNOPSIS
-    Setup FREE email forwarding for faztrick.com and fzbiz.com using ImprovMX
+    Setup FREE email forwarding for uaecodes.com, faztrick.com and fzbiz.com using ImprovMX
 .DESCRIPTION
     Configures Azure DNS records for email forwarding to faztrick@gmail.com
 #>
@@ -13,7 +13,7 @@ Write-Host "==================================================" -ForegroundColor
 
 $resourceGroup = "cv-portfolio-rg"
 $forwardToEmail = "faztrick@gmail.com"
-$domains = @("faztrick.com", "fzbiz.com")
+$domains = @("uaecodes.com", "faztrick.com", "fzbiz.com")
 
 Write-Host "`nForward emails to: $forwardToEmail" -ForegroundColor Green
 Write-Host "`nStep 1: Sign up at ImprovMX (FREE)" -ForegroundColor Cyan
@@ -80,7 +80,7 @@ Write-Host "========================================`n" -ForegroundColor Cyan
 
 Write-Host "For each domain:" -ForegroundColor White
 Write-Host "1. In ImprovMX dashboard, click 'Add Domain'" -ForegroundColor White
-Write-Host "2. Enter domain name (faztrick.com or fzbiz.com)" -ForegroundColor White
+Write-Host "2. Enter domain name (uaecodes.com, faztrick.com or fzbiz.com)" -ForegroundColor White
 Write-Host "3. ImprovMX will verify DNS records automatically" -ForegroundColor White
 Write-Host "4. Add email aliases:`n" -ForegroundColor White
 
@@ -109,21 +109,28 @@ Write-Host "`n`nStep 5: Test Email Forwarding" -ForegroundColor Cyan
 Write-Host "========================================`n" -ForegroundColor Cyan
 
 Write-Host "After DNS propagation (5-30 minutes):" -ForegroundColor White
-Write-Host "1. Send test email to: info@faztrick.com" -ForegroundColor Cyan
+Write-Host "1. Send test email to: info@uaecodes.com" -ForegroundColor Cyan
 Write-Host "2. Check your inbox: $forwardToEmail" -ForegroundColor Cyan
-Write-Host "3. Send test email to: info@fzbiz.com" -ForegroundColor Cyan
+Write-Host "3. Send test email to: info@uaecodes.com" -ForegroundColor Cyan
 Write-Host "4. Check your inbox: $forwardToEmail`n" -ForegroundColor Cyan
 
 Write-Host "`n==================================================" -ForegroundColor Cyan
 Write-Host "  Email Aliases Available (FREE)" -ForegroundColor Yellow
 Write-Host "==================================================`n" -ForegroundColor Cyan
 
-Write-Host "faztrick.com:" -ForegroundColor Yellow
-Write-Host "  ✓ info@faztrick.com" -ForegroundColor Green
-Write-Host "  ✓ contact@faztrick.com" -ForegroundColor Green
-Write-Host "  ✓ hello@faztrick.com" -ForegroundColor Green
-Write-Host "  ✓ support@faztrick.com" -ForegroundColor Green
-Write-Host "  ✓ *@faztrick.com (catch-all - optional)`n" -ForegroundColor Green
+Write-Host "uaecodes.com:" -ForegroundColor Yellow
+Write-Host "  ✓ info@uaecodes.com" -ForegroundColor Green
+Write-Host "  ✓ contact@uaecodes.com" -ForegroundColor Green
+Write-Host "  ✓ hello@uaecodes.com" -ForegroundColor Green
+Write-Host "  ✓ support@uaecodes.com" -ForegroundColor Green
+Write-Host "  ✓ *@uaecodes.com (catch-all - optional)`n" -ForegroundColor Green
+
+Write-Host "uaecodes.com:" -ForegroundColor Yellow
+Write-Host "  ✓ info@uaecodes.com" -ForegroundColor Green
+Write-Host "  ✓ contact@uaecodes.com" -ForegroundColor Green
+Write-Host "  ✓ hello@uaecodes.com" -ForegroundColor Green
+Write-Host "  ✓ support@uaecodes.com" -ForegroundColor Green
+Write-Host "  ✓ *@uaecodes.com (catch-all - optional)`n" -ForegroundColor Green
 
 Write-Host "fzbiz.com:" -ForegroundColor Yellow
 Write-Host "  ✓ info@fzbiz.com" -ForegroundColor Green
@@ -137,14 +144,14 @@ Write-Host "All emails forward to: $forwardToEmail" -ForegroundColor Cyan
 Write-Host "`n==================================================" -ForegroundColor Cyan
 Write-Host "  Bonus: Send Emails FROM Your Custom Domain" -ForegroundColor Yellow
 Write-Host "==================================================`n" -ForegroundColor Cyan
-
+uaecodes
 Write-Host "Option 1: ImprovMX SMTP (FREE)" -ForegroundColor White
 Write-Host "  - Get SMTP credentials from ImprovMX dashboard" -ForegroundColor Gray
 Write-Host "  - Configure in Gmail/Outlook as 'Send As' address`n" -ForegroundColor Gray
 
 Write-Host "Option 2: Gmail 'Send As' (FREE)" -ForegroundColor White
 Write-Host "  1. Gmail Settings → Accounts → 'Add another email address'" -ForegroundColor Gray
-Write-Host "  2. Enter: info@faztrick.com" -ForegroundColor Gray
+Write-Host "  2. Enter: info@uaecodes.com" -ForegroundColor Gray
 Write-Host "  3. Use ImprovMX SMTP settings" -ForegroundColor Gray
 Write-Host "  4. Verify and start sending!`n" -ForegroundColor Gray
 
