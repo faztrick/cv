@@ -106,5 +106,53 @@
     "jobTitle": "Full Stack Developer",
     "website": "",
     "generatedEmailPath": "I:\\projects\\cv\\emails\\outreach\\fama-technologies-full-stack-developer.txt"
+  },
+  {
+    "id": "10",
+    "name": "Inditech Middle East",
+    "type": "POS Hardware & Software",
+    "email": "info@inditechme.com",
+    "contactPerson": "Hiring Manager",
+    "status": "Generated",
+    "notes": "",
+    "jobTitle": "Senior Software Engineer",
+    "website": "",
+    "generatedEmailPath": "I:\\projects\\cv\\emails\\outreach\\inditech-middle-east-senior-software-engineer.txt"
+  },
+  {
+    "id": "11",
+    "name": "Crown ERP",
+    "type": "ERP Software",
+    "email": "careers@crownerp.com",
+    "contactPerson": "Hiring Manager",
+    "status": "Generated",
+    "notes": "",
+    "jobTitle": "Software Engineer",
+    "website": "",
+    "generatedEmailPath": "I:\\projects\\cv\\emails\\outreach\\crown-erp-software-engineer.txt"
+  },
+  {
+    "id": "12",
+    "name": "POSPlus UAE",
+    "type": "Retail POS Systems",
+    "email": "sales@posplus.ae",
+    "contactPerson": "Hiring Manager",
+    "status": "Generated",
+    "notes": "",
+    "jobTitle": "Full Stack Developer",
+    "website": "",
+    "generatedEmailPath": "I:\\projects\\cv\\emails\\outreach\\posplus-uae-full-stack-developer.txt"
+  },
+  {
+    "id": "13",
+    "name": "Crown ERP",
+    "type": "ERP Software",
+    "email": "careers@crownerp.com",
+    "contactPerson": "Hiring Manager",
+    "status": "Generated",
+    "notes": "",
+    "jobTitle": "Software Engineer",
+    "website": "",
+    "generatedEmailPath": "I:\\projects\\cv\\emails\\outreach\\crown-erp-software-engineer.txt"
   }
 ]
