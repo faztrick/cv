@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV & Job Search Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .sidebar-link { @apply flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 hover:text-blue-600 transition-colors cursor-pointer; }
+        .sidebar-link.active { @apply bg-blue-50 text-blue-600 border-r-4 border-blue-600; }
+        .card { @apply bg-white rounded-lg shadow-sm p-6 mb-6; }
+        .btn { @apply px-4 py-2 rounded-md font-medium transition-colors; }
+        .btn-primary { @apply bg-blue-600 text-white hover:bg-blue-700; }
+        .btn-secondary { @apply bg-gray-200 text-gray-700 hover:bg-gray-300; }
+        .btn-success { @apply bg-green-600 text-white hover:bg-green-700; }
+        .status-badge { @apply px-2 py-1 rounded-full text-xs font-semibold; }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-white border-r border-gray-200 flex-shrink-0">
+        <div class="p-6 border-b border-gray-200">
+            <h1 class="text-xl font-bold text-gray-800"><i class="fas fa-briefcase mr-2"></i>Job Toolkit</h1>
+            <p class="text-xs text-gray-500 mt-1">Automation Dashboard</p>
+        </div>
+        <nav class="mt-6">
+            <a onclick="showTab('dashboard')" id="nav-dashboard" class="sidebar-link active">
+                <i class="fas fa-home w-6"></i> Dashboard
+            </a>
+            <a onclick="showTab('outreach')" id="nav-outreach" class="sidebar-link">
+                <i class="fas fa-envelope-open-text w-6"></i> Outreach Manager
+            </a>
+            <a onclick="showTab('search')" id="nav-search" class="sidebar-link">
+                <i class="fas fa-search w-6"></i> Job Search
+            </a>
+            <a onclick="showTab('emails')" id="nav-emails" class="sidebar-link">
+                <i class="fas fa-mail-bulk w-6"></i> Generated Emails
+            </a>
+            <a onclick="showTab('tools')" id="nav-tools" class="sidebar-link">
+                <i class="fas fa-tools w-6"></i> Tools
+            </a>
+            <a onclick="showTab('whatsapp')" id="nav-whatsapp" class="sidebar-link">
+                <i class="fab fa-whatsapp w-6"></i> WhatsApp
+            </a>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto p-8">
+
+        <!-- Dashboard Tab -->
+        <div id="tab-dashboard" class="tab-content">
+            <h2 class="text-2xl font-bold mb-6">Dashboard Overview</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card border-l-4 border-blue-500">
+                    <h3 class="text-gray-500 text-sm">Total Companies</h3>
+                    <p class="text-3xl font-bold mt-2" id="stat-companies">0</p>
+                </div>
+                <div class="card border-l-4 border-yellow-500">
+                    <h3 class="text-gray-500 text-sm">Pending Outreach</h3>
+                    <p class="text-3xl font-bold mt-2" id="stat-pending">0</p>
+                </div>
+                <div class="card border-l-4 border-green-500">
+                    <h3 class="text-gray-500 text-sm">Emails Sent</h3>
+                    <p class="text-3xl font-bold mt-2" id="stat-sent">0</p>
+                </div>
+            </div>
+
+            <div class="card mt-6">
+                <h3 class="font-bold mb-4">System Status</h3>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center text-green-600">
+                        <i class="fas fa-check-circle mr-2"></i> Server Running
+                    </div>
+                    <div class="flex items-center text-green-600">
+                        <i class="fas fa-check-circle mr-2"></i> CV Parsed
+                    </div>
+                    <div class="flex items-center text-gray-500">
+                        <i class="fas fa-clock mr-2"></i> Last Scan: Never
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Outreach Tab -->
+        <div id="tab-outreach" class="tab-content hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">Company Outreach</h2>
+                <div class="space-x-2">
+                    <button onclick="openAddModal()" class="btn btn-primary"><i class="fas fa-plus mr-2"></i>Add Company</button>
+                    <button onclick="runCommand('npm run outreach generate')" class="btn btn-secondary"><i class="fas fa-magic mr-2"></i>Generate Emails</button>
+                    <button onclick="runCommand('npm run outreach send')" class="btn btn-success"><i class="fas fa-paper-plane mr-2"></i>Send (Dry Run)</button>
+                </div>
+            </div>
+
+            <div class="card overflow-hidden p-0">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-50 text-gray-600 text-sm uppercase">
+                        <tr>
+                            <th class="p-4 border-b">Company</th>
+                            <th class="p-4 border-b">Type</th>
+                            <th class="p-4 border-b">Role</th>
+                            <th class="p-4 border-b">Status</th>
+                            <th class="p-4 border-b">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="companies-table" class="text-sm">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Job Search Tab -->
+        <div id="tab-search" class="tab-content hidden">
+            <h2 class="text-2xl font-bold mb-6">Automated Job Search</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Indeed -->
+                <div class="card">
+                    <div class="flex items-center mb-4">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Indeed_logo.svg" alt="Indeed" class="h-8 mr-3">
+                        <h3 class="text-lg font-bold">Indeed Automation</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Keyword</label>
+                            <input type="text" id="indeed-keyword" value="Software Engineer" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Location</label>
+                            <input type="text" id="indeed-location" value="Dubai" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        </div>
+                        <button onclick="runSearch('indeed')" class="btn btn-primary w-full">
+                            <i class="fas fa-play mr-2"></i> Start Indeed Search
+                        </button>
+                    </div>
+                </div>
+
+                <!-- LinkedIn -->
+                <div class="card">
+                    <div class="flex items-center mb-4">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn" class="h-8 mr-3">
+                        <h3 class="text-lg font-bold">LinkedIn Automation</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Keyword</label>
+                            <input type="text" id="linkedin-keyword" value="Software Engineer" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Location</label>
+                            <input type="text" id="linkedin-location" value="Dubai" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        </div>
+                        <button onclick="runSearch('linkedin')" class="btn btn-primary w-full bg-blue-800 hover:bg-blue-900">
+                            <i class="fas fa-play mr-2"></i> Start LinkedIn Search
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dubizzle -->
+                <div class="card">
+                    <div class="flex items-center mb-4">
+                        <div class="h-8 w-8 bg-red-600 rounded-full flex items-center justify-center text-white font-bold mr-3">D</div>
+                        <h3 class="text-lg font-bold">Dubizzle Search</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Keyword</label>
+                            <input type="text" id="dubizzle-keyword" value="Software Engineer" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Location</label>
+                            <input type="text" id="dubizzle-location" value="Dubai" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        </div>
+                        <button onclick="runSearch('dubizzle')" class="btn btn-primary w-full bg-red-600 hover:bg-red-700">
+                            <i class="fas fa-play mr-2"></i> Start Dubizzle Search
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bayt -->
+                <div class="card">
+                    <div class="flex items-center mb-4">
+                        <div class="h-8 w-8 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold mr-3">B</div>
+                        <h3 class="text-lg font-bold">Bayt Search</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Keyword</label>
+                            <input type="text" id="bayt-keyword" value="Software Engineer" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Location</label>
+                            <input type="text" id="bayt-location" value="Dubai" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        </div>
+                        <button onclick="runSearch('bayt')" class="btn btn-primary w-full bg-blue-500 hover:bg-blue-600">
+                            <i class="fas fa-play mr-2"></i> Start Bayt Search
+                        </button>
+                    </div>
+                </div>
+
+                <!-- GulfTalent -->
+                <div class="card">
+                    <div class="flex items-center mb-4">
+                        <div class="h-8 w-8 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold mr-3">G</div>
+                        <h3 class="text-lg font-bold">GulfTalent Search</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Keyword</label>
+                            <input type="text" id="gulftalent-keyword" value="Software Engineer" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Location</label>
+                            <input type="text" id="gulftalent-location" value="Dubai" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        </div>
+                        <button onclick="runSearch('gulftalent')" class="btn btn-primary w-full bg-orange-500 hover:bg-orange-600">
+                            <i class="fas fa-play mr-2"></i> Start GulfTalent Search
+                        </button>
+                    </div>
+                </div>
+
+                <!-- NaukriGulf -->
+                <div class="card">
+                    <div class="flex items-center mb-4">
+                        <div class="h-8 w-8 bg-indigo-600 rounded-full flex items-center justify-center text-white font-bold mr-3">N</div>
+                        <h3 class="text-lg font-bold">NaukriGulf Search</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Keyword</label>
+                            <input type="text" id="naukrigulf-keyword" value="Software Engineer" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Location</label>
+                            <input type="text" id="naukrigulf-location" value="Dubai" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border">
+                        </div>
+                        <button onclick="runSearch('naukrigulf')" class="btn btn-primary w-full bg-indigo-600 hover:bg-indigo-700">
+                            <i class="fas fa-play mr-2"></i> Start NaukriGulf Search
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Console Output -->
+            <div class="card bg-gray-900 text-green-400 font-mono text-sm mt-6">
+                <div class="flex justify-between mb-2">
+                    <span><i class="fas fa-terminal mr-2"></i>Console Output</span>
+                    <button onclick="document.getElementById('console-output').innerHTML = ''" class="text-xs text-gray-500 hover:text-white">Clear</button>
+                </div>
+                <div id="console-output" class="h-64 overflow-y-auto whitespace-pre-wrap p-2 bg-black rounded">Waiting for commands...</div>
+            </div>
+        </div>
+
+        <!-- Emails Tab -->
+        <div id="tab-emails" class="tab-content hidden">
+            <h2 class="text-2xl font-bold mb-6">Generated Emails</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="col-span-1 bg-white rounded-lg shadow overflow-hidden">
+                    <div class="p-4 border-b bg-gray-50 font-bold">Email Files</div>
+                    <ul id="email-list" class="divide-y divide-gray-200 max-h-[600px] overflow-y-auto">
+                        <!-- List items -->
+                    </ul>
+                </div>
+                <div class="col-span-2 bg-white rounded-lg shadow p-6">
+                    <h3 id="email-preview-title" class="font-bold text-lg mb-4 border-b pb-2">Select an email to preview</h3>
+                    <pre id="email-preview-content" class="whitespace-pre-wrap font-sans text-sm text-gray-700"></pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tools Tab -->
+        <div id="tab-tools" class="tab-content hidden">
+            <h2 class="text-2xl font-bold mb-6">System Tools</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card">
+                    <h3 class="text-lg font-bold mb-4">CV Management</h3>
+                    <div class="space-y-3">
+                        <button onclick="runCommand('npm run parse-cv')" class="btn btn-secondary w-full text-left">
+                            <i class="fas fa-file-code mr-2"></i> Parse CV (Update JSON)
+                        </button>
+                        <button onclick="runCommand('python scripts/render_pdf.py')" class="btn btn-secondary w-full text-left">
+                            <i class="fas fa-file-pdf mr-2"></i> Regenerate PDF
+                        </button>
+                    </div>
+                </div>
+                <div class="card">
+                    <h3 class="text-lg font-bold mb-4">Maintenance</h3>
+                    <div class="space-y-3">
+                        <button onclick="runCommand('npm run clean-cache')" class="btn btn-secondary w-full text-left">
+                            <i class="fas fa-broom mr-2"></i> Clean Cache
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- WhatsApp Tab -->
+        <div id="tab-whatsapp" class="tab-content hidden">
+            <h2 class="text-2xl font-bold mb-6">WhatsApp Integration</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="card">
+                    <h3 class="text-lg font-bold mb-4">Connection Status</h3>
+                    <div id="wa-status-container" class="flex flex-col items-center justify-center p-6 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 min-h-[300px]">
+                        <div id="wa-spinner" class="hidden animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+                        <img id="wa-qr" src="" alt="QR Code" class="hidden w-64 h-64 mb-4">
+                        <div id="wa-status-text" class="text-xl font-bold text-gray-700">Connecting...</div>
+                        <p id="wa-status-sub" class="text-sm text-gray-500 mt-2">Please wait while we initialize the client.</p>
+                    </div>
+                    <div class="mt-4 flex justify-center">
+                        <button onclick="logoutWhatsApp()" class="btn btn-secondary text-red-600 hover:bg-red-50">
+                            <i class="fas fa-sign-out-alt mr-2"></i> Logout / Reset
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="text-lg font-bold mb-4">Quick Actions</h3>
+                    <p class="text-gray-600 mb-4">Once connected, you can use this bot to send automated follow-ups or notifications.</p>
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-yellow-700">
+                                    Keep your phone connected to the internet. This integration uses your personal WhatsApp Web session.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Add Company Modal -->
+    <div id="add-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-lg p-6 w-96">
+            <h3 class="text-xl font-bold mb-4">Add New Company</h3>
+            <div class="space-y-3">
+                <input type="text" id="new-name" placeholder="Company Name" class="w-full p-2 border rounded">
+                <input type="text" id="new-type" placeholder="Type (e.g. POS, ERP)" class="w-full p-2 border rounded">
+                <input type="email" id="new-email" placeholder="Email Address" class="w-full p-2 border rounded">
+                <input type="text" id="new-role" placeholder="Job Title" value="Software Engineer" class="w-full p-2 border rounded">
+            </div>
+            <div class="mt-6 flex justify-end space-x-2">
+                <button onclick="closeAddModal()" class="btn btn-secondary">Cancel</button>
+                <button onclick="addCompany()" class="btn btn-primary">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Navigation ---
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+
+            document.querySelectorAll('.sidebar-link').forEach(el => el.classList.remove('active'));
+            document.getElementById('nav-' + tabId).classList.add('active');
+
+            if(tabId === 'outreach') loadCompanies();
+            if(tabId === 'emails') loadEmails();
+            if(tabId === 'dashboard') loadStats();
+            if(tabId === 'whatsapp') startWhatsAppPolling();
+            else stopWhatsAppPolling();
+        }
+
+        // --- WhatsApp ---
+        let waPollInterval;
+
+        function startWhatsAppPolling() {
+            if (waPollInterval) clearInterval(waPollInterval);
+            checkWhatsAppStatus();
+            waPollInterval = setInterval(checkWhatsAppStatus, 3000);
+        }
+
+        function stopWhatsAppPolling() {
+            if (waPollInterval) clearInterval(waPollInterval);
+        }
+
+        async function checkWhatsAppStatus() {
+            try {
+                const res = await fetch('/api/whatsapp/status');
+                const data = await res.json();
+
+                const statusText = document.getElementById('wa-status-text');
+                const statusSub = document.getElementById('wa-status-sub');
+                const qrImg = document.getElementById('wa-qr');
+                const spinner = document.getElementById('wa-spinner');
+                const container = document.getElementById('wa-status-container');
+
+                if (!statusText) return; // Element might not exist if tab switched rapidly
+
+                statusText.textContent = data.status;
+
+                if (data.status === 'QR_READY' && data.qr) {
+                    qrImg.src = data.qr;
+                    qrImg.classList.remove('hidden');
+                    spinner.classList.add('hidden');
+                    statusSub.textContent = 'Scan this QR code with your WhatsApp mobile app.';
+                    container.classList.remove('border-green-500');
+                    container.classList.add('border-dashed');
+                    // Reset container content if it was previously connected
+                    if(container.querySelector('.fa-check-circle')) {
+                         container.innerHTML = `
+                            <div id="wa-spinner" class="hidden animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
+                            <img id="wa-qr" src="${data.qr}" alt="QR Code" class="w-64 h-64 mb-4">
+                            <div id="wa-status-text" class="text-xl font-bold text-gray-700">QR_READY</div>
+                            <p id="wa-status-sub" class="text-sm text-gray-500 mt-2">Scan this QR code with your WhatsApp mobile app.</p>
+                         `;
+                    }
+                } else if (data.status === 'CONNECTED' || data.status === 'AUTHENTICATED') {
+                    qrImg.classList.add('hidden');
+                    spinner.classList.add('hidden');
+                    container.classList.add('border-green-500');
+                    container.classList.remove('border-dashed');
+                    container.innerHTML = '<i class="fas fa-check-circle text-6xl text-green-500 mb-4"></i><div class="text-xl font-bold text-green-600">Connected</div><p class="text-sm text-gray-500 mt-2">Ready to automate.</p>';
+                } else {
+                    // Loading or Disconnected
+                    qrImg.classList.add('hidden');
+                    spinner.classList.remove('hidden');
+                    statusSub.textContent = 'Waiting for server...';
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        async function logoutWhatsApp() {
+            if(confirm('Are you sure you want to logout and reset the session?')) {
+                await fetch('/api/whatsapp/logout', { method: 'POST' });
+                // Force reload to reset UI state
+                location.reload();
+            }
+        }
+
+        // --- API Calls ---
+        async function loadCompanies() {
+            const res = await fetch('/api/companies');
+            const data = await res.json();
+            const tbody = document.getElementById('companies-table');
+            tbody.innerHTML = '';
+
+            data.forEach(c => {
+                let statusColor = 'bg-gray-100 text-gray-800';
+                if(c.status === 'Generated') statusColor = 'bg-blue-100 text-blue-800';
+                if(c.status === 'Sent') statusColor = 'bg-green-100 text-green-800';
+
+                const row = `
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="p-4 font-medium">${c.name}</td>
+                        <td class="p-4 text-gray-500">${c.type}</td>
+                        <td class="p-4 text-gray-500">${c.jobTitle}</td>
+                        <td class="p-4"><span class="status-badge ${statusColor}">${c.status}</span></td>
+                        <td class="p-4 text-gray-400">
+                            <button class="hover:text-blue-600"><i class="fas fa-edit"></i></button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+            updateStats(data);
+        }
+
+        async function addCompany() {
+            const company = {
+                name: document.getElementById('new-name').value,
+                type: document.getElementById('new-type').value,
+                email: document.getElementById('new-email').value,
+                jobTitle: document.getElementById('new-role').value
+            };
+
+            await fetch('/api/companies', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(company)
+            });
+
+            closeAddModal();
+            loadCompanies();
+        }
+
+        async function runCommand(command) {
+            logToConsole(`> Executing: ${command}...`);
+            try {
+                const res = await fetch('/api/run', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ command })
+                });
+                const data = await res.json();
+                logToConsole(data.output);
+                if(command.includes('outreach')) loadCompanies();
+            } catch (err) {
+                logToConsole(`Error: ${err.message}`);
+            }
+        }
+
+        function runSearch(platform) {
+            const keyword = document.getElementById(`${platform}-keyword`).value;
+            const location = document.getElementById(`${platform}-location`).value;
+            // Note: Arguments need to be passed carefully. For now, we use the base command.
+            // Ideally, the backend should handle args safely.
+            // We'll just run the base command for this demo or update backend to accept args.
+            // For simplicity in this prototype, we run the predefined npm script.
+
+            const cmd = `npm run playwright-${platform} -- "${keyword}" "${location}"`;
+            runCommand(cmd);
+        }
+
+        async function loadEmails() {
+            const res = await fetch('/api/emails');
+            const emails = await res.json();
+            const list = document.getElementById('email-list');
+            list.innerHTML = '';
+
+            emails.forEach(email => {
+                const li = document.createElement('li');
+                li.className = 'p-3 hover:bg-blue-50 cursor-pointer text-sm text-gray-700 truncate';
+                li.textContent = email.filename;
+                li.onclick = () => {
+                    document.getElementById('email-preview-title').textContent = email.filename;
+                    document.getElementById('email-preview-content').textContent = email.content;
+                };
+                list.appendChild(li);
+            });
+        }
+
+        function updateStats(data) {
+            document.getElementById('stat-companies').textContent = data.length;
+            document.getElementById('stat-pending').textContent = data.filter(c => c.status === 'Pending').length;
+            document.getElementById('stat-sent').textContent = data.filter(c => c.status === 'Sent').length;
+        }
+
+        async function loadStats() {
+            const res = await fetch('/api/companies');
+            const data = await res.json();
+            updateStats(data);
+        }
+
+        // --- UI Helpers ---
+        function logToConsole(text) {
+            const consoleEl = document.getElementById('console-output');
+            consoleEl.innerHTML += `\n${text}`;
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        function openAddModal() { document.getElementById('add-modal').classList.remove('hidden'); }
+        function closeAddModal() { document.getElementById('add-modal').classList.add('hidden'); }
+
+        // Init
+        loadStats();
+    </script>
+</body>
+</html>

@@ -1,0 +1,83 @@
+{
+  "personalInfo": {
+    "name": "Muhammed Fasil PV",
+    "title": "Software Engineer | Flutter & React (MVVM) Specialist",
+    "email": "faztrick@gmail.com",
+    "phone": "+971 555923545",
+    "location": "Dubai, UAE",
+    "linkedin": "https://linkedin.com/in/faztrick",
+    "github": "https://github.com/faztrick",
+    "portfolio": "https://www.uaecodes.com",
+    "whatsapp": "https://wa.me/971555923545"
+  },
+  "summary": "Results-driven Software Engineer with 10+ years of experience driving Digital Transformation by building high-performance mobile, web, and desktop applications using Flutter, React, and WPF (C#). Proven expertise in implementing MVVM architecture for enterprise-grade ERP systems, Fintech solutions, Point-of-Sale (POS), and Smart Retail automation across the GCC region.\n\nExpert in integrating AI/ML capabilities, computer vision (YOLO), and LLMs (OpenAI, LangChain) into user-centric applications. Proficient in Cloud-Native development (Docker, Kubernetes, AWS, Azure), DevOps automation, and IoT edge computing. Strong background in network security and secure architecture for scalable business solutions.",
+  "skills": [
+    "Flutter",
+    "Dart",
+    "React.js",
+    "Node.js",
+    "Python",
+    "AI/ML",
+    "IoT",
+    "Docker",
+    "Kubernetes",
+    "AWS",
+    "Azure",
+    "WPF",
+    "C#",
+    "SQL",
+    "NoSQL"
+  ],
+  "experience": [
+    {
+      "role": "Senior Software Engineer",
+      "company": "Idol Technology LLC",
+      "location": "Dubai, UAE",
+      "duration": "August 2024 – Present",
+      "description": "Architected and deployed IdolMEA ERP system driving digital transformation for 50+ retail branches across the GCC. Developed IdolQueue (i-QMS) using Flutter and Node.js. Implemented AI-powered chatbot automation and YOLO object detection."
+    },
+    {
+      "role": "Senior Software Engineer",
+      "company": "Screl Info Pvt Ltd",
+      "location": "India / UAE",
+      "duration": "April 2019 – January 2024",
+      "description": "Led development of SincA ERP platform (Flutter + Node.js + Python AI backend). Implemented AI-powered dashboards and predictive analytics. Developed OCR invoice parsing system with 95% accuracy."
+    },
+    {
+      "role": "Software Developer",
+      "company": "Sincap Info Pvt Ltd",
+      "location": "Calicut, India",
+      "duration": "March 2014 – March 2019",
+      "description": "Developed comprehensive ERP, accounting, and billing systems using WPF (C#) with MVVM architecture. Built admin portals and reporting dashboards."
+    }
+  ],
+  "projects": [
+    {
+      "name": "Self-Checkout AI Kiosk",
+      "description": "YOLO object detection for missed scan identification and loss prevention plus Android AIDL LED/GPIO control.",
+      "technologies": [
+        "Android",
+        "YOLO",
+        "AIDL"
+      ]
+    },
+    {
+      "name": "IdolMEA ERP",
+      "description": "Retail ERP integrating POS, IoT automation and AI analytics.",
+      "technologies": [
+        "Flutter",
+        "Node.js",
+        "Docker"
+      ]
+    },
+    {
+      "name": "IdolQueue (i‑QMS)",
+      "description": "Offline-first queue automation (Flutter MVVM + Node.js + MQTT).",
+      "technologies": [
+        "Flutter",
+        "MQTT",
+        "Hive"
+      ]
+    }
+  ]
+}

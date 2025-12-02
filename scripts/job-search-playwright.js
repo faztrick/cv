@@ -203,6 +203,64 @@ class JobAutomator {
             console.error('❌ Error in LinkedIn automation:', error);
         }
     }
+    // --- DUBIZZLE AUTOMATION ---
+    async runDubizzle(keyword = 'Software Engineer', location = 'Dubai') {
+        console.log(`\n🔍 Starting Dubizzle Search: "${keyword}" in "${location}"`);
+        try {
+            const url = `https://dubai.dubizzle.com/jobs/?keywords=${encodeURIComponent(keyword)}`;
+            await this.page.goto(url, { waitUntil: 'domcontentloaded' });
+            console.log('✅ Search results loaded');
+
+            // Basic listing
+            const listings = this.page.locator('#listings-top .listing-item');
+            const count = await listings.count();
+            console.log(`📊 Found ${count} jobs on first page`);
+
+            // Just open the page for the user
+            console.log('ℹ️  Dubizzle automation is limited to search. Please browse results manually.');
+        } catch (error) {
+            console.error('❌ Error in Dubizzle automation:', error);
+        }
+    }
+
+    // --- BAYT AUTOMATION ---
+    async runBayt(keyword = 'Software Engineer', location = 'Dubai') {
+        console.log(`\n🔍 Starting Bayt Search: "${keyword}" in "${location}"`);
+        try {
+            const url = `https://www.bayt.com/en/uae/jobs/${encodeURIComponent(keyword.replace(/ /g, '-'))}-jobs-in-${encodeURIComponent(location.toLowerCase())}/`;
+            await this.page.goto(url, { waitUntil: 'domcontentloaded' });
+            console.log('✅ Search results loaded');
+            console.log('ℹ️  Bayt automation is limited to search. Please browse results manually.');
+        } catch (error) {
+            console.error('❌ Error in Bayt automation:', error);
+        }
+    }
+
+    // --- GULFTALENT AUTOMATION ---
+    async runGulfTalent(keyword = 'Software Engineer', location = 'Dubai') {
+        console.log(`\n🔍 Starting GulfTalent Search: "${keyword}" in "${location}"`);
+        try {
+            const url = `https://www.gulftalent.com/uae/jobs?pos_ref=${encodeURIComponent(keyword)}`;
+            await this.page.goto(url, { waitUntil: 'domcontentloaded' });
+            console.log('✅ Search results loaded');
+            console.log('ℹ️  GulfTalent automation is limited to search. Please browse results manually.');
+        } catch (error) {
+            console.error('❌ Error in GulfTalent automation:', error);
+        }
+    }
+
+    // --- NAUKRIGULF AUTOMATION ---
+    async runNaukriGulf(keyword = 'Software Engineer', location = 'Dubai') {
+        console.log(`\n🔍 Starting NaukriGulf Search: "${keyword}" in "${location}"`);
+        try {
+            const url = `https://www.naukrigulf.com/${encodeURIComponent(keyword.replace(/ /g, '-'))}-jobs-in-${encodeURIComponent(location.toLowerCase())}`;
+            await this.page.goto(url, { waitUntil: 'domcontentloaded' });
+            console.log('✅ Search results loaded');
+            console.log('ℹ️  NaukriGulf automation is limited to search. Please browse results manually.');
+        } catch (error) {
+            console.error('❌ Error in NaukriGulf automation:', error);
+        }
+    }
 }
 
 // Main execution
@@ -215,12 +273,14 @@ class JobAutomator {
     try {
         await automator.init();
 
-        if (platform.toLowerCase() === 'indeed') {
-            await automator.runIndeed(keyword, location);
-        } else if (platform.toLowerCase() === 'linkedin') {
-            await automator.runLinkedIn(keyword, location);
-        } else {
-            console.log('Unknown platform. Use "indeed" or "linkedin"');
+        switch (platform.toLowerCase()) {
+            case 'indeed': await automator.runIndeed(keyword, location); break;
+            case 'linkedin': await automator.runLinkedIn(keyword, location); break;
+            case 'dubizzle': await automator.runDubizzle(keyword, location); break;
+            case 'bayt': await automator.runBayt(keyword, location); break;
+            case 'gulftalent': await automator.runGulfTalent(keyword, location); break;
+            case 'naukrigulf': await automator.runNaukriGulf(keyword, location); break;
+            default: console.log('Unknown platform. Use indeed, linkedin, dubizzle, bayt, gulftalent, or naukrigulf');
         }
 
     } catch (error) {

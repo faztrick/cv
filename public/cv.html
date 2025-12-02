@@ -32,9 +32,10 @@
   <main id="main-content" role="main">
     <div class="container">
     <header role="banner">
-      <h1>MUHAMMED FASIL PV</h1>
-      <p style="font-size: 1.5rem; font-weight: 600; color: #64748b; margin: 4px 0 16px 0;">Software Engineer <span style="font-weight: 400; font-size: 1.2rem;">| Flutter & React (MVVM) Specialist</span></p>
-      <div class="contact-info">
+      <h1 id="cv-name">MUHAMMED FASIL PV</h1>
+      <p style="font-size: 1.5rem; font-weight: 600; color: #64748b; margin: 4px 0 16px 0;"><span id="cv-title">Software Engineer | Flutter & React (MVVM) Specialist</span></p>
+      <div class="contact-info" id="cv-contact-info">
+        <!-- Populated by JS -->
         <p><strong>Location:</strong> Dubai, UAE</p>
         <p><strong>Phone:</strong> <a href="tel:+971555923545">+971 555923545</a></p>
         <p><strong>WhatsApp:</strong> <a href="https://wa.me/971555923545" target="_blank" rel="noopener noreferrer">+971 555923545</a></p>
@@ -47,95 +48,73 @@
 
     <section class="summary" aria-labelledby="summary-heading">
       <h2 id="summary-heading">PROFESSIONAL SUMMARY</h2>
-      <p>Results-driven <strong>Software Engineer</strong> with 10+ years of experience driving <strong>Digital Transformation</strong> by building high-performance mobile, web, and desktop applications using <strong>Flutter</strong>, <strong>React</strong>, and <strong>WPF (C#)</strong>. Proven expertise in implementing <strong>MVVM architecture</strong> for enterprise-grade <strong>ERP systems</strong>, <strong>Fintech solutions</strong>, <strong>Point-of-Sale (POS)</strong>, and <strong>Smart Retail</strong> automation across the GCC region.</p>
-      <p>Expert in integrating <strong>AI/ML</strong> capabilities, <strong>computer vision (YOLO)</strong>, and <strong>LLMs (OpenAI, LangChain)</strong> into user-centric applications. Proficient in <strong>Cloud-Native</strong> development (<strong>Docker</strong>, <strong>Kubernetes</strong>, <strong>AWS</strong>, <strong>Azure</strong>), <strong>DevOps</strong> automation, and <strong>IoT</strong> edge computing. Strong background in network security and secure architecture for scalable business solutions.</p>
+      <div id="cv-summary-content">
+        <p>Results-driven <strong>Software Engineer</strong> with 10+ years of experience driving <strong>Digital Transformation</strong> by building high-performance mobile, web, and desktop applications using <strong>Flutter</strong>, <strong>React</strong>, and <strong>WPF (C#)</strong>. Proven expertise in implementing <strong>MVVM architecture</strong> for enterprise-grade <strong>ERP systems</strong>, <strong>Fintech solutions</strong>, <strong>Point-of-Sale (POS)</strong>, and <strong>Smart Retail</strong> automation across the GCC region.</p>
+        <p>Expert in integrating <strong>AI/ML</strong> capabilities, <strong>computer vision (YOLO)</strong>, and <strong>LLMs (OpenAI, LangChain)</strong> into user-centric applications. Proficient in <strong>Cloud-Native</strong> development (<strong>Docker</strong>, <strong>Kubernetes</strong>, <strong>AWS</strong>, <strong>Azure</strong>), <strong>DevOps</strong> automation, and <strong>IoT</strong> edge computing. Strong background in network security and secure architecture for scalable business solutions.</p>
+      </div>
     </section>
 
     <section class="experience" aria-labelledby="experience-heading">
       <h2 id="experience-heading">PROFESSIONAL EXPERIENCE</h2>
-      <article class="job">
-        <div class="job-header">
-          <h3>Senior Software Engineer</h3>
-          <p class="company"><strong><a href="http://www.idol-mea.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">Idol Technology LLC</a>, Dubai, UAE</strong></p>
-          <p class="duration">August 2024 – Present</p>
-        </div>
-        <ul class="achievements">
-          <li>Architected and deployed <strong>IdolMEA ERP system</strong> driving <strong>digital transformation</strong> for <strong>50+ retail branches</strong> across the GCC, integrating <strong>POS</strong>, <strong>QMS</strong>, and <strong>IoT automation</strong></li>
-          <li>Developed <strong>IdolQueue (i-QMS)</strong> using <strong>Flutter</strong> and <strong>Node.js</strong> with offline-first architecture, <strong>MQTT</strong> real-time messaging, and multi-branch analytics dashboards</li>
-          <li>Implemented <strong>AI-powered chatbot automation</strong> for <strong>WhatsApp Business API</strong> and <strong>Telegram</strong>, reducing customer support response time by <strong>70%</strong></li>
-          <li>Integrated <strong>YOLO object detection</strong> for <strong>missed scan</strong> identification and <strong>loss prevention</strong> with <strong>Android AIDL</strong> for LED/GPIO control in self-checkout kiosks, reducing shrinkage by <strong>35%</strong></li>
-          <li>Engineered <strong>hybrid cloud synchronization</strong> (<strong>MySQL</strong> ↔ <strong>Apache Hive</strong>) enabling offline analytics, real-time data replication, and disaster recovery</li>
-          <li>Built <strong>WireGuard VPN mesh network</strong> using <strong>MikroTik RouterOS</strong> for secure multi-site connectivity</li>
-          <li>Deployed <strong>IdolQueue (i‑QMS)</strong> to production at <strong>Union Coop</strong> (4 branches: Al Barsha, Mirdif, Jumeirah, Al Warqa) and <strong>Carrefour Al Zahia</strong>, achieving stable operations and improved queue management</li>
-          <li>Implemented <strong>LiveKit WebRTC</strong> for real-time video support; configured <strong>Nginx reverse proxy</strong> with TLS and TURN/STUN for secure, reliable connectivity</li>
-        </ul>
-        <p><strong>Technologies:</strong> Flutter, React, Node.js, Python, YOLO, OpenAI, MQTT, Docker, MySQL, Hive, Android AIDL, MikroTik, WireGuard</p>
-      </article>
-      <article class="job">
-        <div class="job-header">
-          <h3>Senior Software Engineer</h3>
-          <p class="company"><strong><a href="https://www.screl.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">Screl Info Pvt Ltd</a>, India / UAE</strong></p>
-          <p class="duration">April 2019 – January 2024</p>
-        </div>
-        <ul class="achievements">
-          <li>Led development of <strong>SincA ERP platform</strong> (<strong>Flutter</strong> + <strong>Node.js</strong> + <strong>Python AI backend</strong>), a <strong>SaaS solution</strong> serving <strong>200+ Fintech & Retail clients</strong> with modular microservices architecture</li>
-          <li>Implemented <strong>AI-powered dashboards</strong> and predictive analytics using <strong>TensorFlow</strong>, <strong>OpenAI APIs</strong>, reducing forecasting errors by <strong>45%</strong></li>
-          <li>Developed <strong>OCR invoice parsing system</strong> with <strong>95% accuracy</strong> using <strong>computer vision</strong> and <strong>NLP</strong>, processing <strong>10,000+ documents monthly</strong></li>
-          <li>Automated <strong>WhatsApp and Telegram workflows</strong> for notifications, invoice tracking, and customer support, improving engagement by <strong>60%</strong></li>
-          <li>Containerized and orchestrated 15+ microservices using <strong>Docker</strong> and established <strong>CI/CD pipelines</strong> with <strong>GitHub Actions</strong>, reducing deployment time by <strong>80%</strong></li>
-          <li>Designed and deployed <strong>edge computing solutions</strong> with <strong>Raspberry Pi</strong> and <strong>ESP32</strong> for remote retail locations</li>
-        </ul>
-        <p><strong>Technologies:</strong> Flutter, React, Node.js, Python, TensorFlow, OpenAI, Docker, Kubernetes, MySQL, MongoDB, Firebase, ESP32, MQTT</p>
-      </article>
-      <article class="job">
-        <div class="job-header">
-          <h3>Software Developer</h3>
-          <p class="company"><strong><a href="http://www.sincapinfo.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">Sincap Info Pvt Ltd</a>, Calicut, India</strong></p>
-          <p class="duration">March 2014 – March 2019</p>
-        </div>
-        <ul class="achievements">
-          <li>Developed comprehensive <strong>ERP, accounting, and billing systems</strong> using <strong>WPF (C#)</strong> with <strong>MVVM architecture</strong>, serving <strong>100+ SME clients</strong></li>
-          <li>Built <strong>admin portals and reporting dashboards</strong> with interactive data visualization and role-based access control</li>
-          <li>Designed and implemented <strong>RESTful APIs</strong> with JSON endpoints for third-party integrations</li>
-          <li>Created automated <strong>invoice generation and reporting modules</strong> reducing manual processing time by <strong>65%</strong></li>
-          <li>Managed <strong>SQL Server databases</strong> with optimization, indexing, and stored procedures for high-performance queries</li>
-        </ul>
-        <p><strong>Technologies:</strong> C#, WPF, .NET Framework, PHP, SQL Server, RESTful APIs, MVVM, JavaScript, HTML/CSS</p>
-      </article>
+      <div id="cv-experience-list">
+        <!-- Populated by JS -->
+        <article class="job">
+          <div class="job-header">
+            <h3>Senior Software Engineer</h3>
+            <p class="company"><strong><a href="http://www.idol-mea.com" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: none;">Idol Technology LLC</a>, Dubai, UAE</strong></p>
+            <p class="duration">August 2024 – Present</p>
+          </div>
+          <ul class="achievements">
+            <li>Architected and deployed <strong>IdolMEA ERP system</strong> driving <strong>digital transformation</strong> for <strong>50+ retail branches</strong> across the GCC, integrating <strong>POS</strong>, <strong>QMS</strong>, and <strong>IoT automation</strong></li>
+            <li>Developed <strong>IdolQueue (i-QMS)</strong> using <strong>Flutter</strong> and <strong>Node.js</strong> with offline-first architecture, <strong>MQTT</strong> real-time messaging, and multi-branch analytics dashboards</li>
+            <li>Implemented <strong>AI-powered chatbot automation</strong> for <strong>WhatsApp Business API</strong> and <strong>Telegram</strong>, reducing customer support response time by <strong>70%</strong></li>
+            <li>Integrated <strong>YOLO object detection</strong> for <strong>missed scan</strong> identification and <strong>loss prevention</strong> with <strong>Android AIDL</strong> for LED/GPIO control in self-checkout kiosks, reducing shrinkage by <strong>35%</strong></li>
+            <li>Engineered <strong>hybrid cloud synchronization</strong> (<strong>MySQL</strong> ↔ <strong>Apache Hive</strong>) enabling offline analytics, real-time data replication, and disaster recovery</li>
+            <li>Built <strong>WireGuard VPN mesh network</strong> using <strong>MikroTik RouterOS</strong> for secure multi-site connectivity</li>
+            <li>Deployed <strong>IdolQueue (i‑QMS)</strong> to production at <strong>Union Coop</strong> (4 branches: Al Barsha, Mirdif, Jumeirah, Al Warqa) and <strong>Carrefour Al Zahia</strong>, achieving stable operations and improved queue management</li>
+            <li>Implemented <strong>LiveKit WebRTC</strong> for real-time video support; configured <strong>Nginx reverse proxy</strong> with TLS and TURN/STUN for secure, reliable connectivity</li>
+          </ul>
+          <p><strong>Technologies:</strong> Flutter, React, Node.js, Python, YOLO, OpenAI, MQTT, Docker, MySQL, Hive, Android AIDL, MikroTik, WireGuard</p>
+        </article>
+        <!-- ... other jobs ... -->
+      </div>
     </section>
 
     <section class="skills" aria-labelledby="skills-heading">
       <h2 id="skills-heading">CORE COMPETENCIES</h2>
+      <div id="cv-skills-list">
+        <!-- Populated by JS -->
+        <h3>Frontend Development</h3>
+        <p>Flutter, Dart, MVVM Architecture, React.js, Next.js, TypeScript, HTML5, CSS3, SASS, WPF, .NET, C#, XAML, Responsive Design, Progressive Web Apps, State Management, Provider, Redux, BLoC, Mobile Development, iOS, Android</p>
 
-      <h3>Frontend Development</h3>
-      <p>Flutter, Dart, MVVM Architecture, React.js, Next.js, TypeScript, HTML5, CSS3, SASS, WPF, .NET, C#, XAML, Responsive Design, Progressive Web Apps, State Management, Provider, Redux, BLoC, Mobile Development, iOS, Android</p>
+        <h3>AI/ML & Computer Vision</h3>
+        <p>Machine Learning, Deep Learning, Neural Networks, OpenAI GPT, LangChain, LLM Integration, Computer Vision, YOLOv8, Object Detection, OCR, Whisper ASR, TensorFlow, PyTorch, Scikit-learn, Natural Language Processing</p>
 
-      <h3>AI/ML & Computer Vision</h3>
-      <p>Machine Learning, Deep Learning, Neural Networks, OpenAI GPT, LangChain, LLM Integration, Computer Vision, YOLOv8, Object Detection, OCR, Whisper ASR, TensorFlow, PyTorch, Scikit-learn, Natural Language Processing</p>
+        <h3>Backend & APIs</h3>
+        <p>Node.js, Express.js, Microservices, RESTful APIs, GraphQL, Python, FastAPI, Django, Flask, .NET Framework, ASP.NET Core, PHP, Laravel, WebSocket, Socket.io, WebRTC, LiveKit, Real-time Systems</p>
 
-      <h3>Backend & APIs</h3>
-      <p>Node.js, Express.js, Microservices, RESTful APIs, GraphQL, Python, FastAPI, Django, Flask, .NET Framework, ASP.NET Core, PHP, Laravel, WebSocket, Socket.io, WebRTC, LiveKit, Real-time Systems</p>
+        <h3>Cloud, DevOps & Security</h3>
+        <p>Docker, Docker Compose, Kubernetes, AWS (EC2, S3, Lambda, RDS), Azure (App Services, Functions), Google Cloud Platform (GCP), CI/CD, GitHub Actions, Jenkins, Nginx, Linux, Bash/Shell Scripting, Network Security, WireGuard VPN, SSL/TLS, OAuth, JWT</p>
 
-      <h3>Cloud, DevOps & Security</h3>
-      <p>Docker, Docker Compose, Kubernetes, AWS (EC2, S3, Lambda, RDS), Azure (App Services, Functions), Google Cloud Platform (GCP), CI/CD, GitHub Actions, Jenkins, Nginx, Linux, Bash/Shell Scripting, Network Security, WireGuard VPN, SSL/TLS, OAuth, JWT</p>
+        <h3>IoT & Edge Computing</h3>
+        <p>ESP32, ESP-S3, Arduino, Raspberry Pi, Edge AI Deployment, MQTT Protocol, IoT Message Queuing, Sensor Integration, Hardware Control, Android AIDL, GPIO Control, Real-time Data Streaming</p>
 
-      <h3>IoT & Edge Computing</h3>
-      <p>ESP32, ESP-S3, Arduino, Raspberry Pi, Edge AI Deployment, MQTT Protocol, IoT Message Queuing, Sensor Integration, Hardware Control, Android AIDL, GPIO Control, Real-time Data Streaming</p>
+        <h3>Database & Storage</h3>
+        <p>MySQL, PostgreSQL, SQL Server, MongoDB, Firebase Firestore, Apache Hive, Data Warehousing, ObjectBox, Redis Caching, Database Optimization, Indexing</p>
 
-      <h3>Database & Storage</h3>
-      <p>MySQL, PostgreSQL, SQL Server, MongoDB, Firebase Firestore, Apache Hive, Data Warehousing, ObjectBox, Redis Caching, Database Optimization, Indexing</p>
+        <h3>Business Domains</h3>
+        <p>Fintech, E-commerce, ERP Systems, Point of Sale (POS), Smart Retail, Queue Management, Accounting & Billing, Inventory Management, Business Intelligence, Digital Transformation</p>
 
-      <h3>Business Domains</h3>
-      <p>Fintech, E-commerce, ERP Systems, Point of Sale (POS), Smart Retail, Queue Management, Accounting & Billing, Inventory Management, Business Intelligence, Digital Transformation</p>
-
-      <h3>Innovation & Soft Skills</h3>
-      <p>Creative Problem Solving, Innovation Strategy, Rapid Prototyping, Research & Development (R&D), Cross-functional Collaboration, Agile Methodology, Analytical Thinking, Multicultural Communication</p>
+        <h3>Innovation & Soft Skills</h3>
+        <p>Creative Problem Solving, Innovation Strategy, Rapid Prototyping, Research & Development (R&D), Cross-functional Collaboration, Agile Methodology, Analytical Thinking, Multicultural Communication</p>
+      </div>
     </section>
 
     <!-- Moved up: Major Projects -->
     <section class="projects" aria-labelledby="projects-heading">
       <h2 id="projects-heading">MAJOR PROJECTS</h2>
-      <ul>
+      <ul id="cv-projects-list">
+        <!-- Populated by JS -->
         <li><strong><a href="projects/kiosk.html">Self-Checkout AI Kiosk</a></strong> — <strong>YOLO object detection</strong> for <strong>missed scan</strong> identification and <strong>loss prevention</strong> plus <strong>Android AIDL</strong> LED/GPIO control.</li>
         <li><strong><a href="projects/idolmea-erp.html">IdolMEA ERP</a></strong> — Retail ERP integrating <strong>POS</strong>, <strong>IoT automation</strong> and <strong>AI analytics</strong>.</li>
         <li><strong><a href="projects/idolqueue.html">IdolQueue (i‑QMS)</a></strong> — Offline-first queue automation (<strong>Flutter MVVM</strong> + <strong>Node.js</strong> + <strong>MQTT</strong>) — deployed at <strong>Union Coop</strong> (4 branches: Al Barsha, Mirdif, Jumeirah, Al Warqa) and <strong>Carrefour Al Zahia</strong>.</li>
@@ -188,6 +167,95 @@
     </section>
     </div>
   </main>
-</body>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const response = await fetch('/api/cv');
+        if (!response.ok) throw new Error('Failed to load CV data');
+        const data = await response.json();
+
+        // Helper to format text with newlines
+        const formatText = (text) => {
+            if (!text) return '';
+            return text.split('\n').map(line => {
+                line = line.trim();
+                if (!line) return '';
+                if (line.startsWith('-') || line.startsWith('•')) {
+                    return `<li>${line.substring(1).trim()}</li>`;
+                }
+                return `<p>${line}</p>`;
+            }).join('');
+        };
+
+        // Personal Info
+        if (data.personalInfo) {
+            if(data.personalInfo.name) document.getElementById('cv-name').textContent = data.personalInfo.name;
+            if(data.personalInfo.title) document.getElementById('cv-title').textContent = data.personalInfo.title;
+
+            // Contact Info
+            const contactHtml = `
+                <p><strong>Location:</strong> ${data.personalInfo.location || 'Dubai, UAE'}</p>
+                <p><strong>Phone:</strong> <a href="tel:${(data.personalInfo.phone || '').replace(/[^0-9+]/g,'')}">${data.personalInfo.phone || ''}</a></p>
+                <p><strong>Email:</strong> <a href="mailto:${data.personalInfo.email || ''}">${data.personalInfo.email || ''}</a></p>
+                ${data.personalInfo.linkedin ? `<p><strong>LinkedIn:</strong> <a href="${data.personalInfo.linkedin}" target="_blank">${data.personalInfo.linkedin.replace(/^https?:\/\/(www\.)?/, '')}</a></p>` : ''}
+                ${data.personalInfo.github ? `<p><strong>GitHub:</strong> <a href="${data.personalInfo.github}" target="_blank">${data.personalInfo.github.replace(/^https?:\/\/(www\.)?/, '')}</a></p>` : ''}
+                ${data.personalInfo.portfolio ? `<p><strong>Portfolio:</strong> <a href="${data.personalInfo.portfolio}" target="_blank">${data.personalInfo.portfolio.replace(/^https?:\/\/(www\.)?/, '')}</a></p>` : ''}
+            `;
+            document.getElementById('cv-contact-info').innerHTML = contactHtml;
+        }
+
+        // Summary
+        const summaryText = data.personalInfo?.summary || data.summary;
+        if (summaryText) {
+            document.getElementById('cv-summary-content').innerHTML = formatText(summaryText);
+        }
+
+        // Experience
+        if (data.experience && Array.isArray(data.experience)) {
+            const expHtml = data.experience.map(job => {
+                let descHtml = '';
+                if (job.description) {
+                    // Check if description looks like a list
+                    if (job.description.includes('\n-') || job.description.includes('\n•') || job.description.startsWith('-') || job.description.startsWith('•')) {
+                        descHtml = `<ul class="achievements">${formatText(job.description).replace(/<p>.*?<\/p>/g, '')}</ul>`;
+                        // The formatText wraps list items in <li> but doesn't wrap them in <ul>.
+                        // We need to be careful.
+                        // Let's use a simpler approach for description:
+                        const lines = job.description.split('\n');
+                        const listItems = lines.filter(l => l.trim().startsWith('-') || l.trim().startsWith('•')).map(l => `<li>${l.trim().substring(1).trim()}</li>`).join('');
+                        const paragraphs = lines.filter(l => !l.trim().startsWith('-') && !l.trim().startsWith('•') && l.trim()).map(l => `<p>${l.trim()}</p>`).join('');
+
+                        if (listItems) descHtml = `${paragraphs}<ul class="achievements">${listItems}</ul>`;
+                        else descHtml = paragraphs;
+                    } else {
+                        descHtml = `<p>${job.description}</p>`;
+                    }
+                }
+
+                return `
+                <article class="job">
+                    <div class="job-header">
+                        <h3>${job.role}</h3>
+                        <p class="company"><strong>${job.company}</strong>${job.location ? `, ${job.location}` : ''}</p>
+                        <p class="duration">${job.period || job.duration || ''}</p>
+                    </div>
+                    ${descHtml}
+                </article>
+            `}).join('');
+            document.getElementById('cv-experience-list').innerHTML = expHtml;
+        }
+
+        // Skills
+        if (data.skills && Array.isArray(data.skills)) {
+            // Render as a simple paragraph for now
+            document.getElementById('cv-skills-list').innerHTML = `<p>${data.skills.join(', ')}</p>`;
+        }
+
+      } catch (error) {
+        console.error('Error loading CV data:', error);
+      }
+    });
+  </script>
+</body>
 </html>
