@@ -24,6 +24,9 @@
     "linkedin-search": "node scripts/linkedin-auto-apply.js search",
     "linkedin-apply": "node scripts/linkedin-auto-apply.js apply",
     "linkedin-update-profile": "node scripts/linkedin-auto-apply.js update-profile",
+    "playwright-indeed": "node scripts/job-search-playwright.js indeed",
+    "playwright-linkedin": "node scripts/job-search-playwright.js linkedin",
+    "outreach": "node scripts/outreach-manager.js",
     "auto-fill": "node scripts/universal-auto-fill.js",
     "smart-email": "node scripts/smart-email-generator.js generate",
     "email-variants": "node scripts/smart-email-generator.js variants",
@@ -51,12 +54,11 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
-    "puppeteer": "^24.26.1"
+    "playwright": "^1.57.0"
   },
   "optionalDependencies": {
     "puppeteer": "^24.26.1"
   },
-  "devDependencies": {},
   "engines": {
     "node": ">=14.0.0"
   }

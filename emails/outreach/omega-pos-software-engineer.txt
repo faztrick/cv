@@ -1,0 +1,26 @@
+Subject: Application – Software Engineer – Omega POS – Muhammed Fasil PV
+
+Hi Recruitment,
+
+I'm a Dubai-based Software Architect and hands-on engineer with 13+ years building production systems (ERP/POS/QMS/IoT) using TypeScript/Node.js, Flutter, Python, and Docker. I'm immediately available in UAE (Company Visa) and interested in the Software Engineer opportunity at Omega POS.
+
+
+
+Key Skills:
+• Full-stack development with TypeScript/Node.js, Flutter, Python
+• AI/ML integrations (YOLO, Whisper, OpenAI, LangChain)
+• IoT systems (ESP32, MQTT, edge computing)
+• DevOps: Docker/Compose, GitHub Actions, PM2, Nginx
+• Database: MySQL, MongoDB, Firebase (cloud and edge)
+
+Notable Projects:
+• IdolMEA ERP: Retail ERP integrating POS, IoT, and cloud hybrid analytics.
+• IdolQueue (i-QMS): Smart queue automation (Flutter + Node.js + Hive + MQTT).
+
+Attached are my resume and a brief overview. Happy to share code samples and discuss how I can contribute to your team.
+
+Thank you for your consideration.
+
+MUHAMMED FASIL PV
+Dubai, UAE | +971 555923545 | faztrick@gmail.com
+LinkedIn: https://linkedin.com/in/faztrick | GitHub: https://github.com/faztrick | Portfolio: https://uaecodes.com

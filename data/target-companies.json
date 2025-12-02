@@ -1,0 +1,110 @@
+[
+  {
+    "id": "1",
+    "name": "Focus Softnet",
+    "type": "ERP Software",
+    "email": "careers@focussoftnet.com",
+    "contactPerson": "HR Manager",
+    "status": "Generated",
+    "notes": "Leading ERP provider in UAE",
+    "jobTitle": "Senior Software Engineer",
+    "website": "https://focussoftnet.com",
+    "generatedEmailPath": "I:\\projects\\cv\\emails\\outreach\\focus-softnet-senior-software-engineer.txt"
+  },
+  {
+    "id": "2",
+    "name": "Coral Business Solutions",
+    "type": "ERP & POS",
+    "email": "hr@coraluae.com",
+    "contactPerson": "Hiring Team",
+    "status": "Generated",
+    "notes": "Real Estate and ERP solutions",
+    "jobTitle": "Full Stack Developer",
+    "website": "https://coraluae.com",
+    "generatedEmailPath": "I:\\projects\\cv\\emails\\outreach\\coral-business-solutions-full-stack-developer.txt"
+  },
+  {
+    "id": "3",
+    "name": "Omega POS",
+    "type": "POS Hardware & Software",
+    "email": "jobs@omegapos.com",
+    "contactPerson": "Recruitment",
+    "status": "Generated",
+    "notes": "Retail POS specialist",
+    "jobTitle": "Software Engineer",
+    "website": "https://omegapos.com",
+    "generatedEmailPath": "I:\\projects\\cv\\emails\\outreach\\omega-pos-software-engineer.txt"
+  },
+  {
+    "id": "4",
+    "name": "Tally Solutions UAE",
+    "type": "Accounting & ERP",
+    "email": "careers.uae@tallysolutions.com",
+    "contactPerson": "HR",
+    "status": "Generated",
+    "notes": "Major accounting software provider",
+    "jobTitle": "Senior Developer",
+    "website": "https://tallysolutions.com",
+    "generatedEmailPath": "I:\\projects\\cv\\emails\\outreach\\tally-solutions-uae-senior-developer.txt"
+  },
+  {
+    "id": "5",
+    "name": "Posibolt",
+    "type": "Cloud POS & ERP",
+    "email": "careers@posibolt.com",
+    "contactPerson": "Talent Acquisition",
+    "status": "Generated",
+    "notes": "Cloud-based ERP/POS for retail",
+    "jobTitle": "Backend Engineer",
+    "website": "https://posibolt.com",
+    "generatedEmailPath": "I:\\projects\\cv\\emails\\outreach\\posibolt-backend-engineer.txt"
+  },
+  {
+    "id": "6",
+    "name": "CCL Tech (Pacman CCL)",
+    "type": "Self Checkout & Printing",
+    "email": "info@cclindme.com",
+    "contactPerson": "Hiring Manager",
+    "status": "Generated",
+    "notes": "",
+    "jobTitle": "Software Engineer",
+    "website": "",
+    "generatedEmailPath": "I:\\projects\\cv\\emails\\outreach\\ccl-tech-pacman-ccl-software-engineer.txt"
+  },
+  {
+    "id": "7",
+    "name": "Newland AIDC",
+    "type": "Hardware & Scanning",
+    "email": "middleeast@newland-id.com",
+    "contactPerson": "Hiring Manager",
+    "status": "Generated",
+    "notes": "",
+    "jobTitle": "Solution Architect",
+    "website": "",
+    "generatedEmailPath": "I:\\projects\\cv\\emails\\outreach\\newland-aidc-solution-architect.txt"
+  },
+  {
+    "id": "8",
+    "name": "NCR Voyix",
+    "type": "POS & Retail Tech",
+    "email": "careers@ncrvoyix.com",
+    "contactPerson": "Hiring Manager",
+    "status": "Generated",
+    "notes": "",
+    "jobTitle": "Senior Software Engineer",
+    "website": "",
+    "generatedEmailPath": "I:\\projects\\cv\\emails\\outreach\\ncr-voyix-senior-software-engineer.txt"
+  },
+  {
+    "id": "9",
+    "name": "FAMA Technologies",
+    "type": "Self Checkout Solutions",
+    "email": "info@famatechnologies.com",
+    "contactPerson": "Hiring Manager",
+    "status": "Generated",
+    "notes": "",
+    "jobTitle": "Full Stack Developer",
+    "website": "",
+    "generatedEmailPath": "I:\\projects\\cv\\emails\\outreach\\fama-technologies-full-stack-developer.txt"
+  }
+]
