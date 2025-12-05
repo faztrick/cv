@@ -107,9 +107,29 @@ app.get('/panel-classic', (req, res) => {
 });
 
 // --- WHATSAPP INTEGRATION ---
+const WA_CONFIG_FILE = path.join(DATA_DIR, 'whatsapp-config.json');
 let waClient;
 let waStatus = 'DISCONNECTED';
 let waQRCode = null;
+
+// Get WhatsApp Config
+app.get('/api/whatsapp/config', (req, res) => {
+    if (!fs.existsSync(WA_CONFIG_FILE)) {
+        return res.json({
+            autoReply: false,
+            notifyDisconnect: true,
+            autoReplyMessage: "I'm currently unavailable, I will get back to you soon."
+        });
+    }
+    res.json(JSON.parse(fs.readFileSync(WA_CONFIG_FILE, 'utf8')));
+});
+
+// Save WhatsApp Config
+app.post('/api/whatsapp/config', (req, res) => {
+    const config = req.body;
+    fs.writeFileSync(WA_CONFIG_FILE, JSON.stringify(config, null, 2));
+    res.json({ success: true, message: 'WhatsApp configuration saved' });
+});
 
 function initWhatsApp() {
     try {
@@ -185,6 +205,33 @@ app.post('/api/whatsapp/logout', async (req, res) => {
     }
 });
 
+// Send Message
+app.post('/api/whatsapp/send', async (req, res) => {
+    const { number, message } = req.body;
+
+    if (waStatus !== 'CONNECTED' && waStatus !== 'AUTHENTICATED') {
+        return res.status(400).json({ success: false, error: 'WhatsApp client not connected' });
+    }
+
+    if (!number || !message) {
+        return res.status(400).json({ success: false, error: 'Missing number or message' });
+    }
+
+    try {
+        // Format number: remove non-digits, append @c.us if not present
+        let formattedNumber = number.replace(/\D/g, '');
+        if (!formattedNumber.endsWith('@c.us')) {
+            formattedNumber += '@c.us';
+        }
+
+        const response = await waClient.sendMessage(formattedNumber, message);
+        res.json({ success: true, response });
+    } catch (error) {
+        console.error('Error sending message:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
 // --- CV DATA MANAGEMENT ---
 const CV_DATA_FILE = path.join(DATA_DIR, 'cv-data.json');
 
@@ -204,6 +251,10 @@ app.post('/api/cv', (req, res) => {
 
 // --- AI AGENT INTEGRATION ---
 const AI_CONFIG_FILE = path.join(DATA_DIR, 'ai-config.json');
+const { spawn } = require('child_process');
+
+let agentProcess = null;
+let agentLogs = [];
 
 // Get AI Config
 app.get('/api/ai/config', (req, res) => {
@@ -228,18 +279,66 @@ app.post('/api/ai/config', (req, res) => {
     res.json({ success: true, message: 'Configuration saved' });
 });
 
-// Start AI Agent (Placeholder)
+// Start AI Agent
 app.post('/api/ai/agent/start', (req, res) => {
-    // Here you would spawn the agent process
-    // For now, we'll just log it
-    console.log('Starting AI Agent with config:', req.body);
-    res.json({ success: true, message: 'AI Agent started (Simulation)' });
+    if (agentProcess) {
+        return res.json({ success: false, message: 'Agent is already running' });
+    }
+
+    agentLogs = []; // Clear logs
+    agentLogs.push(`[${new Date().toLocaleTimeString()}] Starting AI Agent...`);
+
+    // Spawn the job search agent
+    // Using 'node scripts/job-search-agent.js --search "Software Engineer Dubai"'
+    // We could also pass arguments from the request if needed
+    const args = ['scripts/job-search-agent.js', '--search', 'Software Engineer Dubai'];
+
+    agentProcess = spawn('node', args, { cwd: __dirname });
+
+    agentProcess.stdout.on('data', (data) => {
+        const lines = data.toString().split('\n');
+        lines.forEach(line => {
+            if (line.trim()) {
+                agentLogs.push(`[${new Date().toLocaleTimeString()}] ${line.trim()}`);
+            }
+        });
+    });
+
+    agentProcess.stderr.on('data', (data) => {
+        const lines = data.toString().split('\n');
+        lines.forEach(line => {
+            if (line.trim()) {
+                agentLogs.push(`[${new Date().toLocaleTimeString()}] ERROR: ${line.trim()}`);
+            }
+        });
+    });
+
+    agentProcess.on('close', (code) => {
+        agentLogs.push(`[${new Date().toLocaleTimeString()}] Agent stopped with code ${code}`);
+        agentProcess = null;
+    });
+
+    res.json({ success: true, message: 'AI Agent started' });
 });
 
-// Stop AI Agent (Placeholder)
+// Stop AI Agent
 app.post('/api/ai/agent/stop', (req, res) => {
-    console.log('Stopping AI Agent');
-    res.json({ success: true, message: 'AI Agent stopped' });
+    if (agentProcess) {
+        agentProcess.kill();
+        agentProcess = null;
+        agentLogs.push(`[${new Date().toLocaleTimeString()}] Agent stopped by user`);
+        res.json({ success: true, message: 'AI Agent stopped' });
+    } else {
+        res.json({ success: false, message: 'Agent is not running' });
+    }
+});
+
+// Get Agent Logs
+app.get('/api/ai/agent/logs', (req, res) => {
+    res.json({
+        running: !!agentProcess,
+        logs: agentLogs
+    });
 });
 
 app.listen(PORT, () => {

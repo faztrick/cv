@@ -573,35 +573,54 @@
                 </div>
             </div>
 
-            <!-- Quick Actions -->
-            <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
-                <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Quick Info</h3>
-                <div class="grid md:grid-cols-3 gap-4 text-sm">
-                    <div class="flex items-start gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-check-circle text-green-600 dark:text-green-400"></i>
+            <!-- Operations & Config -->
+            <div class="grid md:grid-cols-2 gap-4">
+                <!-- Test Message -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                    <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Send Test Message</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-xs text-gray-600 dark:text-gray-400">Phone Number (with country code)</label>
+                            <input type="text" id="wa-test-number" placeholder="971555923545" class="compact-input w-full mt-1">
                         </div>
                         <div>
-                            <p class="font-medium text-gray-800 dark:text-white">Automated Messaging</p>
-                            <p class="text-gray-600 dark:text-gray-400">Send bulk messages to contacts</p>
+                            <label class="text-xs text-gray-600 dark:text-gray-400">Message</label>
+                            <textarea id="wa-test-message" placeholder="Hello from Career Hub!" class="compact-input w-full mt-1 h-24 resize-none"></textarea>
                         </div>
+                        <button onclick="sendWhatsAppTest()" class="compact-btn bg-green-600 hover:bg-green-700 text-white w-full">
+                            <i class="fas fa-paper-plane mr-2"></i>Send Message
+                        </button>
                     </div>
-                    <div class="flex items-start gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-bell text-blue-600 dark:text-blue-400"></i>
+                </div>
+
+                <!-- Configuration -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                    <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Configuration</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-800 dark:text-white">Auto-Reply</p>
+                                <p class="text-xs text-gray-500">Automatically reply to incoming messages</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="wa-config-autoreply" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                            </label>
                         </div>
                         <div>
-                            <p class="font-medium text-gray-800 dark:text-white">Follow-up Reminders</p>
-                            <p class="text-gray-600 dark:text-gray-400">Track responses automatically</p>
+                            <label class="text-xs text-gray-600 dark:text-gray-400">Auto-Reply Message</label>
+                            <textarea id="wa-config-message" class="compact-input w-full mt-1 h-20 resize-none"></textarea>
                         </div>
+                        <div class="flex items-center justify-between pt-2 border-t border-gray-100 dark:border-gray-700">
+                            <div>
+                                <p class="text-sm font-medium text-gray-800 dark:text-white">Notify on Disconnect</p>
+                            </div>
+                            <input type="checkbox" id="wa-config-notify" class="rounded text-blue-600">
+                        </div>
+                        <button onclick="saveWhatsAppConfig()" class="compact-btn bg-blue-600 hover:bg-blue-700 text-white w-full mt-2">
+                            <i class="fas fa-save mr-2"></i>Save Settings
+                        </button>
                     </div>
-                    <div class="flex items-start gap-3">
-                        <div class="w-10 h-10 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-exclamation-triangle text-yellow-600 dark:text-yellow-400"></i>
-                        </div>
-                        <div>
-                            <p class="font-medium text-gray-800 dark:text-white">Stay Connected</p>
-                            <p class="text-gray-600 dark:text-gray-400">Keep phone online for best results</p>
                 </div>
             </div>
         </div>
@@ -695,7 +714,10 @@
             if(tabId === 'emails') loadEmails();
             if(tabId === 'dashboard') loadStats();
             if(tabId === 'cv') loadCVData();
-            if(tabId === 'whatsapp') startWhatsAppPolling();
+            if(tabId === 'whatsapp') {
+                startWhatsAppPolling();
+                loadWhatsAppConfig();
+            }
             else stopWhatsAppPolling();
         }
 
@@ -983,6 +1005,67 @@
             }
         }
 
+        async function sendWhatsAppTest() {
+            const number = document.getElementById('wa-test-number').value;
+            const message = document.getElementById('wa-test-message').value;
+
+            if (!number || !message) {
+                alert('Please enter both number and message');
+                return;
+            }
+
+            addWhatsAppLog(`Sending test message to ${number}...`, 'info');
+            try {
+                const res = await fetch('/api/whatsapp/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ number, message })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    addWhatsAppLog('Message sent successfully!', 'success');
+                    alert('Message sent!');
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (e) {
+                addWhatsAppLog(`Failed to send: ${e.message}`, 'error');
+                alert('Failed to send message: ' + e.message);
+            }
+        }
+
+        async function loadWhatsAppConfig() {
+            try {
+                const res = await fetch('/api/whatsapp/config');
+                const config = await res.json();
+                document.getElementById('wa-config-autoreply').checked = config.autoReply || false;
+                document.getElementById('wa-config-notify').checked = config.notifyDisconnect || false;
+                document.getElementById('wa-config-message').value = config.autoReplyMessage || '';
+            } catch (e) {
+                console.error('Failed to load WA config', e);
+            }
+        }
+
+        async function saveWhatsAppConfig() {
+            const config = {
+                autoReply: document.getElementById('wa-config-autoreply').checked,
+                notifyDisconnect: document.getElementById('wa-config-notify').checked,
+                autoReplyMessage: document.getElementById('wa-config-message').value
+            };
+
+            try {
+                await fetch('/api/whatsapp/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(config)
+                });
+                addWhatsAppLog('Configuration saved', 'success');
+                alert('Settings saved!');
+            } catch (e) {
+                addWhatsAppLog('Failed to save config', 'error');
+            }
+        }
+
         // API Calls
         async function loadCompanies() {
             const res = await fetch('/api/companies');
@@ -1139,6 +1222,8 @@
             }
         }
 
+        let agentPollInterval;
+
         async function startAIAgent() {
             logAIAgent('Requesting agent start...');
             try {
@@ -1147,6 +1232,9 @@
                 if (data.success) {
                     logAIAgent('Agent started successfully.');
                     updateAgentStatus('Running', 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400', 'bg-green-500');
+                    startAgentPolling();
+                } else {
+                    logAIAgent('Failed to start: ' + data.message);
                 }
             } catch (e) {
                 logAIAgent('Error starting agent: ' + e.message);
@@ -1161,9 +1249,47 @@
                 if (data.success) {
                     logAIAgent('Agent stopped.');
                     updateAgentStatus('Stopped', 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300', 'bg-gray-400');
+                    stopAgentPolling();
                 }
             } catch (e) {
                 logAIAgent('Error stopping agent: ' + e.message);
+            }
+        }
+
+        function startAgentPolling() {
+            if (agentPollInterval) clearInterval(agentPollInterval);
+            agentPollInterval = setInterval(pollAgentLogs, 2000);
+        }
+
+        function stopAgentPolling() {
+            if (agentPollInterval) clearInterval(agentPollInterval);
+        }
+
+        async function pollAgentLogs() {
+            try {
+                const res = await fetch('/api/ai/agent/logs');
+                const data = await res.json();
+
+                const logEl = document.getElementById('ai-agent-log');
+                // Clear and rebuild logs to avoid duplicates (simple approach)
+                // Ideally we'd only append new ones, but this is safer for sync
+                logEl.innerHTML = '';
+                data.logs.forEach(log => {
+                    const div = document.createElement('div');
+                    div.className = log.includes('ERROR') ? 'text-red-400' : 'text-green-400';
+                    div.textContent = log;
+                    logEl.appendChild(div);
+                });
+                logEl.scrollTop = logEl.scrollHeight;
+
+                if (!data.running) {
+                    updateAgentStatus('Stopped', 'bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300', 'bg-gray-400');
+                    stopAgentPolling();
+                } else {
+                    updateAgentStatus('Running', 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400', 'bg-green-500');
+                }
+            } catch (e) {
+                console.error('Poll error', e);
             }
         }
 
