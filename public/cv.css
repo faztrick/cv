@@ -94,6 +94,7 @@ header {
   margin-bottom: var(--space-lg);
   padding-bottom: var(--space-lg);
   border-bottom: 2px solid var(--border-strong);
+  text-align: center;
 }
 
 header h1 {
@@ -226,6 +227,7 @@ li::marker {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   gap: 6px 16px; /* row gap, column gap */
 }
 
@@ -308,19 +310,11 @@ li::marker {
 
 article {
   margin-top: var(--space-lg);
-  padding: var(--space-lg);
-  background: var(--surface-muted);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
-  border-radius: var(--radius);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-article:hover {
-  background: var(--surface);
-  border-left-color: var(--accent-light);
-  transform: translateX(3px);
-  box-shadow: var(--shadow);
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-left: none;
+  border-radius: 0;
 }
 
 article p {

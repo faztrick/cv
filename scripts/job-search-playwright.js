@@ -10,7 +10,8 @@ const CONFIG = {
     viewport: { width: 1280, height: 800 },
     timeout: 30000,
     userDataDir: path.join(__dirname, '..', 'user_data'), // Persist sessions
-    resumePath: path.join(__dirname, '..', 'resumes', 'resume.md')
+    resumePath: path.join(__dirname, '..', 'resumes', 'resume.md'),
+    pdfPath: path.join(__dirname, '..', 'resumes', 'resume-fasil-2025.pdf')
 };
 
 class JobAutomator {
@@ -23,7 +24,7 @@ class JobAutomator {
     }
 
     async init() {
-        console.log('🚀 Initializing Job Automator (Playwright)...');
+        console.log('🚀 Initializing Job Automator (Playwright) - v2.1...');
 
         // Parse CV data first
         if (fs.existsSync(CONFIG.resumePath)) {
@@ -35,14 +36,28 @@ class JobAutomator {
             process.exit(1);
         }
 
-        this.browser = await chromium.launchPersistentContext(CONFIG.userDataDir, {
-            headless: CONFIG.headless,
-            slowMo: CONFIG.slowMo,
-            viewport: CONFIG.viewport,
-            args: ['--start-maximized', '--disable-blink-features=AutomationControlled']
-        });
-
-        this.page = this.browser.pages()[0] || await this.browser.newPage();
+        if (process.argv.includes('--connect')) {
+            console.log('🔗 Connecting to existing Chrome (port 9222)...');
+            try {
+                const browser = await chromium.connectOverCDP('http://localhost:9222');
+                const context = browser.contexts()[0];
+                if (!context) throw new Error('No open browser context found. Open a tab in Chrome.');
+                this.page = context.pages()[0] || await context.newPage();
+                this.browser = browser;
+            } catch (e) {
+                console.error('❌ Connection failed. Make sure Chrome is running with --remote-debugging-port=9222');
+                console.error(e.message);
+                process.exit(1);
+            }
+        } else {
+            this.browser = await chromium.launchPersistentContext(CONFIG.userDataDir, {
+                headless: CONFIG.headless,
+                slowMo: CONFIG.slowMo,
+                viewport: CONFIG.viewport,
+                args: ['--start-maximized', '--disable-blink-features=AutomationControlled']
+            });
+            this.page = this.browser.pages()[0] || await this.browser.newPage();
+        }
 
         // Randomize user agent to avoid detection
         await this.page.setExtraHTTPHeaders({
@@ -92,27 +107,36 @@ class JobAutomator {
             console.log(`📊 Found ${count} jobs on first page`);
 
             for (let i = 0; i < count; i++) {
-                const card = jobCards.nth(i);
-                const title = await card.locator('h2.jobTitle').innerText();
-                const company = await card.locator('[data-testid="company-name"]').innerText();
+                try {
+                    const card = jobCards.nth(i);
+                    // Re-query the element to avoid stale element errors
+                    if (await card.count() === 0) continue;
 
-                console.log(`\n👉 Checking: ${title} at ${company}`);
+                    await card.scrollIntoViewIfNeeded();
+                    const title = await card.locator('h2.jobTitle').innerText().catch(() => 'Unknown Title');
+                    const company = await card.locator('[data-testid="company-name"]').innerText().catch(() => 'Unknown Company');
 
-                // Click job to see details
-                await card.click();
-                await this.randomDelay(1000, 2000);
+                    console.log(`\n👉 Checking: ${title} at ${company}`);
 
-                // Check for "Apply now" (Indeed Apply) vs "Apply on company site"
-                const applyButton = this.page.locator('#indeedApplyButton');
-                const companySiteButton = this.page.locator('#applyButtonLinkContainer');
+                    // Click job to see details
+                    await card.click({ timeout: 5000 });
+                    await this.randomDelay(1000, 2000);
 
-                if (await applyButton.count() > 0) {
-                    console.log('   ✨ Indeed Apply available! (Easy Apply)');
-                    // await this.applyIndeedEasy(); // Uncomment to enable auto-apply
-                } else if (await companySiteButton.count() > 0) {
-                    console.log('   🔗 External application link');
-                } else {
-                    console.log('   ❓ Application method unclear');
+                    // Check for "Apply now" (Indeed Apply) vs "Apply on company site"
+                    const applyButton = this.page.locator('#indeedApplyButton');
+                    const companySiteButton = this.page.locator('#applyButtonLinkContainer');
+
+                    if (await applyButton.count() > 0) {
+                        console.log('   ✨ Indeed Apply available! (Easy Apply)');
+                        await this.applyIndeedEasy();
+                    } else if (await companySiteButton.count() > 0) {
+                        console.log('   🔗 External application link');
+                    } else {
+                        console.log('   ❓ Application method unclear');
+                    }
+                } catch (err) {
+                    console.log(`   ⚠️ Error processing job ${i + 1}: ${err.message}`);
+                    continue;
                 }
             }
 
@@ -122,18 +146,167 @@ class JobAutomator {
     }
 
     async applyIndeedEasy() {
-        // Implementation for clicking through Indeed Apply modal
-        // This is complex as it varies by job, but here's a skeleton
-        await this.page.click('#indeedApplyButton');
-        await this.page.waitForSelector('.ia-Content');
+        try {
+            await this.page.click('#indeedApplyButton');
+            console.log('   📝 Opened application modal...');
 
-        console.log('   📝 Filling application...');
+            // Check for iframe
+            let contentFrame = this.page;
+            try {
+                const iframeElement = await this.page.waitForSelector('iframe[title*="application"], iframe[title*="Apply"]', { timeout: 5000 });
+                if (iframeElement) {
+                    console.log('   Testing for iframe content...');
+                    const frames = this.page.frames();
+                    const appFrame = frames.find(f => f.url().includes('indeed.com/apply') || f.name().includes('application'));
+                    if (appFrame) {
+                        contentFrame = appFrame;
+                        console.log('   ✅ Switched to application iframe');
+                    }
+                }
+            } catch (e) {
+                console.log('   ℹ️ No iframe detected, assuming direct page content');
+            }
 
-        // Example: Handle "Continue" buttons until "Submit"
-        // while (await this.page.locator('button:has-text("Continue")').count() > 0) {
-        //     await this.page.click('button:has-text("Continue")');
-        //     await this.randomDelay();
-        // }
+            await this.randomDelay(2000, 4000);
+
+            // Basic flow: Click "Continue" until "Submit" or "Review"
+            let attempts = 0;
+            while (attempts < 15) {
+                // Check for "Applied" message
+                if (await contentFrame.locator('h1:has-text("You have applied"), h2:has-text("Application submitted")').count() > 0) {
+                    console.log('   ✅ Application already submitted or finished!');
+                    break;
+                }
+
+                // Try to fill form fields before clicking next
+                await this.fillIndeedForm(contentFrame);
+
+                const continueBtn = contentFrame.locator('button:has-text("Continue")');
+                const nextBtn = contentFrame.locator('button:has-text("Next")');
+                const reviewBtn = contentFrame.locator('button:has-text("Review your application")');
+                const submitBtn = contentFrame.locator('button:has-text("Submit your application")');
+                const fileInput = contentFrame.locator('input[type="file"]');
+
+                if (await fileInput.isVisible()) {
+                    console.log('   📂 Uploading resume...');
+                    await fileInput.setInputFiles(CONFIG.pdfPath);
+                    await this.randomDelay(1000, 2000);
+                }
+
+                if (await submitBtn.isVisible()) {
+                    console.log('   🚀 Ready to submit! (Clicking submit...)');
+                    await submitBtn.click();
+                    await this.randomDelay(2000, 3000);
+                    console.log('   ✅ Submitted!');
+                    break;
+                } else if (await reviewBtn.isVisible()) {
+                    await reviewBtn.click();
+                    console.log('   👀 Reviewing application...');
+                } else if (await continueBtn.isVisible()) {
+                    await continueBtn.click();
+                    console.log('   ➡️ Clicking Continue...');
+                } else if (await nextBtn.isVisible()) {
+                    await nextBtn.click();
+                    console.log('   ➡️ Clicking Next...');
+                } else {
+                    // Check if we are stuck
+                    const errorMsg = await contentFrame.locator('.ia-Form-error').first();
+                    if (await errorMsg.isVisible()) {
+                        console.log('   ⚠️ Form error detected (manual intervention needed)');
+                        break;
+                    }
+
+                    console.log('   ⏳ Waiting for buttons...');
+                    await this.randomDelay(1000, 2000);
+
+                    if (attempts > 12) {
+                         console.log('   ⚠️ Timed out waiting for buttons');
+                         break;
+                    }
+                }
+                await this.randomDelay(1500, 3000);
+                attempts++;
+            }
+
+            // Close modal if it's still open (cleanup)
+            const closeBtn = this.page.locator('button[aria-label="Close"]');
+            if (await closeBtn.isVisible()) {
+                await closeBtn.click();
+            }
+
+        } catch (e) {
+            console.log('   ❌ Error during Indeed Apply:', e.message);
+        }
+    }
+
+    async fillIndeedForm(frame) {
+        try {
+            // console.log('   ✍️ Checking form fields...');
+
+            // 1. Text Inputs & Textareas
+            const inputs = await frame.locator('input[type="text"], input[type="email"], input[type="tel"], input[type="number"], textarea').all();
+            for (const input of inputs) {
+                if (await input.isVisible()) {
+                    const val = await input.inputValue();
+                    if (!val) {
+                        // Try to infer what to fill based on label/id
+                        const id = await input.getAttribute('id') || '';
+                        const name = await input.getAttribute('name') || '';
+                        const label = await frame.locator(`label[for="${id}"]`).innerText().catch(() => '') || '';
+                        const context = (id + ' ' + name + ' ' + label).toLowerCase();
+
+                        if (context.includes('first name')) await input.fill(this.formData.firstName);
+                        else if (context.includes('last name')) await input.fill(this.formData.lastName);
+                        else if (context.includes('phone') || context.includes('mobile')) await input.fill(this.formData.phone);
+                        else if (context.includes('email')) await input.fill(this.formData.email);
+                        else if (context.includes('city')) await input.fill(this.formData.city);
+                        else if (context.includes('experience') || context.includes('years')) await input.fill(this.formData.yearsOfExperience);
+                        else if (context.includes('salary') || context.includes('pay')) await input.fill('15000');
+                        else if (context.includes('notice')) await input.fill('0');
+                        else if (context.includes('linkedin')) await input.fill(this.formData.linkedin);
+                        else if (context.includes('website') || context.includes('portfolio')) await input.fill(this.formData.website);
+                        else if (context.includes('summary') || context.includes('cover')) await input.fill(this.formData.summary);
+                    }
+                }
+            }
+
+            // 2. Radio Buttons (Complex because they are often grouped)
+            // Strategy: Find fieldsets or groups, then look for "Yes" or "No"
+            const fieldsets = await frame.locator('fieldset').all();
+            for (const fieldset of fieldsets) {
+                const legend = await fieldset.locator('legend').innerText().catch(() => '');
+                const text = legend.toLowerCase();
+
+                // Default to YES for positive things, NO for sponsorship
+                let targetText = 'Yes';
+                if (text.includes('sponsor') || text.includes('visa')) targetText = 'No';
+
+                // Find the radio button with the target text
+                const radio = fieldset.locator(`label:has-text("${targetText}") input[type="radio"]`);
+                if (await radio.count() > 0) {
+                    if (!(await radio.isChecked())) {
+                        await radio.check();
+                        // console.log(`   🔘 Selected ${targetText} for "${legend.substring(0, 30)}..."`);
+                    }
+                }
+            }
+
+            // 3. Select Dropdowns
+            const selects = await frame.locator('select').all();
+            for (const select of selects) {
+                if (await select.isVisible()) {
+                    const val = await select.inputValue();
+                    if (!val) {
+                        // Try to select the first real option or a specific one
+                        // For now, just select the second option (index 1) if index 0 is "Select..."
+                        await select.selectOption({ index: 1 });
+                    }
+                }
+            }
+
+        } catch (e) {
+            // console.log('   ⚠️ Error filling form:', e.message);
+        }
     }
 
     // --- LINKEDIN AUTOMATION ---
@@ -147,32 +320,30 @@ class JobAutomator {
             // Check login
             if (await this.page.locator('.nav__button-secondary').count() > 0) {
                 console.log('⚠️ Not logged in. Please log in manually.');
-                await this.page.pause(); // Pause to let user login
             }
 
             // Search
             const searchBox = this.page.locator('.jobs-search-box__text-input').first();
-            const locationBox = this.page.locator('.jobs-search-box__text-input').nth(1); // Usually the second input
 
             if (await searchBox.isVisible()) {
                 await searchBox.fill(keyword);
-                // Location handling might be tricky if pre-filled
-                // await locationBox.fill(location);
                 await this.page.keyboard.press('Enter');
             } else {
-                // Mobile view or different layout
                 console.log('⚠️ Search box not found, trying direct URL');
                 await this.page.goto(`https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(keyword)}&location=${encodeURIComponent(location)}`);
             }
 
-            await this.page.waitForSelector('.jobs-search-results-list');
+            await this.page.waitForSelector('.jobs-search-results-list', { timeout: 10000 }).catch(() => console.log('List not found immediately'));
             console.log('✅ Search results loaded');
 
             // Filter for "Easy Apply"
             try {
-                await this.page.click('button[aria-label="Easy Apply filter."]');
-                await this.randomDelay();
-                console.log('✅ Filtered by Easy Apply');
+                const easyApplyFilter = this.page.locator('button[aria-label="Easy Apply filter."]');
+                if (await easyApplyFilter.isVisible()) {
+                    await easyApplyFilter.click();
+                    await this.randomDelay();
+                    console.log('✅ Filtered by Easy Apply');
+                }
             } catch (e) {
                 console.log('⚠️ Could not filter by Easy Apply');
             }
@@ -185,7 +356,13 @@ class JobAutomator {
             for (let i = 0; i < Math.min(count, 5); i++) { // Limit to 5 for demo
                 const job = jobs.nth(i);
                 await job.scrollIntoViewIfNeeded();
-                const title = await job.locator('.job-card-list__title').innerText();
+
+                // Get title safely
+                let title = "Unknown Job";
+                try {
+                    title = await job.locator('.job-card-list__title').innerText();
+                } catch (e) {}
+
                 console.log(`\n👉 Checking: ${title}`);
 
                 await job.click();
@@ -194,8 +371,10 @@ class JobAutomator {
                 const easyApplyBtn = this.page.locator('.jobs-apply-button--top-card button');
                 if (await easyApplyBtn.isVisible() && await easyApplyBtn.innerText() === 'Easy Apply') {
                     console.log('   ✨ Easy Apply button found!');
-                    // await easyApplyBtn.click();
-                    // await this.handleLinkedInModal();
+                    await easyApplyBtn.click();
+                    await this.handleLinkedInModal();
+                } else {
+                    console.log('   ❌ No Easy Apply button (or already applied)');
                 }
             }
 
@@ -203,6 +382,57 @@ class JobAutomator {
             console.error('❌ Error in LinkedIn automation:', error);
         }
     }
+
+    async handleLinkedInModal() {
+        try {
+            console.log('   📝 Handling LinkedIn Modal...');
+                const fileInput = this.page.locator('input[type="file"]');
+
+                if (await fileInput.isVisible()) {
+                    console.log('   📂 Uploading resume...');
+                    await fileInput.setInputFiles(CONFIG.pdfPath);
+                    await this.randomDelay(1000, 2000);
+                }
+            await this.randomDelay(1000, 2000);
+
+            let attempts = 0;
+            while (attempts < 5) {
+                const nextBtn = this.page.locator('button[aria-label="Continue to next step"]');
+                const reviewBtn = this.page.locator('button[aria-label="Review your application"]');
+                const submitBtn = this.page.locator('button[aria-label="Submit application"]');
+
+                if (await submitBtn.isVisible()) {
+                    console.log('   🚀 Ready to submit! (Stopping here for safety)');
+                    // await submitBtn.click();
+                    break;
+                } else if (await reviewBtn.isVisible()) {
+                    await reviewBtn.click();
+                    console.log('   👀 Reviewing...');
+                } else if (await nextBtn.isVisible()) {
+                    await nextBtn.click();
+                    console.log('   ➡️ Next step...');
+                } else {
+                    // Check for form fields to fill?
+                    // For now, just break if no buttons found
+                    break;
+                }
+                await this.randomDelay(1000, 2000);
+                attempts++;
+            }
+
+            // Close modal if stuck
+            const closeBtn = this.page.locator('button[aria-label="Dismiss"]');
+            if (await closeBtn.isVisible()) {
+                await closeBtn.click();
+                const discardBtn = this.page.locator('button[data-control-name="discard_application_confirm_btn"]');
+                if (await discardBtn.isVisible()) await discardBtn.click();
+            }
+
+        } catch (e) {
+            console.log('   ❌ Error in LinkedIn modal:', e.message);
+        }
+    }
+
     // --- DUBIZZLE AUTOMATION ---
     async runDubizzle(keyword = 'Software Engineer', location = 'Dubai') {
         console.log(`\n🔍 Starting Dubizzle Search: "${keyword}" in "${location}"`);
@@ -216,8 +446,20 @@ class JobAutomator {
             const count = await listings.count();
             console.log(`📊 Found ${count} jobs on first page`);
 
-            // Just open the page for the user
-            console.log('ℹ️  Dubizzle automation is limited to search. Please browse results manually.');
+            for (let i = 0; i < Math.min(count, 5); i++) {
+                const listing = listings.nth(i);
+                const title = await listing.locator('.title').innerText();
+                console.log(`\n👉 Found: ${title}`);
+
+                // Get link
+                const link = await listing.locator('a.title').getAttribute('href');
+                if (link) {
+                    console.log(`   🔗 ${link}`);
+                    // We could visit it, but Dubizzle often requires manual email sending or external apply
+                }
+            }
+
+            console.log('ℹ️  Dubizzle automation is limited. Please browse results manually.');
         } catch (error) {
             console.error('❌ Error in Dubizzle automation:', error);
         }
@@ -267,7 +509,7 @@ class JobAutomator {
 (async () => {
     const automator = new JobAutomator();
     const platform = process.argv[2] || 'indeed'; // Default to indeed
-    const keyword = process.argv[3] || 'Software Engineer';
+    const keyword = process.argv[3] || 'Senior Full Stack Developer';
     const location = process.argv[4] || 'Dubai';
 
     try {

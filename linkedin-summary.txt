@@ -1,4 +1,4 @@
-I'm a Software Architect and AI & IoT Systems Engineer with 13+ years of experience building scalable, intelligent systems across ERP, POS, QMS, and retail IoT automation. I design for the real world: resilient edge + cloud hybrid architectures, secure networking infrastructure, and fast feedback loops that keep operations running smoothly.
+I'm a Senior Full Stack Developer and AI & IoT Systems Engineer with 10+ years of experience building scalable, intelligent systems across ERP, POS, QMS, and retail IoT automation. I design for the real world: resilient edge + cloud hybrid architectures, secure networking infrastructure, and fast feedback loops that keep operations running smoothly.
 
 Currently at Idol Technology LLC (Dubai, UAE) since Aug 2024, I bridge hardware and software to create production-ready systems that blend AI-driven automation with IoT ecosystems. My work spans the entire stack—from embedded firmware on ESP32/Raspberry Pi to cloud microservices with DevOps automation.
 
