@@ -627,8 +627,17 @@ async function main() {
         break;
 
       case 'apply':
-        // Auto-search and apply (dry run by default)
-        await autoJobSearch({ autoApply: false, maxApplications: 5 });
+        // Check for --real flag to enable actual applications
+        const isReal = args.includes('--real');
+        const maxApps = args.includes('--max') ? parseInt(args[args.indexOf('--max') + 1]) : 10;
+
+        console.log(isReal ? '🚀 STARTING REAL APPLICATION MODE' : 'ℹ️  DRY RUN MODE (Use --real to apply)');
+
+        // Auto-search and apply
+        await autoJobSearch({
+          autoApply: isReal,
+          maxApplications: maxApps
+        });
         break;
 
       case 'stats':
