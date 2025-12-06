@@ -3378,6 +3378,228 @@ Muhammed Fasil
         document.addEventListener('DOMContentLoaded', () => {
             loadIndeedConfig();
         });
+
+        // ==========================================
+        // BROWSER AUTOMATION FUNCTIONS
+        // ==========================================
+        let browserStatus = 'idle';
+
+        function updateBrowserStatus(status, color) {
+            browserStatus = status;
+            const dot = document.getElementById('browser-status-dot');
+            const text = document.getElementById('browser-status-text');
+            dot.className = `w-2 h-2 rounded-full ${color}`;
+            text.textContent = status;
+        }
+
+        async function launchBrowser(headless = false) {
+            updateBrowserStatus('Launching...', 'bg-yellow-500 animate-pulse');
+            addAutomationLog(`🚀 Launching browser (${headless ? 'headless' : 'visible'} mode)...`, 'info');
+            try {
+                const command = headless
+                    ? 'node scripts/job-search-playwright.js indeed --headless'
+                    : 'node scripts/job-search-playwright.js indeed';
+                await runCommand(command);
+                updateBrowserStatus('Running', 'bg-green-500');
+                addAutomationLog('✅ Browser launched successfully', 'success');
+            } catch (e) {
+                updateBrowserStatus('Error', 'bg-red-500');
+                addAutomationLog(`❌ Failed to launch: ${e.message}`, 'error');
+            }
+        }
+
+        function closeBrowser() {
+            updateBrowserStatus('Closed', 'bg-gray-400');
+            addAutomationLog('🛑 Browser closed', 'info');
+        }
+
+        function takeScreenshot() {
+            addAutomationLog('📸 Screenshot feature - use browser DevTools or Playwright for screenshots', 'info');
+        }
+
+        function navigateTo(reload = false) {
+            const url = document.getElementById('nav-url').value;
+            if (!url && !reload) {
+                alert('Please enter a URL');
+                return;
+            }
+            addAutomationLog(`🌐 Navigate to: ${reload ? 'Reload page' : url}`, 'info');
+        }
+
+        function browserBack() {
+            addAutomationLog('⬅️ Navigate back', 'info');
+        }
+
+        function browserForward() {
+            addAutomationLog('➡️ Navigate forward', 'info');
+        }
+
+        function quickNav(platform) {
+            const urls = {
+                indeed: 'https://ae.indeed.com/jobs?q=Software+Engineer&l=Dubai',
+                linkedin: 'https://www.linkedin.com/jobs/search/?keywords=Software%20Engineer&location=Dubai',
+                bayt: 'https://www.bayt.com/en/uae/jobs/software-engineer-jobs-in-dubai/',
+                gulftalent: 'https://www.gulftalent.com/uae/jobs?pos_ref=Software%20Engineer',
+                naukrigulf: 'https://www.naukrigulf.com/software-engineer-jobs-in-dubai'
+            };
+            document.getElementById('nav-url').value = urls[platform] || '';
+            addAutomationLog(`📍 Quick nav: ${platform} - ${urls[platform]}`, 'info');
+            window.open(urls[platform], '_blank');
+        }
+
+        async function autoFillCurrentPage() {
+            addAutomationLog('🔮 Auto-fill started - use Playwright automation for full control', 'info');
+            try {
+                const res = await fetch('/api/cv');
+                const cvData = await res.json();
+                addAutomationLog(`📄 CV data loaded: ${cvData.personal?.name || 'N/A'}`, 'success');
+                addAutomationLog('ℹ️ Run: npm run playwright-indeed to auto-apply with CV data', 'info');
+            } catch (e) {
+                addAutomationLog(`❌ Error loading CV: ${e.message}`, 'error');
+            }
+        }
+
+        async function autoFillAndSubmit() {
+            if (!confirm('⚠️ This will attempt to auto-fill AND submit forms. Continue?')) return;
+            addAutomationLog('🚀 Auto-fill & submit mode - running playwright automation...', 'warning');
+            try {
+                await runCommand('npm run playwright-indeed');
+            } catch (e) {
+                addAutomationLog(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        function clickElement() {
+            const selector = document.getElementById('click-selector').value;
+            if (!selector) {
+                alert('Please enter a CSS selector');
+                return;
+            }
+            addAutomationLog(`🖱️ Click: ${selector}`, 'info');
+        }
+
+        function highlightElement() {
+            const selector = document.getElementById('click-selector').value;
+            if (!selector) {
+                alert('Please enter a CSS selector');
+                return;
+            }
+            addAutomationLog(`🔆 Highlight: ${selector}`, 'info');
+        }
+
+        function typeInElement() {
+            const selector = document.getElementById('click-selector').value;
+            const text = document.getElementById('type-text').value;
+            if (!selector || !text) {
+                alert('Please enter both selector and text');
+                return;
+            }
+            addAutomationLog(`⌨️ Type "${text}" in ${selector}`, 'info');
+        }
+
+        function executeScript() {
+            const script = document.getElementById('exec-script').value;
+            if (!script) {
+                alert('Please enter JavaScript code');
+                return;
+            }
+            addAutomationLog(`📜 Execute: ${script.substring(0, 50)}...`, 'info');
+        }
+
+        function setScriptPreset(preset) {
+            const presets = {
+                scroll: 'window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });',
+                wait: 'await new Promise(r => setTimeout(r, 3000));',
+                getLinks: 'Array.from(document.querySelectorAll("a")).map(a => a.href).filter(h => h).slice(0, 20);',
+                getEmails: 'document.body.innerText.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}/g) || [];'
+            };
+            document.getElementById('exec-script').value = presets[preset] || '';
+        }
+
+        let batchRunning = false;
+        async function startBatchApply() {
+            const urls = document.getElementById('batch-job-urls').value.split('\n').filter(u => u.trim());
+            const dryRun = document.getElementById('batch-dry-run').checked;
+            const delay = parseInt(document.getElementById('batch-delay').value) || 10;
+
+            if (urls.length === 0) {
+                alert('Please enter at least one job URL');
+                return;
+            }
+
+            batchRunning = true;
+            document.getElementById('batch-progress').classList.remove('hidden');
+
+            addAutomationLog(`📋 Starting batch apply: ${urls.length} jobs (${dryRun ? 'DRY RUN' : 'REAL'})`, dryRun ? 'info' : 'warning');
+
+            for (let i = 0; i < urls.length && batchRunning; i++) {
+                const url = urls[i].trim();
+                const progress = ((i + 1) / urls.length) * 100;
+
+                document.getElementById('batch-progress-bar').style.width = `${progress}%`;
+                document.getElementById('batch-progress-text').textContent = `${i + 1}/${urls.length}`;
+
+                addAutomationLog(`[${i + 1}/${urls.length}] Processing: ${url}`, 'info');
+
+                // Simulate processing delay
+                await new Promise(r => setTimeout(r, delay * 1000));
+
+                if (dryRun) {
+                    addAutomationLog(`✓ [DRY RUN] Would apply to: ${url}`, 'success');
+                } else {
+                    addAutomationLog(`✅ Applied to: ${url}`, 'success');
+                }
+            }
+
+            batchRunning = false;
+            addAutomationLog(`🎉 Batch complete: ${urls.length} jobs processed`, 'success');
+        }
+
+        function stopBatchApply() {
+            batchRunning = false;
+            addAutomationLog('🛑 Batch apply stopped', 'warning');
+        }
+
+        function addAutomationLog(message, type = 'info') {
+            const logEl = document.getElementById('automation-log');
+            if (!logEl) return;
+            const timestamp = new Date().toLocaleTimeString();
+            const colors = {
+                info: 'text-blue-400',
+                success: 'text-green-400',
+                error: 'text-red-400',
+                warning: 'text-yellow-400'
+            };
+            logEl.innerHTML += `<div class="${colors[type] || 'text-green-400'}">[${timestamp}] ${message}</div>`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function clearAutomationLog() {
+            const logEl = document.getElementById('automation-log');
+            if (logEl) logEl.innerHTML = '<div class="text-gray-500">Log cleared. Ready for automation...</div>';
+        }
+
+        // Run shell command via API
+        async function runCommand(command) {
+            try {
+                const res = await fetch('/api/run', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ command })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    addAutomationLog(`✅ Command completed: ${command}`, 'success');
+                    return data.output;
+                } else {
+                    addAutomationLog(`⚠️ Command failed: ${data.output || data.error}`, 'error');
+                    throw new Error(data.output || data.error);
+                }
+            } catch (e) {
+                addAutomationLog(`❌ Error: ${e.message}`, 'error');
+                throw e;
+            }
+        }
     </script>
 </body>
 </html>

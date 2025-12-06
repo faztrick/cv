@@ -1,3 +1,23 @@
-2025/12/06-11:23:00.149 ae4c Reusing MANIFEST I:\projects\cv\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2025/12/06-11:23:00.412 ae4c Recovering log #472
-2025/12/06-11:23:00.545 ae4c Reusing old log I:\projects\cv\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000472.log 
+2025/12/06-13:12:46.867 8128 Reusing MANIFEST I:\projects\cv\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/12/06-13:12:46.868 8128 Recovering log #512
+2025/12/06-13:12:46.974 8128 Reusing old log I:\projects\cv\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000512.log 
+2025/12/06-13:12:48.917 8128 Level-0 table #522: started
+2025/12/06-13:12:48.929 8128 Level-0 table #522: 650119 bytes OK
+2025/12/06-13:12:48.930 8128 Delete type=0 #512
+2025/12/06-13:12:48.930 8128 Manual compaction at level-0 from '\x00B\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00C\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/12/06-13:12:49.003 a36c Compacting 1@1 + 6@2 files
+2025/12/06-13:12:49.107 a36c Generated table #523@1: 84361 keys, 2258534 bytes
+2025/12/06-13:12:49.168 a36c Generated table #524@1: 45382 keys, 2206171 bytes
+2025/12/06-13:12:49.191 a36c Generated table #525@1: 10564 keys, 2154505 bytes
+2025/12/06-13:12:49.220 a36c Generated table #526@1: 21060 keys, 2181583 bytes
+2025/12/06-13:12:49.251 a36c Generated table #527@1: 44162 keys, 2175578 bytes
+2025/12/06-13:12:49.290 a36c Generated table #528@1: 77174 keys, 1872018 bytes
+2025/12/06-13:12:49.290 a36c Compacted 1@1 + 6@2 files => 12848389 bytes
+2025/12/06-13:12:49.290 a36c compacted to: files[ 0 0 6 0 0 0 0 ]
+2025/12/06-13:12:49.290 a36c Delete type=2 #514
+2025/12/06-13:12:49.290 a36c Delete type=2 #515
+2025/12/06-13:12:49.290 a36c Delete type=2 #516
+2025/12/06-13:12:49.290 a36c Delete type=2 #517
+2025/12/06-13:12:49.290 a36c Delete type=2 #518
+2025/12/06-13:12:49.290 a36c Delete type=2 #519
+2025/12/06-13:12:49.290 a36c Delete type=2 #522

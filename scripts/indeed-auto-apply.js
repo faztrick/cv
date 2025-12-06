@@ -32,6 +32,21 @@ try {
 
 const { parseResume, generateApplicationFormData, matchJobWithCV } = require('./cv-parser');
 
+// Import stealth utilities for CAPTCHA detection
+let stealthUtils;
+try {
+  stealthUtils = require('./stealth-utils');
+} catch (e) {
+  // Create minimal fallback
+  stealthUtils = {
+    getRandomUserAgent: () => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/125.0.0.0 Safari/537.36',
+    humanDelay: async (min = 1000, max = 3000) => {
+      const delay = Math.floor(Math.random() * (max - min + 1)) + min;
+      await new Promise(r => setTimeout(r, delay));
+    }
+  };
+}
+
 // Configuration
 const config = {
   location: 'Dubai',
@@ -70,8 +85,9 @@ function resolveChromeExecutable() {
   const candidates = [];
   if (process.platform === 'win32') {
     candidates.push(
-      'C\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe',
-      'C\\\\Program Files (x86)\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe'
+      'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+      'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+      process.env.LOCALAPPDATA + '\\Google\\Chrome\\Application\\chrome.exe'
     );
   } else if (process.platform === 'darwin') {
     candidates.push('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome');
@@ -101,11 +117,90 @@ async function launchBrowser({ headless = config.headless, persistProfile = true
   const executablePath = resolveChromeExecutable();
   const browser = await puppeteer.launch({
     headless,
-    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-blink-features=AutomationControlled'],
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-blink-features=AutomationControlled',
+      '--disable-features=IsolateOrigins,site-per-process',
+      '--disable-web-security',
+      `--user-agent=${stealthUtils.getRandomUserAgent()}`
+    ],
+    ignoreDefaultArgs: ['--enable-automation'],
     executablePath,
     userDataDir
   });
   return browser;
+}
+
+/**
+ * CAPTCHA Detection for Puppeteer pages
+ */
+async function detectCaptchaPuppeteer(page) {
+  const captchaSelectors = [
+    '.g-recaptcha',
+    '#recaptcha',
+    'iframe[src*="recaptcha"]',
+    'iframe[title*="reCAPTCHA"]',
+    '.h-captcha',
+    'iframe[src*="hcaptcha"]',
+    '#cf-turnstile',
+    'iframe[src*="challenges.cloudflare.com"]'
+  ];
+
+  for (const selector of captchaSelectors) {
+    try {
+      const element = await page.$(selector);
+      if (element) {
+        return { detected: true, type: selector.includes('hcaptcha') ? 'hCaptcha' :
+                                       selector.includes('cloudflare') ? 'Cloudflare' : 'reCAPTCHA' };
+      }
+    } catch (e) {}
+  }
+
+  // Check for captcha-related text
+  const pageText = await page.evaluate(() => document.body.innerText).catch(() => '');
+  const keywords = ['verify you are human', 'i\'m not a robot', 'security check'];
+  for (const kw of keywords) {
+    if (pageText.toLowerCase().includes(kw)) {
+      return { detected: true, type: 'TextChallenge' };
+    }
+  }
+
+  return { detected: false, type: null };
+}
+
+/**
+ * Handle CAPTCHA - pause and wait for manual solve
+ */
+async function handleCaptchaPuppeteer(page, type) {
+  console.log(`\n🚨 ========================================`);
+  console.log(`🚨 CAPTCHA DETECTED: ${type}`);
+  console.log(`🚨 Please solve the CAPTCHA manually!`);
+  console.log(`🚨 Waiting up to 120 seconds...`);
+  console.log(`🚨 ========================================\n`);
+
+  const maxWait = 120000;
+  const checkInterval = 2000;
+  let elapsed = 0;
+
+  while (elapsed < maxWait) {
+    await new Promise(r => setTimeout(r, checkInterval));
+    elapsed += checkInterval;
+
+    const { detected } = await detectCaptchaPuppeteer(page);
+    if (!detected) {
+      console.log(`✅ CAPTCHA solved! Resuming...`);
+      await stealthUtils.humanDelay(1500, 3000);
+      return true;
+    }
+
+    if (elapsed % 10000 === 0) {
+      console.log(`⏳ Waiting for CAPTCHA... ${Math.ceil((maxWait - elapsed) / 1000)}s remaining`);
+    }
+  }
+
+  console.log(`❌ CAPTCHA timeout!`);
+  return false;
 }
 
 /** Ensure resume PDF exists; if not, generate from public/cv.html */
@@ -151,7 +246,7 @@ async function loginIndeed(page, { email, password } = {}) {
     await page.type('input[type="email"], input[name*="email"]', email, { delay: 50 });
     const cont = await page.$('button[type="submit"], button:has-text("Continue")');
     if (cont) await cont.click();
-    await page.waitForTimeout(800);
+    await new Promise(r => setTimeout(r, 800));
     await page.waitForSelector('input[type="password"]', { timeout: 20000 });
     await page.type('input[type="password"]', password, { delay: 50 });
     const signin = await page.$('button[type="submit"], button:has-text("Sign in"), button:has-text("Log in")');
@@ -206,14 +301,26 @@ async function searchIndeedJobs(query, options = {}) {
 
     await page.goto(searchUrl, { waitUntil: 'networkidle2', timeout: 30000 });
 
-    // Wait for job listings
-    await page.waitForSelector('.job_seen_beacon', { timeout: 10000 }).catch(() => {
-      console.log('⚠️  No jobs found');
+    // Check for CAPTCHA after navigation
+    const captchaResult = await detectCaptchaPuppeteer(page);
+    if (captchaResult.detected) {
+      const solved = await handleCaptchaPuppeteer(page, captchaResult.type);
+      if (!solved) {
+        throw new Error('CAPTCHA not solved - please try again');
+      }
+    }
+
+    // Add human-like delay and interaction
+    await stealthUtils.humanDelay(1500, 3000);
+
+    // Wait for job listings - try multiple selectors for compatibility
+    await page.waitForSelector('.job_seen_beacon, .jobsearch-ResultsList, [data-testid="job-card"]', { timeout: 15000 }).catch(() => {
+      console.log('⚠️  No jobs found or page structure changed');
     });
 
     // Extract job listings with detailed information
     const jobs = await page.evaluate((max) => {
-      const jobCards = document.querySelectorAll('.job_seen_beacon');
+      const jobCards = document.querySelectorAll('.job_seen_beacon, .resultContent, [data-testid="job-card"]');
       const results = [];
 
       for (let i = 0; i < Math.min(jobCards.length, max); i++) {

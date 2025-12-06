@@ -56,8 +56,9 @@ function resolveChromeExecutable() {
   const candidates = [];
   if (process.platform === 'win32') {
     candidates.push(
-      'C\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe',
-      'C\\\\Program Files (x86)\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe'
+      'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe',
+      'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
+      process.env.LOCALAPPDATA + '\\Google\\Chrome\\Application\\chrome.exe'
     );
   } else if (process.platform === 'darwin') {
     candidates.push('/Applications/Google Chrome.app/Contents/MacOS/Google Chrome');

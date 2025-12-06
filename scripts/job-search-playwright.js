@@ -2,17 +2,39 @@ const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
 const cvParser = require('./cv-parser');
+const stealth = require('./stealth-utils');
+const { AIFormAgent } = require('./ai-form-agent');
 
 // Configuration
 const CONFIG = {
-    headless: false, // Run visible for debugging/monitoring
-    slowMo: 50, // Slow down operations slightly to be more human-like
-    viewport: { width: 1280, height: 800 },
-    timeout: 30000,
-    userDataDir: path.join(__dirname, '..', 'user_data'), // Persist sessions
+    headless: process.argv.includes('--headless'), // Support headless flag
+    slowMo: 100, // Increased for more human-like behavior
+    viewport: stealth.getRandomViewport(), // Randomized viewport
+    timeout: 45000, // Increased timeout
+    userDataDir: path.join(__dirname, '..', 'user_data', 'playwright'), // Persist sessions
     resumePath: path.join(__dirname, '..', 'resumes', 'resume.md'),
-    pdfPath: path.join(__dirname, '..', 'resumes', 'resume-fasil-2025.pdf')
+    pdfPath: path.join(__dirname, '..', 'resumes', 'resume-fasil-2025.pdf'),
+    retryAttempts: 3,
+    retryDelay: 2000,
+    userAgent: stealth.getRandomUserAgent() // Random user agent
 };
+
+// Utility: Retry wrapper for flaky operations
+async function withRetry(fn, attempts = CONFIG.retryAttempts, delayMs = CONFIG.retryDelay) {
+    let lastError;
+    for (let i = 0; i < attempts; i++) {
+        try {
+            return await fn();
+        } catch (e) {
+            lastError = e;
+            console.log(`   ⚠️ Attempt ${i + 1}/${attempts} failed: ${e.message}`);
+            if (i < attempts - 1) {
+                await new Promise(r => setTimeout(r, delayMs));
+            }
+        }
+    }
+    throw lastError;
+}
 
 class JobAutomator {
     constructor() {
@@ -21,15 +43,37 @@ class JobAutomator {
         this.page = null;
         this.cvData = null;
         this.formData = null;
+        this.aiAgent = null; // AI-powered form filling agent
     }
 
     async init() {
-        console.log('🚀 Initializing Job Automator (Playwright) - v2.1...');
+        console.log('🚀 Initializing Job Automator (Playwright) - v2.4 with AI Agent...');
+        console.log(`   Mode: ${CONFIG.headless ? 'Headless' : 'Visible'}`);
+        console.log(`   User-Agent: ${CONFIG.userAgent.substring(0, 50)}...`);
 
         // Parse CV data first
         if (fs.existsSync(CONFIG.resumePath)) {
             this.cvData = cvParser.parseResume(CONFIG.resumePath);
             this.formData = cvParser.generateApplicationFormData(this.cvData);
+
+            // Initialize AI agent with CV data
+            this.aiAgent = new AIFormAgent({
+                personal: {
+                    firstName: this.formData.firstName,
+                    lastName: this.formData.lastName,
+                    name: this.formData.fullName,
+                    email: this.formData.email,
+                    phone: this.formData.phone,
+                    title: this.cvData.title || 'Software Architect',
+                    linkedin: this.formData.linkedin,
+                    website: this.formData.website,
+                    portfolio: this.formData.portfolio,
+                    location: this.formData.city || 'Dubai'
+                },
+                yearsOfExperience: this.formData.yearsOfExperience || '15',
+                summary: this.formData.summary,
+                skills: this.cvData.skills || []
+            });
             console.log(`📄 Loaded CV for: ${this.formData.fullName}`);
         } else {
             console.error('❌ Resume not found!');
@@ -44,25 +88,96 @@ class JobAutomator {
                 if (!context) throw new Error('No open browser context found. Open a tab in Chrome.');
                 this.page = context.pages()[0] || await context.newPage();
                 this.browser = browser;
+
+                // Apply stealth to connected browser page
+                await stealth.applyStealthToPage(this.page);
             } catch (e) {
                 console.error('❌ Connection failed. Make sure Chrome is running with --remote-debugging-port=9222');
                 console.error(e.message);
                 process.exit(1);
             }
         } else {
-            this.browser = await chromium.launchPersistentContext(CONFIG.userDataDir, {
-                headless: CONFIG.headless,
-                slowMo: CONFIG.slowMo,
-                viewport: CONFIG.viewport,
-                args: ['--start-maximized', '--disable-blink-features=AutomationControlled']
-            });
-            this.page = this.browser.pages()[0] || await this.browser.newPage();
+            // Check if user data dir is in use (lock file exists)
+            const lockFile = path.join(CONFIG.userDataDir, 'SingletonLock');
+            let isLocked = false;
+            try {
+                isLocked = fs.existsSync(lockFile);
+            } catch (e) {}
+
+            if (isLocked) {
+                console.log('⚠️ Browser profile is locked (another instance running). Using fresh session...');
+            }
+
+            // Always try persistent context first, fall back to regular launch on failure
+            try {
+                // Create user data dir if needed
+                if (!fs.existsSync(CONFIG.userDataDir)) {
+                    fs.mkdirSync(CONFIG.userDataDir, { recursive: true });
+                }
+
+                this.browser = await chromium.launchPersistentContext(CONFIG.userDataDir, {
+                    headless: CONFIG.headless,
+                    slowMo: CONFIG.slowMo,
+                    viewport: CONFIG.viewport,
+                    channel: 'chromium', // Use Playwright's bundled Chromium, not system Chrome
+                    args: [
+                        '--disable-blink-features=AutomationControlled',
+                        '--disable-features=IsolateOrigins,site-per-process',
+                        '--no-sandbox',
+                        '--disable-setuid-sandbox',
+                        `--user-agent=${CONFIG.userAgent}`
+                    ],
+                    ignoreDefaultArgs: ['--enable-automation']
+                });
+
+                this.page = this.browser.pages()[0] || await this.browser.newPage();
+                console.log('✅ Persistent browser context launched');
+            } catch (persistErr) {
+                console.log('⚠️ Persistent context failed, using fresh session:', persistErr.message);
+                // Fallback: Use non-persistent context
+                const browser = await chromium.launch({
+                    headless: CONFIG.headless,
+                    slowMo: CONFIG.slowMo,
+                    args: [
+                        '--disable-blink-features=AutomationControlled',
+                        '--disable-features=IsolateOrigins,site-per-process',
+                        '--no-sandbox',
+                        '--disable-setuid-sandbox',
+                        `--user-agent=${CONFIG.userAgent}`
+                    ],
+                    ignoreDefaultArgs: ['--enable-automation']
+                });
+                this.browser = await browser.newContext({ viewport: CONFIG.viewport });
+                this.page = await this.browser.newPage();
+                console.log('✅ Fresh browser session launched');
+            }
+
+            // Apply stealth scripts to context
+            try {
+                await stealth.applyStealthToContext(this.browser);
+            } catch (stealthErr) {
+                console.log('⚠️ Stealth context injection skipped:', stealthErr.message);
+            }
+
+            // Also apply to the specific page
+            try {
+                await stealth.applyStealthToPage(this.page);
+            } catch (stealthErr) {
+                console.log('⚠️ Stealth page injection skipped:', stealthErr.message);
+            }
         }
 
-        // Randomize user agent to avoid detection
+        // Set additional headers to avoid detection
         await this.page.setExtraHTTPHeaders({
-            'Accept-Language': 'en-US,en;q=0.9'
+            'Accept-Language': 'en-US,en;q=0.9',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
+            'Accept-Encoding': 'gzip, deflate, br',
+            'DNT': '1',
+            'Connection': 'keep-alive',
+            'Upgrade-Insecure-Requests': '1'
         });
+
+        console.log('🛡️ Stealth mode initialized');
     }
 
     async close() {
@@ -71,9 +186,217 @@ class JobAutomator {
         }
     }
 
-    async randomDelay(min = 1000, max = 3000) {
-        const delay = Math.floor(Math.random() * (max - min + 1)) + min;
-        await this.page.waitForTimeout(delay);
+    async randomDelay(min = 1500, max = 4000) {
+        await stealth.humanDelay(min, max);
+    }
+
+    // Human-like scroll
+    async humanScroll(distance = 300) {
+        await stealth.humanScroll(this.page, distance);
+    }
+
+    // Check for CAPTCHA on current page
+    async checkForCaptcha() {
+        const { detected, type } = await stealth.detectCaptcha(this.page);
+        if (detected) {
+            const solved = await stealth.handleCaptcha(this.page, type);
+            return solved;
+        }
+        return true; // No CAPTCHA, continue
+    }
+
+    // Safe navigation with CAPTCHA detection
+    async safeNavigate(url, options = {}) {
+        await this.page.goto(url, { waitUntil: 'domcontentloaded', timeout: CONFIG.timeout, ...options });
+        await this.checkForCaptcha();
+    }
+
+    // --- LOGIN FUNCTIONS ---
+
+    async loginIndeed() {
+        const email = process.env.INDEED_EMAIL;
+        const password = process.env.INDEED_PASSWORD;
+
+        if (!email || !password) {
+            console.log('⚠️ INDEED_EMAIL/INDEED_PASSWORD not set in environment. Skipping auto-login.');
+            console.log('   Set these in your .env file or manually log in.');
+            return false;
+        }
+
+        console.log('🔐 Logging into Indeed...');
+        try {
+            await this.safeNavigate('https://secure.indeed.com/account/login');
+            await this.randomDelay(1000, 2000);
+
+            // Enter email
+            await this.page.fill('input[type="email"], input[name*="email"], #ifl-InputFormField-3', email);
+            await this.randomDelay(300, 600);
+
+            // Click continue
+            const continueBtn = this.page.locator('button[type="submit"], button:has-text("Continue")');
+            if (await continueBtn.count() > 0) {
+                await continueBtn.first().click();
+                await this.randomDelay(1500, 2500);
+            }
+
+            // Check for CAPTCHA
+            await this.checkForCaptcha();
+
+            // Enter password
+            const passwordField = this.page.locator('input[type="password"]');
+            await passwordField.waitFor({ state: 'visible', timeout: 20000 });
+            await passwordField.fill(password);
+            await this.randomDelay(300, 600);
+
+            // Click sign in
+            const signInBtn = this.page.locator('button[type="submit"], button:has-text("Sign in"), button:has-text("Log in")');
+            if (await signInBtn.count() > 0) {
+                await signInBtn.first().click();
+            }
+
+            // Wait for navigation
+            await this.page.waitForURL(/indeed\.com/, { timeout: 30000 }).catch(() => {});
+            await this.randomDelay(2000, 3000);
+
+            console.log('✅ Indeed login completed (may require verification)');
+            return true;
+        } catch (e) {
+            console.log('⚠️ Indeed login issue:', e.message);
+            return false;
+        }
+    }
+
+    async loginLinkedIn() {
+        const email = process.env.LINKEDIN_EMAIL;
+        const password = process.env.LINKEDIN_PASSWORD;
+
+        if (!email || !password) {
+            console.log('⚠️ LINKEDIN_EMAIL/LINKEDIN_PASSWORD not set in environment. Skipping auto-login.');
+            console.log('   Set these in your .env file or manually log in.');
+            return false;
+        }
+
+        console.log('🔐 Logging into LinkedIn...');
+        try {
+            await this.safeNavigate('https://www.linkedin.com/login');
+            await this.randomDelay(1000, 2000);
+
+            // Enter credentials with human-like typing
+            await this.page.fill('#username', email);
+            await this.randomDelay(200, 500);
+            await this.page.fill('#password', password);
+            await this.randomDelay(300, 600);
+
+            // Click sign in
+            await this.page.click('button[type="submit"]');
+            await this.randomDelay(3000, 5000);
+
+            // Check for CAPTCHA/security check
+            await this.checkForCaptcha();
+
+            // Verify login by checking for feed
+            const isLoggedIn = await this.page.locator('.feed-identity-module, .global-nav__me').count() > 0;
+            if (isLoggedIn) {
+                console.log('✅ LinkedIn login successful!');
+                return true;
+            } else {
+                console.log('⚠️ LinkedIn login may require verification');
+                return false;
+            }
+        } catch (e) {
+            console.log('⚠️ LinkedIn login issue:', e.message);
+            return false;
+        }
+    }
+
+    // --- FORM FILLING UTILITIES ---
+
+    // Get answer for common application questions (Delegates to AI Agent)
+    async getAnswerForQuestion(questionText) {
+        if (!this.aiAgent) return null;
+        return await this.aiAgent.answerQuestion(questionText);
+    }
+
+    // Fill LinkedIn Easy Apply modal form (Delegates to AI Agent)
+    async fillLinkedInForm(formModal) {
+        if (!this.aiAgent) {
+            console.log('⚠️ AI Agent not initialized');
+            return;
+        }
+
+        console.log('   🤖 AI Agent taking over form filling...');
+        await this.aiAgent.fillForm(formModal, CONFIG.pdfPath);
+    }
+
+    // --- NOTIFICATIONS ---
+
+    async sendWhatsAppNotification(message) {
+        try {
+            // Send to self (using the number from CV or a default)
+            const number = process.env.WHATSAPP_NOTIFY_NUMBER || this.formData.phone;
+            if (!number) return;
+
+            // Use dynamic import for fetch if needed in older node, but node 18+ has global fetch
+            await fetch('http://localhost:3000/api/whatsapp/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ number, message })
+            });
+            console.log('   📱 WhatsApp notification sent');
+        } catch (e) {
+            console.log('   ⚠️ WhatsApp notification failed:', e.message);
+        }
+    }
+
+    async sendEmailNotification(subject, body) {
+        try {
+            const { spawn } = require('child_process');
+            const scriptPath = path.join(__dirname, 'send_email.py');
+            const toEmail = process.env.NOTIFY_EMAIL || this.formData.email;
+
+            if (!toEmail) return;
+
+            // Write body to temp file
+            const tempBodyPath = path.join(__dirname, '..', 'temp-email-body.txt');
+            fs.writeFileSync(tempBodyPath, body);
+
+            const pythonProcess = spawn('python', [
+                scriptPath,
+                '--to', toEmail,
+                '--subject', subject,
+                '--body', tempBodyPath
+            ]);
+
+            pythonProcess.on('error', (err) => {
+                console.log('   ⚠️ Email notification failed:', err.message);
+            });
+
+            // Cleanup temp file after a delay
+            setTimeout(() => {
+                try { fs.unlinkSync(tempBodyPath); } catch (e) {}
+            }, 5000);
+
+        } catch (e) {
+            console.log('   ⚠️ Email notification error:', e.message);
+        }
+    }
+
+    // Safe click with retry
+    async safeClick(selector, options = {}) {
+        return withRetry(async () => {
+            const element = this.page.locator(selector).first();
+            await element.waitFor({ state: 'visible', timeout: options.timeout || 10000 });
+            await element.click();
+        });
+    }
+
+    // Safe fill with retry
+    async safeFill(selector, value, options = {}) {
+        return withRetry(async () => {
+            const element = this.page.locator(selector).first();
+            await element.waitFor({ state: 'visible', timeout: options.timeout || 10000 });
+            await element.fill(value);
+        });
     }
 
     // --- INDEED AUTOMATION ---
@@ -82,51 +405,129 @@ class JobAutomator {
         console.log(`\n🔍 Starting Indeed Search: "${keyword}" in "${location}"`);
 
         try {
-            await this.page.goto('https://ae.indeed.com/', { waitUntil: 'domcontentloaded' });
+            await this.safeNavigate('https://ae.indeed.com/');
+            await this.randomDelay(1000, 2000);
 
-            // Check if logged in
-            const isLoggedIn = await this.page.locator('.gnav-header-1b6w516').count() > 0 ||
-                               await this.page.locator('[aria-label="Profile"]').count() > 0;
+            // Simulate human-like page interaction before searching
+            await this.humanScroll(100);
+            await this.randomDelay(500, 1000);
+
+            // Check if logged in - multiple possible selectors
+            const isLoggedIn = await this.page.locator('[data-gnav-element-name="AccountMenu"], [aria-label="Profile"], .gnav-AccountMenu').count() > 0;
 
             if (!isLoggedIn) {
-                console.log('⚠️ Not logged in. Please log in manually in the browser window if needed.');
-                // We continue anyway as search works without login
+                console.log('⚠️ Not logged in. Search works without login, but apply may require it.');
+            } else {
+                console.log('✅ Logged in to Indeed');
             }
 
-            // Fill search form
-            await this.page.fill('#text-input-what', keyword);
-            await this.page.fill('#text-input-where', location);
-            await this.page.press('#text-input-where', 'Enter');
+            // Fill search form - with retry for dynamic loading
+            await withRetry(async () => {
+                await this.page.fill('#text-input-what, input[name="q"]', keyword);
+            });
+            await this.randomDelay(500, 1000);
 
-            await this.page.waitForURL(/jobs/);
+            await withRetry(async () => {
+                await this.page.fill('#text-input-where, input[name="l"]', location);
+            });
+            await this.randomDelay(300, 600);
+
+            await this.page.keyboard.press('Enter');
+
+            await this.page.waitForURL(/jobs/, { timeout: CONFIG.timeout });
+            await this.randomDelay(1500, 2500);
             console.log('✅ Search results loaded');
 
-            // Get job cards
-            const jobCards = this.page.locator('.job_seen_beacon');
+            // Get job cards - multiple selector patterns for compatibility
+            const jobCardSelector = '.job_seen_beacon, .resultContent, [data-testid="job-card"], .jobCard_mainContent, .cardOutline';
+            const jobCards = this.page.locator(jobCardSelector);
             const count = await jobCards.count();
             console.log(`📊 Found ${count} jobs on first page`);
 
-            for (let i = 0; i < count; i++) {
+            for (let i = 0; i < Math.min(count, 10); i++) { // Limit to 10 for safety
                 try {
                     const card = jobCards.nth(i);
                     // Re-query the element to avoid stale element errors
                     if (await card.count() === 0) continue;
 
                     await card.scrollIntoViewIfNeeded();
-                    const title = await card.locator('h2.jobTitle').innerText().catch(() => 'Unknown Title');
-                    const company = await card.locator('[data-testid="company-name"]').innerText().catch(() => 'Unknown Company');
+                    await this.randomDelay(800, 1500);
 
-                    console.log(`\n👉 Checking: ${title} at ${company}`);
+                    // Try multiple title selectors - updated for 2025 Indeed structure
+                    let title = 'Unknown Title';
+                    const titleSelectors = [
+                        'h2.jobTitle span[title]',
+                        'h2.jobTitle a span',
+                        'h2.jobTitle span',
+                        'h2.jobTitle a',
+                        'h2.jobTitle',
+                        '[data-testid="job-title"]',
+                        '.jcs-JobTitle',
+                        'a.jcs-JobTitle',
+                        '.jobTitle'
+                    ];
+                    for (const sel of titleSelectors) {
+                        try {
+                            const el = card.locator(sel).first();
+                            if (await el.count() > 0) {
+                                const attr = await el.getAttribute('title');
+                                title = attr || await el.innerText();
+                                if (title && title !== 'Unknown Title') break;
+                            }
+                        } catch (e) {}
+                    }
+
+                    // Company selectors
+                    let company = 'Unknown Company';
+                    const companySelectors = [
+                        '[data-testid="company-name"]',
+                        '.companyName',
+                        'span[data-testid="company-name"]',
+                        '.company_location span:first-child',
+                        '.companyInfo span'
+                    ];
+                    for (const sel of companySelectors) {
+                        try {
+                            const el = card.locator(sel).first();
+                            if (await el.count() > 0) {
+                                company = await el.innerText();
+                                if (company && company !== 'Unknown Company') break;
+                            }
+                        } catch (e) {}
+                    }
+
+                    console.log(`\n👉 [${i + 1}/${count}] ${title.trim()} at ${company.trim()}`);
 
                     // Click job to see details
                     await card.click({ timeout: 5000 });
-                    await this.randomDelay(1000, 2000);
+                    await this.randomDelay(1500, 2500);
 
-                    // Check for "Apply now" (Indeed Apply) vs "Apply on company site"
-                    const applyButton = this.page.locator('#indeedApplyButton');
-                    const companySiteButton = this.page.locator('#applyButtonLinkContainer');
+                    // Check for CAPTCHA after clicking
+                    await this.checkForCaptcha();
 
-                    if (await applyButton.count() > 0) {
+                    // Check for "Apply now" (Indeed Apply) vs "Apply on company site" - updated selectors
+                    const applySelectors = [
+                        '#indeedApplyButton',
+                        'button[id*="indeedApply"]',
+                        '[data-testid="indeedApply-button"]',
+                        'button:has-text("Apply now")',
+                        '.jobsearch-IndeedApplyButton',
+                        'button.ia-IndeedApplyButton'
+                    ];
+
+                    let hasApplyButton = false;
+                    for (const sel of applySelectors) {
+                        try {
+                            if (await this.page.locator(sel).count() > 0) {
+                                hasApplyButton = true;
+                                break;
+                            }
+                        } catch (e) {}
+                    }
+
+                    const companySiteButton = this.page.locator('#applyButtonLinkContainer, a:has-text("Apply on company site"), a[href*="apply"]');
+
+                    if (hasApplyButton) {
                         console.log('   ✨ Indeed Apply available! (Easy Apply)');
                         await this.applyIndeedEasy();
                     } else if (await companySiteButton.count() > 0) {
@@ -141,7 +542,7 @@ class JobAutomator {
             }
 
         } catch (error) {
-            console.error('❌ Error in Indeed automation:', error);
+            console.error('❌ Error in Indeed automation:', error.message);
         }
     }
 
@@ -198,6 +599,7 @@ class JobAutomator {
                     await submitBtn.click();
                     await this.randomDelay(2000, 3000);
                     console.log('   ✅ Submitted!');
+                    await this.sendWhatsAppNotification(`Applied to Indeed job!`);
                     break;
                 } else if (await reviewBtn.isVisible()) {
                     await reviewBtn.click();
@@ -240,73 +642,13 @@ class JobAutomator {
     }
 
     async fillIndeedForm(frame) {
-        try {
-            // console.log('   ✍️ Checking form fields...');
-
-            // 1. Text Inputs & Textareas
-            const inputs = await frame.locator('input[type="text"], input[type="email"], input[type="tel"], input[type="number"], textarea').all();
-            for (const input of inputs) {
-                if (await input.isVisible()) {
-                    const val = await input.inputValue();
-                    if (!val) {
-                        // Try to infer what to fill based on label/id
-                        const id = await input.getAttribute('id') || '';
-                        const name = await input.getAttribute('name') || '';
-                        const label = await frame.locator(`label[for="${id}"]`).innerText().catch(() => '') || '';
-                        const context = (id + ' ' + name + ' ' + label).toLowerCase();
-
-                        if (context.includes('first name')) await input.fill(this.formData.firstName);
-                        else if (context.includes('last name')) await input.fill(this.formData.lastName);
-                        else if (context.includes('phone') || context.includes('mobile')) await input.fill(this.formData.phone);
-                        else if (context.includes('email')) await input.fill(this.formData.email);
-                        else if (context.includes('city')) await input.fill(this.formData.city);
-                        else if (context.includes('experience') || context.includes('years')) await input.fill(this.formData.yearsOfExperience);
-                        else if (context.includes('salary') || context.includes('pay')) await input.fill('15000');
-                        else if (context.includes('notice')) await input.fill('0');
-                        else if (context.includes('linkedin')) await input.fill(this.formData.linkedin);
-                        else if (context.includes('website') || context.includes('portfolio')) await input.fill(this.formData.website);
-                        else if (context.includes('summary') || context.includes('cover')) await input.fill(this.formData.summary);
-                    }
-                }
-            }
-
-            // 2. Radio Buttons (Complex because they are often grouped)
-            // Strategy: Find fieldsets or groups, then look for "Yes" or "No"
-            const fieldsets = await frame.locator('fieldset').all();
-            for (const fieldset of fieldsets) {
-                const legend = await fieldset.locator('legend').innerText().catch(() => '');
-                const text = legend.toLowerCase();
-
-                // Default to YES for positive things, NO for sponsorship
-                let targetText = 'Yes';
-                if (text.includes('sponsor') || text.includes('visa')) targetText = 'No';
-
-                // Find the radio button with the target text
-                const radio = fieldset.locator(`label:has-text("${targetText}") input[type="radio"]`);
-                if (await radio.count() > 0) {
-                    if (!(await radio.isChecked())) {
-                        await radio.check();
-                        // console.log(`   🔘 Selected ${targetText} for "${legend.substring(0, 30)}..."`);
-                    }
-                }
-            }
-
-            // 3. Select Dropdowns
-            const selects = await frame.locator('select').all();
-            for (const select of selects) {
-                if (await select.isVisible()) {
-                    const val = await select.inputValue();
-                    if (!val) {
-                        // Try to select the first real option or a specific one
-                        // For now, just select the second option (index 1) if index 0 is "Select..."
-                        await select.selectOption({ index: 1 });
-                    }
-                }
-            }
-
-        } catch (e) {
-            // console.log('   ⚠️ Error filling form:', e.message);
+        if (!this.aiAgent) {
+            console.log('⚠️ AI Agent not initialized');
+            return;
         }
+
+        // console.log('   🤖 AI Agent taking over Indeed form filling...');
+        await this.aiAgent.fillForm(frame, CONFIG.pdfPath);
     }
 
     // --- LINKEDIN AUTOMATION ---
@@ -386,24 +728,25 @@ class JobAutomator {
     async handleLinkedInModal() {
         try {
             console.log('   📝 Handling LinkedIn Modal...');
-                const fileInput = this.page.locator('input[type="file"]');
-
-                if (await fileInput.isVisible()) {
-                    console.log('   📂 Uploading resume...');
-                    await fileInput.setInputFiles(CONFIG.pdfPath);
-                    await this.randomDelay(1000, 2000);
-                }
-            await this.randomDelay(1000, 2000);
+            const modal = this.page.locator('.jobs-easy-apply-modal');
 
             let attempts = 0;
-            while (attempts < 5) {
+            while (attempts < 15) {
+                // Try to fill form fields first
+                await this.fillLinkedInForm(modal);
+
                 const nextBtn = this.page.locator('button[aria-label="Continue to next step"]');
                 const reviewBtn = this.page.locator('button[aria-label="Review your application"]');
                 const submitBtn = this.page.locator('button[aria-label="Submit application"]');
 
                 if (await submitBtn.isVisible()) {
-                    console.log('   🚀 Ready to submit! (Stopping here for safety)');
-                    // await submitBtn.click();
+                    console.log('   🚀 Ready to submit!');
+                    await submitBtn.click();
+                    await this.randomDelay(2000, 3000);
+                    console.log('   ✅ Submitted!');
+
+                    // Send notification
+                    await this.sendWhatsAppNotification(`Applied to LinkedIn job!`);
                     break;
                 } else if (await reviewBtn.isVisible()) {
                     await reviewBtn.click();
@@ -412,15 +755,25 @@ class JobAutomator {
                     await nextBtn.click();
                     console.log('   ➡️ Next step...');
                 } else {
-                    // Check for form fields to fill?
-                    // For now, just break if no buttons found
-                    break;
+                    // Check for errors
+                    const error = modal.locator('.artdeco-inline-feedback--error');
+                    if (await error.count() > 0) {
+                        console.log('   ⚠️ Form error detected');
+                        break;
+                    }
+
+                    // If no buttons and no errors, maybe we are done or stuck
+                    if (attempts > 5 && await modal.locator('h2').innerText().then(t => t.includes('submitted'))) {
+                         console.log('   ✅ Application submitted!');
+                         await this.sendWhatsAppNotification(`Applied to LinkedIn job!`);
+                         break;
+                    }
                 }
-                await this.randomDelay(1000, 2000);
+                await this.randomDelay(1500, 3000);
                 attempts++;
             }
 
-            // Close modal if stuck
+            // Close modal if it's still open (e.g. success screen or stuck)
             const closeBtn = this.page.locator('button[aria-label="Dismiss"]');
             if (await closeBtn.isVisible()) {
                 await closeBtn.click();
