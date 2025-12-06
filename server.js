@@ -4,7 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
 const { exec } = require('child_process');
-const { Client, LocalAuth } = require('whatsapp-web.js');
+const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const QRCode = require('qrcode');
 
 const app = express();
@@ -243,6 +243,44 @@ app.post('/api/whatsapp/send', async (req, res) => {
         res.json({ success: true, messageId: response.id._serialized });
     } catch (error) {
         console.error('Error sending message:', error);
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+// Send PDF Message
+app.post('/api/whatsapp/send-pdf', async (req, res) => {
+    const { number, message, pdfPath } = req.body;
+
+    console.log('WhatsApp Send PDF Request:', { number, pdfPath, waStatus });
+
+    if (waStatus !== 'CONNECTED' && waStatus !== 'AUTHENTICATED') {
+        return res.status(400).json({ success: false, error: `WhatsApp client not connected. Status: ${waStatus}` });
+    }
+
+    if (!number || !pdfPath) {
+        return res.status(400).json({ success: false, error: 'Missing number or pdfPath' });
+    }
+
+    try {
+        // Format number
+        let formattedNumber = number.replace(/\D/g, '');
+        if (!formattedNumber.endsWith('@c.us')) {
+            formattedNumber = formattedNumber + '@c.us';
+        }
+
+        console.log('Sending PDF to:', formattedNumber);
+
+        if (!fs.existsSync(pdfPath)) {
+             return res.status(400).json({ success: false, error: `PDF file not found at ${pdfPath}` });
+        }
+
+        const media = MessageMedia.fromFilePath(pdfPath);
+
+        const response = await waClient.sendMessage(formattedNumber, media, { caption: message });
+        console.log('PDF sent successfully:', response.id);
+        res.json({ success: true, messageId: response.id._serialized });
+    } catch (error) {
+        console.error('Error sending PDF:', error);
         res.status(500).json({ success: false, error: error.message });
     }
 });

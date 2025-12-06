@@ -18,10 +18,16 @@ try { require('dotenv').config(); } catch (_) {}
 // Check if Puppeteer is available
 let puppeteer;
 try {
-  puppeteer = require('puppeteer');
+  puppeteer = require('puppeteer-extra');
+  const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+  puppeteer.use(StealthPlugin());
 } catch (err) {
-  console.log("Note: Puppeteer not installed. Install with: npm install puppeteer");
-  console.log("Running in limited mode...\n");
+  try {
+    puppeteer = require('puppeteer');
+  } catch (e) {
+    console.log("Note: Puppeteer not installed. Install with: npm install puppeteer");
+    console.log("Running in limited mode...\n");
+  }
 }
 
 const { parseResume, generateApplicationFormData, matchJobWithCV } = require('./cv-parser');
@@ -95,7 +101,7 @@ async function launchBrowser({ headless = config.headless, persistProfile = true
   const executablePath = resolveChromeExecutable();
   const browser = await puppeteer.launch({
     headless,
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+    args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-blink-features=AutomationControlled'],
     executablePath,
     userDataDir
   });
