@@ -1,5 +1,5 @@
 # Custom Domain Setup Script for Azure Static Web Apps
-# Configures multiple custom domains: uaecodes.com, bookznow.com, faztrick.com, fzbiz.com
+# Configures multiple custom domains: uaecodes.com, bookznow.com, fzbiz.com
 
 Write-Host "==================================================" -ForegroundColor Cyan
 Write-Host "  Azure Static Web Apps - Custom Domain Setup" -ForegroundColor Cyan
@@ -12,7 +12,6 @@ $resourceGroupName = "cv-portfolio-rg"
 $domains = @(
   "uaecodes.com",
   "bookznow.com",
-  "faztrick.com",
   "fzbiz.com"
 )
 
@@ -219,7 +218,6 @@ Write-Host ""
 Write-Host "Check DNS propagation:" -ForegroundColor Cyan
 Write-Host "  nslookup uaecodes.com" -ForegroundColor Gray
 Write-Host "  nslookup bookznow.com" -ForegroundColor Gray
-Write-Host "  nslookup faztrick.com" -ForegroundColor Gray
 Write-Host "  nslookup fzbiz.com" -ForegroundColor Gray
 Write-Host ""
 

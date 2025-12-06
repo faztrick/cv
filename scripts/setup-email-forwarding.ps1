@@ -2,7 +2,7 @@
 
 <#
 .SYNOPSIS
-    Setup FREE email forwarding for uaecodes.com, faztrick.com and fzbiz.com using ImprovMX
+    Setup FREE email forwarding for uaecodes.com and fzbiz.com using ImprovMX
 .DESCRIPTION
     Configures Azure DNS records for email forwarding to faztrick@gmail.com
 #>
@@ -13,7 +13,7 @@ Write-Host "==================================================" -ForegroundColor
 
 $resourceGroup = "cv-portfolio-rg"
 $forwardToEmail = "faztrick@gmail.com"
-$domains = @("uaecodes.com", "faztrick.com", "fzbiz.com")
+$domains = @("uaecodes.com", "fzbiz.com")
 
 Write-Host "`nForward emails to: $forwardToEmail" -ForegroundColor Green
 Write-Host "`nStep 1: Sign up at ImprovMX (FREE)" -ForegroundColor Cyan
@@ -80,7 +80,7 @@ Write-Host "========================================`n" -ForegroundColor Cyan
 
 Write-Host "For each domain:" -ForegroundColor White
 Write-Host "1. In ImprovMX dashboard, click 'Add Domain'" -ForegroundColor White
-Write-Host "2. Enter domain name (uaecodes.com, faztrick.com or fzbiz.com)" -ForegroundColor White
+Write-Host "2. Enter domain name (uaecodes.com or fzbiz.com)" -ForegroundColor White
 Write-Host "3. ImprovMX will verify DNS records automatically" -ForegroundColor White
 Write-Host "4. Add email aliases:`n" -ForegroundColor White
 

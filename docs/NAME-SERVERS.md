@@ -34,19 +34,6 @@ ns4-04.azure-dns.info
 
 ---
 
-## 📌 faztrick.com
-
-**Update name servers to:**
-
-```
-ns1-08.azure-dns.com
-ns2-08.azure-dns.net
-ns3-08.azure-dns.org
-ns4-08.azure-dns.info
-```
-
----
-
 ## 📌 fzbiz.com
 
 **Update name servers to:**
@@ -105,9 +92,6 @@ After updating name servers, verify with:
 ```powershell
 # Check bookznow.com
 nslookup -type=NS bookznow.com
-
-# Check faztrick.com
-nslookup -type=NS faztrick.com
 
 # Check fzbiz.com
 nslookup -type=NS fzbiz.com
