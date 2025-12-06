@@ -59,25 +59,35 @@ function listCompanies(filterStatus = null) {
 /**
  * Add Company
  */
-function addCompany(name, type, email, jobTitle = 'Software Engineer') {
+function addCompany(name, type, email, jobTitle = 'Software Engineer', status = 'Pending') {
     const db = loadDB();
+
+    // Check for duplicates
+    const exists = db.find(c => c.name.toLowerCase() === name.toLowerCase() && c.jobTitle.toLowerCase() === jobTitle.toLowerCase());
+    if (exists) {
+        console.log(`⚠️  ${name} already exists in database.`);
+        return exists;
+    }
+
     const newId = db.length > 0 ? Math.max(...db.map(c => parseInt(c.id))) + 1 : 1;
 
     const company = {
         id: String(newId),
         name,
         type,
-        email,
+        email: email || '',
         contactPerson: 'Hiring Manager',
-        status: 'Pending',
+        status: status,
         notes: '',
         jobTitle,
-        website: ''
+        website: '',
+        addedDate: new Date().toISOString().split('T')[0]
     };
 
     db.push(company);
     saveDB(db);
     console.log(`✅ Added ${name} to database.`);
+    return company;
 }
 
 /**
@@ -178,33 +188,44 @@ function sendEmails(realSend = false) {
 }
 
 // CLI Handler
-const args = process.argv.slice(2);
-const command = args[0];
+if (require.main === module) {
+    const args = process.argv.slice(2);
+    const command = args[0];
 
-switch (command) {
-    case 'list':
-        listCompanies(args[1]);
-        break;
-    case 'add':
-        if (args.length < 4) {
-            console.log('Usage: node outreach-manager.js add "Name" "Type" "Email" ["Job Title"]');
-        } else {
-            addCompany(args[1], args[2], args[3], args[4]);
-        }
-        break;
-    case 'generate':
-        generateEmails();
-        break;
-    case 'send':
-        sendEmails(args.includes('--real'));
-        break;
-    default:
-        console.log('\n📢 Outreach Manager');
-        console.log('-------------------');
-        console.log('Commands:');
-        console.log('  list [status]       - List companies (optional filter by status)');
-        console.log('  add "Name" ...      - Add a new company');
-        console.log('  generate            - Generate emails for Pending companies');
-        console.log('  send [--real]       - Send emails for Generated companies');
-        console.log('');
+    switch (command) {
+        case 'list':
+            listCompanies(args[1]);
+            break;
+        case 'add':
+            if (args.length < 4) {
+                console.log('Usage: node outreach-manager.js add "Name" "Type" "Email" ["Job Title"]');
+            } else {
+                addCompany(args[1], args[2], args[3], args[4]);
+            }
+            break;
+        case 'generate':
+            generateEmails();
+            break;
+        case 'send':
+            sendEmails(args.includes('--real'));
+            break;
+        default:
+            console.log('\n📢 Outreach Manager');
+            console.log('-------------------');
+            console.log('Commands:');
+            console.log('  list [status]       - List companies (optional filter by status)');
+            console.log('  add "Name" ...      - Add a new company');
+            console.log('  generate            - Generate emails for Pending companies');
+            console.log('  send [--real]       - Send emails for Generated companies');
+            console.log('');
+    }
 }
+
+module.exports = {
+    addCompany,
+    listCompanies,
+    generateEmails,
+    sendEmails,
+    loadDB,
+    saveDB
+};

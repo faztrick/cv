@@ -4,6 +4,7 @@ const fs = require('fs');
 const cvParser = require('./cv-parser');
 const stealth = require('./stealth-utils');
 const { AIFormAgent } = require('./ai-form-agent');
+const outreachManager = require('./outreach-manager');
 
 // Configuration
 const CONFIG = {
@@ -18,6 +19,8 @@ const CONFIG = {
     retryDelay: 2000,
     userAgent: stealth.getRandomUserAgent() // Random user agent
 };
+
+const EXTENSION_PATH = path.join(__dirname, '..', 'chrome-extension');
 
 // Utility: Retry wrapper for flaky operations
 async function withRetry(fn, attempts = CONFIG.retryAttempts, delayMs = CONFIG.retryDelay) {
@@ -101,11 +104,27 @@ class JobAutomator {
             const lockFile = path.join(CONFIG.userDataDir, 'SingletonLock');
             let isLocked = false;
             try {
-                isLocked = fs.existsSync(lockFile);
+                // Check if lock file exists and process is actually running (simple check)
+                if (fs.existsSync(lockFile)) {
+                    isLocked = true;
+                }
             } catch (e) {}
 
             if (isLocked) {
-                console.log('⚠️ Browser profile is locked (another instance running). Using fresh session...');
+                console.log('⚠️ Browser profile is locked. Trying to connect to existing instance (port 9222)...');
+                try {
+                    const browser = await chromium.connectOverCDP('http://localhost:9222');
+                    const context = browser.contexts()[0];
+                    if (!context) throw new Error('No open browser context found.');
+                    this.page = context.pages()[0] || await context.newPage();
+                    this.browser = browser;
+                    console.log('✅ Connected to existing browser session!');
+                    await stealth.applyStealthToPage(this.page);
+                    return; // Exit init, we are connected
+                } catch (connErr) {
+                    console.log('❌ Could not connect to existing instance:', connErr.message);
+                    console.log('   Proceeding with fresh session (login state might be lost)...');
+                }
             }
 
             // Always try persistent context first, fall back to regular launch on failure
@@ -121,6 +140,8 @@ class JobAutomator {
                     viewport: CONFIG.viewport,
                     channel: 'chromium', // Use Playwright's bundled Chromium, not system Chrome
                     args: [
+                        `--disable-extensions-except=${EXTENSION_PATH}`,
+                        `--load-extension=${EXTENSION_PATH}`,
                         '--disable-blink-features=AutomationControlled',
                         '--disable-features=IsolateOrigins,site-per-process',
                         '--no-sandbox',
@@ -317,8 +338,36 @@ class JobAutomator {
         return await this.aiAgent.answerQuestion(questionText);
     }
 
-    // Fill LinkedIn Easy Apply modal form (Delegates to AI Agent)
+    // Fill LinkedIn Easy Apply modal form (Delegates to AI Agent or Extension)
     async fillLinkedInForm(formModal) {
+        // Try using the extension via FAB first
+        try {
+            const fabBtn = this.page.locator('button[data-action="autoFill"]');
+            if (await fabBtn.count() > 0) {
+                if (await fabBtn.isVisible()) {
+                    console.log('   🧩 Clicking Extension Auto-Fill button...');
+                    await fabBtn.click();
+                    await this.randomDelay(1000, 2000);
+                    return; // Assume extension did the job
+                } else {
+                    // FAB might be closed
+                    const fabMain = this.page.locator('#cv-autoapply-fab .cv-fab-main');
+                    if (await fabMain.isVisible()) {
+                        await fabMain.click();
+                        await this.randomDelay(500);
+                        if (await fabBtn.isVisible()) {
+                            console.log('   🧩 Clicking Extension Auto-Fill button...');
+                            await fabBtn.click();
+                            await this.randomDelay(1000, 2000);
+                            return;
+                        }
+                    }
+                }
+            }
+        } catch (e) {
+            console.log('   ⚠️ Extension interaction failed:', e.message);
+        }
+
         if (!this.aiAgent) {
             console.log('⚠️ AI Agent not initialized');
             return;
@@ -326,6 +375,76 @@ class JobAutomator {
 
         console.log('   🤖 AI Agent taking over form filling...');
         await this.aiAgent.fillForm(formModal, CONFIG.pdfPath);
+    }
+
+    // --- GMAIL AUTOMATION ---
+
+    async sendGmailWeb(to, subject, body, attachmentPath = null) {
+        console.log(`📧 Sending email via Gmail Web to: ${to}`);
+        try {
+            // Open new tab for Gmail
+            const page = await this.browser.newPage();
+            await page.goto('https://mail.google.com', { waitUntil: 'domcontentloaded' });
+
+            // Check if logged in
+            if (await page.locator('a[href*="accounts.google.com/ServiceLogin"]').count() > 0) {
+                console.log('⚠️ Not logged in to Gmail. Please run "node scripts/setup-session.js" first.');
+                await page.close();
+                return false;
+            }
+
+            // Click Compose
+            console.log('   ✍️ Clicking Compose...');
+            await page.click('div[role="button"]:has-text("Compose")');
+
+            // Wait for compose window
+            const toField = page.locator('input[aria-label="To recipients"]'); // Selector might vary
+            await toField.waitFor({ state: 'visible', timeout: 10000 });
+
+            // Fill To
+            await toField.fill(to);
+            await page.keyboard.press('Enter');
+            await this.randomDelay(500, 1000);
+
+            // Fill Subject
+            const subjectField = page.locator('input[name="subjectbox"]');
+            await subjectField.fill(subject);
+            await this.randomDelay(500, 1000);
+
+            // Fill Body
+            const bodyField = page.locator('div[aria-label="Message Body"]');
+            await bodyField.fill(body);
+            await this.randomDelay(500, 1000);
+
+            // Attachment
+            if (attachmentPath && fs.existsSync(attachmentPath)) {
+                console.log('   📎 Attaching file...');
+                const attachInput = page.locator('input[type="file"][name="Filedata"]');
+                await attachInput.setInputFiles(attachmentPath);
+
+                // Wait for upload (progress bar to disappear)
+                await page.waitForSelector('div[role="progressbar"]', { state: 'hidden', timeout: 30000 });
+                await this.randomDelay(1000, 2000);
+            }
+
+            // Send
+            console.log('   🚀 Sending...');
+            // Ctrl+Enter is safer than finding the button sometimes
+            await bodyField.press('Control+Enter');
+
+            // Wait for "Message sent" toast
+            await page.waitForSelector('span:has-text("Message sent")', { timeout: 10000 });
+            console.log('   ✅ Email sent successfully via Gmail Web!');
+
+            await page.close();
+            return true;
+
+        } catch (e) {
+            console.log('   ❌ Gmail Web send failed:', e.message);
+            // Try to close page if open
+            try { if (page) await page.close(); } catch (_) {}
+            return false;
+        }
     }
 
     // --- NOTIFICATIONS ---
@@ -350,14 +469,26 @@ class JobAutomator {
 
     async sendEmailNotification(subject, body) {
         try {
-            const { spawn } = require('child_process');
-            const scriptPath = path.join(__dirname, 'send_email.py');
             const toEmail = process.env.NOTIFY_EMAIL || this.formData.email;
-
             if (!toEmail) return;
 
-            // Write body to temp file
-            const tempBodyPath = path.join(__dirname, '..', 'temp-email-body.txt');
+            // Try Gmail Web first if we have a browser session
+            if (this.browser) {
+                const sent = await this.sendGmailWeb(toEmail, subject, body);
+                if (sent) return;
+            }
+
+            // Fallback to Python SMTP
+            const { spawn } = require('child_process');
+            const scriptPath = path.join(__dirname, 'send_email.py');
+            const tempBodyPath = path.join(__dirname, '..', '.cache', 'temp-email-body.txt');
+
+            // Ensure cache directory exists
+            const cacheDir = path.dirname(tempBodyPath);
+            if (!fs.existsSync(cacheDir)) {
+                fs.mkdirSync(cacheDir, { recursive: true });
+            }
+
             fs.writeFileSync(tempBodyPath, body);
 
             const pythonProcess = spawn('python', [
@@ -399,6 +530,36 @@ class JobAutomator {
         });
     }
 
+    // --- TRACKING & OUTREACH ---
+
+    extractEmail(text) {
+        if (!text) return '';
+        // Simple regex for email extraction
+        const emailRegex = /[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}/g;
+        const matches = text.match(emailRegex);
+        // Filter out common false positives or generic emails if needed
+        if (matches) {
+            const valid = matches.find(e => !e.includes('indeed.com') && !e.includes('linkedin.com'));
+            return valid || '';
+        }
+        return '';
+    }
+
+    async trackApplication(company, title, platform, status = 'Applied', email = '') {
+        try {
+            console.log(`   📝 Tracking application: ${title} at ${company}`);
+            outreachManager.addCompany(company, platform, email, title, status);
+
+            // If we have an email, maybe generate an outreach email automatically?
+            if (email) {
+                console.log('   📧 Email found! Generating outreach draft...');
+                outreachManager.generateEmails(); // This processes all 'Pending' ones, but we might want to be more specific
+            }
+        } catch (e) {
+            console.log('   ⚠️ Failed to track application:', e.message);
+        }
+    }
+
     // --- INDEED AUTOMATION ---
 
     async runIndeed(keyword = 'Software Engineer', location = 'Dubai') {
@@ -413,7 +574,14 @@ class JobAutomator {
             await this.randomDelay(500, 1000);
 
             // Check if logged in - multiple possible selectors
-            const isLoggedIn = await this.page.locator('[data-gnav-element-name="AccountMenu"], [aria-label="Profile"], .gnav-AccountMenu').count() > 0;
+            const isLoggedIn = await this.page.locator([
+                '[data-gnav-element-name="AccountMenu"]',
+                '[aria-label="Profile"]',
+                '.gnav-AccountMenu',
+                '#ifl-GlobalMainNav-link-user',
+                'button[aria-label="Open profile menu"]',
+                '.gnav-header-1b6v969' // Sometimes dynamic, but worth a shot if stable
+            ].join(',')).count() > 0;
 
             if (!isLoggedIn) {
                 console.log('⚠️ Not logged in. Search works without login, but apply may require it.');
@@ -502,6 +670,14 @@ class JobAutomator {
                     await card.click({ timeout: 5000 });
                     await this.randomDelay(1500, 2500);
 
+                    // Extract email from description
+                    let email = '';
+                    try {
+                        const desc = await this.page.locator('#jobDescriptionText').innerText({ timeout: 2000 }).catch(() => '');
+                        email = this.extractEmail(desc);
+                        if (email) console.log(`   📧 Found email: ${email}`);
+                    } catch (e) {}
+
                     // Check for CAPTCHA after clicking
                     await this.checkForCaptcha();
 
@@ -529,11 +705,15 @@ class JobAutomator {
 
                     if (hasApplyButton) {
                         console.log('   ✨ Indeed Apply available! (Easy Apply)');
-                        await this.applyIndeedEasy();
+                        await this.applyIndeedEasy(title, company, email);
                     } else if (await companySiteButton.count() > 0) {
                         console.log('   🔗 External application link');
+                        // Track as pending/interested
+                        await this.trackApplication(company, title, 'Indeed', 'Pending', email);
                     } else {
                         console.log('   ❓ Application method unclear');
+                        // Track anyway if we have email
+                        if (email) await this.trackApplication(company, title, 'Indeed', 'Pending', email);
                     }
                 } catch (err) {
                     console.log(`   ⚠️ Error processing job ${i + 1}: ${err.message}`);
@@ -546,7 +726,7 @@ class JobAutomator {
         }
     }
 
-    async applyIndeedEasy() {
+    async applyIndeedEasy(title, company, email = '') {
         try {
             await this.page.click('#indeedApplyButton');
             console.log('   📝 Opened application modal...');
@@ -599,7 +779,8 @@ class JobAutomator {
                     await submitBtn.click();
                     await this.randomDelay(2000, 3000);
                     console.log('   ✅ Submitted!');
-                    await this.sendWhatsAppNotification(`Applied to Indeed job!`);
+                    await this.sendWhatsAppNotification(`Applied to Indeed job: ${title} at ${company}`);
+                    await this.trackApplication(company, title, 'Indeed', 'Applied', email);
                     break;
                 } else if (await reviewBtn.isVisible()) {
                     await reviewBtn.click();
@@ -642,6 +823,20 @@ class JobAutomator {
     }
 
     async fillIndeedForm(frame) {
+        // Try using the extension via FAB first
+        try {
+            // Note: The FAB is injected into the main page, but the form might be in an iframe.
+            // The extension content script runs in all frames, so the FAB might be inside the iframe too.
+            const fabBtn = frame.locator('button[data-action="autoFill"]');
+            if (await fabBtn.count() > 0) {
+                // ... logic to click FAB ...
+                // Simplified for iframe context where FAB might be squeezed
+                await fabBtn.click({ force: true });
+                console.log('   🧩 Clicking Extension Auto-Fill button (Indeed)...');
+                await this.randomDelay(1000, 2000);
+            }
+        } catch (e) {}
+
         if (!this.aiAgent) {
             console.log('⚠️ AI Agent not initialized');
             return;
@@ -701,22 +896,33 @@ class JobAutomator {
 
                 // Get title safely
                 let title = "Unknown Job";
+                let company = "Unknown Company";
                 try {
                     title = await job.locator('.job-card-list__title').innerText();
+                    company = await job.locator('.job-card-container__primary-description').innerText();
                 } catch (e) {}
 
-                console.log(`\n👉 Checking: ${title}`);
+                console.log(`\n👉 Checking: ${title} at ${company}`);
 
                 await job.click();
                 await this.randomDelay(1000, 2000);
+
+                // Extract email
+                let email = '';
+                try {
+                    const desc = await this.page.locator('.jobs-description__content').innerText({ timeout: 2000 }).catch(() => '');
+                    email = this.extractEmail(desc);
+                    if (email) console.log(`   📧 Found email: ${email}`);
+                } catch (e) {}
 
                 const easyApplyBtn = this.page.locator('.jobs-apply-button--top-card button');
                 if (await easyApplyBtn.isVisible() && await easyApplyBtn.innerText() === 'Easy Apply') {
                     console.log('   ✨ Easy Apply button found!');
                     await easyApplyBtn.click();
-                    await this.handleLinkedInModal();
+                    await this.handleLinkedInModal(title, company, email);
                 } else {
                     console.log('   ❌ No Easy Apply button (or already applied)');
+                    if (email) await this.trackApplication(company, title, 'LinkedIn', 'Pending', email);
                 }
             }
 
@@ -725,7 +931,7 @@ class JobAutomator {
         }
     }
 
-    async handleLinkedInModal() {
+async handleLinkedInModal(title, company, email = '') {
         try {
             console.log('   📝 Handling LinkedIn Modal...');
             const modal = this.page.locator('.jobs-easy-apply-modal');
@@ -746,7 +952,8 @@ class JobAutomator {
                     console.log('   ✅ Submitted!');
 
                     // Send notification
-                    await this.sendWhatsAppNotification(`Applied to LinkedIn job!`);
+                    await this.sendWhatsAppNotification(`Applied to LinkedIn job: ${title} at ${company}`);
+                    await this.trackApplication(company, title, 'LinkedIn', 'Applied', email);
                     break;
                 } else if (await reviewBtn.isVisible()) {
                     await reviewBtn.click();
@@ -765,7 +972,8 @@ class JobAutomator {
                     // If no buttons and no errors, maybe we are done or stuck
                     if (attempts > 5 && await modal.locator('h2').innerText().then(t => t.includes('submitted'))) {
                          console.log('   ✅ Application submitted!');
-                         await this.sendWhatsAppNotification(`Applied to LinkedIn job!`);
+                         await this.sendWhatsAppNotification(`Applied to LinkedIn job: ${title} at ${company}`);
+                         await this.trackApplication(company, title, 'LinkedIn', 'Applied', email);
                          break;
                     }
                 }
@@ -859,29 +1067,33 @@ class JobAutomator {
 }
 
 // Main execution
-(async () => {
-    const automator = new JobAutomator();
-    const platform = process.argv[2] || 'indeed'; // Default to indeed
-    const keyword = process.argv[3] || 'Senior Full Stack Developer';
-    const location = process.argv[4] || 'Dubai';
+if (require.main === module) {
+    (async () => {
+        const automator = new JobAutomator();
+        const platform = process.argv[2] || 'indeed'; // Default to indeed
+        const keyword = process.argv[3] || 'Senior Full Stack Developer';
+        const location = process.argv[4] || 'Dubai';
 
-    try {
-        await automator.init();
+        try {
+            await automator.init();
 
-        switch (platform.toLowerCase()) {
-            case 'indeed': await automator.runIndeed(keyword, location); break;
-            case 'linkedin': await automator.runLinkedIn(keyword, location); break;
-            case 'dubizzle': await automator.runDubizzle(keyword, location); break;
-            case 'bayt': await automator.runBayt(keyword, location); break;
-            case 'gulftalent': await automator.runGulfTalent(keyword, location); break;
-            case 'naukrigulf': await automator.runNaukriGulf(keyword, location); break;
-            default: console.log('Unknown platform. Use indeed, linkedin, dubizzle, bayt, gulftalent, or naukrigulf');
+            switch (platform.toLowerCase()) {
+                case 'indeed': await automator.runIndeed(keyword, location); break;
+                case 'linkedin': await automator.runLinkedIn(keyword, location); break;
+                case 'dubizzle': await automator.runDubizzle(keyword, location); break;
+                case 'bayt': await automator.runBayt(keyword, location); break;
+                case 'gulftalent': await automator.runGulfTalent(keyword, location); break;
+                case 'naukrigulf': await automator.runNaukriGulf(keyword, location); break;
+                default: console.log('Unknown platform. Use indeed, linkedin, dubizzle, bayt, gulftalent, or naukrigulf');
+            }
+
+        } catch (error) {
+            console.error('Fatal Error:', error);
+        } finally {
+            console.log('\n🏁 Automation finished. Browser will remain open for inspection if not headless.');
+            // await automator.close(); // Keep open for user to see
         }
+    })();
+}
 
-    } catch (error) {
-        console.error('Fatal Error:', error);
-    } finally {
-        console.log('\n🏁 Automation finished. Browser will remain open for inspection if not headless.');
-        // await automator.close(); // Keep open for user to see
-    }
-})();
+module.exports = { JobAutomator, CONFIG };
