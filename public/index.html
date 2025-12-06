@@ -3,6 +3,12 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script>
+            // Domain routing for UAECodes.com
+            if (window.location.hostname.includes('uaecodes.com') && window.location.pathname === '/' && !window.location.search.includes('portfolio')) {
+                window.location.replace('/uaecodes.html');
+            }
+        </script>
         <meta name="description" content="Muhammed Fasil PV - Senior Software Engineer specializing in AI/ML, IoT, Flutter & Node.js. 10+ years building intelligent systems for retail, ERP, and automation in Dubai, UAE." />
         <meta name="keywords" content="Muhammed Fasil PV, Software Engineer Dubai, AI Developer UAE, IoT Solutions, Flutter Developer, Node.js, Senior Developer, ERP Systems, Machine Learning" />
         <meta name="author" content="Muhammed Fasil PV" />
