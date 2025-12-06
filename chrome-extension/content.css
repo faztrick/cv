@@ -1,0 +1,123 @@
+/* CV Auto-Apply Extension - Content Styles */
+
+/* Floating Action Button */
+#cv-autoapply-fab {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999999;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+#cv-autoapply-fab .cv-fab-main {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+  border: none;
+}
+
+#cv-autoapply-fab .cv-fab-main:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+#cv-autoapply-fab .cv-fab-menu {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+}
+
+#cv-autoapply-fab.open .cv-fab-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+#cv-autoapply-fab .cv-fab-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
+}
+
+#cv-autoapply-fab .cv-fab-btn:hover {
+  transform: scale(1.15);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+#cv-autoapply-fab .cv-fab-btn[data-action="autoFill"] {
+  background: #10b981;
+  color: white;
+}
+
+#cv-autoapply-fab .cv-fab-btn[data-action="highlight"] {
+  background: #f59e0b;
+  color: white;
+}
+
+#cv-autoapply-fab .cv-fab-btn[data-action="apply"] {
+  background: #6366f1;
+  color: white;
+}
+
+/* Highlight animation for filled fields */
+@keyframes cv-autoapply-highlight {
+  0% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(102, 126, 234, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(102, 126, 234, 0); }
+}
+
+.cv-autoapply-filled {
+  animation: cv-autoapply-highlight 0.5s ease-out;
+}
+
+/* Success notification toast */
+.cv-autoapply-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999999;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+  animation: cv-toast-in 0.3s ease-out;
+}
+
+@keyframes cv-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

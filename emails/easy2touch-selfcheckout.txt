@@ -1,0 +1,26 @@
+To: info@easy2touch.com, support@easy2touch.com
+Subject: Software Engineer Application - Self-Checkout Solutions Specialist | Dubai-Based
+
+Dear Easy2Touch Team,
+
+I'm a Dubai-based Software Engineer with 10+ years of experience in retail technology, including hands-on development of AI-powered Self-Checkout Kiosks using YOLO object detection for loss prevention and Android AIDL for hardware control.
+
+Key highlights relevant to your NCR self-checkout solutions:
+
+• Built Self-Checkout AI Kiosk with YOLO-based missed-scan detection and LED/GPIO automation
+• Developed IdolMEA ERP serving 50+ retail branches across GCC (POS, QMS, IoT integration)
+• Expert in Flutter, React, Node.js, Python, C# - full-stack retail systems
+• Experienced with MQTT, edge computing, and device integration for kiosk deployments
+• Based in Dubai, immediately available
+
+I'm very interested in contributing to Easy2Touch's self-checkout implementations as the premier NCR partner in the Middle East.
+
+Please find my portfolio at: https://www.uaecodes.com
+
+Looking forward to discussing how I can add value to your team.
+
+Best regards,
+Muhammed Fasil PV
++971 555 923 545
+faztrick@gmail.com
+LinkedIn: linkedin.com/in/faztrick

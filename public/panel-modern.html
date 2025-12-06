@@ -67,6 +67,10 @@
                 <i class="fas fa-paper-plane w-5"></i>
                 <span class="text-sm">Outreach</span>
             </a>
+            <a onclick="showTab('applications')" id="nav-applications" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-700/50 cursor-pointer">
+                <i class="fas fa-tasks w-5"></i>
+                <span class="text-sm">Applications</span>
+            </a>
             <a onclick="showTab('search')" id="nav-search" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-700/50 cursor-pointer">
                 <i class="fas fa-search w-5"></i>
                 <span class="text-sm">Job Search</span>
@@ -87,6 +91,14 @@
                 <i class="fas fa-cog w-5"></i>
                 <span class="text-sm">Tools</span>
             </a>
+            <a onclick="showTab('scrapers')" id="nav-scrapers" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-700/50 cursor-pointer">
+                <i class="fas fa-spider w-5"></i>
+                <span class="text-sm">Scrapers</span>
+            </a>
+            <a onclick="showTab('automation')" id="nav-automation" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-700/50 cursor-pointer">
+                <i class="fas fa-robot w-5"></i>
+                <span class="text-sm">Automation</span>
+            </a>
         </nav>
         <div class="absolute bottom-0 left-0 right-0 p-3 border-t border-gray-700">
             <div class="flex items-center gap-2 text-xs text-gray-400">
@@ -101,22 +113,44 @@
 
         <!-- Dashboard Tab -->
         <div id="tab-dashboard" class="tab-content space-y-4">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Dashboard Overview</h2>
-                <button class="btn-icon bg-white dark:bg-gray-800 shadow hover:shadow-lg">
+            <!-- Profile Header -->
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-xl p-5 shadow-lg text-white">
+                <div class="flex items-center gap-4">
+                    <div class="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center text-2xl font-bold">
+                        MF
+                    </div>
+                    <div class="flex-1">
+                        <h2 id="dash-name" class="text-xl font-bold">Loading...</h2>
+                        <p id="dash-title" class="text-sm text-blue-100">Loading...</p>
+                        <div class="flex flex-wrap gap-3 mt-2 text-xs">
+                            <span id="dash-location" class="flex items-center gap-1"><i class="fas fa-map-marker-alt"></i> Dubai, UAE</span>
+                            <span id="dash-email" class="flex items-center gap-1"><i class="fas fa-envelope"></i> faztrick@gmail.com</span>
+                            <span id="dash-phone" class="flex items-center gap-1"><i class="fas fa-phone"></i> +971 555923545</span>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <span id="dash-status" class="px-3 py-1 bg-green-500 rounded-full text-xs font-medium">Available</span>
+                        <p class="text-xs mt-2 text-blue-100">Valid UAE Work Visa</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-between items-center">
+                <h2 class="text-xl font-bold text-gray-800 dark:text-white">Dashboard Overview</h2>
+                <button onclick="loadDashboardData()" class="btn-icon bg-white dark:bg-gray-800 shadow hover:shadow-lg">
                     <i class="fas fa-sync text-gray-600 dark:text-gray-300"></i>
                 </button>
             </div>
 
             <!-- Stats Grid -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm card-hover">
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-xs text-gray-500 dark:text-gray-400">Applications</p>
                             <p class="text-2xl font-bold text-gray-800 dark:text-white mt-1" id="stat-companies">0</p>
                         </div>
-                        <div class="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                        <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
                             <i class="fas fa-building text-blue-600 dark:text-blue-400"></i>
                         </div>
                     </div>
@@ -127,7 +161,7 @@
                             <p class="text-xs text-gray-500 dark:text-gray-400">Pending</p>
                             <p class="text-2xl font-bold text-gray-800 dark:text-white mt-1" id="stat-pending">0</p>
                         </div>
-                        <div class="w-12 h-12 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
+                        <div class="w-10 h-10 rounded-lg bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
                             <i class="fas fa-clock text-yellow-600 dark:text-yellow-400"></i>
                         </div>
                     </div>
@@ -138,7 +172,7 @@
                             <p class="text-xs text-gray-500 dark:text-gray-400">Sent</p>
                             <p class="text-2xl font-bold text-gray-800 dark:text-white mt-1" id="stat-sent">0</p>
                         </div>
-                        <div class="w-12 h-12 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+                        <div class="w-10 h-10 rounded-lg bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
                             <i class="fas fa-check-circle text-green-600 dark:text-green-400"></i>
                         </div>
                     </div>
@@ -147,11 +181,47 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-xs text-gray-500 dark:text-gray-400">Projects</p>
-                            <p class="text-2xl font-bold text-gray-800 dark:text-white mt-1">12</p>
+                            <p class="text-2xl font-bold text-gray-800 dark:text-white mt-1" id="stat-projects">11</p>
                         </div>
-                        <div class="w-12 h-12 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+                        <div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
                             <i class="fas fa-folder text-purple-600 dark:text-purple-400"></i>
                         </div>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm card-hover">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">Skills</p>
+                            <p class="text-2xl font-bold text-gray-800 dark:text-white mt-1" id="stat-skills">0</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 flex items-center justify-center">
+                            <i class="fas fa-code text-cyan-600 dark:text-cyan-400"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills & Experience Row -->
+            <div class="grid md:grid-cols-2 gap-4">
+                <!-- Top Skills -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                    <h3 class="font-semibold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
+                        <i class="fas fa-star text-yellow-500"></i>
+                        Top Skills
+                    </h3>
+                    <div id="dash-skills" class="flex flex-wrap gap-2">
+                        <!-- Skills populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Experience Timeline -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                    <h3 class="font-semibold text-gray-800 dark:text-white mb-3 flex items-center gap-2">
+                        <i class="fas fa-briefcase text-blue-500"></i>
+                        Experience
+                    </h3>
+                    <div id="dash-experience" class="space-y-3">
+                        <!-- Experience populated by JS -->
                     </div>
                 </div>
             </div>
@@ -162,7 +232,7 @@
                     <i class="fas fa-bolt text-yellow-500"></i>
                     Quick Actions
                 </h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-3">
                     <button onclick="runCommand('npm run parse-cv')" class="compact-btn bg-blue-600 hover:bg-blue-700 text-white">
                         <i class="fas fa-sync mr-2"></i>Parse CV
                     </button>
@@ -172,34 +242,49 @@
                     <button onclick="showTab('search')" class="compact-btn bg-green-600 hover:bg-green-700 text-white">
                         <i class="fas fa-search mr-2"></i>Job Search
                     </button>
-                    <button onclick="showTab('portfolio')" class="compact-btn bg-orange-600 hover:bg-orange-700 text-white">
-                        <i class="fas fa-eye mr-2"></i>View Portfolio
+                    <button onclick="showTab('whatsapp')" class="compact-btn bg-emerald-600 hover:bg-emerald-700 text-white">
+                        <i class="fab fa-whatsapp mr-2"></i>WhatsApp
+                    </button>
+                    <button onclick="window.open('cv.html', '_blank')" class="compact-btn bg-orange-600 hover:bg-orange-700 text-white">
+                        <i class="fas fa-eye mr-2"></i>View CV
                     </button>
                 </div>
             </div>
 
-            <!-- Activity Feed -->
+            <!-- Highlights -->
             <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
-                <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Recent Activity</h3>
-                <div class="space-y-3">
-                    <div class="flex items-center gap-3 text-sm">
-                        <div class="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                            <i class="fas fa-file-alt text-blue-600"></i>
-                        </div>
-                        <div class="flex-1">
-                            <p class="text-gray-800 dark:text-white font-medium">CV Updated</p>
-                            <p class="text-xs text-gray-500">2 hours ago</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3 text-sm">
-                        <div class="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                            <i class="fas fa-paper-plane text-green-600"></i>
-                        </div>
-                        <div class="flex-1">
-                            <p class="text-gray-800 dark:text-white font-medium">5 Applications Sent</p>
-                            <p class="text-xs text-gray-500">5 hours ago</p>
-                        </div>
-                    </div>
+                <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                    <i class="fas fa-trophy text-amber-500"></i>
+                    Career Highlights
+                </h3>
+                <div id="dash-highlights" class="grid md:grid-cols-2 gap-3">
+                    <!-- Highlights populated by JS -->
+                </div>
+            </div>
+
+            <!-- Links -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                    <i class="fas fa-link text-blue-500"></i>
+                    Quick Links
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <a href="https://uaecodes.com" target="_blank" class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+                        <i class="fas fa-globe text-blue-500"></i>
+                        <span class="text-sm text-gray-700 dark:text-gray-300">Portfolio</span>
+                    </a>
+                    <a href="https://linkedin.com/in/faztrick" target="_blank" class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+                        <i class="fab fa-linkedin text-blue-600"></i>
+                        <span class="text-sm text-gray-700 dark:text-gray-300">LinkedIn</span>
+                    </a>
+                    <a href="https://github.com/faztrick" target="_blank" class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+                        <i class="fab fa-github text-gray-800 dark:text-white"></i>
+                        <span class="text-sm text-gray-700 dark:text-gray-300">GitHub</span>
+                    </a>
+                    <a href="https://wa.me/971555923545" target="_blank" class="flex items-center gap-2 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition">
+                        <i class="fab fa-whatsapp text-green-500"></i>
+                        <span class="text-sm text-gray-700 dark:text-gray-300">WhatsApp</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -286,33 +371,277 @@
                 </button>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-4">
-                <!-- Project Card -->
+            <div id="portfolio-grid" class="grid md:grid-cols-3 gap-4">
+                <!-- IdolMEA ERP -->
                 <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm card-hover">
-                    <div class="h-40 bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                        <i class="fas fa-code text-6xl text-white opacity-30"></i>
+                    <div class="h-32 bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center relative">
+                        <i class="fas fa-store text-5xl text-white opacity-30"></i>
+                        <span class="absolute top-2 right-2 px-2 py-1 bg-green-500 text-white text-xs rounded-full">Live</span>
                     </div>
                     <div class="p-4">
-                        <h3 class="font-semibold text-gray-800 dark:text-white">E-Commerce Platform</h3>
-                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-2">Full-stack web application with React and Node.js</p>
-                        <div class="flex gap-2 mt-3">
-                            <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs">React</span>
-                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded text-xs">Node.js</span>
+                        <h3 class="font-semibold text-gray-800 dark:text-white">IdolMEA ERP</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Enterprise retail platform integrating POS, QMS, IoT automation & AI analytics for 50+ GCC branches</p>
+                        <div class="flex flex-wrap gap-1 mt-3">
+                            <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs">Flutter</span>
+                            <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded text-xs">Node.js</span>
+                            <span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-xs">Docker</span>
                         </div>
-                        <div class="flex gap-2 mt-4">
-                            <button class="compact-btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-800 dark:text-white flex-1">
-                                <i class="fas fa-eye mr-1"></i>View
-                            </button>
-                            <button class="btn-icon hover:bg-gray-100 dark:hover:bg-gray-700"><i class="fas fa-edit text-gray-600"></i></button>
+                        <div class="flex gap-2 mt-3">
+                            <a href="projects/idolmea-erp.html" target="_blank" class="compact-btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-800 dark:text-white flex-1 text-center text-xs">
+                                <i class="fas fa-eye mr-1"></i>Details
+                            </a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Add More Project Cards Here -->
+                <!-- AI Self-Checkout Kiosk -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm card-hover">
+                    <div class="h-32 bg-gradient-to-br from-red-500 to-orange-600 flex items-center justify-center relative">
+                        <i class="fas fa-robot text-5xl text-white opacity-30"></i>
+                        <span class="absolute top-2 right-2 px-2 py-1 bg-yellow-500 text-white text-xs rounded-full">Gitex 2024</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">AI Self-Checkout Kiosk</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">YOLO-based theft detection with LED/GPIO feedback via Android AIDL interface</p>
+                        <div class="flex flex-wrap gap-1 mt-3">
+                            <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded text-xs">Android</span>
+                            <span class="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded text-xs">YOLO</span>
+                            <span class="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded text-xs">AIDL</span>
+                        </div>
+                        <div class="flex gap-2 mt-3">
+                            <a href="projects/kiosk.html" target="_blank" class="compact-btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-800 dark:text-white flex-1 text-center text-xs">
+                                <i class="fas fa-eye mr-1"></i>Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IdolQueue QMS -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm card-hover">
+                    <div class="h-32 bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center relative">
+                        <i class="fas fa-users-line text-5xl text-white opacity-30"></i>
+                        <span class="absolute top-2 right-2 px-2 py-1 bg-green-500 text-white text-xs rounded-full">Live</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">IdolQueue (i-QMS)</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Offline-first queue management with MQTT automation & WhatsApp/Telegram notifications</p>
+                        <div class="flex flex-wrap gap-1 mt-3">
+                            <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs">Flutter</span>
+                            <span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-xs">MQTT</span>
+                            <span class="px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded text-xs">Hive</span>
+                        </div>
+                        <div class="flex gap-2 mt-3">
+                            <a href="projects/idolqueue.html" target="_blank" class="compact-btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-800 dark:text-white flex-1 text-center text-xs">
+                                <i class="fas fa-eye mr-1"></i>Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VPN Mesh Network -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm card-hover">
+                    <div class="h-32 bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center relative">
+                        <i class="fas fa-network-wired text-5xl text-white opacity-30"></i>
+                        <span class="absolute top-2 right-2 px-2 py-1 bg-blue-500 text-white text-xs rounded-full">Infrastructure</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">Enterprise VPN Mesh</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">8+ node WireGuard VPN mesh on MikroTik routers for secure multi-branch connectivity</p>
+                        <div class="flex flex-wrap gap-1 mt-3">
+                            <span class="px-2 py-0.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded text-xs">MikroTik</span>
+                            <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs">WireGuard</span>
+                            <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded text-xs">MQTT</span>
+                        </div>
+                        <div class="flex gap-2 mt-3">
+                            <a href="projects/idolvpn.html" target="_blank" class="compact-btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-800 dark:text-white flex-1 text-center text-xs">
+                                <i class="fas fa-eye mr-1"></i>Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Queue Agent -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm card-hover">
+                    <div class="h-32 bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center relative">
+                        <i class="fas fa-brain text-5xl text-white opacity-30"></i>
+                        <span class="absolute top-2 right-2 px-2 py-1 bg-purple-500 text-white text-xs rounded-full">AI</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">AI Queue Agent</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">LangChain-based ERP assistant with voice (Whisper) & text commands for queue management</p>
+                        <div class="flex flex-wrap gap-1 mt-3">
+                            <span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-xs">LangChain</span>
+                            <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs">OpenAI</span>
+                            <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded text-xs">Whisper</span>
+                        </div>
+                        <div class="flex gap-2 mt-3">
+                            <a href="projects/agents.html" target="_blank" class="compact-btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-800 dark:text-white flex-1 text-center text-xs">
+                                <i class="fas fa-eye mr-1"></i>Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hybrid Sync Engine -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm card-hover">
+                    <div class="h-32 bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center relative">
+                        <i class="fas fa-sync-alt text-5xl text-white opacity-30"></i>
+                        <span class="absolute top-2 right-2 px-2 py-1 bg-cyan-500 text-white text-xs rounded-full">Core</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">Hybrid Sync Engine</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Offline-first MySQL ↔ Hive delta tracking with conflict resolution & auto recovery</p>
+                        <div class="flex flex-wrap gap-1 mt-3">
+                            <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs">MySQL</span>
+                            <span class="px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded text-xs">Hive</span>
+                            <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded text-xs">Node.js</span>
+                        </div>
+                        <div class="flex gap-2 mt-3">
+                            <button class="compact-btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-800 dark:text-white flex-1 text-xs">
+                                <i class="fas fa-code mr-1"></i>Internal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ESL Tools -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm card-hover">
+                    <div class="h-32 bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center relative">
+                        <i class="fas fa-tags text-5xl text-white opacity-30"></i>
+                        <span class="absolute top-2 right-2 px-2 py-1 bg-amber-500 text-white text-xs rounded-full">IoT</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">ESL Management Tools</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Solum/OEPL electronic shelf label management, ESP32 flash tools & MQTT controllers</p>
+                        <div class="flex flex-wrap gap-1 mt-3">
+                            <span class="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded text-xs">ESP32</span>
+                            <span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-xs">MQTT</span>
+                            <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs">Python</span>
+                        </div>
+                        <div class="flex gap-2 mt-3">
+                            <a href="projects/esl.html" target="_blank" class="compact-btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-800 dark:text-white flex-1 text-center text-xs">
+                                <i class="fas fa-eye mr-1"></i>Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vlogfied -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm card-hover">
+                    <div class="h-32 bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center relative">
+                        <i class="fas fa-video text-5xl text-white opacity-30"></i>
+                        <span class="absolute top-2 right-2 px-2 py-1 bg-pink-500 text-white text-xs rounded-full">App</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">Vlogfied</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Video-based restaurant discovery app with AI content tagging and smart search</p>
+                        <div class="flex flex-wrap gap-1 mt-3">
+                            <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs">Flutter</span>
+                            <span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-xs">AI</span>
+                            <span class="px-2 py-0.5 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded text-xs">Firebase</span>
+                        </div>
+                        <div class="flex gap-2 mt-3">
+                            <a href="projects/vlogfied.html" target="_blank" class="compact-btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-800 dark:text-white flex-1 text-center text-xs">
+                                <i class="fas fa-eye mr-1"></i>Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BookzNow / Hozzo -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm card-hover">
+                    <div class="h-32 bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center relative">
+                        <i class="fas fa-calendar-check text-5xl text-white opacity-30"></i>
+                        <span class="absolute top-2 right-2 px-2 py-1 bg-indigo-500 text-white text-xs rounded-full">App</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">BookzNow / Hozzo</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Flutter MVVM booking platform for clinics/salons with Material 3 UI & real-time chatbots</p>
+                        <div class="flex flex-wrap gap-1 mt-3">
+                            <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs">Flutter</span>
+                            <span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-xs">MVVM</span>
+                            <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded text-xs">Material 3</span>
+                        </div>
+                        <div class="flex gap-2 mt-3">
+                            <a href="projects/hozzo.html" target="_blank" class="compact-btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-800 dark:text-white flex-1 text-center text-xs">
+                                <i class="fas fa-eye mr-1"></i>Details
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SincA ERP -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm card-hover">
+                    <div class="h-32 bg-gradient-to-br from-emerald-600 to-green-700 flex items-center justify-center relative">
+                        <i class="fas fa-building text-5xl text-white opacity-30"></i>
+                        <span class="absolute top-2 right-2 px-2 py-1 bg-emerald-500 text-white text-xs rounded-full">Enterprise</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">SincA ERP</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Comprehensive ERP with AI dashboards, OCR systems, predictive models & WhatsApp bots</p>
+                        <div class="flex flex-wrap gap-1 mt-3">
+                            <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs">Flutter</span>
+                            <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded text-xs">Node.js</span>
+                            <span class="px-2 py-0.5 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded text-xs">Python</span>
+                        </div>
+                        <div class="flex gap-2 mt-3">
+                            <button class="compact-btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-800 dark:text-white flex-1 text-xs">
+                                <i class="fas fa-lock mr-1"></i>Private
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LampAidlInterface -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm card-hover">
+                    <div class="h-32 bg-gradient-to-br from-yellow-500 to-amber-600 flex items-center justify-center relative">
+                        <i class="fas fa-lightbulb text-5xl text-white opacity-30"></i>
+                        <span class="absolute top-2 right-2 px-2 py-1 bg-yellow-500 text-white text-xs rounded-full">Hardware</span>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-800 dark:text-white">LampAidlInterface</h3>
+                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Android Kotlin + Flutter IPC bridge for real-time LED/lamp automation in retail devices</p>
+                        <div class="flex flex-wrap gap-1 mt-3">
+                            <span class="px-2 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded text-xs">Kotlin</span>
+                            <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded text-xs">Flutter</span>
+                            <span class="px-2 py-0.5 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded text-xs">AIDL</span>
+                        </div>
+                        <div class="flex gap-2 mt-3">
+                            <button class="compact-btn bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-800 dark:text-white flex-1 text-xs">
+                                <i class="fas fa-code mr-1"></i>Internal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add New Project Card -->
                 <div class="bg-white dark:bg-gray-800 rounded-xl border-2 border-dashed border-gray-300 dark:border-gray-600 flex items-center justify-center p-8 cursor-pointer hover:border-blue-500 transition-colors" onclick="openProjectModal()">
                     <div class="text-center">
                         <i class="fas fa-plus-circle text-4xl text-gray-400 mb-2"></i>
                         <p class="text-sm text-gray-600 dark:text-gray-400">Add New Project</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portfolio Summary -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                <h3 class="font-semibold text-gray-800 dark:text-white mb-3">Portfolio Summary</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                    <div class="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                        <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">12</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Total Projects</p>
+                    </div>
+                    <div class="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
+                        <p class="text-2xl font-bold text-green-600 dark:text-green-400">3</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">Live Systems</p>
+                    </div>
+                    <div class="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                        <p class="text-2xl font-bold text-purple-600 dark:text-purple-400">4</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">AI/ML Projects</p>
+                    </div>
+                    <div class="p-3 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
+                        <p class="text-2xl font-bold text-orange-600 dark:text-orange-400">5</p>
+                        <p class="text-xs text-gray-600 dark:text-gray-400">IoT/Hardware</p>
                     </div>
                 </div>
             </div>
@@ -351,97 +680,267 @@
             </div>
         </div>
 
-        <!-- Job Search Tab (Compact Grid) -->
-        <div id="tab-search" class="tab-content hidden space-y-4">
-            <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Job Search Automation</h2>
-
-            <div class="grid md:grid-cols-3 gap-4">
-                <!-- Indeed -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                    <div class="flex items-center gap-2 mb-3">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Indeed_logo.svg" alt="Indeed" class="h-6">
-                        <h3 class="font-semibold text-gray-800 dark:text-white">Indeed</h3>
-                    </div>
-                    <input type="text" id="indeed-keyword" value="Software Engineer" placeholder="Keyword" class="compact-input w-full mb-2">
-                    <input type="text" id="indeed-location" value="Dubai" placeholder="Location" class="compact-input w-full mb-3">
-                    <button onclick="runSearch('indeed')" class="compact-btn bg-blue-600 hover:bg-blue-700 text-white w-full">
-                        <i class="fas fa-play mr-2"></i>Start Search
+        <!-- Applications Tracker Tab -->
+        <div id="tab-applications" class="tab-content hidden space-y-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Applications Tracker</h2>
+                <div class="flex gap-2">
+                    <button onclick="loadFollowUpReminders()" class="compact-btn bg-yellow-500 hover:bg-yellow-600 text-white">
+                        <i class="fas fa-bell mr-2"></i>Follow-ups
                     </button>
-                </div>
-
-                <!-- LinkedIn -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                    <div class="flex items-center gap-2 mb-3">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png" alt="LinkedIn" class="h-6">
-                        <h3 class="font-semibold text-gray-800 dark:text-white">LinkedIn</h3>
-                    </div>
-                    <input type="text" id="linkedin-keyword" value="Software Engineer" placeholder="Keyword" class="compact-input w-full mb-2">
-                    <input type="text" id="linkedin-location" value="Dubai" placeholder="Location" class="compact-input w-full mb-3">
-                    <button onclick="runSearch('linkedin')" class="compact-btn bg-blue-800 hover:bg-blue-900 text-white w-full">
-                        <i class="fas fa-play mr-2"></i>Start Search
-                    </button>
-                </div>
-
-                <!-- Dubizzle -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center text-white text-xs font-bold">D</div>
-                        <h3 class="font-semibold text-gray-800 dark:text-white">Dubizzle</h3>
-                    </div>
-                    <input type="text" id="dubizzle-keyword" value="Software Engineer" placeholder="Keyword" class="compact-input w-full mb-2">
-                    <input type="text" id="dubizzle-location" value="Dubai" placeholder="Location" class="compact-input w-full mb-3">
-                    <button onclick="runSearch('dubizzle')" class="compact-btn bg-red-600 hover:bg-red-700 text-white w-full">
-                        <i class="fas fa-play mr-2"></i>Start Search
-                    </button>
-                </div>
-
-                <!-- Bayt -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">B</div>
-                        <h3 class="font-semibold text-gray-800 dark:text-white">Bayt</h3>
-                    </div>
-                    <input type="text" id="bayt-keyword" value="Software Engineer" placeholder="Keyword" class="compact-input w-full mb-2">
-                    <input type="text" id="bayt-location" value="Dubai" placeholder="Location" class="compact-input w-full mb-3">
-                    <button onclick="runSearch('bayt')" class="compact-btn bg-blue-500 hover:bg-blue-600 text-white w-full">
-                        <i class="fas fa-play mr-2"></i>Start Search
-                    </button>
-                </div>
-
-                <!-- GulfTalent -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs font-bold">G</div>
-                        <h3 class="font-semibold text-gray-800 dark:text-white">GulfTalent</h3>
-                    </div>
-                    <input type="text" id="gulftalent-keyword" value="Software Engineer" placeholder="Keyword" class="compact-input w-full mb-2">
-                    <input type="text" id="gulftalent-location" value="Dubai" placeholder="Location" class="compact-input w-full mb-3">
-                    <button onclick="runSearch('gulftalent')" class="compact-btn bg-orange-500 hover:bg-orange-600 text-white w-full">
-                        <i class="fas fa-play mr-2"></i>Start Search
-                    </button>
-                </div>
-
-                <!-- NaukriGulf -->
-                <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="w-6 h-6 bg-indigo-600 rounded-full flex items-center justify-center text-white text-xs font-bold">N</div>
-                        <h3 class="font-semibold text-gray-800 dark:text-white">NaukriGulf</h3>
-                    </div>
-                    <input type="text" id="naukrigulf-keyword" value="Software Engineer" placeholder="Keyword" class="compact-input w-full mb-2">
-                    <input type="text" id="naukrigulf-location" value="Dubai" placeholder="Location" class="compact-input w-full mb-3">
-                    <button onclick="runSearch('naukrigulf')" class="compact-btn bg-indigo-600 hover:bg-indigo-700 text-white w-full">
-                        <i class="fas fa-play mr-2"></i>Start Search
+                    <button onclick="loadApplications()" class="compact-btn bg-blue-600 hover:bg-blue-700 text-white">
+                        <i class="fas fa-sync mr-2"></i>Refresh
                     </button>
                 </div>
             </div>
 
-            <!-- Console Output -->
+            <!-- Status Filter Tabs -->
+            <div class="flex gap-2 mb-4 flex-wrap">
+                <button onclick="filterApplications('all')" class="app-filter-btn active compact-btn bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300" data-filter="all">
+                    All <span id="count-all" class="ml-1 text-xs bg-gray-400 text-white px-1.5 rounded-full">0</span>
+                </button>
+                <button onclick="filterApplications('Pending')" class="app-filter-btn compact-btn bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300" data-filter="Pending">
+                    <i class="fas fa-clock text-yellow-500 mr-1"></i>Pending <span id="count-pending" class="ml-1 text-xs bg-yellow-500 text-white px-1.5 rounded-full">0</span>
+                </button>
+                <button onclick="filterApplications('Applied')" class="app-filter-btn compact-btn bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300" data-filter="Applied">
+                    <i class="fas fa-paper-plane text-blue-500 mr-1"></i>Applied <span id="count-applied" class="ml-1 text-xs bg-blue-500 text-white px-1.5 rounded-full">0</span>
+                </button>
+                <button onclick="filterApplications('Followed Up')" class="app-filter-btn compact-btn bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300" data-filter="Followed Up">
+                    <i class="fas fa-reply text-purple-500 mr-1"></i>Followed Up <span id="count-followed" class="ml-1 text-xs bg-purple-500 text-white px-1.5 rounded-full">0</span>
+                </button>
+                <button onclick="filterApplications('Interview')" class="app-filter-btn compact-btn bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300" data-filter="Interview">
+                    <i class="fas fa-comments text-green-500 mr-1"></i>Interview <span id="count-interview" class="ml-1 text-xs bg-green-500 text-white px-1.5 rounded-full">0</span>
+                </button>
+                <button onclick="filterApplications('Rejected')" class="app-filter-btn compact-btn bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300" data-filter="Rejected">
+                    <i class="fas fa-times text-red-500 mr-1"></i>Rejected <span id="count-rejected" class="ml-1 text-xs bg-red-500 text-white px-1.5 rounded-full">0</span>
+                </button>
+            </div>
+
+            <!-- Follow-up Reminders Alert -->
+            <div id="followup-alert" class="hidden bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-xl p-4 mb-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-bell text-amber-500 text-xl animate-pulse"></i>
+                        <div>
+                            <h4 class="font-semibold text-amber-800 dark:text-amber-200">Follow-up Reminders</h4>
+                            <p id="followup-count" class="text-sm text-amber-600 dark:text-amber-300">0 applications need follow-up</p>
+                        </div>
+                    </div>
+                    <button onclick="document.getElementById('followup-alert').classList.add('hidden')" class="text-amber-500 hover:text-amber-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div id="followup-list" class="mt-3 space-y-2">
+                    <!-- Follow-up items -->
+                </div>
+            </div>
+
+            <!-- Applications Table -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50 dark:bg-gray-700 text-xs uppercase text-gray-700 dark:text-gray-300">
+                            <tr>
+                                <th class="px-4 py-3 text-left">Company</th>
+                                <th class="px-4 py-3 text-left">Role</th>
+                                <th class="px-4 py-3 text-left">Status</th>
+                                <th class="px-4 py-3 text-left">Applied</th>
+                                <th class="px-4 py-3 text-left">Follow-up</th>
+                                <th class="px-4 py-3 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="applications-table" class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Search Tab (Compact Grid) -->
+        <div id="tab-search" class="tab-content hidden space-y-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Job Search & Auto-Apply</h2>
+                <div class="flex gap-2">
+                    <button onclick="loadIndeedJobs()" class="compact-btn bg-blue-600 hover:bg-blue-700 text-white">
+                        <i class="fas fa-sync mr-2"></i>Refresh Jobs
+                    </button>
+                    <button onclick="viewIndeedStats()" class="compact-btn bg-purple-600 hover:bg-purple-700 text-white">
+                        <i class="fas fa-chart-bar mr-2"></i>Stats
+                    </button>
+                </div>
+            </div>
+
+            <!-- Indeed Auto-Apply Section -->
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl p-5 shadow-lg text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Indeed_logo.svg" alt="Indeed" class="h-8 bg-white p-1 rounded">
+                        <div>
+                            <h3 class="text-lg font-bold">Indeed UAE Auto-Apply</h3>
+                            <p class="text-sm text-blue-100">Automated job search and application</p>
+                        </div>
+                    </div>
+                    <div id="indeed-agent-status" class="flex items-center gap-2 px-3 py-1 bg-white/20 rounded-full">
+                        <div class="w-2 h-2 bg-gray-300 rounded-full"></div>
+                        <span class="text-sm">Ready</span>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-4 gap-4 mb-4">
+                    <div>
+                        <label class="text-xs text-blue-100">Search Query</label>
+                        <input type="text" id="indeed-search-query" value="Software Engineer" class="compact-input w-full mt-1 bg-white/10 border-white/30 text-white placeholder-blue-200">
+                    </div>
+                    <div>
+                        <label class="text-xs text-blue-100">Location</label>
+                        <input type="text" id="indeed-search-location" value="Dubai" class="compact-input w-full mt-1 bg-white/10 border-white/30 text-white placeholder-blue-200">
+                    </div>
+                    <div>
+                        <label class="text-xs text-blue-100">Max Applications</label>
+                        <input type="number" id="indeed-max-apps" value="10" min="1" max="50" class="compact-input w-full mt-1 bg-white/10 border-white/30 text-white">
+                    </div>
+                    <div>
+                        <label class="text-xs text-blue-100">Min Match Score</label>
+                        <input type="number" id="indeed-min-match" value="40" min="0" max="100" class="compact-input w-full mt-1 bg-white/10 border-white/30 text-white">
+                    </div>
+                </div>
+
+                <div class="flex gap-3">
+                    <button onclick="startIndeedSearch()" class="compact-btn bg-white text-blue-600 hover:bg-blue-50 flex-1 py-3">
+                        <i class="fas fa-search mr-2"></i>Search Jobs
+                    </button>
+                    <button onclick="startIndeedAutoApply(false)" class="compact-btn bg-yellow-500 text-white hover:bg-yellow-600 flex-1 py-3">
+                        <i class="fas fa-play mr-2"></i>Dry Run (Test)
+                    </button>
+                    <button onclick="startIndeedAutoApply(true)" class="compact-btn bg-green-500 text-white hover:bg-green-600 flex-1 py-3">
+                        <i class="fas fa-rocket mr-2"></i>Auto-Apply
+                    </button>
+                </div>
+            </div>
+
+            <!-- Indeed Credentials -->
+            <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                    <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-key text-yellow-500"></i>
+                        Indeed Login Credentials
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-xs text-gray-600 dark:text-gray-400">Email</label>
+                            <input type="email" id="indeed-email" placeholder="your-email@example.com" class="compact-input w-full mt-1">
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-600 dark:text-gray-400">Password</label>
+                            <input type="password" id="indeed-password" placeholder="••••••••" class="compact-input w-full mt-1">
+                        </div>
+                        <button onclick="saveIndeedCredentials()" class="compact-btn bg-blue-600 hover:bg-blue-700 text-white w-full">
+                            <i class="fas fa-save mr-2"></i>Save Credentials
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                    <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-cog text-gray-500"></i>
+                        Auto-Apply Settings
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-800 dark:text-white">Auto-Upload Resume</p>
+                                <p class="text-xs text-gray-500">Upload CV to applications</p>
+                            </div>
+                            <input type="checkbox" id="indeed-auto-resume" checked class="rounded text-blue-600">
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-800 dark:text-white">Skip Applied Jobs</p>
+                                <p class="text-xs text-gray-500">Don't re-apply to same company</p>
+                            </div>
+                            <input type="checkbox" id="indeed-skip-applied" checked class="rounded text-blue-600">
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-800 dark:text-white">Headless Mode</p>
+                                <p class="text-xs text-gray-500">Run browser in background</p>
+                            </div>
+                            <input type="checkbox" id="indeed-headless" class="rounded text-blue-600">
+                        </div>
+                        <button onclick="updateIndeedProfile()" class="compact-btn bg-purple-600 hover:bg-purple-700 text-white w-full">
+                            <i class="fas fa-upload mr-2"></i>Update Indeed Profile Resume
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Job Results Table -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+                <div class="p-4 bg-gray-50 dark:bg-gray-700 flex justify-between items-center">
+                    <h3 class="font-semibold text-gray-800 dark:text-white flex items-center gap-2">
+                        <i class="fas fa-briefcase text-blue-500"></i>
+                        Found Jobs
+                        <span id="indeed-jobs-count" class="text-xs bg-blue-500 text-white px-2 py-0.5 rounded-full">0</span>
+                    </h3>
+                    <div class="flex gap-2">
+                        <button onclick="applyToSelected()" class="compact-btn bg-green-600 hover:bg-green-700 text-white text-xs">
+                            <i class="fas fa-paper-plane mr-1"></i>Apply Selected
+                        </button>
+                        <button onclick="exportJobsCSV()" class="compact-btn bg-gray-600 hover:bg-gray-700 text-white text-xs">
+                            <i class="fas fa-download mr-1"></i>Export
+                        </button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto max-h-96">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-100 dark:bg-gray-600 text-xs uppercase text-gray-700 dark:text-gray-300 sticky top-0">
+                            <tr>
+                                <th class="px-3 py-2 text-left"><input type="checkbox" id="select-all-jobs" onchange="toggleSelectAllJobs()" class="rounded"></th>
+                                <th class="px-3 py-2 text-left">Job Title</th>
+                                <th class="px-3 py-2 text-left">Company</th>
+                                <th class="px-3 py-2 text-left">Location</th>
+                                <th class="px-3 py-2 text-left">Salary</th>
+                                <th class="px-3 py-2 text-center">Match</th>
+                                <th class="px-3 py-2 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="indeed-jobs-table" class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <tr><td colspan="7" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">Click "Search Jobs" to find matching positions</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Application Log -->
             <div class="bg-gray-900 rounded-xl p-4 shadow-sm">
                 <div class="flex justify-between items-center mb-2">
-                    <span class="text-sm text-green-400 font-mono"><i class="fas fa-terminal mr-2"></i>Console</span>
-                    <button onclick="document.getElementById('console-output').innerHTML = ''" class="text-xs text-gray-500 hover:text-white">Clear</button>
+                    <span class="text-sm text-green-400 font-mono"><i class="fas fa-terminal mr-2"></i>Application Log</span>
+                    <button onclick="clearIndeedLog()" class="text-xs text-gray-500 hover:text-white">Clear</button>
                 </div>
-                <div id="console-output" class="h-48 overflow-y-auto text-xs font-mono text-green-400 whitespace-pre-wrap p-2 bg-black rounded">Waiting for commands...</div>
+                <div id="indeed-log" class="h-48 overflow-y-auto text-xs font-mono text-green-400 whitespace-pre-wrap p-2 bg-black rounded">Ready to search Indeed UAE...</div>
+            </div>
+
+            <!-- Other Job Boards (Compact) -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Other Job Boards</h3>
+                <div class="grid md:grid-cols-5 gap-3">
+                    <button onclick="runSearch('linkedin')" class="compact-btn bg-blue-800 hover:bg-blue-900 text-white">
+                        <i class="fab fa-linkedin mr-2"></i>LinkedIn
+                    </button>
+                    <button onclick="runSearch('dubizzle')" class="compact-btn bg-red-600 hover:bg-red-700 text-white">
+                        <i class="fas fa-globe mr-2"></i>Dubizzle
+                    </button>
+                    <button onclick="runSearch('bayt')" class="compact-btn bg-blue-500 hover:bg-blue-600 text-white">
+                        <i class="fas fa-globe mr-2"></i>Bayt
+                    </button>
+                    <button onclick="runSearch('gulftalent')" class="compact-btn bg-orange-500 hover:bg-orange-600 text-white">
+                        <i class="fas fa-globe mr-2"></i>GulfTalent
+                    </button>
+                    <button onclick="runSearch('naukrigulf')" class="compact-btn bg-indigo-600 hover:bg-indigo-700 text-white">
+                        <i class="fas fa-globe mr-2"></i>NaukriGulf
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -573,6 +1072,49 @@
                 </div>
             </div>
 
+            <!-- Send CV & Cover Letter -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                    <i class="fas fa-file-alt text-blue-500"></i>
+                    Send CV & Cover Letter
+                </h3>
+                <div class="space-y-3">
+                    <div>
+                        <label class="text-xs text-gray-600 dark:text-gray-400">Recipient Phone (with country code)</label>
+                        <input type="text" id="wa-cv-number" placeholder="971501234567" class="compact-input w-full mt-1">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-600 dark:text-gray-400">Recipient Name</label>
+                        <input type="text" id="wa-cv-name" placeholder="Hiring Manager" class="compact-input w-full mt-1">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-600 dark:text-gray-400">Position/Role</label>
+                        <input type="text" id="wa-cv-role" placeholder="Software Engineer" class="compact-input w-full mt-1">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-600 dark:text-gray-400">Cover Letter Template</label>
+                        <select id="wa-cv-template" class="compact-input w-full mt-1" onchange="loadCoverLetterPreview()">
+                            <option value="default">Default Introduction</option>
+                            <option value="uae-software">UAE Software Developer</option>
+                            <option value="emirates-genai">Emirates GenAI</option>
+                            <option value="custom">Custom Message</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-600 dark:text-gray-400">Message Preview</label>
+                        <textarea id="wa-cv-message" class="compact-input w-full mt-1 h-32 resize-none text-xs"></textarea>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="sendCVWhatsApp()" class="compact-btn bg-green-600 hover:bg-green-700 text-white flex-1">
+                            <i class="fab fa-whatsapp mr-2"></i>Send via WhatsApp
+                        </button>
+                        <button onclick="openCVWhatsAppLink()" class="compact-btn bg-gray-600 hover:bg-gray-700 text-white" title="Open in WhatsApp Web">
+                            <i class="fas fa-external-link-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- Operations & Config -->
             <div class="grid md:grid-cols-2 gap-4">
                 <!-- Test Message -->
@@ -666,6 +1208,343 @@
             </div>
         </div>
 
+        <!-- Scrapers Tab -->
+        <div id="tab-scrapers" class="tab-content hidden space-y-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Contact Scrapers</h2>
+                <div class="flex gap-2">
+                    <button onclick="exportScrapedContacts()" class="compact-btn bg-green-600 hover:bg-green-700 text-white">
+                        <i class="fas fa-download mr-2"></i>Export CSV
+                    </button>
+                    <button onclick="clearScrapedContacts()" class="compact-btn bg-red-600 hover:bg-red-700 text-white">
+                        <i class="fas fa-trash mr-2"></i>Clear All
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <!-- URL Scraper -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                    <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-globe text-blue-500"></i>
+                        URL Scraper
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-xs text-gray-600 dark:text-gray-400">Website URL</label>
+                            <input type="url" id="scrape-url" placeholder="https://example.com/contact" class="compact-input w-full mt-1">
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="scrapeURL()" class="compact-btn bg-blue-600 hover:bg-blue-700 text-white flex-1">
+                                <i class="fas fa-spider mr-2"></i>Scrape URL
+                            </button>
+                        </div>
+                        <div id="scrape-status" class="text-xs text-gray-500 dark:text-gray-400 hidden">
+                            <i class="fas fa-spinner fa-spin mr-1"></i>Scraping...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Extractor -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                    <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-file-alt text-purple-500"></i>
+                        Text Extractor
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-xs text-gray-600 dark:text-gray-400">Paste Text Content</label>
+                            <textarea id="scrape-text" placeholder="Paste any text containing emails or phone numbers..." class="compact-input w-full mt-1 h-24 resize-none"></textarea>
+                        </div>
+                        <button onclick="extractFromText()" class="compact-btn bg-purple-600 hover:bg-purple-700 text-white w-full">
+                            <i class="fas fa-search mr-2"></i>Extract Contacts
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bulk URL Scraper -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                    <i class="fas fa-list text-orange-500"></i>
+                    Bulk URL Scraper
+                </h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs text-gray-600 dark:text-gray-400">URLs (one per line)</label>
+                        <textarea id="scrape-bulk-urls" placeholder="https://company1.com/contact&#10;https://company2.com/about&#10;https://company3.com/team" class="compact-input w-full mt-1 h-32 resize-none font-mono text-xs"></textarea>
+                    </div>
+                    <div class="flex flex-col justify-between">
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="scrape-deep" class="rounded text-blue-600">
+                                <label for="scrape-deep" class="text-sm text-gray-700 dark:text-gray-300">Deep scrape (follow links)</label>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="scrape-linkedin" class="rounded text-blue-600">
+                                <label for="scrape-linkedin" class="text-sm text-gray-700 dark:text-gray-300">Include LinkedIn profiles</label>
+                            </div>
+                        </div>
+                        <button onclick="scrapeBulkURLs()" class="compact-btn bg-orange-600 hover:bg-orange-700 text-white w-full mt-4">
+                            <i class="fas fa-bolt mr-2"></i>Scrape All URLs
+                        </button>
+                    </div>
+                </div>
+                <div id="bulk-scrape-progress" class="mt-3 hidden">
+                    <div class="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400 mb-1">
+                        <span>Progress</span>
+                        <span id="bulk-progress-text">0/0</span>
+                    </div>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div id="bulk-progress-bar" class="bg-orange-500 h-2 rounded-full transition-all" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Scraped Results -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
+                <div class="p-4 bg-gray-50 dark:bg-gray-700 flex justify-between items-center">
+                    <h3 class="font-semibold text-gray-800 dark:text-white flex items-center gap-2">
+                        <i class="fas fa-address-book text-green-500"></i>
+                        Scraped Contacts
+                        <span id="scraped-count" class="text-xs bg-green-500 text-white px-2 py-0.5 rounded-full">0</span>
+                    </h3>
+                    <div class="flex gap-2">
+                        <button onclick="addSelectedToCompanies()" class="compact-btn bg-blue-600 hover:bg-blue-700 text-white text-xs">
+                            <i class="fas fa-plus mr-1"></i>Add to Companies
+                        </button>
+                    </div>
+                </div>
+                <div class="overflow-x-auto max-h-96">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-100 dark:bg-gray-600 text-xs uppercase text-gray-700 dark:text-gray-300 sticky top-0">
+                            <tr>
+                                <th class="px-4 py-2 text-left"><input type="checkbox" id="select-all-contacts" onchange="toggleSelectAll()" class="rounded"></th>
+                                <th class="px-4 py-2 text-left">Source</th>
+                                <th class="px-4 py-2 text-left">Email</th>
+                                <th class="px-4 py-2 text-left">Phone</th>
+                                <th class="px-4 py-2 text-left">Name</th>
+                                <th class="px-4 py-2 text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="scraped-contacts-table" class="divide-y divide-gray-200 dark:divide-gray-700">
+                            <tr><td colspan="6" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No contacts scraped yet. Enter a URL or paste text to extract contacts.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Browser Automation Tab -->
+        <div id="tab-automation" class="tab-content hidden space-y-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Browser Automation Tools</h2>
+                <div id="browser-status" class="flex items-center gap-2 px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full">
+                    <div class="w-2 h-2 bg-gray-400 rounded-full" id="browser-status-dot"></div>
+                    <span class="text-sm text-gray-600 dark:text-gray-300" id="browser-status-text">No Browser</span>
+                </div>
+            </div>
+
+            <!-- Browser Control -->
+            <div class="bg-gradient-to-r from-purple-600 to-indigo-700 rounded-xl p-5 shadow-lg text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-robot text-3xl"></i>
+                        <div>
+                            <h3 class="text-lg font-bold">Puppeteer Browser Control</h3>
+                            <p class="text-sm text-purple-200">Automated browser for job applications</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-4 gap-3">
+                    <button onclick="launchBrowser()" class="compact-btn bg-white text-purple-600 hover:bg-purple-50 py-3">
+                        <i class="fas fa-play mr-2"></i>Launch Browser
+                    </button>
+                    <button onclick="launchBrowser(true)" class="compact-btn bg-purple-500 text-white hover:bg-purple-400 py-3">
+                        <i class="fas fa-eye-slash mr-2"></i>Headless Mode
+                    </button>
+                    <button onclick="closeBrowser()" class="compact-btn bg-red-500 text-white hover:bg-red-400 py-3">
+                        <i class="fas fa-stop mr-2"></i>Close Browser
+                    </button>
+                    <button onclick="takeScreenshot()" class="compact-btn bg-blue-500 text-white hover:bg-blue-400 py-3">
+                        <i class="fas fa-camera mr-2"></i>Screenshot
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <!-- Navigation -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                    <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-compass text-blue-500"></i>
+                        Navigate
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-xs text-gray-600 dark:text-gray-400">URL</label>
+                            <input type="url" id="nav-url" placeholder="https://example.com" class="compact-input w-full mt-1">
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="navigateTo()" class="compact-btn bg-blue-600 hover:bg-blue-700 text-white flex-1">
+                                <i class="fas fa-arrow-right mr-2"></i>Go
+                            </button>
+                            <button onclick="navigateTo(true)" class="compact-btn bg-gray-600 hover:bg-gray-700 text-white">
+                                <i class="fas fa-redo mr-2"></i>Reload
+                            </button>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="browserBack()" class="compact-btn bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 text-gray-800 dark:text-white flex-1">
+                                <i class="fas fa-arrow-left mr-2"></i>Back
+                            </button>
+                            <button onclick="browserForward()" class="compact-btn bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 text-gray-800 dark:text-white flex-1">
+                                <i class="fas fa-arrow-right mr-2"></i>Forward
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="text-xs text-gray-500 dark:text-gray-400 mb-2">Quick Links</h4>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="quickNav('indeed')" class="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded hover:bg-blue-200">Indeed UAE</button>
+                            <button onclick="quickNav('linkedin')" class="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded hover:bg-blue-200">LinkedIn Jobs</button>
+                            <button onclick="quickNav('bayt')" class="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded hover:bg-blue-200">Bayt</button>
+                            <button onclick="quickNav('gulftalent')" class="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded hover:bg-blue-200">GulfTalent</button>
+                            <button onclick="quickNav('naukrigulf')" class="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded hover:bg-blue-200">NaukriGulf</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Auto-Fill Form -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                    <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-magic text-purple-500"></i>
+                        Universal Auto-Fill
+                    </h3>
+                    <div class="space-y-3">
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Auto-fill job application forms with your CV data</p>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="auto-fill-resume" checked class="rounded text-purple-600">
+                            <label for="auto-fill-resume" class="text-sm text-gray-700 dark:text-gray-300">Auto-upload resume</label>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="auto-fill-cover" class="rounded text-purple-600">
+                            <label for="auto-fill-cover" class="text-sm text-gray-700 dark:text-gray-300">Generate cover letter</label>
+                        </div>
+                        <button onclick="autoFillCurrentPage()" class="compact-btn bg-purple-600 hover:bg-purple-700 text-white w-full">
+                            <i class="fas fa-magic mr-2"></i>Auto-Fill Current Page
+                        </button>
+                        <button onclick="autoFillAndSubmit()" class="compact-btn bg-green-600 hover:bg-green-700 text-white w-full">
+                            <i class="fas fa-paper-plane mr-2"></i>Auto-Fill & Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <!-- Click & Type -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                    <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-mouse-pointer text-green-500"></i>
+                        Click & Type
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-xs text-gray-600 dark:text-gray-400">CSS Selector</label>
+                            <input type="text" id="click-selector" placeholder="button.apply, #submit-btn" class="compact-input w-full mt-1 font-mono text-xs">
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="clickElement()" class="compact-btn bg-green-600 hover:bg-green-700 text-white flex-1">
+                                <i class="fas fa-mouse-pointer mr-2"></i>Click
+                            </button>
+                            <button onclick="highlightElement()" class="compact-btn bg-yellow-500 hover:bg-yellow-600 text-white flex-1">
+                                <i class="fas fa-highlighter mr-2"></i>Highlight
+                            </button>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-600 dark:text-gray-400">Type Text</label>
+                            <input type="text" id="type-text" placeholder="Text to type..." class="compact-input w-full mt-1">
+                        </div>
+                        <button onclick="typeInElement()" class="compact-btn bg-blue-600 hover:bg-blue-700 text-white w-full">
+                            <i class="fas fa-keyboard mr-2"></i>Type in Selected Element
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Execute Script -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                    <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-code text-orange-500"></i>
+                        Execute JavaScript
+                    </h3>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="text-xs text-gray-600 dark:text-gray-400">JavaScript Code</label>
+                            <textarea id="exec-script" placeholder="document.querySelector('button').click();" class="compact-input w-full mt-1 h-24 font-mono text-xs resize-none"></textarea>
+                        </div>
+                        <button onclick="executeScript()" class="compact-btn bg-orange-600 hover:bg-orange-700 text-white w-full">
+                            <i class="fas fa-play mr-2"></i>Execute
+                        </button>
+                        <div class="flex gap-2">
+                            <button onclick="setScriptPreset('scroll')" class="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">Scroll Down</button>
+                            <button onclick="setScriptPreset('wait')" class="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">Wait 3s</button>
+                            <button onclick="setScriptPreset('getLinks')" class="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">Get Links</button>
+                            <button onclick="setScriptPreset('getEmails')" class="text-xs px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded">Get Emails</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Batch Operations -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                    <i class="fas fa-list-check text-indigo-500"></i>
+                    Batch Auto-Apply
+                </h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-xs text-gray-600 dark:text-gray-400">Job URLs (one per line)</label>
+                        <textarea id="batch-job-urls" placeholder="https://www.indeed.ae/job/...&#10;https://www.bayt.com/job/...&#10;https://www.linkedin.com/jobs/view/..." class="compact-input w-full mt-1 h-32 font-mono text-xs resize-none"></textarea>
+                    </div>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-2">
+                            <input type="checkbox" id="batch-dry-run" checked class="rounded text-indigo-600">
+                            <label for="batch-dry-run" class="text-sm text-gray-700 dark:text-gray-300">Dry Run (don't submit)</label>
+                        </div>
+                        <div>
+                            <label class="text-xs text-gray-600 dark:text-gray-400">Delay between jobs (seconds)</label>
+                            <input type="number" id="batch-delay" value="10" min="5" max="60" class="compact-input w-full mt-1">
+                        </div>
+                        <button onclick="startBatchApply()" class="compact-btn bg-indigo-600 hover:bg-indigo-700 text-white w-full">
+                            <i class="fas fa-bolt mr-2"></i>Start Batch Apply
+                        </button>
+                        <button onclick="stopBatchApply()" class="compact-btn bg-red-600 hover:bg-red-700 text-white w-full">
+                            <i class="fas fa-stop mr-2"></i>Stop
+                        </button>
+                    </div>
+                </div>
+                <div id="batch-progress" class="mt-4 hidden">
+                    <div class="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400 mb-1">
+                        <span>Progress</span>
+                        <span id="batch-progress-text">0/0</span>
+                    </div>
+                    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div id="batch-progress-bar" class="bg-indigo-500 h-2 rounded-full transition-all" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Automation Log -->
+            <div class="bg-gray-900 rounded-xl p-4 shadow-sm">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm text-cyan-400 font-mono"><i class="fas fa-terminal mr-2"></i>Automation Log</span>
+                    <div class="flex gap-2">
+                        <button onclick="clearAutomationLog()" class="text-xs text-gray-500 hover:text-white">Clear</button>
+                        <button onclick="exportAutomationLog()" class="text-xs text-gray-500 hover:text-white">Export</button>
+                    </div>
+                </div>
+                <div id="automation-log" class="h-48 overflow-y-auto text-xs font-mono text-cyan-400 whitespace-pre-wrap p-2 bg-black rounded">Browser automation ready. Launch browser to begin...</div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Modals -->
@@ -719,6 +1598,10 @@
                 loadWhatsAppConfig();
             }
             else stopWhatsAppPolling();
+            if(tabId === 'search') {
+                loadIndeedJobs();
+                loadIndeedConfig();
+            }
         }
 
         // --- CV Data Management ---
@@ -1309,6 +2192,1159 @@
         // Init
         loadStats();
         loadAIConfig();
+        initCVMessageTemplates();
+        loadDashboardData();
+
+        // --- Dashboard Data Loading ---
+        async function loadDashboardData() {
+            try {
+                const res = await fetch('/api/cv');
+                const data = await res.json();
+
+                // Profile Header
+                if (data.personalInfo) {
+                    document.getElementById('dash-name').textContent = data.personalInfo.name || 'Name';
+                    document.getElementById('dash-title').textContent = data.personalInfo.title || 'Title';
+                    document.getElementById('dash-location').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.personalInfo.location || 'Location'}`;
+                    document.getElementById('dash-email').innerHTML = `<i class="fas fa-envelope"></i> ${data.personalInfo.email || 'Email'}`;
+                    document.getElementById('dash-phone').innerHTML = `<i class="fas fa-phone"></i> ${data.personalInfo.phone || 'Phone'}`;
+                }
+
+                // Availability
+                if (data.availability) {
+                    document.getElementById('dash-status').textContent = data.availability.status || 'Available';
+                }
+
+                // Skills
+                if (data.skills && Array.isArray(data.skills)) {
+                    const skillsContainer = document.getElementById('dash-skills');
+                    const topSkills = data.skills.slice(0, 15); // Show top 15
+                    skillsContainer.innerHTML = topSkills.map(skill =>
+                        `<span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs">${skill}</span>`
+                    ).join('');
+                    document.getElementById('stat-skills').textContent = data.skills.length;
+                }
+
+                // Experience
+                if (data.experience && Array.isArray(data.experience)) {
+                    const expContainer = document.getElementById('dash-experience');
+                    expContainer.innerHTML = data.experience.map(exp => `
+                        <div class="flex items-start gap-3 text-sm border-l-2 border-blue-500 pl-3">
+                            <div class="flex-1">
+                                <p class="font-medium text-gray-800 dark:text-white">${exp.role}</p>
+                                <p class="text-xs text-gray-600 dark:text-gray-400">${exp.company} • ${exp.duration}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+
+                // Projects count
+                if (data.projects && Array.isArray(data.projects)) {
+                    document.getElementById('stat-projects').textContent = data.projects.length;
+                }
+
+                // Highlights
+                if (data.highlights && Array.isArray(data.highlights)) {
+                    const highlightsContainer = document.getElementById('dash-highlights');
+                    highlightsContainer.innerHTML = data.highlights.map(h => `
+                        <div class="flex items-center gap-2 p-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
+                            <i class="fas fa-star text-amber-500 text-xs"></i>
+                            <span class="text-sm text-gray-700 dark:text-gray-300">${h}</span>
+                        </div>
+                    `).join('');
+                }
+
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+            }
+        }
+
+        // --- CV & Cover Letter WhatsApp Functions ---
+        const cvMessageTemplates = {
+            'default': `Hi {name},
+
+I'm Muhammed Fasil, a Senior Full Stack Developer with 10+ years of experience in Flutter, React, Node.js, and AI/IoT systems.
+
+I'm interested in the {role} position and would love to discuss how my expertise in ERP, POS, and retail automation can benefit your team.
+
+📄 My CV: https://uaecodes.com/cv.html
+📧 Email: faztrick@gmail.com
+📞 Phone: +971 555923545
+
+Looking forward to connecting!
+
+Best regards,
+Muhammed Fasil`,
+            'uae-software': `Hi {name},
+
+I'm reaching out regarding the {role} opportunity.
+
+With 10+ years building enterprise systems (ERP, POS, QMS) and expertise in Flutter, React, Node.js, and AI/ML integration, I'm confident I can contribute to your team's success.
+
+Key highlights:
+• Led IdolMEA ERP deployment across 50+ GCC retail branches
+• Built AI Self-Checkout with YOLO detection (Gitex Dubai 2024)
+• Expert in offline-first architectures & IoT integration
+
+📄 Full CV: https://uaecodes.com/cv.html
+
+Currently in Dubai with valid work visa, available immediately.
+
+Best regards,
+Muhammed Fasil
+📞 +971 555923545`,
+            'emirates-genai': `Hi {name},
+
+I'm excited about the {role} position at Emirates.
+
+My background combines:
+• 10+ years Full Stack development (Flutter, React, Node.js)
+• Hands-on AI/ML: OpenAI, LangChain, YOLO, Whisper integration
+• Enterprise deployments: ERP systems serving 50+ branches
+
+I've successfully delivered AI-powered retail solutions including an AI Self-Checkout Kiosk showcased at Gitex Dubai 2024.
+
+📄 Portfolio & CV: https://uaecodes.com/cv.html
+
+Available for immediate start in Dubai.
+
+Best regards,
+Muhammed Fasil
+📞 +971 555923545`,
+            'custom': ''
+        };
+
+        function initCVMessageTemplates() {
+            loadCoverLetterPreview();
+        }
+
+        function loadCoverLetterPreview() {
+            const template = document.getElementById('wa-cv-template').value;
+            const name = document.getElementById('wa-cv-name').value || 'Hiring Manager';
+            const role = document.getElementById('wa-cv-role').value || 'Software Engineer';
+
+            let message = cvMessageTemplates[template] || '';
+            message = message.replace(/{name}/g, name).replace(/{role}/g, role);
+
+            document.getElementById('wa-cv-message').value = message;
+        }
+
+        // Update preview when name or role changes
+        document.addEventListener('DOMContentLoaded', () => {
+            const nameInput = document.getElementById('wa-cv-name');
+            const roleInput = document.getElementById('wa-cv-role');
+            if (nameInput) nameInput.addEventListener('input', loadCoverLetterPreview);
+            if (roleInput) roleInput.addEventListener('input', loadCoverLetterPreview);
+        });
+
+        async function sendCVWhatsApp() {
+            const number = document.getElementById('wa-cv-number').value;
+            const message = document.getElementById('wa-cv-message').value;
+
+            if (!number) {
+                alert('Please enter the recipient phone number');
+                return;
+            }
+
+            if (!message) {
+                alert('Please enter a message');
+                return;
+            }
+
+            addWhatsAppLog(`Sending CV to ${number}...`, 'info');
+
+            try {
+                const res = await fetch('/api/whatsapp/send', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ number, message })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    addWhatsAppLog('✓ CV & Cover Letter sent successfully!', 'success');
+                    alert('CV sent successfully!');
+                } else {
+                    throw new Error(data.error);
+                }
+            } catch (e) {
+                addWhatsAppLog(`Failed to send: ${e.message}`, 'error');
+                alert('Failed to send: ' + e.message + '\n\nTry using the external link button instead.');
+            }
+        }
+
+        function openCVWhatsAppLink() {
+            const number = document.getElementById('wa-cv-number').value;
+            const message = document.getElementById('wa-cv-message').value;
+
+            if (!number) {
+                alert('Please enter the recipient phone number');
+                return;
+            }
+
+            const cleanNumber = number.replace(/\D/g, '');
+            const encodedMessage = encodeURIComponent(message);
+            const waUrl = `https://wa.me/${cleanNumber}?text=${encodedMessage}`;
+
+            window.open(waUrl, '_blank');
+            addWhatsAppLog(`Opened WhatsApp link for ${cleanNumber}`, 'info');
+        }
+
+        // --- APPLICATIONS TRACKER ---
+        let applicationsData = [];
+        let currentFilter = 'all';
+
+        async function loadApplications() {
+            try {
+                const res = await fetch('/api/companies');
+                applicationsData = await res.json();
+                updateApplicationCounts();
+                renderApplicationsTable();
+                checkFollowUpReminders();
+            } catch (error) {
+                console.error('Error loading applications:', error);
+            }
+        }
+
+        function updateApplicationCounts() {
+            const counts = {
+                all: applicationsData.length,
+                pending: applicationsData.filter(c => c.status === 'Pending' || !c.status).length,
+                applied: applicationsData.filter(c => c.status === 'Applied').length,
+                followed: applicationsData.filter(c => c.status === 'Followed Up').length,
+                interview: applicationsData.filter(c => c.status === 'Interview').length,
+                rejected: applicationsData.filter(c => c.status === 'Rejected').length
+            };
+
+            document.getElementById('count-all').textContent = counts.all;
+            document.getElementById('count-pending').textContent = counts.pending;
+            document.getElementById('count-applied').textContent = counts.applied;
+            document.getElementById('count-followed').textContent = counts.followed;
+            document.getElementById('count-interview').textContent = counts.interview;
+            document.getElementById('count-rejected').textContent = counts.rejected;
+        }
+
+        function filterApplications(status) {
+            currentFilter = status;
+            document.querySelectorAll('.app-filter-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-blue-600', 'text-white');
+                btn.classList.add('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+            });
+            const activeBtn = document.querySelector(`.app-filter-btn[data-filter="${status}"]`);
+            if (activeBtn) {
+                activeBtn.classList.remove('bg-gray-200', 'dark:bg-gray-700', 'text-gray-700', 'dark:text-gray-300');
+                activeBtn.classList.add('active', 'bg-blue-600', 'text-white');
+            }
+            renderApplicationsTable();
+        }
+
+        function renderApplicationsTable() {
+            const tbody = document.getElementById('applications-table');
+            let filtered = applicationsData;
+
+            if (currentFilter !== 'all') {
+                filtered = applicationsData.filter(c => {
+                    if (currentFilter === 'Pending') return c.status === 'Pending' || !c.status;
+                    return c.status === currentFilter;
+                });
+            }
+
+            tbody.innerHTML = filtered.map(company => {
+                const status = company.status || 'Pending';
+                const statusColors = {
+                    'Pending': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300',
+                    'Applied': 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
+                    'Followed Up': 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300',
+                    'Interview': 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
+                    'Rejected': 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
+                    'Offer': 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300'
+                };
+                const statusClass = statusColors[status] || statusColors['Pending'];
+
+                const needsFollowUp = company.followUpDate && company.followUpDate <= new Date().toISOString().split('T')[0] && status !== 'Rejected' && status !== 'Interview';
+
+                return `
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 ${needsFollowUp ? 'bg-amber-50 dark:bg-amber-900/10' : ''}">
+                        <td class="px-4 py-3">
+                            <div class="font-medium text-gray-800 dark:text-white">${company.name}</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400">${company.email || ''}</div>
+                        </td>
+                        <td class="px-4 py-3 text-gray-700 dark:text-gray-300">${company.jobTitle || company.type || 'N/A'}</td>
+                        <td class="px-4 py-3">
+                            <select onchange="updateCompanyStatus('${company.id}', this.value)" class="text-xs px-2 py-1 rounded-full border-0 ${statusClass}">
+                                <option value="Pending" ${status === 'Pending' ? 'selected' : ''}>Pending</option>
+                                <option value="Applied" ${status === 'Applied' ? 'selected' : ''}>Applied</option>
+                                <option value="Followed Up" ${status === 'Followed Up' ? 'selected' : ''}>Followed Up</option>
+                                <option value="Interview" ${status === 'Interview' ? 'selected' : ''}>Interview</option>
+                                <option value="Rejected" ${status === 'Rejected' ? 'selected' : ''}>Rejected</option>
+                                <option value="Offer" ${status === 'Offer' ? 'selected' : ''}>Offer</option>
+                            </select>
+                        </td>
+                        <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
+                            ${company.appliedDate || '-'}
+                        </td>
+                        <td class="px-4 py-3 text-sm ${needsFollowUp ? 'text-amber-600 dark:text-amber-400 font-medium' : 'text-gray-600 dark:text-gray-400'}">
+                            ${company.followUpDate || '-'}
+                            ${needsFollowUp ? '<i class="fas fa-exclamation-circle ml-1"></i>' : ''}
+                            ${company.followUpCount > 0 ? `<span class="text-xs text-gray-400">(${company.followUpCount}x)</span>` : ''}
+                        </td>
+                        <td class="px-4 py-3 text-right">
+                            <div class="flex gap-1 justify-end">
+                                <button onclick="openOutlookCompose('${company.id}', 'apply')" class="btn-icon bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 text-blue-600" title="Send Application Email">
+                                    <i class="fas fa-envelope"></i>
+                                </button>
+                                <button onclick="openOutlookCompose('${company.id}', 'followup')" class="btn-icon bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-200 text-purple-600" title="Send Follow-up">
+                                    <i class="fas fa-reply"></i>
+                                </button>
+                                <button onclick="markAsApplied('${company.id}')" class="btn-icon bg-green-100 dark:bg-green-900/30 hover:bg-green-200 text-green-600" title="Mark as Applied">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function updateCompanyStatus(id, status) {
+            try {
+                await fetch(`/api/companies/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+                loadApplications();
+            } catch (error) {
+                console.error('Error updating status:', error);
+                alert('Failed to update status');
+            }
+        }
+
+        async function markAsApplied(id) {
+            try {
+                await fetch(`/api/companies/${id}/apply`, { method: 'POST' });
+                loadApplications();
+                alert('Marked as Applied! Follow-up scheduled for 7 days.');
+            } catch (error) {
+                console.error('Error marking as applied:', error);
+                alert('Failed to mark as applied');
+            }
+        }
+
+        async function markFollowUp(id) {
+            try {
+                await fetch(`/api/companies/${id}/followup`, { method: 'POST' });
+                loadApplications();
+                alert('Follow-up recorded!');
+            } catch (error) {
+                console.error('Error recording follow-up:', error);
+            }
+        }
+
+        async function openOutlookCompose(id, type) {
+            try {
+                const res = await fetch(`/api/outlook/compose/${id}?type=${type}`);
+                const data = await res.json();
+
+                if (data.url) {
+                    window.open(data.url, '_blank');
+
+                    // If sending application, offer to mark as applied
+                    if (type === 'apply') {
+                        setTimeout(() => {
+                            if (confirm(`Mark ${data.company} as Applied?`)) {
+                                markAsApplied(id);
+                            }
+                        }, 1000);
+                    } else if (type === 'followup') {
+                        setTimeout(() => {
+                            if (confirm(`Record follow-up for ${data.company}?`)) {
+                                markFollowUp(id);
+                            }
+                        }, 1000);
+                    }
+                } else {
+                    alert('Failed to generate email link');
+                }
+            } catch (error) {
+                console.error('Error generating Outlook link:', error);
+                alert('Failed to open Outlook');
+            }
+        }
+
+        async function checkFollowUpReminders() {
+            try {
+                const res = await fetch('/api/companies/followups');
+                const followups = await res.json();
+
+                if (followups.length > 0) {
+                    const alert = document.getElementById('followup-alert');
+                    const countEl = document.getElementById('followup-count');
+                    const listEl = document.getElementById('followup-list');
+
+                    countEl.textContent = `${followups.length} application${followups.length > 1 ? 's' : ''} need follow-up`;
+                    listEl.innerHTML = followups.map(c => `
+                        <div class="flex items-center justify-between p-2 bg-white dark:bg-gray-800 rounded-lg">
+                            <div>
+                                <span class="font-medium text-gray-800 dark:text-white">${c.name}</span>
+                                <span class="text-xs text-gray-500 ml-2">Due: ${c.followUpDate}</span>
+                            </div>
+                            <button onclick="openOutlookCompose('${c.id}', 'followup')" class="compact-btn bg-purple-600 hover:bg-purple-700 text-white text-xs">
+                                <i class="fas fa-reply mr-1"></i>Follow Up
+                            </button>
+                        </div>
+                    `).join('');
+
+                    alert.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error checking follow-ups:', error);
+            }
+        }
+
+        function loadFollowUpReminders() {
+            checkFollowUpReminders();
+            const alert = document.getElementById('followup-alert');
+            alert.classList.remove('hidden');
+        }
+
+        // Load applications when Applications tab is shown
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add Applications tab to showTab function handling
+            const origShowTab = showTab;
+            window.showTab = function(tabId) {
+                origShowTab(tabId);
+                if (tabId === 'applications') {
+                    loadApplications();
+                }
+                if (tabId === 'scrapers') {
+                    loadScrapedContacts();
+                }
+            };
+        });
+
+        // --- CONTACT SCRAPERS ---
+        let scrapedContacts = [];
+
+        // Load scraped contacts from localStorage
+        function loadScrapedContacts() {
+            const saved = localStorage.getItem('scrapedContacts');
+            if (saved) {
+                scrapedContacts = JSON.parse(saved);
+            }
+            renderScrapedContacts();
+        }
+
+        // Save to localStorage
+        function saveScrapedContacts() {
+            localStorage.setItem('scrapedContacts', JSON.stringify(scrapedContacts));
+        }
+
+        // Email regex pattern
+        const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
+
+        // Phone regex patterns (international)
+        const phoneRegex = /(?:\+?\d{1,4}[-.\s]?)?(?:\(?\d{1,4}\)?[-.\s]?)?[\d]{3,4}[-.\s]?[\d]{3,4}[-.\s]?[\d]{0,4}/g;
+
+        // UAE phone pattern
+        const uaePhoneRegex = /(?:\+971|971|0)?[-.\s]?(?:50|52|54|55|56|58)[-.\s]?\d{3}[-.\s]?\d{4}/g;
+
+        // Extract contacts from text
+        function extractContactsFromText(text, source = 'Manual') {
+            const emails = text.match(emailRegex) || [];
+            const phones = text.match(uaePhoneRegex) || [];
+            const allPhones = text.match(phoneRegex) || [];
+
+            // Combine and dedupe phones
+            const uniquePhones = [...new Set([...phones, ...allPhones])].filter(p => {
+                const cleaned = p.replace(/\D/g, '');
+                return cleaned.length >= 7 && cleaned.length <= 15;
+            });
+
+            const contacts = [];
+
+            // Create contact entries
+            emails.forEach(email => {
+                if (!scrapedContacts.some(c => c.email === email)) {
+                    contacts.push({
+                        id: Date.now() + Math.random(),
+                        source: source,
+                        email: email.toLowerCase(),
+                        phone: '',
+                        name: extractNameFromEmail(email),
+                        addedAt: new Date().toISOString()
+                    });
+                }
+            });
+
+            uniquePhones.forEach(phone => {
+                const cleanPhone = formatPhone(phone);
+                if (cleanPhone && !scrapedContacts.some(c => c.phone === cleanPhone) && !contacts.some(c => c.phone === cleanPhone)) {
+                    contacts.push({
+                        id: Date.now() + Math.random(),
+                        source: source,
+                        email: '',
+                        phone: cleanPhone,
+                        name: '',
+                        addedAt: new Date().toISOString()
+                    });
+                }
+            });
+
+            return contacts;
+        }
+
+        // Extract name from email
+        function extractNameFromEmail(email) {
+            const localPart = email.split('@')[0];
+            // Remove numbers and special chars, split by common separators
+            const nameParts = localPart.replace(/[0-9]/g, '').split(/[._-]/);
+            return nameParts.map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(' ').trim();
+        }
+
+        // Format phone number
+        function formatPhone(phone) {
+            const cleaned = phone.replace(/\D/g, '');
+            if (cleaned.length < 7) return null;
+
+            // Format UAE numbers
+            if (cleaned.startsWith('971')) {
+                return '+' + cleaned;
+            } else if (cleaned.startsWith('0') && cleaned.length === 10) {
+                return '+971' + cleaned.slice(1);
+            } else if (cleaned.length === 9 && (cleaned.startsWith('5'))) {
+                return '+971' + cleaned;
+            }
+
+            return '+' + cleaned;
+        }
+
+        // Scrape URL
+        async function scrapeURL() {
+            const url = document.getElementById('scrape-url').value.trim();
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+
+            const statusEl = document.getElementById('scrape-status');
+            statusEl.classList.remove('hidden');
+
+            try {
+                const res = await fetch('/api/scrape/url', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    const contacts = extractContactsFromText(data.content, new URL(url).hostname);
+                    scrapedContacts = [...scrapedContacts, ...contacts];
+                    saveScrapedContacts();
+                    renderScrapedContacts();
+                    alert(`Found ${contacts.length} new contacts from ${url}`);
+                } else {
+                    alert('Failed to scrape URL: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Scrape error:', error);
+                alert('Error scraping URL: ' + error.message);
+            } finally {
+                statusEl.classList.add('hidden');
+            }
+        }
+
+        // Extract from pasted text
+        function extractFromText() {
+            const text = document.getElementById('scrape-text').value;
+            if (!text.trim()) {
+                alert('Please paste some text');
+                return;
+            }
+
+            const contacts = extractContactsFromText(text, 'Pasted Text');
+            scrapedContacts = [...scrapedContacts, ...contacts];
+            saveScrapedContacts();
+            renderScrapedContacts();
+
+            document.getElementById('scrape-text').value = '';
+            alert(`Extracted ${contacts.length} new contacts`);
+        }
+
+        // Bulk URL scraping
+        async function scrapeBulkURLs() {
+            const urlsText = document.getElementById('scrape-bulk-urls').value;
+            const urls = urlsText.split('\n').map(u => u.trim()).filter(u => u && u.startsWith('http'));
+
+            if (urls.length === 0) {
+                alert('Please enter at least one valid URL');
+                return;
+            }
+
+            const progressEl = document.getElementById('bulk-scrape-progress');
+            const progressBar = document.getElementById('bulk-progress-bar');
+            const progressText = document.getElementById('bulk-progress-text');
+
+            progressEl.classList.remove('hidden');
+            let completed = 0;
+            let totalContacts = 0;
+
+            for (const url of urls) {
+                try {
+                    const res = await fetch('/api/scrape/url', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ url })
+                    });
+
+                    const data = await res.json();
+
+                    if (data.success) {
+                        const contacts = extractContactsFromText(data.content, new URL(url).hostname);
+                        scrapedContacts = [...scrapedContacts, ...contacts];
+                        totalContacts += contacts.length;
+                    }
+                } catch (error) {
+                    console.error(`Error scraping ${url}:`, error);
+                }
+
+                completed++;
+                progressBar.style.width = `${(completed / urls.length) * 100}%`;
+                progressText.textContent = `${completed}/${urls.length}`;
+            }
+
+            saveScrapedContacts();
+            renderScrapedContacts();
+
+            setTimeout(() => {
+                progressEl.classList.add('hidden');
+                progressBar.style.width = '0%';
+            }, 2000);
+
+            alert(`Scraped ${urls.length} URLs, found ${totalContacts} new contacts`);
+        }
+
+        // Render scraped contacts table
+        function renderScrapedContacts() {
+            const tbody = document.getElementById('scraped-contacts-table');
+            const countEl = document.getElementById('scraped-count');
+
+            countEl.textContent = scrapedContacts.length;
+
+            if (scrapedContacts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No contacts scraped yet. Enter a URL or paste text to extract contacts.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = scrapedContacts.map(contact => `
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                    <td class="px-4 py-2">
+                        <input type="checkbox" class="contact-checkbox rounded" data-id="${contact.id}">
+                    </td>
+                    <td class="px-4 py-2">
+                        <span class="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-600 dark:text-gray-400">${contact.source}</span>
+                    </td>
+                    <td class="px-4 py-2">
+                        ${contact.email ? `<a href="mailto:${contact.email}" class="text-blue-600 hover:underline">${contact.email}</a>` : '<span class="text-gray-400">-</span>'}
+                    </td>
+                    <td class="px-4 py-2">
+                        ${contact.phone ? `<a href="tel:${contact.phone}" class="text-green-600 hover:underline">${contact.phone}</a>` : '<span class="text-gray-400">-</span>'}
+                    </td>
+                    <td class="px-4 py-2">
+                        <input type="text" value="${contact.name || ''}" class="compact-input text-xs w-full" onchange="updateContactName('${contact.id}', this.value)">
+                    </td>
+                    <td class="px-4 py-2 text-right">
+                        <div class="flex gap-1 justify-end">
+                            <button onclick="copyContact('${contact.id}')" class="btn-icon bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-600" title="Copy">
+                                <i class="fas fa-copy text-xs"></i>
+                            </button>
+                            <button onclick="deleteContact('${contact.id}')" class="btn-icon bg-red-100 dark:bg-red-900/30 hover:bg-red-200 text-red-600" title="Delete">
+                                <i class="fas fa-trash text-xs"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Toggle select all
+        function toggleSelectAll() {
+            const selectAll = document.getElementById('select-all-contacts').checked;
+            document.querySelectorAll('.contact-checkbox').forEach(cb => cb.checked = selectAll);
+        }
+
+        // Update contact name
+        function updateContactName(id, name) {
+            const contact = scrapedContacts.find(c => c.id == id);
+            if (contact) {
+                contact.name = name;
+                saveScrapedContacts();
+            }
+        }
+
+        // Copy contact
+        function copyContact(id) {
+            const contact = scrapedContacts.find(c => c.id == id);
+            if (contact) {
+                const text = [contact.email, contact.phone, contact.name].filter(Boolean).join(' | ');
+                navigator.clipboard.writeText(text);
+                alert('Copied to clipboard!');
+            }
+        }
+
+        // Delete contact
+        function deleteContact(id) {
+            scrapedContacts = scrapedContacts.filter(c => c.id != id);
+            saveScrapedContacts();
+            renderScrapedContacts();
+        }
+
+        // Clear all contacts
+        function clearScrapedContacts() {
+            if (confirm('Delete all scraped contacts?')) {
+                scrapedContacts = [];
+                saveScrapedContacts();
+                renderScrapedContacts();
+            }
+        }
+
+        // Export to CSV
+        function exportScrapedContacts() {
+            if (scrapedContacts.length === 0) {
+                alert('No contacts to export');
+                return;
+            }
+
+            const headers = ['Source', 'Email', 'Phone', 'Name', 'Added'];
+            const rows = scrapedContacts.map(c => [
+                c.source,
+                c.email || '',
+                c.phone || '',
+                c.name || '',
+                c.addedAt ? new Date(c.addedAt).toLocaleDateString() : ''
+            ]);
+
+            const csv = [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `scraped-contacts-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Add selected to companies
+        async function addSelectedToCompanies() {
+            const selected = Array.from(document.querySelectorAll('.contact-checkbox:checked')).map(cb => cb.dataset.id);
+
+            if (selected.length === 0) {
+                alert('Please select at least one contact');
+                return;
+            }
+
+            const contactsToAdd = scrapedContacts.filter(c => selected.includes(String(c.id)));
+            let added = 0;
+
+            for (const contact of contactsToAdd) {
+                if (contact.email) {
+                    try {
+                        await fetch('/api/companies', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                name: contact.name || contact.source || 'Unknown',
+                                email: contact.email,
+                                phone: contact.phone || '',
+                                type: 'Scraped',
+                                jobTitle: 'Software Engineer',
+                                status: 'Pending'
+                            })
+                        });
+                        added++;
+                    } catch (error) {
+                        console.error('Error adding company:', error);
+                    }
+                }
+            }
+
+            alert(`Added ${added} contacts to companies list`);
+            loadStats();
+        }
+
+        // --- INDEED AUTO-APPLY INTEGRATION ---
+        let indeedJobs = [];
+        let indeedPollInterval = null;
+
+        // Load Indeed config
+        async function loadIndeedConfig() {
+            try {
+                const res = await fetch('/api/indeed/config');
+                const config = await res.json();
+                if (config.email) document.getElementById('indeed-email').value = config.email;
+                if (config.autoResume !== undefined) document.getElementById('indeed-auto-resume').checked = config.autoResume;
+                if (config.skipApplied !== undefined) document.getElementById('indeed-skip-applied').checked = config.skipApplied;
+                if (config.headless !== undefined) document.getElementById('indeed-headless').checked = config.headless;
+            } catch (e) {
+                console.error('Error loading Indeed config:', e);
+            }
+        }
+
+        // Save Indeed credentials
+        async function saveIndeedCredentials() {
+            const config = {
+                email: document.getElementById('indeed-email').value,
+                password: document.getElementById('indeed-password').value,
+                autoResume: document.getElementById('indeed-auto-resume').checked,
+                skipApplied: document.getElementById('indeed-skip-applied').checked,
+                headless: document.getElementById('indeed-headless').checked
+            };
+
+            try {
+                await fetch('/api/indeed/config', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(config)
+                });
+                alert('Indeed credentials saved!');
+                addIndeedLog('✓ Credentials saved');
+            } catch (e) {
+                alert('Failed to save credentials');
+            }
+        }
+
+        // Add to Indeed log
+        function addIndeedLog(message, type = 'info') {
+            const logEl = document.getElementById('indeed-log');
+            const timestamp = new Date().toLocaleTimeString();
+            const colors = {
+                info: 'text-blue-400',
+                success: 'text-green-400',
+                error: 'text-red-400',
+                warning: 'text-yellow-400'
+            };
+            logEl.innerHTML += `<div class="${colors[type] || 'text-green-400'}">[${timestamp}] ${message}</div>`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function clearIndeedLog() {
+            document.getElementById('indeed-log').innerHTML = 'Log cleared. Ready to search...';
+        }
+
+        // Start Indeed search
+        async function startIndeedSearch() {
+            const query = document.getElementById('indeed-search-query').value;
+            const location = document.getElementById('indeed-search-location').value;
+            const minMatch = document.getElementById('indeed-min-match').value;
+
+            addIndeedLog(`🔍 Starting search: "${query}" in ${location}...`, 'info');
+            updateIndeedStatus('Searching...', 'bg-yellow-500');
+
+            try {
+                await fetch('/api/indeed/search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query, location, minMatch })
+                });
+
+                // Start polling for updates
+                startIndeedPolling();
+
+                // Load jobs after a delay
+                setTimeout(loadIndeedJobs, 5000);
+            } catch (e) {
+                addIndeedLog(`❌ Search failed: ${e.message}`, 'error');
+                updateIndeedStatus('Error', 'bg-red-500');
+            }
+        }
+
+        // Start auto-apply
+        async function startIndeedAutoApply(realMode) {
+            const maxApps = document.getElementById('indeed-max-apps').value;
+
+            if (realMode && !confirm('⚠️ This will submit REAL applications. Continue?')) {
+                return;
+            }
+
+            addIndeedLog(`🚀 Starting auto-apply (${realMode ? 'REAL' : 'DRY RUN'} mode)...`, realMode ? 'warning' : 'info');
+            updateIndeedStatus('Applying...', 'bg-green-500 animate-pulse');
+
+            try {
+                await fetch('/api/indeed/apply', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ realMode, maxApps: parseInt(maxApps) })
+                });
+
+                startIndeedPolling();
+            } catch (e) {
+                addIndeedLog(`❌ Auto-apply failed: ${e.message}`, 'error');
+                updateIndeedStatus('Error', 'bg-red-500');
+            }
+        }
+
+        // Poll for Indeed logs
+        function startIndeedPolling() {
+            if (indeedPollInterval) clearInterval(indeedPollInterval);
+            indeedPollInterval = setInterval(pollIndeedLogs, 2000);
+        }
+
+        function stopIndeedPolling() {
+            if (indeedPollInterval) {
+                clearInterval(indeedPollInterval);
+                indeedPollInterval = null;
+            }
+        }
+
+        async function pollIndeedLogs() {
+            try {
+                const res = await fetch('/api/indeed/logs');
+                const data = await res.json();
+
+                // Update log
+                const logEl = document.getElementById('indeed-log');
+                logEl.innerHTML = data.logs.map(log => {
+                    const color = log.includes('ERROR') ? 'text-red-400' :
+                                  log.includes('✅') || log.includes('✓') ? 'text-green-400' :
+                                  log.includes('⚠️') ? 'text-yellow-400' : 'text-green-400';
+                    return `<div class="${color}">${log}</div>`;
+                }).join('');
+                logEl.scrollTop = logEl.scrollHeight;
+
+                // Update status
+                if (data.running) {
+                    updateIndeedStatus('Running...', 'bg-green-500 animate-pulse');
+                } else {
+                    updateIndeedStatus('Ready', 'bg-gray-300');
+                    stopIndeedPolling();
+                    loadIndeedJobs(); // Refresh jobs list
+                }
+            } catch (e) {
+                console.error('Poll error:', e);
+            }
+        }
+
+        // Update Indeed status indicator
+        function updateIndeedStatus(text, dotClass) {
+            const statusEl = document.getElementById('indeed-agent-status');
+            statusEl.innerHTML = `<div class="w-2 h-2 ${dotClass} rounded-full"></div><span class="text-sm">${text}</span>`;
+        }
+
+        // Load Indeed jobs
+        async function loadIndeedJobs() {
+            try {
+                const res = await fetch('/api/indeed/jobs');
+                indeedJobs = await res.json();
+                renderIndeedJobs();
+                document.getElementById('indeed-jobs-count').textContent = indeedJobs.length;
+            } catch (e) {
+                console.error('Error loading jobs:', e);
+            }
+        }
+
+        // Render Indeed jobs table
+        function renderIndeedJobs() {
+            const tbody = document.getElementById('indeed-jobs-table');
+
+            if (indeedJobs.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No jobs found. Click "Search Jobs" to find matching positions.</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = indeedJobs.map((job, index) => {
+                const matchScore = job.matchScore || 0;
+                const matchColor = matchScore >= 70 ? 'bg-green-500' :
+                                   matchScore >= 50 ? 'bg-yellow-500' : 'bg-orange-500';
+
+                return `
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                        <td class="px-3 py-2">
+                            <input type="checkbox" class="job-checkbox rounded" data-index="${index}">
+                        </td>
+                        <td class="px-3 py-2">
+                            <a href="${job.url}" target="_blank" class="text-blue-600 hover:underline font-medium">${job.title}</a>
+                        </td>
+                        <td class="px-3 py-2 text-gray-700 dark:text-gray-300">${job.company}</td>
+                        <td class="px-3 py-2 text-sm text-gray-600 dark:text-gray-400">${job.location}</td>
+                        <td class="px-3 py-2 text-sm text-gray-600 dark:text-gray-400">${job.salary || 'N/A'}</td>
+                        <td class="px-3 py-2 text-center">
+                            <span class="inline-flex items-center gap-1 px-2 py-1 ${matchColor} text-white text-xs rounded-full">
+                                ${Math.round(matchScore)}%
+                            </span>
+                        </td>
+                        <td class="px-3 py-2 text-right">
+                            <div class="flex gap-1 justify-end">
+                                <button onclick="openJobUrl(${index})" class="btn-icon bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 text-blue-600" title="Open Job">
+                                    <i class="fas fa-external-link-alt text-xs"></i>
+                                </button>
+                                <button onclick="applyToSingleJob(${index})" class="btn-icon bg-green-100 dark:bg-green-900/30 hover:bg-green-200 text-green-600" title="Apply">
+                                    <i class="fas fa-paper-plane text-xs"></i>
+                                </button>
+                                <button onclick="addJobToCompanies(${index})" class="btn-icon bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-200 text-purple-600" title="Add to Companies">
+                                    <i class="fas fa-plus text-xs"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Toggle select all jobs
+        function toggleSelectAllJobs() {
+            const selectAll = document.getElementById('select-all-jobs').checked;
+            document.querySelectorAll('.job-checkbox').forEach(cb => cb.checked = selectAll);
+        }
+
+        // Open job URL
+        function openJobUrl(index) {
+            if (indeedJobs[index]) {
+                window.open(indeedJobs[index].url, '_blank');
+            }
+        }
+
+        // Apply to single job
+        async function applyToSingleJob(index) {
+            const job = indeedJobs[index];
+            if (!job) return;
+
+            if (!confirm(`Apply to "${job.title}" at ${job.company}?`)) return;
+
+            addIndeedLog(`📤 Applying to: ${job.title} at ${job.company}...`, 'info');
+
+            try {
+                await fetch('/api/indeed/apply-job', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ job, dryRun: false })
+                });
+                addIndeedLog(`✓ Application initiated for ${job.company}`, 'success');
+            } catch (e) {
+                addIndeedLog(`❌ Failed: ${e.message}`, 'error');
+            }
+        }
+
+        // Add job to companies list
+        async function addJobToCompanies(index) {
+            const job = indeedJobs[index];
+            if (!job) return;
+
+            try {
+                await fetch('/api/companies', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: job.company,
+                        jobTitle: job.title,
+                        type: 'Indeed',
+                        status: 'Pending',
+                        source: 'Indeed',
+                        jobUrl: job.url,
+                        location: job.location,
+                        salary: job.salary
+                    })
+                });
+                addIndeedLog(`✓ Added ${job.company} to companies list`, 'success');
+                loadStats();
+            } catch (e) {
+                addIndeedLog(`❌ Failed to add: ${e.message}`, 'error');
+            }
+        }
+
+        // Apply to selected jobs
+        async function applyToSelected() {
+            const selected = Array.from(document.querySelectorAll('.job-checkbox:checked')).map(cb => parseInt(cb.dataset.index));
+
+            if (selected.length === 0) {
+                alert('Please select at least one job');
+                return;
+            }
+
+            if (!confirm(`Apply to ${selected.length} selected job(s)?`)) return;
+
+            for (const index of selected) {
+                await applyToSingleJob(index);
+                await new Promise(r => setTimeout(r, 2000)); // Delay between applications
+            }
+
+            alert(`Attempted to apply to ${selected.length} jobs. Check log for details.`);
+        }
+
+        // Export jobs to CSV
+        function exportJobsCSV() {
+            if (indeedJobs.length === 0) {
+                alert('No jobs to export');
+                return;
+            }
+
+            const headers = ['Title', 'Company', 'Location', 'Salary', 'Match Score', 'URL'];
+            const rows = indeedJobs.map(j => [
+                j.title,
+                j.company,
+                j.location,
+                j.salary || '',
+                j.matchScore || 0,
+                j.url
+            ]);
+
+            const csv = [headers, ...rows].map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `indeed-jobs-${new Date().toISOString().split('T')[0]}.csv`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // View Indeed stats
+        async function viewIndeedStats() {
+            try {
+                const res = await fetch('/api/indeed/stats');
+                const stats = await res.json();
+
+                let message = `📊 Indeed Application Stats\n\n`;
+                message += `Total Applications: ${stats.total}\n\n`;
+
+                if (Object.keys(stats.byStatus).length > 0) {
+                    message += `By Status:\n`;
+                    for (const [status, count] of Object.entries(stats.byStatus)) {
+                        message += `  • ${status}: ${count}\n`;
+                    }
+                }
+
+                if (stats.recent && stats.recent.length > 0) {
+                    message += `\nRecent Applications:\n`;
+                    stats.recent.slice(0, 5).forEach(app => {
+                        message += `  • ${app.title} at ${app.company}\n`;
+                    });
+                }
+
+                alert(message);
+            } catch (e) {
+                alert('Failed to load stats');
+            }
+        }
+
+        // Update Indeed profile resume
+        async function updateIndeedProfile() {
+            addIndeedLog('📄 Updating Indeed profile resume...', 'info');
+
+            try {
+                await fetch('/api/indeed/update-profile', { method: 'POST' });
+                startIndeedPolling();
+            } catch (e) {
+                addIndeedLog(`❌ Failed: ${e.message}`, 'error');
+            }
+        }
+
+        // Load Indeed config on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadIndeedConfig();
+        });
     </script>
 </body>
 </html>

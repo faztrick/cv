@@ -209,8 +209,10 @@ app.post('/api/whatsapp/logout', async (req, res) => {
 app.post('/api/whatsapp/send', async (req, res) => {
     const { number, message } = req.body;
 
+    console.log('WhatsApp Send Request:', { number, waStatus });
+
     if (waStatus !== 'CONNECTED' && waStatus !== 'AUTHENTICATED') {
-        return res.status(400).json({ success: false, error: 'WhatsApp client not connected' });
+        return res.status(400).json({ success: false, error: `WhatsApp client not connected. Status: ${waStatus}` });
     }
 
     if (!number || !message) {
@@ -218,14 +220,27 @@ app.post('/api/whatsapp/send', async (req, res) => {
     }
 
     try {
-        // Format number: remove non-digits, append @c.us if not present
+        // Format number: remove non-digits and any leading zeros after country code
         let formattedNumber = number.replace(/\D/g, '');
+
+        // Ensure proper format for whatsapp-web.js
+        // Remove leading + if present in original (already handled by replace)
+        // Add @c.us suffix for individual chats
         if (!formattedNumber.endsWith('@c.us')) {
-            formattedNumber += '@c.us';
+            formattedNumber = formattedNumber + '@c.us';
+        }
+
+        console.log('Sending to:', formattedNumber);
+
+        // Check if the number is registered on WhatsApp
+        const isRegistered = await waClient.isRegisteredUser(formattedNumber);
+        if (!isRegistered) {
+            return res.status(400).json({ success: false, error: `Number ${number} is not registered on WhatsApp` });
         }
 
         const response = await waClient.sendMessage(formattedNumber, message);
-        res.json({ success: true, response });
+        console.log('Message sent successfully:', response.id);
+        res.json({ success: true, messageId: response.id._serialized });
     } catch (error) {
         console.error('Error sending message:', error);
         res.status(500).json({ success: false, error: error.message });
@@ -339,6 +354,559 @@ app.get('/api/ai/agent/logs', (req, res) => {
         running: !!agentProcess,
         logs: agentLogs
     });
+});
+
+// --- APPLICATION TRACKING & FOLLOW-UP ---
+
+// Update company status
+app.put('/api/companies/:id', (req, res) => {
+    const { id } = req.params;
+    const updates = req.body;
+
+    if (!fs.existsSync(COMPANIES_FILE)) {
+        return res.status(404).json({ error: 'Companies file not found' });
+    }
+
+    let companies = JSON.parse(fs.readFileSync(COMPANIES_FILE, 'utf8'));
+    const index = companies.findIndex(c => c.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({ error: 'Company not found' });
+    }
+
+    companies[index] = { ...companies[index], ...updates };
+    fs.writeFileSync(COMPANIES_FILE, JSON.stringify(companies, null, 2));
+    res.json(companies[index]);
+});
+
+// Mark as applied
+app.post('/api/companies/:id/apply', (req, res) => {
+    const { id } = req.params;
+
+    let companies = JSON.parse(fs.readFileSync(COMPANIES_FILE, 'utf8'));
+    const index = companies.findIndex(c => c.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({ error: 'Company not found' });
+    }
+
+    const today = new Date().toISOString().split('T')[0];
+    const followUpDate = new Date();
+    followUpDate.setDate(followUpDate.getDate() + 7); // Follow up in 7 days
+
+    companies[index].status = 'Applied';
+    companies[index].appliedDate = today;
+    companies[index].followUpDate = followUpDate.toISOString().split('T')[0];
+
+    fs.writeFileSync(COMPANIES_FILE, JSON.stringify(companies, null, 2));
+    res.json(companies[index]);
+});
+
+// Mark follow-up sent
+app.post('/api/companies/:id/followup', (req, res) => {
+    const { id } = req.params;
+
+    let companies = JSON.parse(fs.readFileSync(COMPANIES_FILE, 'utf8'));
+    const index = companies.findIndex(c => c.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({ error: 'Company not found' });
+    }
+
+    const today = new Date().toISOString().split('T')[0];
+    const nextFollowUp = new Date();
+    nextFollowUp.setDate(nextFollowUp.getDate() + 7);
+
+    companies[index].status = 'Followed Up';
+    companies[index].followUpCount = (companies[index].followUpCount || 0) + 1;
+    companies[index].lastFollowUp = today;
+    companies[index].followUpDate = nextFollowUp.toISOString().split('T')[0];
+
+    fs.writeFileSync(COMPANIES_FILE, JSON.stringify(companies, null, 2));
+    res.json(companies[index]);
+});
+
+// Update response status
+app.post('/api/companies/:id/response', (req, res) => {
+    const { id } = req.params;
+    const { response, notes } = req.body;
+
+    let companies = JSON.parse(fs.readFileSync(COMPANIES_FILE, 'utf8'));
+    const index = companies.findIndex(c => c.id === id);
+
+    if (index === -1) {
+        return res.status(404).json({ error: 'Company not found' });
+    }
+
+    companies[index].status = response; // 'Interview', 'Rejected', 'Offer', etc.
+    companies[index].response = response;
+    if (notes) companies[index].notes = notes;
+
+    fs.writeFileSync(COMPANIES_FILE, JSON.stringify(companies, null, 2));
+    res.json(companies[index]);
+});
+
+// Get follow-up reminders (companies needing follow-up)
+app.get('/api/companies/followups', (req, res) => {
+    if (!fs.existsSync(COMPANIES_FILE)) return res.json([]);
+
+    const companies = JSON.parse(fs.readFileSync(COMPANIES_FILE, 'utf8'));
+    const today = new Date().toISOString().split('T')[0];
+
+    const needsFollowUp = companies.filter(c => {
+        if (!c.followUpDate) return false;
+        if (c.status === 'Rejected' || c.status === 'Offer' || c.status === 'Interview') return false;
+        return c.followUpDate <= today;
+    });
+
+    res.json(needsFollowUp);
+});
+
+// --- OUTLOOK EMAIL INTEGRATION ---
+
+// Generate Outlook Web compose URL
+app.get('/api/outlook/compose/:id', (req, res) => {
+    const { id } = req.params;
+    const { type } = req.query; // 'apply' or 'followup'
+
+    if (!fs.existsSync(COMPANIES_FILE)) {
+        return res.status(404).json({ error: 'Companies file not found' });
+    }
+
+    const companies = JSON.parse(fs.readFileSync(COMPANIES_FILE, 'utf8'));
+    const company = companies.find(c => c.id === id);
+
+    if (!company) {
+        return res.status(404).json({ error: 'Company not found' });
+    }
+
+    let subject, body;
+
+    if (type === 'followup') {
+        subject = `Following Up - ${company.jobTitle} Application - Muhammed Fasil PV`;
+        body = `Dear ${company.contactPerson || 'Hiring Manager'},
+
+I hope this message finds you well. I wanted to follow up on my application for the ${company.jobTitle} position at ${company.name} that I submitted ${company.appliedDate ? 'on ' + company.appliedDate : 'recently'}.
+
+I remain very interested in this opportunity and would welcome the chance to discuss how my 10+ years of experience in Flutter, React, Node.js, and AI/IoT systems could benefit your team.
+
+Key highlights from my background:
+• Architected IdolMEA ERP serving 50+ retail branches across GCC
+• Developed AI Self-Checkout Kiosk (showcased at Gitex Dubai 2024)
+• Expert in offline-first architectures, MQTT, and enterprise integrations
+
+I'm currently based in Dubai with a valid work visa and available to start immediately.
+
+Please let me know if you need any additional information or would like to schedule a call.
+
+Best regards,
+Muhammed Fasil PV
+📞 +971 555923545
+📧 faztrick@gmail.com
+🌐 https://uaecodes.com`;
+    } else {
+        // Application email
+        if (company.generatedEmailPath && fs.existsSync(company.generatedEmailPath)) {
+            body = fs.readFileSync(company.generatedEmailPath, 'utf8');
+            body = body.replace(/^Subject:.*\r?\n/m, '').trim();
+        } else {
+            body = `Dear ${company.contactPerson || 'Hiring Manager'},
+
+I am writing to express my interest in the ${company.jobTitle} position at ${company.name}.
+
+With 10+ years of experience as a Full Stack Developer specializing in Flutter, React, Node.js, and AI/IoT systems, I have successfully delivered enterprise solutions including:
+
+• IdolMEA ERP - Retail platform serving 50+ branches across GCC
+• AI Self-Checkout Kiosk - YOLO-based detection (Gitex Dubai 2024)
+• IdolQueue (i-QMS) - Offline-first queue management system
+
+I am based in Dubai, UAE with a valid work visa and available immediately.
+
+Please find my CV attached. I would welcome the opportunity to discuss how I can contribute to ${company.name}.
+
+Best regards,
+Muhammed Fasil PV
+📞 +971 555923545
+📧 faztrick@gmail.com
+🌐 https://uaecodes.com`;
+        }
+        subject = `Application - ${company.jobTitle} - ${company.name} - Muhammed Fasil PV`;
+    }
+
+    const encodedSubject = encodeURIComponent(subject);
+    const encodedBody = encodeURIComponent(body);
+
+    const outlookUrl = `https://outlook.live.com/mail/0/deeplink/compose?to=${company.email}&subject=${encodedSubject}&body=${encodedBody}`;
+
+    res.json({
+        url: outlookUrl,
+        to: company.email,
+        subject: subject,
+        body: body,
+        company: company.name
+    });
+});
+
+// Bulk send via Outlook Web (returns all URLs)
+app.get('/api/outlook/bulk', (req, res) => {
+    const { status, type } = req.query;
+
+    if (!fs.existsSync(COMPANIES_FILE)) return res.json([]);
+
+    const companies = JSON.parse(fs.readFileSync(COMPANIES_FILE, 'utf8'));
+    let filtered = companies;
+
+    if (status) {
+        filtered = companies.filter(c => c.status === status);
+    }
+
+    const results = filtered.map(company => {
+        let subject, body;
+
+        if (type === 'followup') {
+            subject = `Following Up - ${company.jobTitle} Application - Muhammed Fasil PV`;
+            body = `Dear ${company.contactPerson || 'Hiring Manager'},\n\nFollowing up on my ${company.jobTitle} application...`;
+        } else {
+            subject = `Application - ${company.jobTitle} - ${company.name} - Muhammed Fasil PV`;
+            if (company.generatedEmailPath && fs.existsSync(company.generatedEmailPath)) {
+                body = fs.readFileSync(company.generatedEmailPath, 'utf8');
+            } else {
+                body = 'Application email content...';
+            }
+        }
+
+        const encodedSubject = encodeURIComponent(subject);
+        const encodedBody = encodeURIComponent(body);
+
+        return {
+            id: company.id,
+            name: company.name,
+            email: company.email,
+            status: company.status,
+            url: `https://outlook.live.com/mail/0/deeplink/compose?to=${company.email}&subject=${encodedSubject}&body=${encodedBody}`
+        };
+    });
+
+    res.json(results);
+});
+
+// --- CONTACT SCRAPER ---
+
+// Scrape URL for emails and phone numbers
+app.post('/api/scrape/url', async (req, res) => {
+    const { url } = req.body;
+
+    if (!url) {
+        return res.status(400).json({ success: false, error: 'URL is required' });
+    }
+
+    try {
+        // Use fetch to get the page content
+        const response = await fetch(url, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+
+        const html = await response.text();
+
+        // Extract text content (simple HTML stripping)
+        const textContent = html
+            .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+            .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+            .replace(/<[^>]+>/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+
+        res.json({
+            success: true,
+            url: url,
+            content: textContent,
+            rawLength: html.length,
+            textLength: textContent.length
+        });
+
+    } catch (error) {
+        console.error('Scrape error:', error);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// Scraped contacts storage
+const SCRAPED_CONTACTS_FILE = path.join(DATA_DIR, 'scraped-contacts.json');
+
+// Get scraped contacts
+app.get('/api/scrape/contacts', (req, res) => {
+    if (!fs.existsSync(SCRAPED_CONTACTS_FILE)) return res.json([]);
+    const data = fs.readFileSync(SCRAPED_CONTACTS_FILE, 'utf8');
+    res.json(JSON.parse(data));
+});
+
+// Save scraped contacts
+app.post('/api/scrape/contacts', (req, res) => {
+    const contacts = req.body;
+    fs.writeFileSync(SCRAPED_CONTACTS_FILE, JSON.stringify(contacts, null, 2));
+    res.json({ success: true, count: contacts.length });
+});
+
+// --- INDEED AUTO-APPLY INTEGRATION ---
+
+const INDEED_CONFIG_FILE = path.join(DATA_DIR, 'indeed-config.json');
+const INDEED_JOBS_FILE = path.join(DATA_DIR, 'indeed-jobs.json');
+const INDEED_APPLICATIONS_FILE = path.join(__dirname, 'indeed-applications.json');
+
+let indeedProcess = null;
+let indeedLogs = [];
+
+// Get Indeed Config
+app.get('/api/indeed/config', (req, res) => {
+    if (!fs.existsSync(INDEED_CONFIG_FILE)) {
+        return res.json({
+            email: '',
+            password: '',
+            autoResume: true,
+            skipApplied: true,
+            headless: false
+        });
+    }
+    res.json(JSON.parse(fs.readFileSync(INDEED_CONFIG_FILE, 'utf8')));
+});
+
+// Save Indeed Config
+app.post('/api/indeed/config', (req, res) => {
+    const config = req.body;
+    fs.writeFileSync(INDEED_CONFIG_FILE, JSON.stringify(config, null, 2));
+
+    // Also update .env file for the script
+    const envPath = path.join(__dirname, '.env');
+    let envContent = '';
+    if (fs.existsSync(envPath)) {
+        envContent = fs.readFileSync(envPath, 'utf8');
+    }
+
+    // Update or add Indeed credentials
+    if (config.email) {
+        if (envContent.includes('INDEED_EMAIL=')) {
+            envContent = envContent.replace(/INDEED_EMAIL=.*/g, `INDEED_EMAIL=${config.email}`);
+        } else {
+            envContent += `\nINDEED_EMAIL=${config.email}`;
+        }
+    }
+    if (config.password) {
+        if (envContent.includes('INDEED_PASSWORD=')) {
+            envContent = envContent.replace(/INDEED_PASSWORD=.*/g, `INDEED_PASSWORD=${config.password}`);
+        } else {
+            envContent += `\nINDEED_PASSWORD=${config.password}`;
+        }
+    }
+    fs.writeFileSync(envPath, envContent.trim());
+
+    res.json({ success: true, message: 'Indeed configuration saved' });
+});
+
+// Search Indeed Jobs
+app.post('/api/indeed/search', (req, res) => {
+    const { query, location, minMatch } = req.body;
+
+    indeedLogs = [];
+    indeedLogs.push(`[${new Date().toLocaleTimeString()}] Starting Indeed search: "${query}" in ${location}`);
+
+    const args = ['scripts/indeed-auto-apply.js', 'search', query || 'Software Engineer'];
+
+    const searchProcess = spawn('node', args, { cwd: __dirname });
+    let output = '';
+
+    searchProcess.stdout.on('data', (data) => {
+        output += data.toString();
+        const lines = data.toString().split('\n');
+        lines.forEach(line => {
+            if (line.trim()) {
+                indeedLogs.push(`[${new Date().toLocaleTimeString()}] ${line.trim()}`);
+            }
+        });
+    });
+
+    searchProcess.stderr.on('data', (data) => {
+        const lines = data.toString().split('\n');
+        lines.forEach(line => {
+            if (line.trim()) {
+                indeedLogs.push(`[${new Date().toLocaleTimeString()}] ERROR: ${line.trim()}`);
+            }
+        });
+    });
+
+    searchProcess.on('close', (code) => {
+        indeedLogs.push(`[${new Date().toLocaleTimeString()}] Search completed with code ${code}`);
+
+        // Try to load results
+        const resultsFile = path.join(__dirname, 'indeed-matches.json');
+        if (fs.existsSync(resultsFile)) {
+            const jobs = JSON.parse(fs.readFileSync(resultsFile, 'utf8'));
+            fs.writeFileSync(INDEED_JOBS_FILE, JSON.stringify(jobs, null, 2));
+        }
+    });
+
+    res.json({ success: true, message: 'Search started' });
+});
+
+// Get Indeed Jobs
+app.get('/api/indeed/jobs', (req, res) => {
+    // Try multiple possible result files
+    const files = [
+        INDEED_JOBS_FILE,
+        path.join(__dirname, 'indeed-matches.json')
+    ];
+
+    for (const file of files) {
+        if (fs.existsSync(file)) {
+            const jobs = JSON.parse(fs.readFileSync(file, 'utf8'));
+            return res.json(jobs);
+        }
+    }
+
+    res.json([]);
+});
+
+// Start Auto-Apply
+app.post('/api/indeed/apply', (req, res) => {
+    const { realMode, maxApps } = req.body;
+
+    if (indeedProcess) {
+        return res.json({ success: false, message: 'Auto-apply already running' });
+    }
+
+    indeedLogs = [];
+    indeedLogs.push(`[${new Date().toLocaleTimeString()}] Starting auto-apply (${realMode ? 'REAL' : 'DRY RUN'} mode)...`);
+
+    const args = ['scripts/indeed-auto-apply.js', 'apply'];
+    if (realMode) {
+        args.push('--real');
+    }
+    if (maxApps) {
+        args.push('--max', String(maxApps));
+    }
+
+    indeedProcess = spawn('node', args, { cwd: __dirname });
+
+    indeedProcess.stdout.on('data', (data) => {
+        const lines = data.toString().split('\n');
+        lines.forEach(line => {
+            if (line.trim()) {
+                indeedLogs.push(`[${new Date().toLocaleTimeString()}] ${line.trim()}`);
+            }
+        });
+    });
+
+    indeedProcess.stderr.on('data', (data) => {
+        const lines = data.toString().split('\n');
+        lines.forEach(line => {
+            if (line.trim()) {
+                indeedLogs.push(`[${new Date().toLocaleTimeString()}] ERROR: ${line.trim()}`);
+            }
+        });
+    });
+
+    indeedProcess.on('close', (code) => {
+        indeedLogs.push(`[${new Date().toLocaleTimeString()}] Auto-apply finished with code ${code}`);
+        indeedProcess = null;
+    });
+
+    res.json({ success: true, message: 'Auto-apply started' });
+});
+
+// Stop Auto-Apply
+app.post('/api/indeed/stop', (req, res) => {
+    if (indeedProcess) {
+        indeedProcess.kill();
+        indeedProcess = null;
+        indeedLogs.push(`[${new Date().toLocaleTimeString()}] Auto-apply stopped by user`);
+        res.json({ success: true, message: 'Stopped' });
+    } else {
+        res.json({ success: false, message: 'Not running' });
+    }
+});
+
+// Get Indeed Logs
+app.get('/api/indeed/logs', (req, res) => {
+    res.json({
+        running: !!indeedProcess,
+        logs: indeedLogs
+    });
+});
+
+// Get Indeed Stats
+app.get('/api/indeed/stats', (req, res) => {
+    if (!fs.existsSync(INDEED_APPLICATIONS_FILE)) {
+        return res.json({ total: 0, byStatus: {}, byCompany: {}, recent: [] });
+    }
+
+    const applications = JSON.parse(fs.readFileSync(INDEED_APPLICATIONS_FILE, 'utf8'));
+
+    const stats = {
+        total: applications.length,
+        byStatus: {},
+        byCompany: {},
+        recent: applications.slice(-10).reverse()
+    };
+
+    applications.forEach(app => {
+        stats.byStatus[app.status || 'applied'] = (stats.byStatus[app.status || 'applied'] || 0) + 1;
+        stats.byCompany[app.company] = (stats.byCompany[app.company] || 0) + 1;
+    });
+
+    res.json(stats);
+});
+
+// Update Indeed Profile Resume
+app.post('/api/indeed/update-profile', (req, res) => {
+    indeedLogs = [];
+    indeedLogs.push(`[${new Date().toLocaleTimeString()}] Updating Indeed profile resume...`);
+
+    const updateProcess = spawn('node', ['scripts/indeed-auto-apply.js', 'update-profile'], { cwd: __dirname });
+
+    updateProcess.stdout.on('data', (data) => {
+        const lines = data.toString().split('\n');
+        lines.forEach(line => {
+            if (line.trim()) {
+                indeedLogs.push(`[${new Date().toLocaleTimeString()}] ${line.trim()}`);
+            }
+        });
+    });
+
+    updateProcess.stderr.on('data', (data) => {
+        const lines = data.toString().split('\n');
+        lines.forEach(line => {
+            if (line.trim()) {
+                indeedLogs.push(`[${new Date().toLocaleTimeString()}] ERROR: ${line.trim()}`);
+            }
+        });
+    });
+
+    updateProcess.on('close', (code) => {
+        indeedLogs.push(`[${new Date().toLocaleTimeString()}] Profile update completed with code ${code}`);
+    });
+
+    res.json({ success: true, message: 'Profile update started' });
+});
+
+// Apply to specific job
+app.post('/api/indeed/apply-job', (req, res) => {
+    const { job, dryRun } = req.body;
+
+    indeedLogs.push(`[${new Date().toLocaleTimeString()}] Applying to: ${job.title} at ${job.company}`);
+
+    // Save job to temp file for the script to pick up
+    const tempJobFile = path.join(DATA_DIR, 'temp-apply-job.json');
+    fs.writeFileSync(tempJobFile, JSON.stringify(job, null, 2));
+
+    res.json({ success: true, message: 'Application initiated' });
 });
 
 app.listen(PORT, () => {

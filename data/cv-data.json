@@ -1,7 +1,7 @@
 {
   "personalInfo": {
     "name": "Muhammed Fasil PV",
-    "title": "Software Engineer | Flutter & React (MVVM) Specialist",
+    "title": "Senior Full Stack Developer & AI/IoT Systems Engineer",
     "email": "faztrick@gmail.com",
     "phone": "+971 555923545",
     "location": "Dubai, UAE",
@@ -10,23 +10,39 @@
     "portfolio": "https://www.uaecodes.com",
     "whatsapp": "https://wa.me/971555923545"
   },
-  "summary": "Results-driven Software Engineer with 10+ years of experience driving Digital Transformation by building high-performance mobile, web, and desktop applications using Flutter, React, and WPF (C#). Proven expertise in implementing MVVM architecture for enterprise-grade ERP systems, Fintech solutions, Point-of-Sale (POS), and Smart Retail automation across the GCC region.\n\nExpert in integrating AI/ML capabilities, computer vision (YOLO), and LLMs (OpenAI, LangChain) into user-centric applications. Proficient in Cloud-Native development (Docker, Kubernetes, AWS, Azure), DevOps automation, and IoT edge computing. Strong background in network security and secure architecture for scalable business solutions.",
+  "summary": "Senior Full Stack Developer & AI/IoT Systems Engineer with 10+ years building scalable enterprise systems. I bridge hardware and software—from ESP32 firmware to cloud microservices—creating AI-driven automation with IoT ecosystems. Currently at Idol Technology LLC (Dubai, UAE), architecting production-ready systems that blend AI-driven automation with IoT ecosystems.",
   "skills": [
     "Flutter",
     "Dart",
     "React.js",
     "Node.js",
     "Python",
+    "C#",
+    "Kotlin",
+    "TypeScript",
     "AI/ML",
+    "OpenAI",
+    "LangChain",
+    "YOLO",
+    "Whisper",
+    "TensorFlow",
     "IoT",
+    "ESP32",
+    "Raspberry Pi",
+    "MQTT",
     "Docker",
     "Kubernetes",
     "AWS",
     "Azure",
+    "GCP",
     "WPF",
-    "C#",
     "SQL",
-    "NoSQL"
+    "MySQL",
+    "MongoDB",
+    "Firebase",
+    "Hive",
+    "MikroTik",
+    "WireGuard"
   ],
   "experience": [
     {
@@ -34,50 +50,163 @@
       "company": "Idol Technology LLC",
       "location": "Dubai, UAE",
       "duration": "August 2024 – Present",
-      "description": "Architected and deployed IdolMEA ERP system driving digital transformation for 50+ retail branches across the GCC. Developed IdolQueue (i-QMS) using Flutter and Node.js. Implemented AI-powered chatbot automation and YOLO object detection."
+      "description": "Architected and deployed IdolMEA ERP system driving digital transformation for 50+ retail branches across the GCC. Developed IdolQueue (i-QMS) using Flutter and Node.js with offline-first architecture. Implemented AI-powered chatbot automation for WhatsApp/Telegram. Integrated YOLO object detection for AI Self-Checkout Kiosk (showcased at Gitex Dubai 2024). Engineered 8+ node WireGuard VPN mesh on MikroTik routers."
     },
     {
       "role": "Senior Software Engineer",
       "company": "Screl Info Pvt Ltd",
       "location": "India / UAE",
       "duration": "April 2019 – January 2024",
-      "description": "Led development of SincA ERP platform (Flutter + Node.js + Python AI backend). Implemented AI-powered dashboards and predictive analytics. Developed OCR invoice parsing system with 95% accuracy."
+      "description": "Led development of SincA ERP platform (Flutter + Node.js + Python AI backend). Implemented AI-powered dashboards and predictive analytics. Developed OCR invoice parsing system with 95% accuracy. Built automated WhatsApp/Telegram bots for customer interaction. Managed cross-location developer teams with hybrid CI/CD pipelines."
     },
     {
       "role": "Software Developer",
       "company": "Sincap Info Pvt Ltd",
       "location": "Calicut, India",
       "duration": "March 2014 – March 2019",
-      "description": "Developed comprehensive ERP, accounting, and billing systems using WPF (C#) with MVVM architecture. Built admin portals and reporting dashboards."
+      "description": "Developed comprehensive ERP, accounting, and billing systems using WPF (C#) with MVVM architecture. Built admin portals and reporting dashboards. Created inventory management and POS systems for retail clients."
     }
   ],
   "projects": [
     {
-      "name": "Self-Checkout AI Kiosk",
-      "description": "YOLO object detection for missed scan identification and loss prevention plus Android AIDL LED/GPIO control.",
-      "technologies": [
-        "Android",
-        "YOLO",
-        "AIDL"
-      ]
-    },
-    {
       "name": "IdolMEA ERP",
-      "description": "Retail ERP integrating POS, IoT automation and AI analytics.",
+      "description": "Enterprise retail platform integrating POS, QMS, IoT automation & AI analytics for 50+ GCC branches",
       "technologies": [
         "Flutter",
         "Node.js",
-        "Docker"
-      ]
+        "Docker",
+        "MySQL",
+        "MQTT"
+      ],
+      "status": "Live",
+      "category": "Enterprise"
     },
     {
-      "name": "IdolQueue (i‑QMS)",
-      "description": "Offline-first queue automation (Flutter MVVM + Node.js + MQTT).",
+      "name": "AI Self-Checkout Kiosk",
+      "description": "YOLO-based theft detection with LED/GPIO feedback via Android AIDL interface. Showcased at Gitex Dubai 2024.",
+      "technologies": [
+        "Android",
+        "YOLO",
+        "AIDL",
+        "Kotlin",
+        "Python"
+      ],
+      "status": "Gitex 2024",
+      "category": "AI/Vision"
+    },
+    {
+      "name": "IdolQueue (i-QMS)",
+      "description": "Offline-first queue management with MQTT automation & WhatsApp/Telegram notifications",
       "technologies": [
         "Flutter",
+        "Node.js",
         "MQTT",
         "Hive"
-      ]
+      ],
+      "status": "Live",
+      "category": "Queue Management"
+    },
+    {
+      "name": "Enterprise VPN Mesh",
+      "description": "8+ node WireGuard VPN mesh on MikroTik routers for secure multi-branch connectivity",
+      "technologies": [
+        "MikroTik",
+        "WireGuard",
+        "RouterOS"
+      ],
+      "status": "Active",
+      "category": "Infrastructure"
+    },
+    {
+      "name": "AI Queue Agent",
+      "description": "LangChain-based ERP assistant with voice (Whisper) & text commands for queue management",
+      "technologies": [
+        "LangChain",
+        "OpenAI",
+        "Whisper",
+        "Python"
+      ],
+      "status": "AI",
+      "category": "AI/ML"
+    },
+    {
+      "name": "Hybrid Sync Engine",
+      "description": "Offline-first MySQL ↔ Hive delta tracking with conflict resolution & auto recovery",
+      "technologies": [
+        "MySQL",
+        "Hive",
+        "Node.js"
+      ],
+      "status": "Core",
+      "category": "Backend"
+    },
+    {
+      "name": "ESL Management Tools",
+      "description": "Solum/OEPL electronic shelf label management, ESP32 flash tools & MQTT controllers",
+      "technologies": [
+        "ESP32",
+        "MQTT",
+        "Python",
+        "Flutter"
+      ],
+      "status": "IoT",
+      "category": "IoT"
+    },
+    {
+      "name": "Vlogfied",
+      "description": "Video-based restaurant discovery app with AI content tagging and smart search",
+      "technologies": [
+        "Flutter",
+        "Firebase",
+        "AI"
+      ],
+      "status": "App",
+      "category": "Mobile"
+    },
+    {
+      "name": "BookzNow / Hozzo",
+      "description": "Flutter MVVM booking platform for clinics/salons with Material 3 UI & real-time chatbots",
+      "technologies": [
+        "Flutter",
+        "MVVM",
+        "Firebase"
+      ],
+      "status": "App",
+      "category": "Mobile"
+    },
+    {
+      "name": "SincA ERP",
+      "description": "Comprehensive ERP with AI dashboards, OCR systems, predictive models & WhatsApp bots",
+      "technologies": [
+        "Flutter",
+        "Node.js",
+        "Python",
+        "MySQL"
+      ],
+      "status": "Private",
+      "category": "Enterprise"
+    },
+    {
+      "name": "LampAidlInterface",
+      "description": "Android Kotlin + Flutter IPC bridge for real-time LED/lamp automation in retail devices",
+      "technologies": [
+        "Kotlin",
+        "Flutter",
+        "AIDL"
+      ],
+      "status": "Hardware",
+      "category": "IoT"
     }
-  ]
+  ],
+  "highlights": [
+    "Gitex Dubai 2024: AI Self-Checkout Kiosk showcase",
+    "50+ enterprise clients across retail, healthcare & hospitality",
+    "Led cross-location teams with CI/CD & Docker pipelines",
+    "10+ years of full-stack development experience"
+  ],
+  "availability": {
+    "status": "Available Immediately",
+    "visa": "Valid UAE Work Visa",
+    "location": "Dubai, UAE"
+  }
 }
