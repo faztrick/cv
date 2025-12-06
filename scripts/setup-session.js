@@ -50,6 +50,14 @@ const EXTENSION_PATH = path.join(__dirname, '..', 'chrome-extension');
     console.log('🌐 Opening Indeed...');
     await p3.goto('https://ae.indeed.com', { timeout: 60000 });
 
+    const p4 = await context.newPage();
+    console.log('🌐 Opening Bayt...');
+    await p4.goto('https://www.bayt.com', { timeout: 60000 });
+
+    const p5 = await context.newPage();
+    console.log('🌐 Opening GulfTalent...');
+    await p5.goto('https://www.gulftalent.com', { timeout: 60000 });
+
     // Keep script running until user closes browser
     context.on('close', () => {
         console.log('✅ Browser closed. Session saved.');

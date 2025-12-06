@@ -6,9 +6,13 @@ const fs = require('fs');
 const { exec } = require('child_process');
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const QRCode = require('qrcode');
+const { SkillsJobMatcher } = require('./scripts/skills-job-matcher');
 
 const app = express();
 const PORT = 3000;
+
+// Initialize skills matcher
+const skillsMatcher = new SkillsJobMatcher();
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -99,6 +103,14 @@ app.get('/api/emails', (req, res) => {
 
 // Serve Dashboard
 app.get('/panel', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'panel-modern.html'));
+});
+
+app.get('/panel-skills', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'panel-skills.html'));
+});
+
+app.get('/panel-modern', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'panel-modern.html'));
 });
 
@@ -945,6 +957,149 @@ app.post('/api/indeed/apply-job', (req, res) => {
     fs.writeFileSync(tempJobFile, JSON.stringify(job, null, 2));
 
     res.json({ success: true, message: 'Application initiated' });
+});
+
+// --- SKILLS & JOB MATCHING API ---
+
+// Get skills summary
+app.get('/api/skills/summary', (req, res) => {
+    try {
+        const summary = skillsMatcher.getSummary();
+        res.json(summary);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// Get skills by category
+app.get('/api/skills/categories', (req, res) => {
+    try {
+        const categories = skillsMatcher.getSkillsByCategory();
+        res.json(categories);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// Get recommended job searches
+app.get('/api/skills/recommended-searches', (req, res) => {
+    try {
+        const location = req.query.location || 'Dubai';
+        const recommendations = skillsMatcher.getRecommendedSearches(location);
+        res.json(recommendations);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// Match job description against skills
+app.post('/api/skills/match-job', (req, res) => {
+    try {
+        const { description } = req.body;
+        if (!description) {
+            return res.status(400).json({ error: 'Job description is required' });
+        }
+        const match = skillsMatcher.matchJobDescription(description);
+        res.json(match);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// Reload skills matcher (after CV update)
+app.post('/api/skills/reload', (req, res) => {
+    try {
+        const newMatcher = new SkillsJobMatcher();
+        Object.assign(skillsMatcher, newMatcher);
+        res.json({ success: true, message: 'Skills reloaded', summary: skillsMatcher.getSummary() });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+});
+
+// --- PLAYWRIGHT JOB AUTOMATION API ---
+
+let playwrightProcess = null;
+let playwrightLogs = [];
+
+// Run job search automation
+app.post('/api/automation/search', (req, res) => {
+    const { platform, keyword, location } = req.body;
+
+    if (playwrightProcess) {
+        return res.status(400).json({ success: false, message: 'Automation already running' });
+    }
+
+    playwrightLogs = [];
+    playwrightLogs.push(`[${new Date().toLocaleTimeString()}] Starting ${platform} search: "${keyword}" in ${location}`);
+
+    const args = ['scripts/job-search-playwright.js', platform || 'indeed', keyword || 'Software Engineer', location || 'Dubai'];
+
+    playwrightProcess = spawn('node', args, { cwd: __dirname });
+
+    playwrightProcess.stdout.on('data', (data) => {
+        const lines = data.toString().split('\n');
+        lines.forEach(line => {
+            if (line.trim()) {
+                playwrightLogs.push(`[${new Date().toLocaleTimeString()}] ${line.trim()}`);
+            }
+        });
+    });
+
+    playwrightProcess.stderr.on('data', (data) => {
+        const lines = data.toString().split('\n');
+        lines.forEach(line => {
+            if (line.trim()) {
+                playwrightLogs.push(`[${new Date().toLocaleTimeString()}] ERROR: ${line.trim()}`);
+            }
+        });
+    });
+
+    playwrightProcess.on('close', (code) => {
+        playwrightLogs.push(`[${new Date().toLocaleTimeString()}] Automation finished with code ${code}`);
+        playwrightProcess = null;
+    });
+
+    res.json({ success: true, message: `${platform} search started` });
+});
+
+// Stop automation
+app.post('/api/automation/stop', (req, res) => {
+    if (playwrightProcess) {
+        playwrightProcess.kill();
+        playwrightProcess = null;
+        playwrightLogs.push(`[${new Date().toLocaleTimeString()}] Automation stopped by user`);
+        res.json({ success: true, message: 'Stopped' });
+    } else {
+        res.json({ success: false, message: 'Not running' });
+    }
+});
+
+// Get automation logs
+app.get('/api/automation/logs', (req, res) => {
+    res.json({
+        running: !!playwrightProcess,
+        logs: playwrightLogs
+    });
+});
+
+// Batch run multiple searches
+app.post('/api/automation/batch', async (req, res) => {
+    const { searches } = req.body; // Array of { platform, keyword, location }
+
+    if (!searches || !Array.isArray(searches)) {
+        return res.status(400).json({ error: 'searches array is required' });
+    }
+
+    // Queue up searches (they'll run one at a time)
+    const BATCH_FILE = path.join(DATA_DIR, 'batch-searches.json');
+    fs.writeFileSync(BATCH_FILE, JSON.stringify(searches, null, 2));
+
+    res.json({
+        success: true,
+        message: `Queued ${searches.length} searches`,
+        searches
+    });
 });
 
 app.listen(PORT, () => {

@@ -566,12 +566,13 @@ class JobAutomator {
         console.log(`\n🔍 Starting Indeed Search: "${keyword}" in "${location}"`);
 
         try {
-            await this.safeNavigate('https://ae.indeed.com/');
-            await this.randomDelay(1000, 2000);
+            // Navigate and wait for full page load
+            await this.page.goto('https://ae.indeed.com/', { waitUntil: 'networkidle', timeout: 60000 });
+            await this.randomDelay(2000, 3000);
 
             // Simulate human-like page interaction before searching
             await this.humanScroll(100);
-            await this.randomDelay(500, 1000);
+            await this.randomDelay(1000, 1500);
 
             // Check if logged in - multiple possible selectors
             const isLoggedIn = await this.page.locator([
@@ -580,7 +581,7 @@ class JobAutomator {
                 '.gnav-AccountMenu',
                 '#ifl-GlobalMainNav-link-user',
                 'button[aria-label="Open profile menu"]',
-                '.gnav-header-1b6v969' // Sometimes dynamic, but worth a shot if stable
+                '.gnav-header-1b6v969'
             ].join(',')).count() > 0;
 
             if (!isLoggedIn) {
@@ -588,6 +589,9 @@ class JobAutomator {
             } else {
                 console.log('✅ Logged in to Indeed');
             }
+
+            // Wait for search inputs to be ready
+            await this.page.waitForSelector('#text-input-what, input[name="q"]', { state: 'visible', timeout: 15000 });
 
             // Fill search form - with retry for dynamic loading
             await withRetry(async () => {
@@ -668,7 +672,14 @@ class JobAutomator {
 
                     // Click job to see details
                     await card.click({ timeout: 5000 });
-                    await this.randomDelay(1500, 2500);
+
+                    // Wait for job details panel to load
+                    await this.page.waitForSelector('#jobDescriptionText, .jobsearch-JobComponent-description, [data-testid="job-description"]', {
+                        state: 'visible',
+                        timeout: 10000
+                    }).catch(() => console.log('   ⏳ Job details loading slowly...'));
+
+                    await this.randomDelay(2000, 3000);
 
                     // Extract email from description
                     let email = '';
@@ -681,39 +692,47 @@ class JobAutomator {
                     // Check for CAPTCHA after clicking
                     await this.checkForCaptcha();
 
-                    // Check for "Apply now" (Indeed Apply) vs "Apply on company site" - updated selectors
+                    // Wait a bit for apply buttons to render
+                    await this.randomDelay(1000, 1500);
+
+                    // Check for "Apply now" (Indeed Apply) vs "Apply on company site" - updated selectors for 2025
                     const applySelectors = [
                         '#indeedApplyButton',
                         'button[id*="indeedApply"]',
                         '[data-testid="indeedApply-button"]',
                         'button:has-text("Apply now")',
                         '.jobsearch-IndeedApplyButton',
-                        'button.ia-IndeedApplyButton'
+                        'button.ia-IndeedApplyButton',
+                        'button[aria-label*="Apply"]',
+                        '.jobsearch-ApplyButton button',
+                        '[data-testid="apply-button"]'
                     ];
 
-                    let hasApplyButton = false;
+                    let applyButton = null;
                     for (const sel of applySelectors) {
                         try {
-                            if (await this.page.locator(sel).count() > 0) {
-                                hasApplyButton = true;
+                            const btn = this.page.locator(sel).first();
+                            if (await btn.count() > 0 && await btn.isVisible()) {
+                                applyButton = btn;
                                 break;
                             }
                         } catch (e) {}
                     }
 
-                    const companySiteButton = this.page.locator('#applyButtonLinkContainer, a:has-text("Apply on company site"), a[href*="apply"]');
+                    const companySiteButton = this.page.locator('a:has-text("Apply on company site"), a[href*="apply"]:visible, a.jobsearch-IndeedApplyButton-newWindow');
 
-                    if (hasApplyButton) {
-                        console.log('   ✨ Indeed Apply available! (Easy Apply)');
-                        await this.applyIndeedEasy(title, company, email);
+                    if (applyButton) {
+                        const buttonText = await applyButton.innerText().catch(() => '');
+                        console.log(`   ✨ Found Apply button: "${buttonText.trim()}"`);
+                        await this.applyIndeedEasy(title, company, email, applyButton);
                     } else if (await companySiteButton.count() > 0) {
                         console.log('   🔗 External application link');
                         // Track as pending/interested
                         await this.trackApplication(company, title, 'Indeed', 'Pending', email);
                     } else {
-                        console.log('   ❓ Application method unclear');
-                        // Track anyway if we have email
-                        if (email) await this.trackApplication(company, title, 'Indeed', 'Pending', email);
+                        console.log('   ❓ No apply button found - may need to apply on company site');
+                        // Track anyway
+                        await this.trackApplication(company, title, 'Indeed', 'Pending', email);
                     }
                 } catch (err) {
                     console.log(`   ⚠️ Error processing job ${i + 1}: ${err.message}`);
@@ -726,19 +745,30 @@ class JobAutomator {
         }
     }
 
-    async applyIndeedEasy(title, company, email = '') {
+    async applyIndeedEasy(title, company, email = '', applyButton = null) {
         try {
-            await this.page.click('#indeedApplyButton');
+            // Reset form fill tracking for new application
+            this._indeedFormFilled = false;
+
+            // Click the apply button (use passed button or fallback to selector)
+            if (applyButton) {
+                await applyButton.click();
+            } else {
+                await this.page.click('#indeedApplyButton, button:has-text("Apply now")');
+            }
             console.log('   📝 Opened application modal...');
+
+            // Wait for modal or new page to load
+            await this.randomDelay(2000, 3000);
 
             // Check for iframe
             let contentFrame = this.page;
             try {
-                const iframeElement = await this.page.waitForSelector('iframe[title*="application"], iframe[title*="Apply"]', { timeout: 5000 });
+                const iframeElement = await this.page.waitForSelector('iframe[title*="application"], iframe[title*="Apply"], iframe[src*="apply"]', { timeout: 5000 });
                 if (iframeElement) {
                     console.log('   Testing for iframe content...');
                     const frames = this.page.frames();
-                    const appFrame = frames.find(f => f.url().includes('indeed.com/apply') || f.name().includes('application'));
+                    const appFrame = frames.find(f => f.url().includes('indeed.com/apply') || f.url().includes('/apply') || f.name().includes('application'));
                     if (appFrame) {
                         contentFrame = appFrame;
                         console.log('   ✅ Switched to application iframe');
@@ -748,7 +778,7 @@ class JobAutomator {
                 console.log('   ℹ️ No iframe detected, assuming direct page content');
             }
 
-            await this.randomDelay(2000, 4000);
+            await this.randomDelay(1500, 2500);
 
             // Basic flow: Click "Continue" until "Submit" or "Review"
             let attempts = 0;
@@ -783,28 +813,39 @@ class JobAutomator {
                     await this.trackApplication(company, title, 'Indeed', 'Applied', email);
                     break;
                 } else if (await reviewBtn.isVisible()) {
+                    this._indeedFormFilled = false; // Reset for next step
                     await reviewBtn.click();
                     console.log('   👀 Reviewing application...');
                 } else if (await continueBtn.isVisible()) {
+                    this._indeedFormFilled = false; // Reset for next step
                     await continueBtn.click();
                     console.log('   ➡️ Clicking Continue...');
                 } else if (await nextBtn.isVisible()) {
+                    this._indeedFormFilled = false; // Reset for next step
                     await nextBtn.click();
                     console.log('   ➡️ Clicking Next...');
                 } else {
                     // Check if we are stuck
-                    const errorMsg = await contentFrame.locator('.ia-Form-error').first();
-                    if (await errorMsg.isVisible()) {
+                    const errorMsg = contentFrame.locator('.ia-Form-error, [data-testid="error"], .error-message').first();
+                    if (await errorMsg.isVisible().catch(() => false)) {
                         console.log('   ⚠️ Form error detected (manual intervention needed)');
                         break;
                     }
 
-                    console.log('   ⏳ Waiting for buttons...');
-                    await this.randomDelay(1000, 2000);
+                    // Wait a bit and check for buttons again
+                    await this.randomDelay(1500, 2500);
 
-                    if (attempts > 12) {
+                    // Check for any clickable action button
+                    const anyButton = contentFrame.locator('button[type="submit"], button:has-text("Continue"), button:has-text("Next"), button:has-text("Submit")').first();
+                    if (await anyButton.isVisible().catch(() => false)) {
+                        console.log('   ➡️ Found action button, clicking...');
+                        this._indeedFormFilled = false; // Reset for next step
+                        await anyButton.click();
+                    } else if (attempts > 8) {
                          console.log('   ⚠️ Timed out waiting for buttons');
                          break;
+                    } else {
+                        console.log('   ⏳ Waiting for page to load...');
                     }
                 }
                 await this.randomDelay(1500, 3000);
@@ -823,17 +864,20 @@ class JobAutomator {
     }
 
     async fillIndeedForm(frame) {
+        // Only fill form once per modal - track if already filled
+        if (this._indeedFormFilled) {
+            return;
+        }
+
         // Try using the extension via FAB first
         try {
-            // Note: The FAB is injected into the main page, but the form might be in an iframe.
-            // The extension content script runs in all frames, so the FAB might be inside the iframe too.
             const fabBtn = frame.locator('button[data-action="autoFill"]');
             if (await fabBtn.count() > 0) {
-                // ... logic to click FAB ...
-                // Simplified for iframe context where FAB might be squeezed
                 await fabBtn.click({ force: true });
                 console.log('   🧩 Clicking Extension Auto-Fill button (Indeed)...');
                 await this.randomDelay(1000, 2000);
+                this._indeedFormFilled = true;
+                return;
             }
         } catch (e) {}
 
@@ -842,8 +886,11 @@ class JobAutomator {
             return;
         }
 
-        // console.log('   🤖 AI Agent taking over Indeed form filling...');
-        await this.aiAgent.fillForm(frame, CONFIG.pdfPath);
+        // AI Agent fills form ONCE
+        const filled = await this.aiAgent.fillForm(frame, CONFIG.pdfPath);
+        if (filled) {
+            this._indeedFormFilled = true;
+        }
     }
 
     // --- LINKEDIN AUTOMATION ---
@@ -852,82 +899,132 @@ class JobAutomator {
         console.log(`\n🔍 Starting LinkedIn Search: "${keyword}" in "${location}"`);
 
         try {
-            await this.page.goto('https://www.linkedin.com/jobs/', { waitUntil: 'domcontentloaded' });
+            // Go directly to job search URL with Easy Apply filter
+            const searchUrl = `https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(keyword)}&location=${encodeURIComponent(location)}&f_AL=true`;
+            console.log('   Loading LinkedIn...');
+            await this.page.goto(searchUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+            await this.randomDelay(3000, 4000);
 
-            // Check login
-            if (await this.page.locator('.nav__button-secondary').count() > 0) {
-                console.log('⚠️ Not logged in. Please log in manually.');
-            }
-
-            // Search
-            const searchBox = this.page.locator('.jobs-search-box__text-input').first();
-
-            if (await searchBox.isVisible()) {
-                await searchBox.fill(keyword);
-                await this.page.keyboard.press('Enter');
+            // Check login status
+            console.log('   Checking login status...');
+            const isLoggedIn = await this.page.locator('.global-nav__me, .feed-identity-module, [data-control-name="identity_welcome_message"], .global-nav__primary-link--active').count() > 0;
+            if (!isLoggedIn) {
+                console.log('⚠️ Not logged in to LinkedIn. Run "node scripts/setup-session.js" first.');
+                // Check if we're on sign-in page
+                if (this.page.url().includes('login') || this.page.url().includes('signin')) {
+                    console.log('   Redirected to login page. Please log in manually in the browser.');
+                    await this.randomDelay(20000, 25000); // Wait for manual login
+                }
             } else {
-                console.log('⚠️ Search box not found, trying direct URL');
-                await this.page.goto(`https://www.linkedin.com/jobs/search/?keywords=${encodeURIComponent(keyword)}&location=${encodeURIComponent(location)}`);
+                console.log('✅ Logged in to LinkedIn');
             }
 
-            await this.page.waitForSelector('.jobs-search-results-list', { timeout: 10000 }).catch(() => console.log('List not found immediately'));
+            // Wait for job results to load
+            console.log('   Waiting for job results...');
+            await this.page.waitForSelector('.jobs-search-results-list, .scaffold-layout__list, [data-job-id], .jobs-search-results__list', { timeout: 15000 }).catch(() => {
+                console.log('   ⚠️ Job results list not found with primary selectors');
+            });
+            await this.randomDelay(2000, 3000);
             console.log('✅ Search results loaded');
 
-            // Filter for "Easy Apply"
-            try {
-                const easyApplyFilter = this.page.locator('button[aria-label="Easy Apply filter."]');
-                if (await easyApplyFilter.isVisible()) {
-                    await easyApplyFilter.click();
-                    await this.randomDelay();
-                    console.log('✅ Filtered by Easy Apply');
-                }
-            } catch (e) {
-                console.log('⚠️ Could not filter by Easy Apply');
-            }
-
-            // Iterate jobs
-            const jobs = this.page.locator('.job-card-container');
+            // Get job cards - updated selectors for 2025 LinkedIn
+            const jobCardSelectors = '.job-card-container, .jobs-search-results__list-item, [data-job-id], .scaffold-layout__list-item, .jobs-search-two-pane__job-card-container--viewport-tracking-0';
+            const jobs = this.page.locator(jobCardSelectors);
             const count = await jobs.count();
             console.log(`📊 Found ${count} jobs`);
 
-            for (let i = 0; i < Math.min(count, 5); i++) { // Limit to 5 for demo
-                const job = jobs.nth(i);
-                await job.scrollIntoViewIfNeeded();
+            if (count === 0) {
+                console.log('   No jobs found. LinkedIn may have changed its layout or you may need to log in.');
+                return;
+            }
 
-                // Get title safely
-                let title = "Unknown Job";
-                let company = "Unknown Company";
+            for (let i = 0; i < Math.min(count, 10); i++) {
                 try {
-                    title = await job.locator('.job-card-list__title').innerText();
-                    company = await job.locator('.job-card-container__primary-description').innerText();
-                } catch (e) {}
+                    const job = jobs.nth(i);
+                    await job.scrollIntoViewIfNeeded();
+                    await this.randomDelay(1000, 1500);
 
-                console.log(`\n👉 Checking: ${title} at ${company}`);
+                    // Get title and company - multiple selector attempts
+                    let title = "Unknown Job";
+                    let company = "Unknown Company";
 
-                await job.click();
-                await this.randomDelay(1000, 2000);
+                    const titleSelectors = ['.job-card-list__title', '.job-card-container__link', 'a[data-control-id*="job"]', '.artdeco-entity-lockup__title'];
+                    for (const sel of titleSelectors) {
+                        try {
+                            const el = job.locator(sel).first();
+                            if (await el.count() > 0) {
+                                title = await el.innerText();
+                                if (title && title !== 'Unknown Job') break;
+                            }
+                        } catch (e) {}
+                    }
 
-                // Extract email
-                let email = '';
-                try {
-                    const desc = await this.page.locator('.jobs-description__content').innerText({ timeout: 2000 }).catch(() => '');
-                    email = this.extractEmail(desc);
-                    if (email) console.log(`   📧 Found email: ${email}`);
-                } catch (e) {}
+                    const companySelectors = ['.job-card-container__primary-description', '.artdeco-entity-lockup__subtitle', '.job-card-container__company-name'];
+                    for (const sel of companySelectors) {
+                        try {
+                            const el = job.locator(sel).first();
+                            if (await el.count() > 0) {
+                                company = await el.innerText();
+                                if (company && company !== 'Unknown Company') break;
+                            }
+                        } catch (e) {}
+                    }
 
-                const easyApplyBtn = this.page.locator('.jobs-apply-button--top-card button');
-                if (await easyApplyBtn.isVisible() && await easyApplyBtn.innerText() === 'Easy Apply') {
-                    console.log('   ✨ Easy Apply button found!');
-                    await easyApplyBtn.click();
-                    await this.handleLinkedInModal(title, company, email);
-                } else {
-                    console.log('   ❌ No Easy Apply button (or already applied)');
-                    if (email) await this.trackApplication(company, title, 'LinkedIn', 'Pending', email);
+                    console.log(`\n👉 [${i + 1}/${count}] ${title.trim()} at ${company.trim()}`);
+
+                    // Click job to see details
+                    await job.click();
+                    await this.randomDelay(2000, 3000);
+
+                    // Wait for job details to load
+                    await this.page.waitForSelector('.jobs-description, .jobs-unified-top-card, .job-details-jobs-unified-top-card__primary-description', { timeout: 8000 }).catch(() => {});
+
+                    // Extract email from description
+                    let email = '';
+                    try {
+                        const desc = await this.page.locator('.jobs-description__content, .jobs-description, .job-details-module').innerText({ timeout: 3000 }).catch(() => '');
+                        email = this.extractEmail(desc);
+                        if (email) console.log(`   📧 Found email: ${email}`);
+                    } catch (e) {}
+
+                    // Look for Easy Apply button - updated selectors
+                    const easyApplySelectors = [
+                        'button.jobs-apply-button',
+                        'button[aria-label*="Easy Apply"]',
+                        'button:has-text("Easy Apply")',
+                        '.jobs-apply-button--top-card button'
+                    ];
+
+                    let easyApplyBtn = null;
+                    for (const sel of easyApplySelectors) {
+                        try {
+                            const btn = this.page.locator(sel).first();
+                            if (await btn.isVisible()) {
+                                const text = await btn.innerText().catch(() => '');
+                                if (text.toLowerCase().includes('easy apply') || text.toLowerCase().includes('apply')) {
+                                    easyApplyBtn = btn;
+                                    break;
+                                }
+                            }
+                        } catch (e) {}
+                    }
+
+                    if (easyApplyBtn) {
+                        console.log('   ✨ Easy Apply button found!');
+                        await easyApplyBtn.click();
+                        await this.handleLinkedInModal(title, company, email);
+                    } else {
+                        console.log('   ❌ No Easy Apply (external application or already applied)');
+                        await this.trackApplication(company, title, 'LinkedIn', 'Pending', email);
+                    }
+                } catch (err) {
+                    console.log(`   ⚠️ Error processing job ${i + 1}: ${err.message}`);
+                    continue;
                 }
             }
 
         } catch (error) {
-            console.error('❌ Error in LinkedIn automation:', error);
+            console.error('❌ Error in LinkedIn automation:', error.message);
         }
     }
 

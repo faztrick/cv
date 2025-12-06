@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV Skills & Job Search Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .sidebar-link { @apply flex items-center px-6 py-3 text-slate-400 hover:bg-slate-800 hover:text-blue-400 transition-colors cursor-pointer; }
+        .sidebar-link.active { @apply bg-slate-800 text-blue-400 border-r-4 border-blue-400; }
+        .card { @apply bg-slate-800 rounded-xl shadow-lg p-6 mb-6 border border-slate-700; }
+        .btn { @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 cursor-pointer; }
+        .btn-primary { @apply bg-blue-600 text-white hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-500/20; }
+        .btn-secondary { @apply bg-slate-700 text-slate-300 hover:bg-slate-600; }
+        .btn-success { @apply bg-emerald-600 text-white hover:bg-emerald-500; }
+        .btn-sm { @apply px-3 py-1.5 text-sm; }
+        .skill-tag { @apply px-3 py-1.5 bg-slate-700 text-blue-300 rounded-full text-sm font-medium hover:bg-blue-600 hover:text-white transition-all cursor-pointer; }
+        .search-card { @apply bg-slate-800/50 border border-slate-700 rounded-lg p-4 hover:border-blue-500 transition-all cursor-pointer; }
+        .search-card:hover { @apply shadow-lg shadow-blue-500/10; }
+        .platform-badge { @apply px-2 py-0.5 rounded text-xs font-bold uppercase; }
+        .platform-indeed { @apply bg-blue-900 text-blue-300; }
+        .platform-linkedin { @apply bg-sky-900 text-sky-300; }
+        .platform-bayt { @apply bg-indigo-900 text-indigo-300; }
+        .platform-gulftalent { @apply bg-orange-900 text-orange-300; }
+        .console { @apply bg-slate-900 text-emerald-400 font-mono text-sm p-4 rounded-lg border border-slate-700 h-64 overflow-y-auto; }
+        .progress-ring { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+        .animate-fade-in { animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-slate-900 border-r border-slate-800 flex-shrink-0 flex flex-col">
+        <div class="p-6 border-b border-slate-800">
+            <h1 class="text-xl font-bold text-white"><i class="fas fa-rocket mr-2 text-blue-400"></i>Job Toolkit</h1>
+            <p class="text-xs text-slate-500 mt-1">Skills-Based Automation</p>
+        </div>
+        <nav class="flex-1 mt-4">
+            <a onclick="showTab('skills')" id="nav-skills" class="sidebar-link active">
+                <i class="fas fa-brain w-6 text-blue-400"></i> My Skills
+            </a>
+            <a onclick="showTab('search')" id="nav-search" class="sidebar-link">
+                <i class="fas fa-search w-6"></i> Job Search
+            </a>
+            <a onclick="showTab('recommended')" id="nav-recommended" class="sidebar-link">
+                <i class="fas fa-bullseye w-6"></i> Recommended Jobs
+            </a>
+            <a onclick="showTab('automation')" id="nav-automation" class="sidebar-link">
+                <i class="fas fa-robot w-6"></i> Automation
+            </a>
+            <a onclick="showTab('tracker')" id="nav-tracker" class="sidebar-link">
+                <i class="fas fa-clipboard-list w-6"></i> Application Tracker
+            </a>
+            <a onclick="showTab('outreach')" id="nav-outreach" class="sidebar-link">
+                <i class="fas fa-envelope w-6"></i> Outreach
+            </a>
+        </nav>
+        <div class="p-4 border-t border-slate-800">
+            <div id="profile-summary" class="text-center">
+                <div class="w-12 h-12 bg-blue-600 rounded-full mx-auto flex items-center justify-center text-xl font-bold">MF</div>
+                <p class="text-sm font-medium mt-2" id="profile-name">Loading...</p>
+                <p class="text-xs text-slate-500" id="profile-title">Loading...</p>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 overflow-y-auto p-8">
+
+        <!-- Skills Tab -->
+        <div id="tab-skills" class="tab-content animate-fade-in">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">My Skills Profile</h2>
+                    <p class="text-slate-400 text-sm">Your skills matched against job requirements</p>
+                </div>
+                <button onclick="reloadSkills()" class="btn btn-secondary btn-sm">
+                    <i class="fas fa-sync mr-2"></i>Refresh
+                </button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <div class="card border-l-4 border-blue-500">
+                    <h3 class="text-slate-400 text-sm">Total Skills</h3>
+                    <p class="text-3xl font-bold text-white mt-2" id="stat-skills">0</p>
+                </div>
+                <div class="card border-l-4 border-emerald-500">
+                    <h3 class="text-slate-400 text-sm">Experience</h3>
+                    <p class="text-3xl font-bold text-white mt-2"><span id="stat-years">0</span>+ years</p>
+                </div>
+                <div class="card border-l-4 border-purple-500">
+                    <h3 class="text-slate-400 text-sm">Projects</h3>
+                    <p class="text-3xl font-bold text-white mt-2" id="stat-projects">0</p>
+                </div>
+                <div class="card border-l-4 border-amber-500">
+                    <h3 class="text-slate-400 text-sm">Recommended Jobs</h3>
+                    <p class="text-3xl font-bold text-white mt-2" id="stat-recommended">0</p>
+                </div>
+            </div>
+
+            <!-- Skills by Category -->
+            <div id="skills-categories" class="space-y-4">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+        <!-- Job Search Tab -->
+        <div id="tab-search" class="tab-content hidden">
+            <h2 class="text-2xl font-bold text-white mb-6">Manual Job Search</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Indeed -->
+                <div class="card hover:border-blue-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="h-10 w-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold mr-3">IN</div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Indeed</h3>
+                            <p class="text-xs text-slate-500">UAE Jobs</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <input type="text" id="indeed-keyword" value="Senior Software Engineer" placeholder="Job Title"
+                               class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none">
+                        <input type="text" id="indeed-location" value="Dubai" placeholder="Location"
+                               class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white placeholder-slate-500 focus:border-blue-500 focus:outline-none">
+                        <button onclick="runSearch('indeed')" class="btn btn-primary w-full">
+                            <i class="fas fa-play mr-2"></i> Search Indeed
+                        </button>
+                    </div>
+                </div>
+
+                <!-- LinkedIn -->
+                <div class="card hover:border-sky-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="h-10 w-10 bg-sky-600 rounded-lg flex items-center justify-center text-white font-bold mr-3">LI</div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">LinkedIn</h3>
+                            <p class="text-xs text-slate-500">Easy Apply</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <input type="text" id="linkedin-keyword" value="Senior Software Engineer" placeholder="Job Title"
+                               class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white placeholder-slate-500 focus:border-sky-500 focus:outline-none">
+                        <input type="text" id="linkedin-location" value="Dubai" placeholder="Location"
+                               class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white placeholder-slate-500 focus:border-sky-500 focus:outline-none">
+                        <button onclick="runSearch('linkedin')" class="btn btn-primary w-full bg-sky-600 hover:bg-sky-500">
+                            <i class="fas fa-play mr-2"></i> Search LinkedIn
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bayt -->
+                <div class="card hover:border-indigo-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="h-10 w-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold mr-3">BY</div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Bayt</h3>
+                            <p class="text-xs text-slate-500">Gulf Region</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <input type="text" id="bayt-keyword" value="Senior Software Engineer" placeholder="Job Title"
+                               class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white placeholder-slate-500 focus:border-indigo-500 focus:outline-none">
+                        <input type="text" id="bayt-location" value="Dubai" placeholder="Location"
+                               class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white placeholder-slate-500 focus:border-indigo-500 focus:outline-none">
+                        <button onclick="runSearch('bayt')" class="btn btn-primary w-full bg-indigo-600 hover:bg-indigo-500">
+                            <i class="fas fa-play mr-2"></i> Search Bayt
+                        </button>
+                    </div>
+                </div>
+
+                <!-- GulfTalent -->
+                <div class="card hover:border-orange-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="h-10 w-10 bg-orange-600 rounded-lg flex items-center justify-center text-white font-bold mr-3">GT</div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">GulfTalent</h3>
+                            <p class="text-xs text-slate-500">Premium Jobs</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <input type="text" id="gulftalent-keyword" value="Senior Software Engineer" placeholder="Job Title"
+                               class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white placeholder-slate-500 focus:border-orange-500 focus:outline-none">
+                        <input type="text" id="gulftalent-location" value="Dubai" placeholder="Location"
+                               class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white placeholder-slate-500 focus:border-orange-500 focus:outline-none">
+                        <button onclick="runSearch('gulftalent')" class="btn btn-primary w-full bg-orange-600 hover:bg-orange-500">
+                            <i class="fas fa-play mr-2"></i> Search GulfTalent
+                        </button>
+                    </div>
+                </div>
+
+                <!-- NaukriGulf -->
+                <div class="card hover:border-red-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="h-10 w-10 bg-red-600 rounded-lg flex items-center justify-center text-white font-bold mr-3">NG</div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">NaukriGulf</h3>
+                            <p class="text-xs text-slate-500">Middle East</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <input type="text" id="naukrigulf-keyword" value="Senior Software Engineer" placeholder="Job Title"
+                               class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white placeholder-slate-500 focus:border-red-500 focus:outline-none">
+                        <input type="text" id="naukrigulf-location" value="Dubai" placeholder="Location"
+                               class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white placeholder-slate-500 focus:border-red-500 focus:outline-none">
+                        <button onclick="runSearch('naukrigulf')" class="btn btn-primary w-full bg-red-600 hover:bg-red-500">
+                            <i class="fas fa-play mr-2"></i> Search NaukriGulf
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Dubizzle -->
+                <div class="card hover:border-rose-500 transition-colors">
+                    <div class="flex items-center mb-4">
+                        <div class="h-10 w-10 bg-rose-600 rounded-lg flex items-center justify-center text-white font-bold mr-3">DZ</div>
+                        <div>
+                            <h3 class="text-lg font-bold text-white">Dubizzle</h3>
+                            <p class="text-xs text-slate-500">UAE Classifieds</p>
+                        </div>
+                    </div>
+                    <div class="space-y-3">
+                        <input type="text" id="dubizzle-keyword" value="Senior Software Engineer" placeholder="Job Title"
+                               class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white placeholder-slate-500 focus:border-rose-500 focus:outline-none">
+                        <input type="text" id="dubizzle-location" value="Dubai" placeholder="Location"
+                               class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white placeholder-slate-500 focus:border-rose-500 focus:outline-none">
+                        <button onclick="runSearch('dubizzle')" class="btn btn-primary w-full bg-rose-600 hover:bg-rose-500">
+                            <i class="fas fa-play mr-2"></i> Search Dubizzle
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recommended Jobs Tab -->
+        <div id="tab-recommended" class="tab-content hidden">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">Recommended Searches</h2>
+                    <p class="text-slate-400 text-sm">Based on your skills profile</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="runAllRecommended()" class="btn btn-success">
+                        <i class="fas fa-rocket mr-2"></i>Run All Searches
+                    </button>
+                    <select id="rec-location" class="bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-white">
+                        <option value="Dubai">Dubai</option>
+                        <option value="Abu Dhabi">Abu Dhabi</option>
+                        <option value="UAE">UAE</option>
+                        <option value="Remote">Remote</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="recommended-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Populated by JS -->
+            </div>
+        </div>
+
+        <!-- Automation Tab -->
+        <div id="tab-automation" class="tab-content hidden">
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-white">Automation Console</h2>
+                    <p class="text-slate-400 text-sm">Monitor and control job automation</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="stopAutomation()" class="btn btn-secondary" id="btn-stop" disabled>
+                        <i class="fas fa-stop mr-2"></i>Stop
+                    </button>
+                    <button onclick="clearLogs()" class="btn btn-secondary">
+                        <i class="fas fa-trash mr-2"></i>Clear Logs
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <div id="automation-status" class="w-3 h-3 rounded-full bg-slate-600 mr-3"></div>
+                        <span id="automation-status-text" class="text-slate-400">Idle</span>
+                    </div>
+                    <span id="log-count" class="text-xs text-slate-500">0 logs</span>
+                </div>
+                <div id="automation-console" class="console">
+                    <p class="text-slate-500">Waiting for automation commands...</p>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card mt-6">
+                <h3 class="font-bold text-white mb-4">Quick Actions</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <button onclick="runQuickSearch('indeed', 'Software Architect')" class="btn btn-secondary text-sm">
+                        <i class="fas fa-search mr-2"></i>Software Architect
+                    </button>
+                    <button onclick="runQuickSearch('indeed', 'AI Engineer')" class="btn btn-secondary text-sm">
+                        <i class="fas fa-brain mr-2"></i>AI Engineer
+                    </button>
+                    <button onclick="runQuickSearch('linkedin', 'Full Stack Developer')" class="btn btn-secondary text-sm">
+                        <i class="fas fa-code mr-2"></i>Full Stack Dev
+                    </button>
+                    <button onclick="runQuickSearch('indeed', 'Flutter Developer')" class="btn btn-secondary text-sm">
+                        <i class="fas fa-mobile-alt mr-2"></i>Flutter Dev
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Application Tracker Tab -->
+        <div id="tab-tracker" class="tab-content hidden">
+            <h2 class="text-2xl font-bold text-white mb-6">Application Tracker</h2>
+            <div class="card">
+                <table class="w-full text-left">
+                    <thead class="text-slate-400 text-sm uppercase border-b border-slate-700">
+                        <tr>
+                            <th class="p-4">Company</th>
+                            <th class="p-4">Position</th>
+                            <th class="p-4">Platform</th>
+                            <th class="p-4">Status</th>
+                            <th class="p-4">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tracker-table" class="text-sm">
+                        <!-- Populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Outreach Tab -->
+        <div id="tab-outreach" class="tab-content hidden">
+            <h2 class="text-2xl font-bold text-white mb-6">Outreach Manager</h2>
+            <div class="card">
+                <p class="text-slate-400">Manage your email outreach campaigns...</p>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // State
+        let skillsSummary = null;
+        let recommendedSearches = [];
+        let logPollInterval = null;
+
+        // --- Navigation ---
+        function showTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            document.querySelectorAll('.sidebar-link').forEach(el => el.classList.remove('active'));
+            document.getElementById('nav-' + tabId).classList.add('active');
+
+            if (tabId === 'skills') loadSkillsSummary();
+            if (tabId === 'recommended') loadRecommendedSearches();
+            if (tabId === 'automation') startLogPolling();
+            else stopLogPolling();
+            if (tabId === 'tracker') loadTracker();
+        }
+
+        // --- Skills ---
+        async function loadSkillsSummary() {
+            try {
+                const res = await fetch('/api/skills/summary');
+                skillsSummary = await res.json();
+
+                // Update stats
+                document.getElementById('stat-skills').textContent = skillsSummary.skillCount;
+                document.getElementById('stat-years').textContent = skillsSummary.yearsOfExperience;
+                document.getElementById('stat-projects').textContent = skillsSummary.projects;
+                document.getElementById('stat-recommended').textContent = skillsSummary.recommendedQueries?.length || 0;
+
+                // Update profile
+                document.getElementById('profile-name').textContent = skillsSummary.name;
+                document.getElementById('profile-title').textContent = skillsSummary.title?.substring(0, 30) + '...';
+
+                // Render skills by category
+                renderSkillsCategories(skillsSummary.skillsByCategory);
+            } catch (e) {
+                console.error('Failed to load skills:', e);
+            }
+        }
+
+        function renderSkillsCategories(categories) {
+            const container = document.getElementById('skills-categories');
+            container.innerHTML = '';
+
+            for (const [category, skills] of Object.entries(categories)) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <h3 class="font-bold text-white mb-3"><i class="fas fa-layer-group mr-2 text-blue-400"></i>${category}</h3>
+                    <div class="flex flex-wrap gap-2">
+                        ${skills.map(skill => `<span class="skill-tag" onclick="searchForSkill('${skill}')">${skill}</span>`).join('')}
+                    </div>
+                `;
+                container.appendChild(card);
+            }
+        }
+
+        async function reloadSkills() {
+            try {
+                await fetch('/api/skills/reload', { method: 'POST' });
+                await loadSkillsSummary();
+            } catch (e) {
+                console.error('Failed to reload skills:', e);
+            }
+        }
+
+        function searchForSkill(skill) {
+            // Pre-fill search with skill-related job title
+            const keyword = skill + ' Developer';
+            document.getElementById('indeed-keyword').value = keyword;
+            document.getElementById('linkedin-keyword').value = keyword;
+            showTab('search');
+        }
+
+        // --- Recommended Searches ---
+        async function loadRecommendedSearches() {
+            try {
+                const location = document.getElementById('rec-location').value;
+                const res = await fetch(`/api/skills/recommended-searches?location=${location}`);
+                recommendedSearches = await res.json();
+                renderRecommendedSearches();
+            } catch (e) {
+                console.error('Failed to load recommendations:', e);
+            }
+        }
+
+        function renderRecommendedSearches() {
+            const grid = document.getElementById('recommended-grid');
+            grid.innerHTML = '';
+
+            // Group by query
+            const grouped = {};
+            for (const rec of recommendedSearches) {
+                if (!grouped[rec.query]) grouped[rec.query] = [];
+                grouped[rec.query].push(rec);
+            }
+
+            for (const [query, recs] of Object.entries(grouped)) {
+                const card = document.createElement('div');
+                card.className = 'search-card';
+
+                const platforms = recs.map(r => `<span class="platform-badge platform-${r.platform}">${r.platform}</span>`).join(' ');
+                const priority = recs[0].priority;
+                const priorityColor = priority === 'high' ? 'text-emerald-400' : 'text-amber-400';
+
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-bold text-white">${query}</h4>
+                        <span class="${priorityColor} text-xs"><i class="fas fa-star"></i> ${priority}</span>
+                    </div>
+                    <div class="flex gap-1 mb-3">${platforms}</div>
+                    <div class="flex gap-2">
+                        ${recs.map(r => `<button onclick="runSearch('${r.platform}', '${query}')" class="btn btn-sm btn-secondary flex-1">${r.platform}</button>`).join('')}
+                    </div>
+                `;
+                grid.appendChild(card);
+            }
+        }
+
+        async function runAllRecommended() {
+            if (!confirm('This will run multiple searches. Continue?')) return;
+
+            // Get unique high-priority searches
+            const highPriority = recommendedSearches.filter(r => r.priority === 'high');
+            const uniqueSearches = [];
+            const seen = new Set();
+
+            for (const r of highPriority) {
+                const key = `${r.query}-${r.platform}`;
+                if (!seen.has(key)) {
+                    seen.add(key);
+                    uniqueSearches.push(r);
+                }
+            }
+
+            try {
+                await fetch('/api/automation/batch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ searches: uniqueSearches.slice(0, 5) }) // Limit to 5
+                });
+                showTab('automation');
+            } catch (e) {
+                console.error('Failed to start batch:', e);
+            }
+        }
+
+        // --- Job Search ---
+        async function runSearch(platform, keyword = null) {
+            const kw = keyword || document.getElementById(`${platform}-keyword`)?.value || 'Software Engineer';
+            const loc = document.getElementById(`${platform}-location`)?.value || 'Dubai';
+
+            try {
+                const res = await fetch('/api/automation/search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ platform, keyword: kw, location: loc })
+                });
+                const data = await res.json();
+
+                if (data.success) {
+                    showTab('automation');
+                    startLogPolling();
+                } else {
+                    alert(data.message || 'Failed to start search');
+                }
+            } catch (e) {
+                console.error('Search failed:', e);
+            }
+        }
+
+        function runQuickSearch(platform, keyword) {
+            runSearch(platform, keyword);
+        }
+
+        // --- Automation Console ---
+        function startLogPolling() {
+            stopLogPolling();
+            pollLogs();
+            logPollInterval = setInterval(pollLogs, 2000);
+        }
+
+        function stopLogPolling() {
+            if (logPollInterval) {
+                clearInterval(logPollInterval);
+                logPollInterval = null;
+            }
+        }
+
+        async function pollLogs() {
+            try {
+                const res = await fetch('/api/automation/logs');
+                const data = await res.json();
+
+                const consoleEl = document.getElementById('automation-console');
+                const statusEl = document.getElementById('automation-status');
+                const statusTextEl = document.getElementById('automation-status-text');
+                const stopBtn = document.getElementById('btn-stop');
+
+                if (data.logs.length > 0) {
+                    consoleEl.innerHTML = data.logs.map(l => `<p>${l}</p>`).join('');
+                    consoleEl.scrollTop = consoleEl.scrollHeight;
+                }
+
+                document.getElementById('log-count').textContent = `${data.logs.length} logs`;
+
+                if (data.running) {
+                    statusEl.className = 'w-3 h-3 rounded-full bg-emerald-500 progress-ring';
+                    statusTextEl.textContent = 'Running';
+                    statusTextEl.className = 'text-emerald-400';
+                    stopBtn.disabled = false;
+                } else {
+                    statusEl.className = 'w-3 h-3 rounded-full bg-slate-600';
+                    statusTextEl.textContent = 'Idle';
+                    statusTextEl.className = 'text-slate-400';
+                    stopBtn.disabled = true;
+                }
+            } catch (e) {
+                console.error('Failed to poll logs:', e);
+            }
+        }
+
+        async function stopAutomation() {
+            try {
+                await fetch('/api/automation/stop', { method: 'POST' });
+                pollLogs();
+            } catch (e) {
+                console.error('Failed to stop:', e);
+            }
+        }
+
+        function clearLogs() {
+            document.getElementById('automation-console').innerHTML = '<p class="text-slate-500">Logs cleared.</p>';
+        }
+
+        // --- Tracker ---
+        async function loadTracker() {
+            try {
+                const res = await fetch('/api/companies');
+                const companies = await res.json();
+
+                const tbody = document.getElementById('tracker-table');
+                tbody.innerHTML = '';
+
+                if (companies.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">No applications tracked yet.</td></tr>';
+                    return;
+                }
+
+                for (const c of companies) {
+                    const statusColor = c.status === 'Applied' ? 'bg-emerald-900 text-emerald-300' :
+                                       c.status === 'Pending' ? 'bg-amber-900 text-amber-300' : 'bg-slate-700 text-slate-300';
+
+                    const row = document.createElement('tr');
+                    row.className = 'border-b border-slate-700 hover:bg-slate-800/50';
+                    row.innerHTML = `
+                        <td class="p-4 font-medium text-white">${c.name}</td>
+                        <td class="p-4 text-slate-400">${c.jobTitle || 'N/A'}</td>
+                        <td class="p-4"><span class="platform-badge platform-${(c.type || 'other').toLowerCase()}">${c.type || 'Other'}</span></td>
+                        <td class="p-4"><span class="px-2 py-1 rounded-full text-xs font-bold ${statusColor}">${c.status}</span></td>
+                        <td class="p-4 text-slate-500">${c.appliedDate || '-'}</td>
+                    `;
+                    tbody.appendChild(row);
+                }
+            } catch (e) {
+                console.error('Failed to load tracker:', e);
+            }
+        }
+
+        // --- Init ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSkillsSummary();
+        });
+
+        // Location change handler
+        document.getElementById('rec-location')?.addEventListener('change', loadRecommendedSearches);
+    </script>
+</body>
+</html>

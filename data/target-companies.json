@@ -202,5 +202,53 @@
     "followUpCount": 0,
     "lastFollowUp": null,
     "response": null
+  },
+  {
+    "id": "13",
+    "name": "Boston Consulting Group",
+    "type": "Indeed",
+    "email": "",
+    "contactPerson": "Hiring Manager",
+    "status": "Pending",
+    "notes": "",
+    "jobTitle": "AI Engineer, United Arab Emirates - BCG X",
+    "website": "",
+    "addedDate": "2025-12-06"
+  },
+  {
+    "id": "14",
+    "name": "Fuse Energy",
+    "type": "Indeed",
+    "email": "",
+    "contactPerson": "Hiring Manager",
+    "status": "Pending",
+    "notes": "",
+    "jobTitle": "Senior/Lead Backend Engineer",
+    "website": "",
+    "addedDate": "2025-12-06"
+  },
+  {
+    "id": "15",
+    "name": "BlackStone eIT",
+    "type": "Indeed",
+    "email": "",
+    "contactPerson": "Hiring Manager",
+    "status": "Pending",
+    "notes": "",
+    "jobTitle": "Senior Software Engineer ( TAMM )",
+    "website": "",
+    "addedDate": "2025-12-06"
+  },
+  {
+    "id": "16",
+    "name": "Binance",
+    "type": "Indeed",
+    "email": "",
+    "contactPerson": "Hiring Manager",
+    "status": "Pending",
+    "notes": "",
+    "jobTitle": "Senior Backend Engineer - Java",
+    "website": "",
+    "addedDate": "2025-12-06"
   }
 ]
