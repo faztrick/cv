@@ -24,7 +24,7 @@ const CONFIG = {
     userDataDir: path.join(__dirname, '../user_data/playwright'),
     extensionPath: path.join(__dirname, '../chrome-extension'),
     panelPort: 3456,
-    model: 'gpt-4o', // Latest and best model
+    model: 'gpt-5.1', // Latest and best model
     minDaysSinceApply: 2,
     delayBetweenMessages: 5000 // 5 seconds between messages
 };
@@ -461,7 +461,7 @@ function createPanelHTML() {
 <body>
     <div class="header">
         <h1>🤖 AI Bulk Follow-up</h1>
-        <div class="subtitle">Using GPT-4o • One by One • Auto Send</div>
+        <div class="subtitle">Using GPT-5.1 • One by One • Auto Send</div>
     </div>
 
     <div class="stats">
@@ -794,7 +794,7 @@ function logFollowUp(job) {
 async function main() {
     console.log('═══════════════════════════════════════════════════════════════');
     console.log('  🤖 AI Bulk Follow-up Tool');
-    console.log('  Model: GPT-4o (Latest) | Mode: One by One | Auto Send');
+    console.log('  Model: GPT-5.1 (Latest) | Mode: One by One | Auto Send');
     console.log('═══════════════════════════════════════════════════════════════\n');
 
     // Check API key

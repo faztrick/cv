@@ -132,6 +132,16 @@
                 <i class="fas fa-robot w-5"></i>
                 <span class="text-sm">Automation</span>
             </a>
+            <div class="border-t border-gray-700 my-2"></div>
+            <p class="px-3 text-xs text-gray-500 uppercase tracking-wider mb-1">Admin</p>
+            <a onclick="showTab('admin-tools')" id="nav-admin-tools" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-700/50 cursor-pointer">
+                <i class="fas fa-cogs w-5"></i>
+                <span class="text-sm">Admin Tools</span>
+            </a>
+            <a onclick="showTab('system-logs')" id="nav-system-logs" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-700/50 cursor-pointer">
+                <i class="fas fa-terminal w-5"></i>
+                <span class="text-sm">System Logs</span>
+            </a>
         </nav>
         <div class="absolute bottom-0 left-0 right-0 p-3 border-t border-gray-700">
             <div class="flex items-center gap-2 text-xs text-gray-400">
@@ -1578,6 +1588,194 @@
             </div>
         </div>
 
+        <!-- Admin Tools Tab -->
+        <div id="tab-admin-tools" class="tab-content hidden space-y-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Admin Tools & Scripts</h2>
+                <div id="admin-status" class="flex items-center gap-2 px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-full">
+                    <div class="w-2 h-2 bg-gray-400 rounded-full" id="admin-status-dot"></div>
+                    <span class="text-sm text-gray-600 dark:text-gray-300" id="admin-status-text">Ready</span>
+                </div>
+            </div>
+
+            <!-- Quick Controls Row -->
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-700 rounded-xl p-5 shadow-lg text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-rocket text-3xl"></i>
+                        <div>
+                            <h3 class="text-lg font-bold">Quick Actions</h3>
+                            <p class="text-sm text-indigo-200">One-click tools for common tasks</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-4 gap-3">
+                    <button onclick="startSessionSetup()" class="compact-btn bg-white text-indigo-600 hover:bg-indigo-50 py-3">
+                        <i class="fas fa-key mr-2"></i>Setup Session
+                    </button>
+                    <button onclick="startFollowupTool()" class="compact-btn bg-green-500 text-white hover:bg-green-400 py-3">
+                        <i class="fas fa-reply-all mr-2"></i>Follow-up Tool
+                    </button>
+                    <button onclick="openGmailDrafts()" class="compact-btn bg-red-500 text-white hover:bg-red-400 py-3">
+                        <i class="fas fa-envelope-open mr-2"></i>Open Gmail Drafts
+                    </button>
+                    <button onclick="clearLocks()" class="compact-btn bg-yellow-500 text-white hover:bg-yellow-400 py-3">
+                        <i class="fas fa-unlock mr-2"></i>Clear Locks
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-4">
+                <!-- CV & Email Tools -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                    <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-file-alt text-blue-500"></i>
+                        CV & Email Tools
+                    </h3>
+                    <div class="space-y-3">
+                        <button onclick="runCVParser()" class="compact-btn bg-blue-600 hover:bg-blue-700 text-white w-full text-left">
+                            <i class="fas fa-sync mr-2"></i>Parse CV Data
+                        </button>
+                        <button onclick="runSmartEmailGen()" class="compact-btn bg-purple-600 hover:bg-purple-700 text-white w-full text-left">
+                            <i class="fas fa-magic mr-2"></i>Smart Email Generator
+                        </button>
+                        <button onclick="runOutreachManager()" class="compact-btn bg-green-600 hover:bg-green-700 text-white w-full text-left">
+                            <i class="fas fa-bullhorn mr-2"></i>Outreach Manager
+                        </button>
+                        <button onclick="runUniversalAutoFill()" class="compact-btn bg-orange-600 hover:bg-orange-700 text-white w-full text-left">
+                            <i class="fas fa-fill-drip mr-2"></i>Universal Auto-Fill
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Maintenance Tools -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                    <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                        <i class="fas fa-wrench text-gray-500"></i>
+                        Maintenance
+                    </h3>
+                    <div class="space-y-3">
+                        <button onclick="cleanCache()" class="compact-btn bg-gray-600 hover:bg-gray-700 text-white w-full text-left">
+                            <i class="fas fa-broom mr-2"></i>Clean Puppeteer Cache
+                        </button>
+                        <button onclick="clearLocks()" class="compact-btn bg-yellow-600 hover:bg-yellow-700 text-white w-full text-left">
+                            <i class="fas fa-unlock mr-2"></i>Clear Browser Locks
+                        </button>
+                        <button onclick="stopAllProcesses()" class="compact-btn bg-red-600 hover:bg-red-700 text-white w-full text-left">
+                            <i class="fas fa-stop-circle mr-2"></i>Stop All Processes
+                        </button>
+                        <button onclick="checkSystemStatus()" class="compact-btn bg-blue-600 hover:bg-blue-700 text-white w-full text-left">
+                            <i class="fas fa-heartbeat mr-2"></i>System Status
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Job Search & Apply -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                    <i class="fas fa-search-dollar text-green-500"></i>
+                    Job Search Scripts
+                </h3>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div class="space-y-2">
+                        <label class="text-xs text-gray-600 dark:text-gray-400">Platform</label>
+                        <select id="admin-job-platform" class="compact-input w-full">
+                            <option value="indeed">Indeed UAE</option>
+                            <option value="linkedin">LinkedIn</option>
+                            <option value="bayt">Bayt</option>
+                            <option value="gulftalent">GulfTalent</option>
+                            <option value="naukrigulf">NaukriGulf</option>
+                        </select>
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs text-gray-600 dark:text-gray-400">Keyword</label>
+                        <input type="text" id="admin-job-keyword" value="Software Engineer" class="compact-input w-full">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-xs text-gray-600 dark:text-gray-400">Location</label>
+                        <input type="text" id="admin-job-location" value="Dubai" class="compact-input w-full">
+                    </div>
+                </div>
+                <div class="flex gap-3 mt-4">
+                    <button onclick="startJobSearchAdmin()" class="compact-btn bg-blue-600 hover:bg-blue-700 text-white flex-1">
+                        <i class="fas fa-search mr-2"></i>Start Job Search
+                    </button>
+                    <button onclick="stopJobSearch()" class="compact-btn bg-red-600 hover:bg-red-700 text-white">
+                        <i class="fas fa-stop mr-2"></i>Stop
+                    </button>
+                </div>
+            </div>
+
+            <!-- Running Processes -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                <h3 class="font-semibold text-gray-800 dark:text-white mb-4 flex items-center gap-2">
+                    <i class="fas fa-tasks text-purple-500"></i>
+                    Running Processes
+                </h3>
+                <div id="admin-processes" class="space-y-2">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">No active processes</p>
+                </div>
+            </div>
+
+            <!-- Mini Log -->
+            <div class="bg-gray-900 rounded-xl p-4 shadow-sm">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm text-green-400 font-mono"><i class="fas fa-terminal mr-2"></i>Admin Log</span>
+                    <button onclick="clearAdminLog()" class="text-xs text-gray-500 hover:text-white">Clear</button>
+                </div>
+                <div id="admin-log" class="h-40 overflow-y-auto text-xs font-mono text-green-400 whitespace-pre-wrap p-2 bg-black rounded">Admin panel ready. Select a tool to begin...</div>
+            </div>
+        </div>
+
+        <!-- System Logs Tab -->
+        <div id="tab-system-logs" class="tab-content hidden space-y-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">System Logs (Real-time)</h2>
+                <div class="flex gap-2">
+                    <button onclick="toggleAutoScroll()" id="btn-autoscroll" class="compact-btn bg-blue-600 hover:bg-blue-700 text-white">
+                        <i class="fas fa-arrow-down mr-2"></i>Auto-scroll: ON
+                    </button>
+                    <button onclick="clearSystemLog()" class="compact-btn bg-gray-600 hover:bg-gray-700 text-white">
+                        <i class="fas fa-trash mr-2"></i>Clear
+                    </button>
+                    <button onclick="exportSystemLog()" class="compact-btn bg-green-600 hover:bg-green-700 text-white">
+                        <i class="fas fa-download mr-2"></i>Export
+                    </button>
+                </div>
+            </div>
+
+            <!-- Connection Status -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div id="sse-status-dot" class="w-3 h-3 bg-gray-400 rounded-full"></div>
+                    <span id="sse-status-text" class="text-sm text-gray-600 dark:text-gray-300">Connecting to log stream...</span>
+                </div>
+                <button onclick="reconnectSSE()" class="compact-btn bg-blue-600 hover:bg-blue-700 text-white text-sm">
+                    <i class="fas fa-plug mr-2"></i>Reconnect
+                </button>
+            </div>
+
+            <!-- Real-time Log Stream -->
+            <div class="bg-gray-900 rounded-xl p-4 shadow-sm">
+                <div id="system-log" class="h-[600px] overflow-y-auto text-xs font-mono text-green-400 whitespace-pre-wrap p-3 bg-black rounded scroll-smooth">
+                    <div class="text-gray-500">Waiting for log stream...</div>
+                </div>
+            </div>
+
+            <!-- Log Filters -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-4 shadow-sm">
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-sm text-gray-600 dark:text-gray-400 mr-2">Filter:</span>
+                    <button onclick="filterLogs('all')" class="log-filter-btn active text-xs px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded hover:bg-gray-300">All</button>
+                    <button onclick="filterLogs('info')" class="log-filter-btn text-xs px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-600 rounded hover:bg-blue-200">Info</button>
+                    <button onclick="filterLogs('success')" class="log-filter-btn text-xs px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-600 rounded hover:bg-green-200">Success</button>
+                    <button onclick="filterLogs('error')" class="log-filter-btn text-xs px-3 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 rounded hover:bg-red-200">Errors</button>
+                    <button onclick="filterLogs('system')" class="log-filter-btn text-xs px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-600 rounded hover:bg-purple-200">System</button>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Modals -->
@@ -1644,6 +1842,10 @@
             experience: [],
             projects: []
         };
+
+        // --- Indeed Auto-Apply Variables (moved to top to avoid TDZ issues) ---
+        let indeedJobs = [];
+        let indeedPollInterval = null;
 
         async function loadCVData() {
             try {
@@ -3008,8 +3210,7 @@ Muhammed Fasil
         }
 
         // --- INDEED AUTO-APPLY INTEGRATION ---
-        let indeedJobs = [];
-        let indeedPollInterval = null;
+        // (Variables moved to top of script to avoid TDZ issues)
 
         // Load Indeed config
         async function loadIndeedConfig() {
@@ -3600,6 +3801,414 @@ Muhammed Fasil
                 throw e;
             }
         }
+
+        // ==========================================
+        // ADMIN TOOLS FUNCTIONS
+        // ==========================================
+        let adminLogEntries = [];
+
+        function addAdminLog(message, type = 'info') {
+            const logEl = document.getElementById('admin-log');
+            if (!logEl) return;
+            const timestamp = new Date().toLocaleTimeString();
+            const colors = {
+                info: 'text-blue-400',
+                success: 'text-green-400',
+                error: 'text-red-400',
+                warning: 'text-yellow-400',
+                system: 'text-purple-400'
+            };
+            const entry = `<div class="${colors[type] || 'text-green-400'}">[${timestamp}] ${message}</div>`;
+            adminLogEntries.push(entry);
+            if (adminLogEntries.length > 200) adminLogEntries.shift();
+            logEl.innerHTML = adminLogEntries.join('');
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function clearAdminLog() {
+            adminLogEntries = [];
+            const logEl = document.getElementById('admin-log');
+            if (logEl) logEl.innerHTML = '<div class="text-gray-500">Log cleared. Ready...</div>';
+        }
+
+        function updateAdminStatus(text, color) {
+            const dot = document.getElementById('admin-status-dot');
+            const textEl = document.getElementById('admin-status-text');
+            if (dot) dot.className = `w-2 h-2 rounded-full ${color}`;
+            if (textEl) textEl.textContent = text;
+        }
+
+        // Session Setup
+        async function startSessionSetup() {
+            addAdminLog('🔐 Starting session setup...', 'system');
+            updateAdminStatus('Setting up...', 'bg-yellow-500 animate-pulse');
+            try {
+                const res = await fetch('/api/session-setup', { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    addAdminLog('✅ Session setup started', 'success');
+                    updateAdminStatus('Running', 'bg-green-500');
+                    refreshProcesses();
+                } else {
+                    addAdminLog(`❌ Failed: ${data.error}`, 'error');
+                    updateAdminStatus('Error', 'bg-red-500');
+                }
+            } catch (e) {
+                addAdminLog(`❌ Error: ${e.message}`, 'error');
+                updateAdminStatus('Error', 'bg-red-500');
+            }
+        }
+
+        // Follow-up Tool
+        async function startFollowupTool() {
+            addAdminLog('🤖 Launching Follow-up Tool...', 'system');
+            updateAdminStatus('Starting...', 'bg-yellow-500 animate-pulse');
+            try {
+                const res = await fetch('/api/followup-tool', { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    addAdminLog(`✅ Follow-up Tool ready at http://localhost:${data.port}`, 'success');
+                    updateAdminStatus('Running', 'bg-green-500');
+                    window.open(`http://localhost:${data.port}`, '_blank');
+                    refreshProcesses();
+                }
+            } catch (e) {
+                addAdminLog(`❌ Error: ${e.message}`, 'error');
+                updateAdminStatus('Error', 'bg-red-500');
+            }
+        }
+
+        // Open Gmail Drafts
+        async function openGmailDrafts() {
+            addAdminLog('📧 Opening Gmail drafts...', 'system');
+            try {
+                await fetch('/api/open-emails', { method: 'POST' });
+                addAdminLog('✅ Gmail drafts command sent', 'success');
+            } catch (e) {
+                addAdminLog(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        // Clear Locks
+        async function clearLocks() {
+            addAdminLog('🔓 Clearing browser locks...', 'system');
+            try {
+                const res = await fetch('/api/clear-locks', { method: 'POST' });
+                const data = await res.json();
+                addAdminLog(`✅ Cleared ${data.cleared} lock files`, 'success');
+            } catch (e) {
+                addAdminLog(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        // CV Parser
+        async function runCVParser() {
+            addAdminLog('📄 Parsing CV...', 'system');
+            try {
+                await fetch('/api/cv-parser', { method: 'POST' });
+                addAdminLog('✅ CV parser started', 'success');
+            } catch (e) {
+                addAdminLog(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        // Smart Email Generator
+        async function runSmartEmailGen() {
+            addAdminLog('📧 Generating smart emails...', 'system');
+            try {
+                await fetch('/api/smart-email', { method: 'POST' });
+                addAdminLog('✅ Smart email generator started', 'success');
+            } catch (e) {
+                addAdminLog(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        // Outreach Manager
+        async function runOutreachManager() {
+            addAdminLog('📢 Starting outreach manager...', 'system');
+            try {
+                await fetch('/api/outreach', { method: 'POST' });
+                addAdminLog('✅ Outreach manager started', 'success');
+            } catch (e) {
+                addAdminLog(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        // Universal Auto-Fill
+        async function runUniversalAutoFill() {
+            addAdminLog('✍️ Starting universal auto-fill...', 'system');
+            try {
+                await fetch('/api/auto-fill', { method: 'POST' });
+                addAdminLog('✅ Auto-fill started', 'success');
+            } catch (e) {
+                addAdminLog(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        // Clean Cache
+        async function cleanCache() {
+            addAdminLog('🧹 Cleaning Puppeteer cache...', 'system');
+            try {
+                await fetch('/api/clean-cache', { method: 'POST' });
+                addAdminLog('✅ Cache cleanup started', 'success');
+            } catch (e) {
+                addAdminLog(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        // Stop All Processes
+        async function stopAllProcesses() {
+            addAdminLog('🛑 Stopping all processes...', 'warning');
+            const processes = ['job-search', 'session', 'followup'];
+            for (const proc of processes) {
+                try {
+                    await fetch(`/api/stop/${proc}`, { method: 'POST' });
+                    addAdminLog(`✅ Stopped: ${proc}`, 'success');
+                } catch (e) {
+                    // Process might not exist
+                }
+            }
+            updateAdminStatus('Ready', 'bg-gray-400');
+            refreshProcesses();
+        }
+
+        // Check System Status
+        async function checkSystemStatus() {
+            addAdminLog('💓 Checking system status...', 'system');
+            try {
+                const res = await fetch('/api/status');
+                const data = await res.json();
+                addAdminLog(`📊 Running processes: ${data.processes.join(', ') || 'None'}`, 'info');
+                addAdminLog(`🔑 OpenAI API Key: ${data.env.openai ? '✅ Set' : '❌ Not set'}`, data.env.openai ? 'success' : 'warning');
+            } catch (e) {
+                addAdminLog(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        // Start Job Search from Admin
+        async function startJobSearchAdmin() {
+            const platform = document.getElementById('admin-job-platform').value;
+            const keyword = document.getElementById('admin-job-keyword').value;
+            const location = document.getElementById('admin-job-location').value;
+
+            addAdminLog(`🔍 Starting ${platform} search: "${keyword}" in ${location}...`, 'system');
+            updateAdminStatus('Searching...', 'bg-yellow-500 animate-pulse');
+
+            try {
+                const res = await fetch('/api/job-search', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ platform, keyword, location })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    addAdminLog(`✅ Search started (PID: ${data.pid})`, 'success');
+                    updateAdminStatus('Running', 'bg-green-500');
+                    refreshProcesses();
+                } else {
+                    addAdminLog(`❌ Failed: ${data.error}`, 'error');
+                    updateAdminStatus('Error', 'bg-red-500');
+                }
+            } catch (e) {
+                addAdminLog(`❌ Error: ${e.message}`, 'error');
+                updateAdminStatus('Error', 'bg-red-500');
+            }
+        }
+
+        // Stop Job Search
+        async function stopJobSearch() {
+            addAdminLog('🛑 Stopping job search...', 'warning');
+            try {
+                await fetch('/api/stop/job-search', { method: 'POST' });
+                addAdminLog('✅ Job search stopped', 'success');
+                updateAdminStatus('Ready', 'bg-gray-400');
+                refreshProcesses();
+            } catch (e) {
+                addAdminLog(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        // Refresh running processes
+        async function refreshProcesses() {
+            try {
+                const res = await fetch('/api/status');
+                const data = await res.json();
+                const container = document.getElementById('admin-processes');
+                if (!container) return;
+
+                if (data.processes.length === 0) {
+                    container.innerHTML = '<p class="text-sm text-gray-500 dark:text-gray-400">No active processes</p>';
+                } else {
+                    container.innerHTML = data.processes.map(proc => `
+                        <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                                <span class="text-sm font-medium text-gray-800 dark:text-white">${proc}</span>
+                            </div>
+                            <button onclick="stopProcess('${proc}')" class="btn-icon bg-red-100 dark:bg-red-900/30 hover:bg-red-200 text-red-600" title="Stop">
+                                <i class="fas fa-stop text-xs"></i>
+                            </button>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) {
+                console.error('Failed to refresh processes:', e);
+            }
+        }
+
+        async function stopProcess(id) {
+            addAdminLog(`🛑 Stopping ${id}...`, 'warning');
+            try {
+                await fetch(`/api/stop/${id}`, { method: 'POST' });
+                addAdminLog(`✅ Stopped: ${id}`, 'success');
+                refreshProcesses();
+            } catch (e) {
+                addAdminLog(`❌ Error: ${e.message}`, 'error');
+            }
+        }
+
+        // ==========================================
+        // SYSTEM LOGS (SSE) FUNCTIONS
+        // ==========================================
+        let sseConnection = null;
+        let systemLogEntries = [];
+        let autoScrollEnabled = true;
+        let currentLogFilter = 'all';
+
+        function initSSE() {
+            if (sseConnection) {
+                sseConnection.close();
+            }
+
+            updateSSEStatus('Connecting...', 'bg-yellow-500 animate-pulse');
+
+            sseConnection = new EventSource('/api/logs');
+
+            sseConnection.onopen = () => {
+                updateSSEStatus('Connected', 'bg-green-500');
+                addSystemLog('✅ Connected to log stream', 'success');
+            };
+
+            sseConnection.onmessage = (event) => {
+                try {
+                    const log = JSON.parse(event.data);
+                    addSystemLog(`[${log.timestamp}] ${log.message}`, log.type);
+                } catch (e) {
+                    addSystemLog(event.data, 'info');
+                }
+            };
+
+            sseConnection.onerror = () => {
+                updateSSEStatus('Disconnected', 'bg-red-500');
+                addSystemLog('❌ Lost connection to log stream', 'error');
+                // Try to reconnect after 5 seconds
+                setTimeout(initSSE, 5000);
+            };
+        }
+
+        function reconnectSSE() {
+            addSystemLog('🔄 Reconnecting...', 'system');
+            initSSE();
+        }
+
+        function updateSSEStatus(text, color) {
+            const dot = document.getElementById('sse-status-dot');
+            const textEl = document.getElementById('sse-status-text');
+            if (dot) dot.className = `w-3 h-3 rounded-full ${color}`;
+            if (textEl) textEl.textContent = text;
+        }
+
+        function addSystemLog(message, type = 'info') {
+            const colors = {
+                info: 'text-blue-400',
+                success: 'text-green-400',
+                error: 'text-red-400',
+                warning: 'text-yellow-400',
+                system: 'text-purple-400'
+            };
+
+            systemLogEntries.push({ message, type, timestamp: new Date() });
+            if (systemLogEntries.length > 1000) systemLogEntries.shift();
+
+            renderSystemLog();
+        }
+
+        function renderSystemLog() {
+            const logEl = document.getElementById('system-log');
+            if (!logEl) return;
+
+            const filtered = currentLogFilter === 'all'
+                ? systemLogEntries
+                : systemLogEntries.filter(e => e.type === currentLogFilter);
+
+            const colors = {
+                info: 'text-blue-400',
+                success: 'text-green-400',
+                error: 'text-red-400',
+                warning: 'text-yellow-400',
+                system: 'text-purple-400'
+            };
+
+            logEl.innerHTML = filtered.map(e =>
+                `<div class="${colors[e.type] || 'text-green-400'}">${e.message}</div>`
+            ).join('');
+
+            if (autoScrollEnabled) {
+                logEl.scrollTop = logEl.scrollHeight;
+            }
+        }
+
+        function clearSystemLog() {
+            systemLogEntries = [];
+            const logEl = document.getElementById('system-log');
+            if (logEl) logEl.innerHTML = '<div class="text-gray-500">Log cleared</div>';
+        }
+
+        function exportSystemLog() {
+            const content = systemLogEntries.map(e => e.message).join('\n');
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `system-log-${new Date().toISOString().split('T')[0]}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function toggleAutoScroll() {
+            autoScrollEnabled = !autoScrollEnabled;
+            const btn = document.getElementById('btn-autoscroll');
+            if (btn) {
+                btn.innerHTML = `<i class="fas fa-arrow-down mr-2"></i>Auto-scroll: ${autoScrollEnabled ? 'ON' : 'OFF'}`;
+                btn.className = autoScrollEnabled
+                    ? 'compact-btn bg-blue-600 hover:bg-blue-700 text-white'
+                    : 'compact-btn bg-gray-600 hover:bg-gray-700 text-white';
+            }
+        }
+
+        function filterLogs(type) {
+            currentLogFilter = type;
+            document.querySelectorAll('.log-filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderSystemLog();
+        }
+
+        // Initialize SSE when navigating to system-logs tab
+        document.addEventListener('DOMContentLoaded', () => {
+            const origShowTab = window.showTab;
+            window.showTab = function(tabId) {
+                origShowTab(tabId);
+                if (tabId === 'system-logs') {
+                    initSSE();
+                }
+                if (tabId === 'admin-tools') {
+                    refreshProcesses();
+                }
+            };
+
+            // Initial process refresh
+            refreshProcesses();
+        });
     </script>
 </body>
 </html>

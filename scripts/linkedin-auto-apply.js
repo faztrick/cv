@@ -15,13 +15,23 @@ const path = require('path');
 try { require('dotenv').config(); } catch (_) {}
 
 let puppeteer;
+let StealthPlugin;
 try {
-  puppeteer = require('puppeteer');
+  puppeteer = require('puppeteer-extra');
+  StealthPlugin = require('puppeteer-extra-plugin-stealth');
+  puppeteer.use(StealthPlugin());
 } catch (err) {
-  console.log("Note: Puppeteer not installed. Install with: npm install puppeteer");
+  try {
+    puppeteer = require('puppeteer');
+  } catch (err2) {
+    console.log("Note: Puppeteer not installed. Install with: npm install puppeteer-extra puppeteer-extra-plugin-stealth");
+  }
 }
 
 const { parseResume, generateApplicationFormData, matchJobWithCV } = require('./cv-parser');
+
+// Helper function for delays (replaces deprecated waitForTimeout)
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const config = {
   location: 'Dubai, United Arab Emirates',
@@ -72,12 +82,41 @@ function resolveChromeExecutable() {
 }
 
 async function launchBrowser({ headless = config.headless, persistProfile = true } = {}) {
-  if (!puppeteer) throw new Error('Puppeteer required');
-  let userDataDir = process.env.CHROME_USER_DATA_DIR && process.env.CHROME_USER_DATA_DIR.trim() ? process.env.CHROME_USER_DATA_DIR.trim() : undefined;
-  if (!userDataDir && persistProfile) userDataDir = config.chromeProfileDir;
-  if (userDataDir) { try { fs.mkdirSync(userDataDir, { recursive: true }); } catch (_) {} }
+  if (!puppeteer) throw new Error('Puppeteer required. Install with: npm install puppeteer-extra puppeteer-extra-plugin-stealth');
+
+  // Use playwright user_data for consistent session or chrome-profile fallback
+  let userDataDir = process.env.CHROME_USER_DATA_DIR && process.env.CHROME_USER_DATA_DIR.trim()
+    ? process.env.CHROME_USER_DATA_DIR.trim()
+    : path.join(__dirname, '..', 'user_data', 'linkedin');
+
+  if (persistProfile) {
+    try { fs.mkdirSync(userDataDir, { recursive: true }); } catch (_) {}
+  }
+
   const executablePath = resolveChromeExecutable();
-  return puppeteer.launch({ headless, args: ['--no-sandbox','--disable-setuid-sandbox'], executablePath, userDataDir });
+
+  const launchOptions = {
+    headless: headless ? 'new' : false,
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+      '--disable-blink-features=AutomationControlled',
+      '--disable-infobars',
+      '--window-size=1920,1080'
+    ],
+    defaultViewport: { width: 1920, height: 1080 }
+  };
+
+  if (executablePath) {
+    launchOptions.executablePath = executablePath;
+  }
+
+  if (persistProfile) {
+    launchOptions.userDataDir = userDataDir;
+  }
+
+  console.log(`🚀 Launching browser ${headless ? '(headless)' : '(visible)'}...`);
+  return puppeteer.launch(launchOptions);
 }
 
 /**
@@ -90,7 +129,7 @@ async function loginToLinkedIn(page) {
     console.log('⚠️  LinkedIn credentials not set');
     console.log('   Set LINKEDIN_EMAIL and LINKEDIN_PASSWORD environment variables');
     console.log('   Or manually login when browser opens...');
-    await page.waitForTimeout(30000); // Wait for manual login
+    await delay(30000); // Wait for manual login
     return;
   }
 
@@ -265,7 +304,7 @@ async function easyApplyToJob(job, options = {}) {
     }
 
     await easyApplyBtn.click();
-    await page.waitForTimeout(2000);
+    await delay(2000);
 
     // Load CV data
     const { formData } = loadCVData();
@@ -291,14 +330,14 @@ async function easyApplyToJob(job, options = {}) {
         // Track application
         trackApplication(job, { status: 'applied', method: 'Easy Apply' });
 
-        await page.waitForTimeout(3000);
+        await delay(3000);
         break;
       } else if (submitBtn && dryRun) {
         console.log('🔍 DRY RUN: Would submit here');
         break;
       } else if (nextBtn) {
         await nextBtn.click();
-        await page.waitForTimeout(1500);
+        await delay(1500);
         step++;
       } else {
         console.log('⚠️  Unexpected form state');
@@ -416,14 +455,14 @@ async function connectWithRecruiter(profileUrl, message) {
     }
 
     await connectBtn.click();
-    await page.waitForTimeout(1000);
+    await delay(1000);
 
     // Add note if message provided
     if (message) {
       const addNoteBtn = await page.$('button:has-text("Add a note")');
       if (addNoteBtn) {
         await addNoteBtn.click();
-        await page.waitForTimeout(500);
+        await delay(500);
 
         const noteTextarea = await page.$('textarea[name="message"]');
         if (noteTextarea) {
@@ -498,7 +537,7 @@ async function updateLinkedInProfile() {
       const btn = await page.$(sel);
       if (btn) {
         await btn.click().catch(() => {});
-        await page.waitForTimeout(1000);
+        await delay(1000);
         openedIntro = true;
         break;
       }
@@ -523,7 +562,7 @@ async function updateLinkedInProfile() {
       // Save intro
       const saveIntro = await page.$('button:has-text("Save"), button[aria-label*="Save"]');
       if (saveIntro) await saveIntro.click().catch(() => {});
-      await page.waitForTimeout(1500);
+      await delay(1500);
     }
 
     // Open About edit dialog
@@ -534,7 +573,7 @@ async function updateLinkedInProfile() {
     ];
     for (const sel of aboutEditSelectors) {
       const btn = await page.$(sel);
-      if (btn) { await btn.click().catch(() => {}); await page.waitForTimeout(800); break; }
+      if (btn) { await btn.click().catch(() => {}); await delay(800); break; }
     }
 
     // Fill About text area
@@ -561,7 +600,7 @@ async function updateLinkedInProfile() {
     // Save About
     const saveAbout = await page.$('div[role="dialog"] button:has-text("Save"), button[aria-label*="Save"]');
     if (saveAbout) await saveAbout.click().catch(() => {});
-    await page.waitForTimeout(1500);
+    await delay(1500);
 
     await browser.close();
     return true;
