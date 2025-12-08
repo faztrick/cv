@@ -476,7 +476,29 @@
             </div>
         </footer>
 
+        <!-- Theme Toggle Button -->
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+            <i class="ri-moon-line moon"></i>
+            <i class="ri-sun-line sun"></i>
+        </button>
+
         <script>
+            // Theme Toggle
+            const themeToggle = document.getElementById('themeToggle');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const savedTheme = localStorage.getItem('theme');
+
+            // Apply saved theme or system preference
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                document.documentElement.classList.add('dark');
+            }
+
+            themeToggle?.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                const isDark = document.documentElement.classList.contains('dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+
             // Mobile nav toggle
             const toggle = document.querySelector('.nav-toggle');
             const nav = document.querySelector('.nav');

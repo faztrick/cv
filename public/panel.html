@@ -5,26 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CV & Job Search Panel</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; transition: background-color 0.3s ease, color 0.3s ease; }
+        html.dark body { background-color: #0f172a; color: #e2e8f0; }
         .sidebar-link { @apply flex items-center px-6 py-3 text-gray-600 hover:bg-gray-100 hover:text-blue-600 transition-colors cursor-pointer; }
+        html.dark .sidebar-link { @apply text-gray-300 hover:bg-slate-700 hover:text-blue-400; }
         .sidebar-link.active { @apply bg-blue-50 text-blue-600 border-r-4 border-blue-600; }
+        html.dark .sidebar-link.active { @apply bg-blue-900/30 text-blue-400 border-blue-400; }
         .card { @apply bg-white rounded-lg shadow-sm p-6 mb-6; }
+        html.dark .card { @apply bg-slate-800 shadow-slate-700/50; }
         .btn { @apply px-4 py-2 rounded-md font-medium transition-colors; }
         .btn-primary { @apply bg-blue-600 text-white hover:bg-blue-700; }
         .btn-secondary { @apply bg-gray-200 text-gray-700 hover:bg-gray-300; }
+        html.dark .btn-secondary { @apply bg-slate-700 text-gray-300 hover:bg-slate-600; }
         .btn-success { @apply bg-green-600 text-white hover:bg-green-700; }
         .status-badge { @apply px-2 py-1 rounded-full text-xs font-semibold; }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        .theme-toggle i {
+            font-size: 1.5rem;
+            color: white;
+        }
+        .theme-toggle .sun { display: none; }
+        .theme-toggle .moon { display: block; }
+        html.dark .theme-toggle .sun { display: block; }
+        html.dark .theme-toggle .moon { display: none; }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden">
 
     <!-- Sidebar -->
-    <aside class="w-64 bg-white border-r border-gray-200 flex-shrink-0">
-        <div class="p-6 border-b border-gray-200">
-            <h1 class="text-xl font-bold text-gray-800"><i class="fas fa-briefcase mr-2"></i>Job Toolkit</h1>
-            <p class="text-xs text-gray-500 mt-1">Automation Dashboard</p>
+    <aside class="w-64 bg-white dark:bg-slate-800 border-r border-gray-200 dark:border-slate-700 flex-shrink-0">
+        <div class="p-6 border-b border-gray-200 dark:border-slate-700">
+            <h1 class="text-xl font-bold text-gray-800 dark:text-white"><i class="fas fa-briefcase mr-2"></i>Job Toolkit</h1>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Automation Dashboard</p>
         </div>
         <nav class="mt-6">
             <a onclick="showTab('dashboard')" id="nav-dashboard" class="sidebar-link active">
@@ -557,6 +599,27 @@
 
         // Init
         loadStats();
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const savedTheme = localStorage.getItem('theme');
+
+        if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        themeToggle?.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        });
     </script>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <i class="ri-sun-line sun"></i>
+        <i class="ri-moon-line moon"></i>
+    </button>
 </body>
 </html>

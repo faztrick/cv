@@ -304,13 +304,13 @@
                     <h3 class="font-semibold text-gray-800 dark:text-white flex items-center gap-2">
                         <i class="fas fa-rocket text-green-500"></i>
                         🚀 Quick Apply Jobs
-                        <span class="text-xs px-2 py-1 bg-green-500 text-white rounded-full">6 Ready</span>
+                        <span class="text-xs px-2 py-1 bg-green-500 text-white rounded-full">26 Ready</span>
                     </h3>
                     <button onclick="showTab('quick-apply')" class="text-sm text-green-600 dark:text-green-400 hover:underline">
                         View All <i class="fas fa-arrow-right ml-1"></i>
                     </button>
                 </div>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
                     <div class="flex items-center justify-between p-2 bg-white dark:bg-gray-800 rounded-lg">
                         <div>
                             <span class="font-medium text-sm text-gray-800 dark:text-white">TCS</span>
@@ -331,20 +331,35 @@
                     </div>
                     <div class="flex items-center justify-between p-2 bg-white dark:bg-gray-800 rounded-lg">
                         <div>
-                            <span class="font-medium text-sm text-gray-800 dark:text-white">360tf</span>
-                            <span class="text-xs text-green-500 block">✓ Verified</span>
+                            <span class="font-medium text-sm text-gray-800 dark:text-white">Dicetek AI 🤖</span>
+                            <span class="text-xs text-purple-500 block">150-250k AED</span>
                         </div>
-                        <button onclick="applyJob('360tf')" class="btn-icon bg-green-500 hover:bg-green-600 text-white">
-                            <i class="fab fa-linkedin text-xs"></i>
+                        <button onclick="applyJob('dicetek-ai')" class="btn-icon bg-purple-500 hover:bg-purple-600 text-white">
+                            <i class="fas fa-brain text-xs"></i>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between p-2 bg-white dark:bg-gray-800 rounded-lg">
+                        <div>
+                            <span class="font-medium text-sm text-gray-800 dark:text-white">dubizzle 💰</span>
+                            <span class="text-xs text-orange-500 block">200-300k AED</span>
+                        </div>
+                        <button onclick="applyJob('dubizzle-python')" class="btn-icon bg-orange-500 hover:bg-orange-600 text-white">
+                            <i class="fab fa-python text-xs"></i>
                         </button>
                     </div>
                 </div>
                 <div class="flex gap-2">
                     <button onclick="applyAllJobs()" class="compact-btn bg-green-600 hover:bg-green-700 text-white flex-1">
-                        <i class="fas fa-external-link-alt mr-2"></i>Apply to ALL Jobs (6)
+                        <i class="fas fa-external-link-alt mr-2"></i>Apply ALL (26)
                     </button>
-                    <button onclick="applyAllEmirates()" class="compact-btn bg-red-500 hover:bg-red-600 text-white">
-                        <i class="fas fa-plane mr-2"></i>Emirates (4)
+                    <button onclick="applyAllDevDubai()" class="compact-btn bg-purple-500 hover:bg-purple-600 text-white">
+                        <i class="fas fa-globe mr-2"></i>Dev-Dubai (10)
+                    </button>
+                    <button onclick="applyAllCareem()" class="compact-btn bg-teal-500 hover:bg-teal-600 text-white">
+                        <i class="fas fa-car mr-2"></i>Careem (6)
+                    </button>
+                    <button onclick="applyAllTabby()" class="compact-btn bg-green-600 hover:bg-green-500 text-white">
+                        <i class="fas fa-wallet mr-2"></i>Tabby (4)
                     </button>
                 </div>
             </div>
@@ -1049,7 +1064,7 @@
                 <div class="flex gap-2">
                     <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-sm font-medium flex items-center gap-2">
                         <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                        6 Jobs Ready
+                        26 Jobs Ready
                     </span>
                 </div>
             </div>
@@ -1065,26 +1080,87 @@
                 </div>
             </div>
 
+            <!-- Automated Apply Controls -->
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl p-5 shadow-lg text-white mb-4">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-robot text-3xl animate-pulse"></i>
+                        <div>
+                            <h3 class="text-lg font-bold">🤖 Auto Apply Mode</h3>
+                            <p class="text-sm text-blue-200">Automatically opens jobs one by one with 3-second delay</p>
+                        </div>
+                    </div>
+                    <div id="auto-apply-status" class="flex items-center gap-2 px-3 py-1 bg-gray-800/50 rounded-full">
+                        <div id="auto-status-dot" class="w-3 h-3 bg-gray-400 rounded-full"></div>
+                        <span id="auto-status-text" class="text-sm">Ready</span>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="mb-4">
+                    <div class="flex justify-between text-sm mb-1">
+                        <span id="auto-progress-text">0 / 26 jobs</span>
+                        <span id="auto-progress-percent">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-700 rounded-full h-3">
+                        <div id="auto-progress-bar" class="bg-gradient-to-r from-green-400 to-emerald-500 h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-4 gap-3">
+                    <button id="btn-auto-start" onclick="startAutoApply()" class="compact-btn bg-green-500 hover:bg-green-400 text-white py-3 font-bold">
+                        <i class="fas fa-play mr-2"></i>START AUTO
+                    </button>
+                    <button id="btn-auto-pause" onclick="pauseAutoApply()" class="compact-btn bg-yellow-500 hover:bg-yellow-400 text-white py-3" disabled>
+                        <i class="fas fa-pause mr-2"></i>PAUSE
+                    </button>
+                    <button id="btn-auto-stop" onclick="stopAutoApply()" class="compact-btn bg-red-500 hover:bg-red-400 text-white py-3" disabled>
+                        <i class="fas fa-stop mr-2"></i>STOP
+                    </button>
+                    <button onclick="resetAutoApply()" class="compact-btn bg-gray-600 hover:bg-gray-500 text-white py-3">
+                        <i class="fas fa-redo mr-2"></i>RESET
+                    </button>
+                </div>
+
+                <!-- Delay Control -->
+                <div class="flex items-center gap-4 mt-4 p-3 bg-gray-800/30 rounded-lg">
+                    <label class="text-sm">Delay between jobs:</label>
+                    <input type="range" id="auto-delay" min="1" max="10" value="3" class="flex-1" onchange="updateDelayDisplay()">
+                    <span id="delay-display" class="text-sm font-mono bg-gray-900 px-2 py-1 rounded">3s</span>
+                </div>
+            </div>
+
             <!-- Apply All Actions -->
             <div class="bg-gradient-to-r from-green-600 to-emerald-700 rounded-xl p-5 shadow-lg text-white">
                 <div class="flex items-center justify-between mb-4">
                     <div class="flex items-center gap-3">
                         <i class="fas fa-rocket text-3xl"></i>
                         <div>
-                            <h3 class="text-lg font-bold">One-Click Apply</h3>
-                            <p class="text-sm text-green-200">Open all job applications instantly</p>
+                            <h3 class="text-lg font-bold">Manual One-Click Apply</h3>
+                            <p class="text-sm text-green-200">Open all job applications instantly (may trigger popup blocker)</p>
                         </div>
                     </div>
                 </div>
                 <div class="grid md:grid-cols-3 gap-3">
                     <button onclick="applyAllJobs()" class="compact-btn bg-white text-green-600 hover:bg-green-50 py-3 font-bold">
-                        <i class="fas fa-external-link-alt mr-2"></i>Apply to ALL Jobs (6)
+                        <i class="fas fa-external-link-alt mr-2"></i>Apply ALL (26)
                     </button>
                     <button onclick="applyAllEmirates()" class="compact-btn bg-red-500 text-white hover:bg-red-400 py-3">
-                        <i class="fas fa-plane mr-2"></i>Apply All Emirates (4)
+                        <i class="fas fa-plane mr-2"></i>Emirates (4)
                     </button>
                     <button onclick="openJobTracker()" class="compact-btn bg-green-500 text-white hover:bg-green-400 py-3">
-                        <i class="fas fa-clipboard-list mr-2"></i>Open Job Tracker
+                        <i class="fas fa-clipboard-list mr-2"></i>Job Tracker
+                    </button>
+                </div>
+                <div class="grid md:grid-cols-3 gap-3 mt-3">
+                    <button onclick="applyAllDevDubai()" class="compact-btn bg-purple-500 text-white hover:bg-purple-400 py-3">
+                        <i class="fas fa-globe mr-2"></i>Dev-Dubai (10)
+                    </button>
+                    <button onclick="applyAllCareem()" class="compact-btn bg-teal-500 text-white hover:bg-teal-400 py-3">
+                        <i class="fas fa-car mr-2"></i>Careem (6)
+                    </button>
+                    <button onclick="applyAllTabby()" class="compact-btn bg-green-600 text-white hover:bg-green-500 py-3">
+                        <i class="fas fa-wallet mr-2"></i>Tabby (4)
                     </button>
                 </div>
             </div>
@@ -1205,6 +1281,376 @@
                         <button onclick="copyEmail('360tf')" class="btn-icon bg-gray-100 dark:bg-gray-700 hover:bg-gray-200" title="Copy Email">
                             <i class="fas fa-copy text-gray-600 dark:text-gray-400"></i>
                         </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- NEW JOBS FROM DEV-DUBAI.COM - Dec 2025 -->
+            <div class="mt-6">
+                <h3 class="text-xl font-bold text-gray-800 dark:text-white mb-4">🌐 New from Dev-Dubai.com</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Dicetek AI Lead -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-purple-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full">🤖 AI Role</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">Dicetek LLC</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Lead Generative AI Engineer</p>
+                                <p class="text-xs text-green-500 mt-1">💰 150k-250k AED/yr | REMOTE | VISA</p>
+                            </div>
+                            <span class="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-xs font-medium">HOT</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('dicetek-ai')" class="compact-btn bg-purple-600 hover:bg-purple-700 text-white flex-1">
+                                <i class="fas fa-brain mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dubizzle Python -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-orange-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-full">💰 High Pay</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">dubizzle</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Senior Software Engineer (Python)</p>
+                                <p class="text-xs text-green-500 mt-1">💰 200k-300k AED/yr | REMOTE | VISA</p>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-xs font-medium">$$$</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('dubizzle-python')" class="compact-btn bg-orange-600 hover:bg-orange-700 text-white flex-1">
+                                <i class="fab fa-python mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Orbit Flutter -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-cyan-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 rounded-full">📱 Flutter</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">Orbit</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Mobile Developer (Flutter)</p>
+                                <p class="text-xs text-green-500 mt-1">VISA SPONSORSHIP Available</p>
+                            </div>
+                            <span class="px-2 py-1 bg-cyan-100 dark:bg-cyan-900/30 text-cyan-700 dark:text-cyan-300 rounded-full text-xs font-medium">Open</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('orbit-flutter')" class="compact-btn bg-cyan-600 hover:bg-cyan-700 text-white flex-1">
+                                <i class="fas fa-mobile-alt mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Consensys MetaMask -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-amber-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 rounded-full">🦊 Web3</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">Consensys</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Frontend Engineer - MetaMask</p>
+                                <p class="text-xs text-green-500 mt-1">💰 340k-730k AED/yr | REMOTE</p>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-xs font-medium">TOP</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('consensys-metamask')" class="compact-btn bg-amber-600 hover:bg-amber-700 text-white flex-1">
+                                <i class="fab fa-react mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Fluid AI -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-pink-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 rounded-full">🤖 AI</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">Fluid AI</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Backend Developer - AI Integrations</p>
+                                <p class="text-xs text-green-500 mt-1">REMOTE | Node.js, Docker, AWS</p>
+                            </div>
+                            <span class="px-2 py-1 bg-pink-100 dark:bg-pink-900/30 text-pink-700 dark:text-pink-300 rounded-full text-xs font-medium">AI</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('fluid-ai')" class="compact-btn bg-pink-600 hover:bg-pink-700 text-white flex-1">
+                                <i class="fas fa-robot mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Property Finder -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-indigo-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full">🏠 PropTech</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">Property Finder</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Senior Backend Developer</p>
+                                <p class="text-xs text-green-500 mt-1">REMOTE | VISA | Python, Go, AWS</p>
+                            </div>
+                            <span class="px-2 py-1 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-xs font-medium">Open</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('property-finder')" class="compact-btn bg-indigo-600 hover:bg-indigo-700 text-white flex-1">
+                                <i class="fas fa-server mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- emaratech React Native -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-teal-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full">📱 Mobile</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">emaratech</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Mobile App Developer (React Native)</p>
+                                <p class="text-xs text-green-500 mt-1">VISA SPONSORSHIP | Dubai On-site</p>
+                            </div>
+                            <span class="px-2 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium">Open</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('emaratech-mobile')" class="compact-btn bg-teal-600 hover:bg-teal-700 text-white flex-1">
+                                <i class="fab fa-react mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Noon Backend -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-yellow-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded-full">🛒 E-commerce</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">Noon</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Software Engineer (Backend)</p>
+                                <p class="text-xs text-green-500 mt-1">VISA SPONSORSHIP | Dubai On-site</p>
+                            </div>
+                            <span class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded-full text-xs font-medium">Open</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('noon-backend')" class="compact-btn bg-yellow-600 hover:bg-yellow-700 text-white flex-1">
+                                <i class="fas fa-code mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Dicetek Full Stack -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-lime-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-lime-100 dark:bg-lime-900/30 text-lime-700 dark:text-lime-300 rounded-full">🔥 Full Stack</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">Dicetek LLC</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Senior Full Stack Developer</p>
+                                <p class="text-xs text-green-500 mt-1">REMOTE | VISA | React, Node, Python</p>
+                            </div>
+                            <span class="px-2 py-1 bg-lime-100 dark:bg-lime-900/30 text-lime-700 dark:text-lime-300 rounded-full text-xs font-medium">Open</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('dicetek-fullstack')" class="compact-btn bg-lime-600 hover:bg-lime-700 text-white flex-1">
+                                <i class="fas fa-layer-group mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- ASTUDIO AI/ML -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-rose-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 rounded-full">🧠 AI/ML</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">ASTUDIO</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Senior Lead Software Engineer</p>
+                                <p class="text-xs text-green-500 mt-1">TensorFlow, PyTorch, React, Python</p>
+                            </div>
+                            <span class="px-2 py-1 bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-300 rounded-full text-xs font-medium">AI</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('astudio-ai')" class="compact-btn bg-rose-600 hover:bg-rose-700 text-white flex-1">
+                                <i class="fas fa-brain mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- CAREEM JOBS SECTION -->
+
+                    <!-- Careem Staff AI Engineer -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-teal-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full">🔥 AI/ML</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">Careem</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Staff AI Engineer I</p>
+                                <p class="text-xs text-green-500 mt-1">Dubai On-site | Data Engineering</p>
+                            </div>
+                            <span class="px-2 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium">⭐ Hot</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('careem-ai-engineer')" class="compact-btn bg-teal-600 hover:bg-teal-700 text-white flex-1">
+                                <i class="fas fa-car mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Careem GenAI Platform -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-teal-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full">🔥 GenAI</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">Careem</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Senior Software Engineer II - GenAI Platform</p>
+                                <p class="text-xs text-green-500 mt-1">Dubai On-site | Data Engineering</p>
+                            </div>
+                            <span class="px-2 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium">⭐ Hot</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('careem-genai')" class="compact-btn bg-teal-600 hover:bg-teal-700 text-white flex-1">
+                                <i class="fas fa-car mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Careem Backend -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-teal-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full">Backend</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">Careem</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Staff Software Engineer I</p>
+                                <p class="text-xs text-green-500 mt-1">Dubai On-site | Backend</p>
+                            </div>
+                            <span class="px-2 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium">New</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('careem-backend')" class="compact-btn bg-teal-600 hover:bg-teal-700 text-white flex-1">
+                                <i class="fas fa-car mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Careem Manager -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-teal-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full">Manager</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">Careem</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Senior Software Engineering Manager</p>
+                                <p class="text-xs text-green-500 mt-1">Dubai On-site | Leadership</p>
+                            </div>
+                            <span class="px-2 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium">Senior</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('careem-manager')" class="compact-btn bg-teal-600 hover:bg-teal-700 text-white flex-1">
+                                <i class="fas fa-car mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Careem Data Scientist 1 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-teal-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full">Data Science</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">Careem</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Senior Data Scientist II</p>
+                                <p class="text-xs text-green-500 mt-1">Dubai On-site | Data Science</p>
+                            </div>
+                            <span class="px-2 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium">New</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('careem-data-sci-1')" class="compact-btn bg-teal-600 hover:bg-teal-700 text-white flex-1">
+                                <i class="fas fa-car mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Careem Data Scientist 2 -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-teal-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full">Data Science</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">Careem</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Senior Data Scientist II</p>
+                                <p class="text-xs text-green-500 mt-1">Dubai On-site | Data Science</p>
+                            </div>
+                            <span class="px-2 py-1 bg-teal-100 dark:bg-teal-900/30 text-teal-700 dark:text-teal-300 rounded-full text-xs font-medium">New</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('careem-data-sci-2')" class="compact-btn bg-teal-600 hover:bg-teal-700 text-white flex-1">
+                                <i class="fas fa-car mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- TABBY JOBS SECTION -->
+
+                    <!-- Tabby Backend -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-green-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full">FinTech</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">Tabby</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Senior Backend Engineer</p>
+                                <p class="text-xs text-green-500 mt-1">Remote | Go/Python/Postgres</p>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-xs font-medium">Remote</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('tabby-backend')" class="compact-btn bg-green-600 hover:bg-green-700 text-white flex-1">
+                                <i class="fas fa-wallet mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tabby Frontend -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-green-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full">FinTech</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">Tabby</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Senior Frontend Engineer</p>
+                                <p class="text-xs text-green-500 mt-1">Remote | React/TypeScript</p>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-xs font-medium">Remote</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('tabby-frontend')" class="compact-btn bg-green-600 hover:bg-green-700 text-white flex-1">
+                                <i class="fas fa-wallet mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tabby QA -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-green-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full">QA</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">Tabby</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Senior QA Engineer</p>
+                                <p class="text-xs text-green-500 mt-1">Remote | Full-Stack QA</p>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-xs font-medium">Remote</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('tabby-qa')" class="compact-btn bg-green-600 hover:bg-green-700 text-white flex-1">
+                                <i class="fas fa-wallet mr-1"></i>Apply
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tabby Manager -->
+                    <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-green-500 card-hover">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full">Lead</span>
+                                <h3 class="font-bold text-gray-800 dark:text-white mt-2">Tabby</h3>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Engineering Manager</p>
+                                <p class="text-xs text-green-500 mt-1">Remote | Leadership</p>
+                            </div>
+                            <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-xs font-medium">Remote</span>
+                        </div>
+                        <div class="flex gap-2 mt-4">
+                            <button onclick="applyJob('tabby-manager')" class="compact-btn bg-green-600 hover:bg-green-700 text-white flex-1">
+                                <i class="fas fa-wallet mr-1"></i>Apply
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -4049,13 +4495,37 @@ Muhammed Fasil
         // QUICK APPLY FUNCTIONS
         // ==========================================
         const jobLinks = {
+            // Original Jobs
             tcs: 'https://www.linkedin.com/jobs/view/flutter-developer-at-tata-consultancy-services-4323240582',
             'emirates-ai': 'https://www.emiratesgroupcareers.com/search-and-apply/?jobcategory=Information%20Technology',
             'emirates-java': 'https://www.emiratesgroupcareers.com/search-and-apply/?jobcategory=Information%20Technology',
             'emirates-python': 'https://www.emiratesgroupcareers.com/search-and-apply/?jobcategory=Information%20Technology',
             'emirates-qa': 'https://www.emiratesgroupcareers.com/search-and-apply/?jobcategory=Information%20Technology',
             emirates: 'https://www.emiratesgroupcareers.com/search-and-apply/?jobcategory=Information%20Technology',
-            '360tf': 'https://ae.linkedin.com/jobs/view/senior-software-engineer-flutter-and-angular-at-360tf-4326280897'
+            '360tf': 'https://ae.linkedin.com/jobs/view/senior-software-engineer-flutter-and-angular-at-360tf-4326280897',
+            // NEW: Dev-Dubai.com Jobs - Dec 2025
+            'dicetek-ai': 'https://www.dev-dubai.com/companies/13/Dicetek%20LLC/jobs/74/Lead%20Generative%20AI%20Engineer',
+            'dubizzle-python': 'https://www.dev-dubai.com/companies/12/dubizzle/jobs/22/Senior%20Software%20Engineer%20(Python)',
+            'orbit-flutter': 'https://www.dev-dubai.com/companies/45/orbit/jobs/186/Mobile%20Developer',
+            'dicetek-fullstack': 'https://www.dev-dubai.com/companies/13/Dicetek%20LLC/jobs/232/Senior%20Full%20Stack%20Developer',
+            'consensys-metamask': 'https://www.dev-dubai.com/companies/67/Consensys/jobs/521/Frontend%20Engineer%20-%20MetaMask',
+            'fluid-ai': 'https://www.dev-dubai.com/companies/297/Fluid%20AI/jobs/542/Backend%20Developer%20-%20AI%20Integrations%20Specialist%20(Remote)',
+            'astudio-ai': 'https://www.dev-dubai.com/companies/178/ASTUDIO/jobs/526/Senior%20Lead%20Software%20Engineer',
+            'property-finder': 'https://www.dev-dubai.com/companies/296/Property%20Finder%20/jobs/540/Senior%20Backend%20Developer%20',
+            'emaratech-mobile': 'https://www.dev-dubai.com/companies/132/emaratech/jobs/190/Mobile%20Application%20developer%20(React%20Native)',
+            'noon-backend': 'https://www.dev-dubai.com/companies/10/Noon/jobs/538/Software%20Engineer%20(backend)%20',
+            // NEW: Careem Jobs - Dec 2025
+            'careem-ai-engineer': 'https://boards.greenhouse.io/careem/jobs/8047915002',
+            'careem-genai': 'https://boards.greenhouse.io/careem/jobs/8075745002',
+            'careem-backend': 'https://boards.greenhouse.io/careem/jobs/8190942002',
+            'careem-manager': 'https://boards.greenhouse.io/careem/jobs/8119134002',
+            'careem-data-sci-1': 'https://boards.greenhouse.io/careem/jobs/8200640002',
+            'careem-data-sci-2': 'https://boards.greenhouse.io/careem/jobs/7293447002',
+            // NEW: Tabby Jobs - Dec 2025
+            'tabby-backend': 'https://tabby.pinpointhq.com/en/postings/cdab253e-3ad0-4eb8-922e-b0650775b77d',
+            'tabby-frontend': 'https://tabby.pinpointhq.com/en/postings/561d0bfc-50cb-4716-9aab-1676d593bc45',
+            'tabby-qa': 'https://tabby.pinpointhq.com/en/postings/cebdaea5-2d14-404b-ae1d-5c33a5d7f5f3',
+            'tabby-manager': 'https://tabby.pinpointhq.com/en/postings/8030567d-c19b-4c29-9d13-674079d1b544'
         };
 
         const emailTemplates = {
@@ -4137,12 +4607,27 @@ https://linkedin.com/in/faztrick`
         }
 
         function applyJob(company) {
+            console.log('applyJob called for:', company);
             const url = jobLinks[company];
             if (url) {
-                window.open(url, '_blank');
+                console.log('Opening URL:', url);
+                // Try window.open first
+                const newWindow = window.open(url, '_blank');
+                if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                    // Popup blocked - use link click workaround
+                    console.log('Popup blocked, using link workaround');
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
                 addQuickApplyLog(`✅ Opened ${company.toUpperCase()} application page`, 'success');
             } else {
                 addQuickApplyLog(`❌ No URL found for ${company}`, 'error');
+                alert('No URL found for: ' + company);
             }
         }
 
@@ -4158,23 +4643,70 @@ https://linkedin.com/in/faztrick`
             addQuickApplyLog('✈️ Apply to all matching positions on the portal!', 'system');
         }
 
-        function applyAllJobs() {
-            addQuickApplyLog('🚀 Opening ALL job applications...', 'system');
+        function applyAllTabby() {
+            addQuickApplyLog('💳 Opening all Tabby jobs...', 'system');
+            const tabbyJobs = ['tabby-backend', 'tabby-frontend', 'tabby-qa', 'tabby-manager'];
+            tabbyJobs.forEach((job, index) => {
+                setTimeout(() => {
+                    window.open(jobLinks[job], '_blank');
+                    addQuickApplyLog(`✅ Opened ${job}`, 'success');
+                }, index * 500);
+            });
+            addQuickApplyLog('🎯 All 4 Tabby jobs opened!', 'system');
+        }
 
+        function applyAllJobs() {
+            addQuickApplyLog('🚀 Opening ALL 26 job applications...', 'system');
+
+            // Original jobs
             window.open(jobLinks.tcs, '_blank');
             addQuickApplyLog('✅ Opened TCS Flutter Developer', 'success');
 
             setTimeout(() => {
                 window.open(jobLinks['emirates-ai'], '_blank');
                 addQuickApplyLog('✅ Opened Emirates IT Careers (4 positions)', 'success');
-            }, 1000);
+            }, 500);
 
             setTimeout(() => {
                 window.open(jobLinks['360tf'], '_blank');
                 addQuickApplyLog('✅ Opened 360tf application', 'success');
-            }, 2000);
+            }, 1000);
 
-            addQuickApplyLog('🎯 All 6 job pages opened! Apply in each tab.', 'system');
+            // Dev-Dubai jobs
+            const devDubaiJobs = [
+                'dicetek-ai', 'dubizzle-python', 'orbit-flutter', 'dicetek-fullstack',
+                'consensys-metamask', 'fluid-ai', 'astudio-ai', 'property-finder',
+                'emaratech-mobile', 'noon-backend'
+            ];
+            devDubaiJobs.forEach((job, index) => {
+                setTimeout(() => {
+                    window.open(jobLinks[job], '_blank');
+                    addQuickApplyLog(`✅ Opened ${job}`, 'success');
+                }, 1500 + (index * 500));
+            });
+
+            // Careem jobs
+            const careemJobs = [
+                'careem-ai-engineer', 'careem-genai', 'careem-backend',
+                'careem-manager', 'careem-data-sci-1', 'careem-data-sci-2'
+            ];
+            careemJobs.forEach((job, index) => {
+                setTimeout(() => {
+                    window.open(jobLinks[job], '_blank');
+                    addQuickApplyLog(`✅ Opened ${job}`, 'success');
+                }, 7000 + (index * 500));
+            });
+
+            // Tabby jobs
+            const tabbyJobs = ['tabby-backend', 'tabby-frontend', 'tabby-qa', 'tabby-manager'];
+            tabbyJobs.forEach((job, index) => {
+                setTimeout(() => {
+                    window.open(jobLinks[job], '_blank');
+                    addQuickApplyLog(`✅ Opened ${job}`, 'success');
+                }, 10000 + (index * 500));
+            });
+
+            addQuickApplyLog('🎯 All 26 job pages opened! Apply in each tab.', 'system');
         }
 
         function copyEmail(company) {
@@ -4192,6 +4724,210 @@ https://linkedin.com/in/faztrick`
         function openJobTracker() {
             window.open('/JOB-TRACKER-DEC-2025.md', '_blank');
             addQuickApplyLog('📋 Opened Job Tracker', 'info');
+        }
+
+        function applyAllDevDubai() {
+            addQuickApplyLog('🌐 Opening all Dev-Dubai.com jobs...', 'system');
+            const devDubaiJobs = [
+                'dicetek-ai', 'dubizzle-python', 'orbit-flutter', 'dicetek-fullstack',
+                'consensys-metamask', 'fluid-ai', 'astudio-ai', 'property-finder',
+                'emaratech-mobile', 'noon-backend'
+            ];
+            devDubaiJobs.forEach((job, index) => {
+                setTimeout(() => {
+                    window.open(jobLinks[job], '_blank');
+                    addQuickApplyLog(`✅ Opened ${job}`, 'success');
+                }, index * 500);
+            });
+            addQuickApplyLog('🎯 All 10 Dev-Dubai jobs opened!', 'system');
+        }
+
+        function applyAllCareem() {
+            addQuickApplyLog('🚗 Opening all Careem Engineering jobs...', 'system');
+            const careemJobs = [
+                'careem-ai-engineer', 'careem-genai', 'careem-backend',
+                'careem-manager', 'careem-data-sci-1', 'careem-data-sci-2'
+            ];
+            careemJobs.forEach((job, index) => {
+                setTimeout(() => {
+                    window.open(jobLinks[job], '_blank');
+                    addQuickApplyLog(`✅ Opened ${job}`, 'success');
+                }, index * 500);
+            });
+            addQuickApplyLog('🎯 All 6 Careem jobs opened!', 'system');
+        }
+
+        // ==========================================
+        // AUTO APPLY AUTOMATION
+        // ==========================================
+        let autoApplyState = {
+            isRunning: false,
+            isPaused: false,
+            currentIndex: 0,
+            totalJobs: 0,
+            jobQueue: [],
+            timeoutId: null,
+            appliedJobs: []
+        };
+
+        function getAllJobKeys() {
+            return Object.keys(jobLinks);
+        }
+
+        function updateAutoProgress() {
+            const { currentIndex, totalJobs } = autoApplyState;
+            const percent = totalJobs > 0 ? Math.round((currentIndex / totalJobs) * 100) : 0;
+
+            document.getElementById('auto-progress-text').textContent = `${currentIndex} / ${totalJobs} jobs`;
+            document.getElementById('auto-progress-percent').textContent = `${percent}%`;
+            document.getElementById('auto-progress-bar').style.width = `${percent}%`;
+        }
+
+        function updateAutoStatus(text, dotColor) {
+            document.getElementById('auto-status-text').textContent = text;
+            const dot = document.getElementById('auto-status-dot');
+            dot.className = `w-3 h-3 rounded-full ${dotColor}`;
+        }
+
+        function updateDelayDisplay() {
+            const delay = document.getElementById('auto-delay').value;
+            document.getElementById('delay-display').textContent = `${delay}s`;
+        }
+
+        function startAutoApply() {
+            if (autoApplyState.isRunning && !autoApplyState.isPaused) return;
+
+            if (!autoApplyState.isPaused) {
+                // Fresh start
+                autoApplyState.jobQueue = getAllJobKeys();
+                autoApplyState.totalJobs = autoApplyState.jobQueue.length;
+                autoApplyState.currentIndex = 0;
+                autoApplyState.appliedJobs = [];
+            }
+
+            autoApplyState.isRunning = true;
+            autoApplyState.isPaused = false;
+
+            // Update UI
+            document.getElementById('btn-auto-start').disabled = true;
+            document.getElementById('btn-auto-pause').disabled = false;
+            document.getElementById('btn-auto-stop').disabled = false;
+            document.getElementById('auto-delay').disabled = true;
+
+            updateAutoStatus('Running...', 'bg-green-500 animate-pulse');
+            addQuickApplyLog('🤖 AUTO APPLY STARTED!', 'system');
+
+            processNextJob();
+        }
+
+        function processNextJob() {
+            if (!autoApplyState.isRunning || autoApplyState.isPaused) return;
+
+            if (autoApplyState.currentIndex >= autoApplyState.totalJobs) {
+                completeAutoApply();
+                return;
+            }
+
+            const jobKey = autoApplyState.jobQueue[autoApplyState.currentIndex];
+            const url = jobLinks[jobKey];
+
+            if (url) {
+                // Open job in new tab
+                const newWindow = window.open(url, '_blank');
+                if (!newWindow || newWindow.closed) {
+                    // Fallback for popup blockers
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }
+
+                autoApplyState.appliedJobs.push(jobKey);
+                addQuickApplyLog(`✅ [${autoApplyState.currentIndex + 1}/${autoApplyState.totalJobs}] Opened: ${jobKey}`, 'success');
+            } else {
+                addQuickApplyLog(`⚠️ Skipped: ${jobKey} (no URL)`, 'warning');
+            }
+
+            autoApplyState.currentIndex++;
+            updateAutoProgress();
+
+            // Schedule next job
+            const delay = parseInt(document.getElementById('auto-delay').value) * 1000;
+            autoApplyState.timeoutId = setTimeout(processNextJob, delay);
+        }
+
+        function pauseAutoApply() {
+            if (!autoApplyState.isRunning) return;
+
+            autoApplyState.isPaused = true;
+            if (autoApplyState.timeoutId) {
+                clearTimeout(autoApplyState.timeoutId);
+            }
+
+            document.getElementById('btn-auto-start').disabled = false;
+            document.getElementById('btn-auto-start').innerHTML = '<i class="fas fa-play mr-2"></i>RESUME';
+            document.getElementById('btn-auto-pause').disabled = true;
+
+            updateAutoStatus('Paused', 'bg-yellow-500');
+            addQuickApplyLog('⏸️ Auto apply PAUSED. Click RESUME to continue.', 'warning');
+        }
+
+        function stopAutoApply() {
+            autoApplyState.isRunning = false;
+            autoApplyState.isPaused = false;
+            if (autoApplyState.timeoutId) {
+                clearTimeout(autoApplyState.timeoutId);
+            }
+
+            document.getElementById('btn-auto-start').disabled = false;
+            document.getElementById('btn-auto-start').innerHTML = '<i class="fas fa-play mr-2"></i>START AUTO';
+            document.getElementById('btn-auto-pause').disabled = true;
+            document.getElementById('btn-auto-stop').disabled = true;
+            document.getElementById('auto-delay').disabled = false;
+
+            updateAutoStatus('Stopped', 'bg-red-500');
+            addQuickApplyLog(`🛑 Auto apply STOPPED at ${autoApplyState.currentIndex}/${autoApplyState.totalJobs} jobs.`, 'error');
+        }
+
+        function resetAutoApply() {
+            stopAutoApply();
+            autoApplyState = {
+                isRunning: false,
+                isPaused: false,
+                currentIndex: 0,
+                totalJobs: 0,
+                jobQueue: [],
+                timeoutId: null,
+                appliedJobs: []
+            };
+
+            updateAutoProgress();
+            updateAutoStatus('Ready', 'bg-gray-400');
+            document.getElementById('btn-auto-start').innerHTML = '<i class="fas fa-play mr-2"></i>START AUTO';
+            addQuickApplyLog('🔄 Auto apply RESET. Ready to start fresh.', 'info');
+        }
+
+        function completeAutoApply() {
+            autoApplyState.isRunning = false;
+
+            document.getElementById('btn-auto-start').disabled = false;
+            document.getElementById('btn-auto-start').innerHTML = '<i class="fas fa-play mr-2"></i>START AUTO';
+            document.getElementById('btn-auto-pause').disabled = true;
+            document.getElementById('btn-auto-stop').disabled = true;
+            document.getElementById('auto-delay').disabled = false;
+
+            updateAutoStatus('Complete!', 'bg-green-500');
+            updateAutoProgress();
+
+            addQuickApplyLog('🎉 AUTO APPLY COMPLETE!', 'system');
+            addQuickApplyLog(`✅ Successfully opened ${autoApplyState.appliedJobs.length} job applications!`, 'success');
+            addQuickApplyLog('📋 Now apply to each job in the opened tabs.', 'info');
+
+            // Show completion alert
+            alert(`🎉 Auto Apply Complete!\n\n✅ Opened ${autoApplyState.appliedJobs.length} job applications.\n\n📋 Apply to each job in the opened browser tabs.`);
         }
 
         // ==========================================
