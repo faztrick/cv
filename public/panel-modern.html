@@ -108,6 +108,10 @@
                 <i class="fas fa-search w-5"></i>
                 <span class="text-sm">Job Search</span>
             </a>
+            <a onclick="showTab('quick-apply')" id="nav-quick-apply" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-700/50 cursor-pointer">
+                <i class="fas fa-rocket w-5 text-green-400"></i>
+                <span class="text-sm">Quick Apply</span>
+            </a>
             <a onclick="showTab('ai-agent')" id="nav-ai-agent" class="nav-link flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-gray-700/50 cursor-pointer">
                 <i class="fas fa-robot w-5"></i>
                 <span class="text-sm">AI Agent</span>
@@ -290,6 +294,57 @@
                     </button>
                     <button onclick="window.open('cv.html', '_blank')" class="compact-btn bg-orange-600 hover:bg-orange-700 text-white">
                         <i class="fas fa-eye mr-2"></i>View CV
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quick Apply Jobs - Dec 2025 -->
+            <div class="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/30 rounded-xl p-5 shadow-sm">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-semibold text-gray-800 dark:text-white flex items-center gap-2">
+                        <i class="fas fa-rocket text-green-500"></i>
+                        🚀 Quick Apply Jobs
+                        <span class="text-xs px-2 py-1 bg-green-500 text-white rounded-full">6 Ready</span>
+                    </h3>
+                    <button onclick="showTab('quick-apply')" class="text-sm text-green-600 dark:text-green-400 hover:underline">
+                        View All <i class="fas fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-4">
+                    <div class="flex items-center justify-between p-2 bg-white dark:bg-gray-800 rounded-lg">
+                        <div>
+                            <span class="font-medium text-sm text-gray-800 dark:text-white">TCS</span>
+                            <span class="text-xs text-red-500 block">Dec 15</span>
+                        </div>
+                        <button onclick="applyJob('tcs')" class="btn-icon bg-blue-500 hover:bg-blue-600 text-white">
+                            <i class="fab fa-linkedin text-xs"></i>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between p-2 bg-white dark:bg-gray-800 rounded-lg">
+                        <div>
+                            <span class="font-medium text-sm text-gray-800 dark:text-white">Emirates AI ⭐</span>
+                            <span class="text-xs text-red-500 block">Dec 19</span>
+                        </div>
+                        <button onclick="applyJob('emirates-ai')" class="btn-icon bg-red-500 hover:bg-red-600 text-white">
+                            <i class="fas fa-plane text-xs"></i>
+                        </button>
+                    </div>
+                    <div class="flex items-center justify-between p-2 bg-white dark:bg-gray-800 rounded-lg">
+                        <div>
+                            <span class="font-medium text-sm text-gray-800 dark:text-white">360tf</span>
+                            <span class="text-xs text-green-500 block">✓ Verified</span>
+                        </div>
+                        <button onclick="applyJob('360tf')" class="btn-icon bg-green-500 hover:bg-green-600 text-white">
+                            <i class="fab fa-linkedin text-xs"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="applyAllJobs()" class="compact-btn bg-green-600 hover:bg-green-700 text-white flex-1">
+                        <i class="fas fa-external-link-alt mr-2"></i>Apply to ALL Jobs (6)
+                    </button>
+                    <button onclick="applyAllEmirates()" class="compact-btn bg-red-500 hover:bg-red-600 text-white">
+                        <i class="fas fa-plane mr-2"></i>Emirates (4)
                     </button>
                 </div>
             </div>
@@ -984,6 +1039,194 @@
                         <i class="fas fa-globe mr-2"></i>NaukriGulf
                     </button>
                 </div>
+            </div>
+        </div>
+
+        <!-- Quick Apply Tab -->
+        <div id="tab-quick-apply" class="tab-content hidden space-y-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">🚀 Quick Apply - Dec 2025</h2>
+                <div class="flex gap-2">
+                    <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-sm font-medium flex items-center gap-2">
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        6 Jobs Ready
+                    </span>
+                </div>
+            </div>
+
+            <!-- Urgent Deadlines Alert -->
+            <div class="bg-gradient-to-r from-red-500/20 to-orange-500/20 border border-red-500/30 rounded-xl p-4">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-fire text-red-500 text-xl animate-pulse"></i>
+                    <div>
+                        <h4 class="font-semibold text-red-400">⏰ Urgent Deadlines!</h4>
+                        <p class="text-sm text-gray-300">TCS: Dec 15 (7 days) | Emirates AI: Dec 19 (11 days)</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Apply All Actions -->
+            <div class="bg-gradient-to-r from-green-600 to-emerald-700 rounded-xl p-5 shadow-lg text-white">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-rocket text-3xl"></i>
+                        <div>
+                            <h3 class="text-lg font-bold">One-Click Apply</h3>
+                            <p class="text-sm text-green-200">Open all job applications instantly</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-3 gap-3">
+                    <button onclick="applyAllJobs()" class="compact-btn bg-white text-green-600 hover:bg-green-50 py-3 font-bold">
+                        <i class="fas fa-external-link-alt mr-2"></i>Apply to ALL Jobs (6)
+                    </button>
+                    <button onclick="applyAllEmirates()" class="compact-btn bg-red-500 text-white hover:bg-red-400 py-3">
+                        <i class="fas fa-plane mr-2"></i>Apply All Emirates (4)
+                    </button>
+                    <button onclick="openJobTracker()" class="compact-btn bg-green-500 text-white hover:bg-green-400 py-3">
+                        <i class="fas fa-clipboard-list mr-2"></i>Open Job Tracker
+                    </button>
+                </div>
+            </div>
+
+            <!-- Job Cards Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- TCS Flutter Developer -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-blue-500 card-hover">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="text-xs px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full">LinkedIn</span>
+                            <h3 class="font-bold text-gray-800 dark:text-white mt-2">TCS</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Flutter Developer</p>
+                            <p class="text-xs text-gray-500 mt-1"><i class="fas fa-map-marker-alt mr-1"></i>Dubai, UAE</p>
+                        </div>
+                        <span class="px-2 py-1 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded-full text-xs font-medium">Dec 15</span>
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="applyJob('tcs')" class="compact-btn bg-blue-600 hover:bg-blue-700 text-white flex-1">
+                            <i class="fab fa-linkedin mr-1"></i>Apply
+                        </button>
+                        <button onclick="copyEmail('tcs')" class="btn-icon bg-gray-100 dark:bg-gray-700 hover:bg-gray-200" title="Copy Email">
+                            <i class="fas fa-copy text-gray-600 dark:text-gray-400"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Emirates AI -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-red-500 card-hover">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="text-xs px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-full">⭐ Top Pick</span>
+                            <h3 class="font-bold text-gray-800 dark:text-white mt-2">Emirates</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Senior Software Engineer - AI</p>
+                            <p class="text-xs text-gray-500 mt-1"><i class="fas fa-map-marker-alt mr-1"></i>Dubai, UAE</p>
+                        </div>
+                        <span class="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-full text-xs font-medium">Dec 19</span>
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="applyJob('emirates-ai')" class="compact-btn bg-red-600 hover:bg-red-700 text-white flex-1">
+                            <i class="fas fa-plane mr-1"></i>Apply
+                        </button>
+                        <button onclick="copyEmail('emirates')" class="btn-icon bg-gray-100 dark:bg-gray-700 hover:bg-gray-200" title="Copy Email">
+                            <i class="fas fa-copy text-gray-600 dark:text-gray-400"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Emirates Java -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-red-500 card-hover">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="text-xs px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-full">Emirates</span>
+                            <h3 class="font-bold text-gray-800 dark:text-white mt-2">Emirates</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Senior Software Engineer - Java</p>
+                            <p class="text-xs text-gray-500 mt-1"><i class="fas fa-map-marker-alt mr-1"></i>Dubai, UAE</p>
+                        </div>
+                        <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">Jan 1</span>
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="applyJob('emirates-java')" class="compact-btn bg-red-600 hover:bg-red-700 text-white flex-1">
+                            <i class="fas fa-plane mr-1"></i>Apply
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Emirates Python -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-red-500 card-hover">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="text-xs px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-full">Emirates</span>
+                            <h3 class="font-bold text-gray-800 dark:text-white mt-2">Emirates</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Senior Software Engineer - Python</p>
+                            <p class="text-xs text-gray-500 mt-1"><i class="fas fa-map-marker-alt mr-1"></i>Dubai, UAE</p>
+                        </div>
+                        <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">Jan 1</span>
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="applyJob('emirates-python')" class="compact-btn bg-red-600 hover:bg-red-700 text-white flex-1">
+                            <i class="fas fa-plane mr-1"></i>Apply
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Emirates QA -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-red-500 card-hover">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="text-xs px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300 rounded-full">Emirates</span>
+                            <h3 class="font-bold text-gray-800 dark:text-white mt-2">Emirates</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Senior Quality Assurance Engineer</p>
+                            <p class="text-xs text-gray-500 mt-1"><i class="fas fa-map-marker-alt mr-1"></i>Dubai, UAE</p>
+                        </div>
+                        <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium">Dec 31</span>
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="applyJob('emirates-qa')" class="compact-btn bg-red-600 hover:bg-red-700 text-white flex-1">
+                            <i class="fas fa-plane mr-1"></i>Apply
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 360tf -->
+                <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm border-l-4 border-green-500 card-hover">
+                    <div class="flex items-start justify-between">
+                        <div>
+                            <span class="text-xs px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full">✓ Verified</span>
+                            <h3 class="font-bold text-gray-800 dark:text-white mt-2">360tf</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">Senior Software Engineer</p>
+                            <p class="text-xs text-gray-500 mt-1"><i class="fas fa-map-marker-alt mr-1"></i>Dubai, DMCC</p>
+                        </div>
+                        <span class="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-xs font-medium">Open</span>
+                    </div>
+                    <div class="flex gap-2 mt-4">
+                        <button onclick="applyJob('360tf')" class="compact-btn bg-green-600 hover:bg-green-700 text-white flex-1">
+                            <i class="fab fa-linkedin mr-1"></i>Apply
+                        </button>
+                        <button onclick="copyEmail('360tf')" class="btn-icon bg-gray-100 dark:bg-gray-700 hover:bg-gray-200" title="Copy Email">
+                            <i class="fas fa-copy text-gray-600 dark:text-gray-400"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Application Log -->
+            <div class="bg-gray-900 rounded-xl p-4 shadow-sm">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm text-green-400 font-mono"><i class="fas fa-terminal mr-2"></i>Application Log</span>
+                    <button onclick="clearQuickApplyLog()" class="text-xs text-gray-500 hover:text-white">Clear</button>
+                </div>
+                <div id="quick-apply-log" class="h-32 overflow-y-auto text-xs font-mono text-green-400 whitespace-pre-wrap p-2 bg-black rounded">Ready to apply. Click any Apply button to open the job posting...</div>
+            </div>
+
+            <!-- Tips -->
+            <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-xl p-4">
+                <h4 class="font-semibold text-blue-800 dark:text-blue-200 mb-2"><i class="fas fa-lightbulb mr-2"></i>Tips</h4>
+                <ul class="text-sm text-blue-700 dark:text-blue-300 space-y-1">
+                    <li>• Make sure you're logged into LinkedIn and Emirates Careers before clicking Apply</li>
+                    <li>• Use "Copy Email" to get a pre-written application message for manual outreach</li>
+                    <li>• Emirates has 4 positions - apply to all from the IT Careers portal</li>
+                    <li>• Follow up in 5-7 days if no response</li>
+                </ul>
             </div>
         </div>
 
@@ -3800,6 +4043,155 @@ Muhammed Fasil
                 addAutomationLog(`❌ Error: ${e.message}`, 'error');
                 throw e;
             }
+        }
+
+        // ==========================================
+        // QUICK APPLY FUNCTIONS
+        // ==========================================
+        const jobLinks = {
+            tcs: 'https://www.linkedin.com/jobs/view/flutter-developer-at-tata-consultancy-services-4323240582',
+            'emirates-ai': 'https://www.emiratesgroupcareers.com/search-and-apply/?jobcategory=Information%20Technology',
+            'emirates-java': 'https://www.emiratesgroupcareers.com/search-and-apply/?jobcategory=Information%20Technology',
+            'emirates-python': 'https://www.emiratesgroupcareers.com/search-and-apply/?jobcategory=Information%20Technology',
+            'emirates-qa': 'https://www.emiratesgroupcareers.com/search-and-apply/?jobcategory=Information%20Technology',
+            emirates: 'https://www.emiratesgroupcareers.com/search-and-apply/?jobcategory=Information%20Technology',
+            '360tf': 'https://ae.linkedin.com/jobs/view/senior-software-engineer-flutter-and-angular-at-360tf-4326280897'
+        };
+
+        const emailTemplates = {
+            tcs: `Subject: Application for Flutter Developer Position - Dubai, UAE | 10+ Years Experience
+
+Dear Ms. Deepali Upadhyay,
+
+I am writing to apply for the Flutter Developer position at TCS in Dubai.
+
+KEY QUALIFICATIONS:
+- 10+ years software development, 4+ years Flutter/Dart
+- Production apps: IdolMEA ERP (50+ GCC branches), IdolQueue
+- State Management: Provider, Riverpod, BLoC
+- AI Integration: LangChain, OpenAI, YOLO
+- Currently in Dubai with valid UAE Work Visa
+- Available immediately
+
+Best regards,
+Muhammed Fasil PV
++971 555923545 | faztrick@gmail.com
+https://linkedin.com/in/faztrick`,
+
+            emirates: `Subject: Application for Senior Software Engineer - AI | Emirates Group | 10+ Years Experience
+
+Dear Emirates Group IT Recruitment Team,
+
+I am applying for the Senior Software Engineer - AI position.
+
+WHY I'M A PERFECT FIT:
+- AI/ML: LangChain, OpenAI, YOLO, Whisper, TensorFlow
+- Enterprise: IdolMEA ERP (50+ GCC branches)
+- Full-stack: React.js, Node.js, Python, Flutter
+- Gitex Dubai 2024: AI Self-Checkout Kiosk showcase
+- Currently in Dubai with valid UAE Work Visa
+
+Best regards,
+Muhammed Fasil PV
++971 555923545 | faztrick@gmail.com
+https://linkedin.com/in/faztrick`,
+
+            '360tf': `Subject: Application for Senior Software Engineer | 10+ Years Java/Python/AI Experience
+
+Dear 360tf Hiring Team,
+
+I am applying for the Senior Software Engineer position.
+
+MY QUALIFICATIONS:
+- Java & Spring Boot: Enterprise microservices
+- Python: Advanced AI/ML development
+- Agentic AI: LangChain, LangGraph, OpenAI
+- AWS: EC2, S3, Lambda expertise
+- Docker & Kubernetes containerization
+- Currently in Dubai with valid UAE Work Visa
+
+Best regards,
+Muhammed Fasil PV
++971 555923545 | faztrick@gmail.com
+https://linkedin.com/in/faztrick`
+        };
+
+        function addQuickApplyLog(message, type = 'info') {
+            const logEl = document.getElementById('quick-apply-log');
+            if (!logEl) return;
+            const timestamp = new Date().toLocaleTimeString();
+            const colors = {
+                info: 'text-blue-400',
+                success: 'text-green-400',
+                error: 'text-red-400',
+                warning: 'text-yellow-400',
+                system: 'text-purple-400'
+            };
+            logEl.innerHTML += `<div class="${colors[type] || 'text-green-400'}">[${timestamp}] ${message}</div>`;
+            logEl.scrollTop = logEl.scrollHeight;
+        }
+
+        function clearQuickApplyLog() {
+            const logEl = document.getElementById('quick-apply-log');
+            if (logEl) logEl.innerHTML = 'Log cleared. Ready to apply...';
+        }
+
+        function applyJob(company) {
+            const url = jobLinks[company];
+            if (url) {
+                window.open(url, '_blank');
+                addQuickApplyLog(`✅ Opened ${company.toUpperCase()} application page`, 'success');
+            } else {
+                addQuickApplyLog(`❌ No URL found for ${company}`, 'error');
+            }
+        }
+
+        function applyAllEmirates() {
+            addQuickApplyLog('🛫 Opening ALL Emirates IT jobs...', 'system');
+            window.open(jobLinks['emirates-ai'], '_blank');
+            addQuickApplyLog('✅ Opened Emirates IT Careers Portal', 'success');
+            addQuickApplyLog('📋 Available positions:', 'info');
+            addQuickApplyLog('   1. Senior Software Engineer - AI (Deadline: Dec 19)', 'info');
+            addQuickApplyLog('   2. Senior Software Engineer - Java (Deadline: Jan 1)', 'info');
+            addQuickApplyLog('   3. Senior Software Engineer - Python (Deadline: Jan 1)', 'info');
+            addQuickApplyLog('   4. Senior Quality Assurance Engineer (Deadline: Dec 31)', 'info');
+            addQuickApplyLog('✈️ Apply to all matching positions on the portal!', 'system');
+        }
+
+        function applyAllJobs() {
+            addQuickApplyLog('🚀 Opening ALL job applications...', 'system');
+
+            window.open(jobLinks.tcs, '_blank');
+            addQuickApplyLog('✅ Opened TCS Flutter Developer', 'success');
+
+            setTimeout(() => {
+                window.open(jobLinks['emirates-ai'], '_blank');
+                addQuickApplyLog('✅ Opened Emirates IT Careers (4 positions)', 'success');
+            }, 1000);
+
+            setTimeout(() => {
+                window.open(jobLinks['360tf'], '_blank');
+                addQuickApplyLog('✅ Opened 360tf application', 'success');
+            }, 2000);
+
+            addQuickApplyLog('🎯 All 6 job pages opened! Apply in each tab.', 'system');
+        }
+
+        function copyEmail(company) {
+            const email = emailTemplates[company];
+            if (email) {
+                navigator.clipboard.writeText(email).then(() => {
+                    addQuickApplyLog(`📋 Copied ${company.toUpperCase()} email to clipboard!`, 'success');
+                    alert(`Email template for ${company.toUpperCase()} copied to clipboard!\n\nPaste it in Gmail or LinkedIn message.`);
+                }).catch(err => {
+                    addQuickApplyLog(`Failed to copy: ${err}`, 'error');
+                });
+            }
+        }
+
+        function openJobTracker() {
+            window.open('/JOB-TRACKER-DEC-2025.md', '_blank');
+            addQuickApplyLog('📋 Opened Job Tracker', 'info');
         }
 
         // ==========================================

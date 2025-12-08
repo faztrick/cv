@@ -476,7 +476,11 @@
 
         const jobLinks = {
             tcs: 'https://www.linkedin.com/jobs/view/flutter-developer-at-tata-consultancy-services-4323240582',
-            emirates: 'https://www.emiratesgroupcareers.com/search-and-apply/',
+            'emirates-ai': 'https://www.emiratesgroupcareers.com/search-and-apply/?jobcategory=Information%20Technology',
+            'emirates-java': 'https://www.emiratesgroupcareers.com/search-and-apply/?jobcategory=Information%20Technology',
+            'emirates-python': 'https://www.emiratesgroupcareers.com/search-and-apply/?jobcategory=Information%20Technology',
+            'emirates-qa': 'https://www.emiratesgroupcareers.com/search-and-apply/?jobcategory=Information%20Technology',
+            emirates: 'https://www.emiratesgroupcareers.com/search-and-apply/?jobcategory=Information%20Technology',
             emiratesLinkedin: 'https://ae.linkedin.com/jobs/view/senior-software-engineer-ai-at-emirates-4348680617',
             '360tf': 'https://ae.linkedin.com/jobs/view/senior-software-engineer-flutter-and-angular-at-360tf-4326280897'
         };
@@ -543,40 +547,41 @@ https://linkedin.com/in/faztrick`
             const url = jobLinks[company];
             if (url) {
                 window.open(url, '_blank');
-                addLog(`Opened ${company.toUpperCase()} application page`, 'success');
-
-                // Also open LinkedIn job page for Emirates
-                if (company === 'emirates') {
-                    setTimeout(() => {
-                        window.open(jobLinks.emiratesLinkedin, '_blank');
-                        addLog('Opened Emirates LinkedIn job page', 'info');
-                    }, 1000);
-                }
+                addLog(`✅ Opened ${company.toUpperCase()} application page`, 'success');
+            } else {
+                addLog(`❌ No URL found for ${company}`, 'error');
             }
+        }
+
+        function applyAllEmirates() {
+            addLog('🛫 Opening ALL Emirates IT jobs...', 'system');
+            window.open(jobLinks['emirates-ai'], '_blank');
+            addLog('✅ Opened Emirates IT Careers Portal', 'success');
+            addLog('📋 Available positions:', 'info');
+            addLog('   1. Senior Software Engineer - AI (Deadline: Dec 19)', 'info');
+            addLog('   2. Senior Software Engineer - Java (Deadline: Jan 1)', 'info');
+            addLog('   3. Senior Software Engineer - Python (Deadline: Jan 1)', 'info');
+            addLog('   4. Senior Quality Assurance Engineer (Deadline: Dec 31)', 'info');
+            addLog('✈️ Apply to all matching positions on the portal!', 'system');
         }
 
         function applyAllJobs() {
             addLog('🚀 Opening ALL job applications...', 'system');
 
             window.open(jobLinks.tcs, '_blank');
-            addLog('Opened TCS application', 'success');
+            addLog('✅ Opened TCS Flutter Developer', 'success');
 
             setTimeout(() => {
-                window.open(jobLinks.emirates, '_blank');
-                addLog('Opened Emirates Careers Portal', 'success');
+                window.open(jobLinks['emirates-ai'], '_blank');
+                addLog('✅ Opened Emirates IT Careers (4 positions)', 'success');
             }, 1000);
 
             setTimeout(() => {
-                window.open(jobLinks.emiratesLinkedin, '_blank');
-                addLog('Opened Emirates LinkedIn job', 'info');
+                window.open(jobLinks['360tf'], '_blank');
+                addLog('✅ Opened 360tf application', 'success');
             }, 2000);
 
-            setTimeout(() => {
-                window.open(jobLinks['360tf'], '_blank');
-                addLog('Opened 360tf application', 'success');
-            }, 3000);
-
-            addLog('✅ All job pages opened! Apply in each tab.', 'system');
+            addLog('🎯 All 6 job pages opened! Apply in each tab.', 'system');
         }
 
         function copyEmail(company) {
