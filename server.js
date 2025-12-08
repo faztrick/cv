@@ -186,10 +186,15 @@ function initWhatsApp() {
             // Optional: Auto-reconnect logic could go here
         });
 
-        waClient.initialize();
+        waClient.initialize().catch(error => {
+            console.error('WhatsApp initialization failed:', error.message);
+            waStatus = 'UNAVAILABLE';
+            console.log('WhatsApp integration is disabled. Install Chromium to enable it.');
+        });
     } catch (error) {
-        console.error('Failed to init WhatsApp:', error);
-        waStatus = 'ERROR';
+        console.error('Failed to init WhatsApp:', error.message);
+        waStatus = 'UNAVAILABLE';
+        console.log('WhatsApp integration is disabled. Install Chromium to enable it.');
     }
 }
 
