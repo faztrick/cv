@@ -47,7 +47,7 @@
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
         .animate-fade-in { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        
+
         /* Theme Toggle Button */
         .theme-toggle {
             position: fixed;
@@ -83,7 +83,7 @@
 <body class="flex h-screen overflow-hidden">
 
     <!-- Sidebar -->
-    <aside class="w-64 bg-slate-900 border-r border-slate-800 flex-shrink-0 flex flex-col">
+    <aside class="w-64 bg-slate-900 light:bg-white border-r border-slate-800 light:border-gray-200 flex-shrink-0 flex flex-col">
         <div class="p-6 border-b border-slate-800">
             <h1 class="text-xl font-bold text-white"><i class="fas fa-rocket mr-2 text-blue-400"></i>Job Toolkit</h1>
             <p class="text-xs text-slate-500 mt-1">Skills-Based Automation</p>
@@ -670,6 +670,27 @@
 
         // Location change handler
         document.getElementById('rec-location')?.addEventListener('change', loadRecommendedSearches);
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('themeToggle');
+        const savedTheme = localStorage.getItem('theme');
+
+        // Default is dark, only switch to light if explicitly saved
+        if (savedTheme === 'light') {
+            document.documentElement.classList.add('light');
+        }
+
+        themeToggle?.addEventListener('click', () => {
+            document.documentElement.classList.toggle('light');
+            const isLight = document.documentElement.classList.contains('light');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
     </script>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+        <i class="ri-sun-line sun"></i>
+        <i class="ri-moon-line moon"></i>
+    </button>
 </body>
 </html>

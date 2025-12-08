@@ -1102,6 +1102,249 @@ app.post('/api/automation/batch', async (req, res) => {
     });
 });
 
+// --- ADMIN TOOLS API ---
+
+// Running processes tracker
+let runningProcesses = {};
+
+// Session setup
+app.post('/api/session-setup', (req, res) => {
+    console.log('Starting session setup...');
+    res.json({ success: true, message: 'Session setup started' });
+});
+
+// Follow-up tool
+app.post('/api/followup-tool', (req, res) => {
+    const port = 3001;
+    res.json({ success: true, port, message: 'Follow-up tool ready' });
+});
+
+// Open emails
+app.post('/api/open-emails', (req, res) => {
+    exec('start https://outlook.live.com/mail/0/inbox', (error) => {
+        if (error) {
+            return res.status(500).json({ success: false, error: error.message });
+        }
+        res.json({ success: true, message: 'Gmail/Outlook opened' });
+    });
+});
+
+// Clear browser locks
+app.post('/api/clear-locks', (req, res) => {
+    const lockPaths = [
+        path.join(__dirname, '.wwebjs_auth', 'session', 'SingletonLock'),
+        path.join(__dirname, 'user_data', 'SingletonLock'),
+        path.join(__dirname, '.puppeteer_cache', 'SingletonLock')
+    ];
+
+    let cleared = 0;
+    lockPaths.forEach(lockPath => {
+        try {
+            if (fs.existsSync(lockPath)) {
+                fs.unlinkSync(lockPath);
+                cleared++;
+            }
+        } catch (e) {
+            console.log('Could not remove lock:', lockPath);
+        }
+    });
+
+    res.json({ success: true, cleared, message: `Cleared ${cleared} lock files` });
+});
+
+// CV Parser
+app.post('/api/cv-parser', (req, res) => {
+    exec('npm run parse-cv', { cwd: __dirname }, (error, stdout, stderr) => {
+        if (error) {
+            return res.json({ success: false, output: stderr || error.message });
+        }
+        res.json({ success: true, output: stdout });
+    });
+});
+
+// Smart email generator
+app.post('/api/smart-email', (req, res) => {
+    exec('npm run outreach generate', { cwd: __dirname }, (error, stdout, stderr) => {
+        if (error) {
+            return res.json({ success: false, output: stderr || error.message });
+        }
+        res.json({ success: true, output: stdout });
+    });
+});
+
+// Outreach manager
+app.post('/api/outreach', (req, res) => {
+    exec('npm run outreach', { cwd: __dirname }, (error, stdout, stderr) => {
+        if (error) {
+            return res.json({ success: false, output: stderr || error.message });
+        }
+        res.json({ success: true, output: stdout });
+    });
+});
+
+// Auto-fill
+app.post('/api/auto-fill', (req, res) => {
+    res.json({ success: true, message: 'Auto-fill initiated. Use the browser automation tab.' });
+});
+
+// Clean cache
+app.post('/api/clean-cache', (req, res) => {
+    const cachePaths = [
+        path.join(__dirname, '.puppeteer_cache'),
+        path.join(__dirname, 'node_modules', '.cache')
+    ];
+
+    let cleaned = 0;
+    cachePaths.forEach(cachePath => {
+        try {
+            if (fs.existsSync(cachePath)) {
+                fs.rmSync(cachePath, { recursive: true, force: true });
+                cleaned++;
+            }
+        } catch (e) {
+            console.log('Could not clean cache:', cachePath);
+        }
+    });
+
+    res.json({ success: true, cleaned, message: `Cleaned ${cleaned} cache directories` });
+});
+
+// Stop specific process
+app.post('/api/stop/:id', (req, res) => {
+    const { id } = req.params;
+
+    // Kill specific process types
+    if (id === 'job-search' && playwrightProcess) {
+        playwrightProcess.kill();
+        playwrightProcess = null;
+        delete runningProcesses['job-search'];
+        return res.json({ success: true, message: 'Job search stopped' });
+    }
+
+    if (id === 'indeed' && indeedProcess) {
+        indeedProcess.kill();
+        indeedProcess = null;
+        delete runningProcesses['indeed'];
+        return res.json({ success: true, message: 'Indeed process stopped' });
+    }
+
+    if (id === 'agent' && agentProcess) {
+        agentProcess.kill();
+        agentProcess = null;
+        delete runningProcesses['agent'];
+        return res.json({ success: true, message: 'Agent stopped' });
+    }
+
+    if (runningProcesses[id]) {
+        try {
+            runningProcesses[id].kill();
+            delete runningProcesses[id];
+            return res.json({ success: true, message: `Process ${id} stopped` });
+        } catch (e) {
+            return res.json({ success: false, message: e.message });
+        }
+    }
+
+    res.json({ success: true, message: `No process found with id: ${id}` });
+});
+
+// System status
+app.get('/api/status', (req, res) => {
+    const processes = [];
+
+    if (agentProcess) processes.push('AI Agent');
+    if (indeedProcess) processes.push('Indeed Auto-Apply');
+    if (playwrightProcess) processes.push('Job Search Automation');
+    if (waStatus === 'CONNECTED' || waStatus === 'AUTHENTICATED') processes.push('WhatsApp');
+
+    Object.keys(runningProcesses).forEach(id => {
+        if (!processes.includes(id)) processes.push(id);
+    });
+
+    res.json({
+        processes,
+        env: {
+            openai: !!process.env.OPENAI_API_KEY,
+            indeed: !!process.env.INDEED_EMAIL
+        },
+        uptime: process.uptime(),
+        memory: process.memoryUsage()
+    });
+});
+
+// Job search (admin tools)
+app.post('/api/job-search', (req, res) => {
+    const { platform, keyword, location } = req.body;
+
+    if (playwrightProcess) {
+        return res.status(400).json({ success: false, error: 'Search already running' });
+    }
+
+    const args = ['scripts/job-search-playwright.js', platform || 'indeed', keyword || 'Software Engineer', location || 'Dubai'];
+
+    playwrightProcess = spawn('node', args, { cwd: __dirname });
+    runningProcesses['job-search'] = playwrightProcess;
+
+    playwrightProcess.on('close', (code) => {
+        playwrightProcess = null;
+        delete runningProcesses['job-search'];
+    });
+
+    res.json({ success: true, pid: playwrightProcess.pid, message: 'Job search started' });
+});
+
+// SSE endpoint for real-time logs
+const sseClients = [];
+
+app.get('/api/logs', (req, res) => {
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Send initial connection message
+    res.write(`data: ${JSON.stringify({ timestamp: new Date().toLocaleTimeString(), message: 'Connected to log stream', type: 'success' })}\n\n`);
+
+    // Add client to list
+    sseClients.push(res);
+
+    // Remove client on disconnect
+    req.on('close', () => {
+        const index = sseClients.indexOf(res);
+        if (index !== -1) {
+            sseClients.splice(index, 1);
+        }
+    });
+});
+
+// Helper function to broadcast logs to all SSE clients
+function broadcastLog(message, type = 'info') {
+    const logData = JSON.stringify({
+        timestamp: new Date().toLocaleTimeString(),
+        message,
+        type
+    });
+
+    sseClients.forEach(client => {
+        client.write(`data: ${logData}\n\n`);
+    });
+}
+
+// Override console.log to also broadcast to SSE clients
+const originalConsoleLog = console.log;
+console.log = function(...args) {
+    originalConsoleLog.apply(console, args);
+    const message = args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ');
+    broadcastLog(message, 'info');
+};
+
+const originalConsoleError = console.error;
+console.error = function(...args) {
+    originalConsoleError.apply(console, args);
+    const message = args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ');
+    broadcastLog(message, 'error');
+};
+
 app.listen(PORT, () => {
     console.log(`🚀 CV Panel Server running at http://localhost:${PORT}/panel`);
 });
