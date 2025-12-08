@@ -8,7 +8,7 @@ const outreachManager = require('./outreach-manager');
 
 // Configuration
 const CONFIG = {
-    headless: process.argv.includes('--headless'), // Support headless flag
+    headless: process.argv.includes('--headless') || !process.env.DISPLAY || process.env.CI === 'true', // Auto-detect headless mode
     slowMo: 100, // Increased for more human-like behavior
     viewport: stealth.getRandomViewport(), // Randomized viewport
     timeout: 45000, // Increased timeout
