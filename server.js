@@ -186,14 +186,20 @@ function initWhatsApp() {
             // Optional: Auto-reconnect logic could go here
         });
 
-        waClient.initialize();
+        waClient.initialize().catch(err => {
+            console.error('WhatsApp initialization failed:', err.message);
+            waStatus = 'CHROMIUM_MISSING';
+            console.log('⚠️  WhatsApp features disabled - Chromium not found');
+            console.log('   To enable WhatsApp integration, run: npx puppeteer browsers install chrome');
+        });
     } catch (error) {
-        console.error('Failed to init WhatsApp:', error);
+        console.error('Failed to init WhatsApp:', error.message);
         waStatus = 'ERROR';
+        console.log('⚠️  WhatsApp features disabled');
     }
 }
 
-// Start WhatsApp
+// Start WhatsApp (non-blocking)
 initWhatsApp();
 
 app.get('/api/whatsapp/status', (req, res) => {
@@ -222,6 +228,13 @@ app.post('/api/whatsapp/send', async (req, res) => {
     const { number, message } = req.body;
 
     console.log('WhatsApp Send Request:', { number, waStatus });
+
+    if (!waClient || waStatus === 'CHROMIUM_MISSING' || waStatus === 'ERROR') {
+        return res.status(503).json({ 
+            success: false, 
+            error: 'WhatsApp client unavailable. Please install Chromium: npx puppeteer browsers install chrome' 
+        });
+    }
 
     if (waStatus !== 'CONNECTED' && waStatus !== 'AUTHENTICATED') {
         return res.status(400).json({ success: false, error: `WhatsApp client not connected. Status: ${waStatus}` });
@@ -264,6 +277,13 @@ app.post('/api/whatsapp/send-pdf', async (req, res) => {
     const { number, message, pdfPath } = req.body;
 
     console.log('WhatsApp Send PDF Request:', { number, pdfPath, waStatus });
+
+    if (!waClient || waStatus === 'CHROMIUM_MISSING' || waStatus === 'ERROR') {
+        return res.status(503).json({ 
+            success: false, 
+            error: 'WhatsApp client unavailable. Please install Chromium: npx puppeteer browsers install chrome' 
+        });
+    }
 
     if (waStatus !== 'CONNECTED' && waStatus !== 'AUTHENTICATED') {
         return res.status(400).json({ success: false, error: `WhatsApp client not connected. Status: ${waStatus}` });
