@@ -184,6 +184,123 @@
                     </div>
                 </div>
 
+                <!-- Job Applications - One Click Apply -->
+                <div class="card border-success">
+                    <div class="card-header bg-success text-white">
+                        <i class="fas fa-briefcase me-2"></i>🚀 Job Applications (Dec 2025)
+                    </div>
+                    <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+                        <p class="small text-warning mb-3"><i class="fas fa-fire me-1"></i> Click to apply - Opens in your browser!</p>
+
+                        <!-- TCS Application -->
+                        <div class="d-flex justify-content-between align-items-center mb-2 p-2 rounded" style="background: rgba(0,212,255,0.1);">
+                            <div>
+                                <strong class="text-info">TCS</strong>
+                                <small class="d-block text-muted">Flutter Developer</small>
+                                <span class="badge bg-warning text-dark">Deadline: Dec 15</span>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-primary me-1" onclick="applyJob('tcs')" title="Apply on LinkedIn">
+                                    <i class="fab fa-linkedin"></i> Apply
+                                </button>
+                                <button class="btn btn-sm btn-outline-info" onclick="copyEmail('tcs')" title="Copy Email">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Emirates AI Application -->
+                        <div class="d-flex justify-content-between align-items-center mb-2 p-2 rounded" style="background: rgba(233,69,96,0.1);">
+                            <div>
+                                <strong class="text-danger">Emirates ⭐</strong>
+                                <small class="d-block text-muted">Senior Software Engineer - AI</small>
+                                <span class="badge bg-danger">Deadline: Dec 19</span>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-danger me-1" onclick="applyJob('emirates-ai')" title="Apply on Careers Portal">
+                                    <i class="fas fa-plane"></i> Apply
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger" onclick="copyEmail('emirates')" title="Copy Email">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Emirates Java Application -->
+                        <div class="d-flex justify-content-between align-items-center mb-2 p-2 rounded" style="background: rgba(233,69,96,0.1);">
+                            <div>
+                                <strong class="text-danger">Emirates</strong>
+                                <small class="d-block text-muted">Senior Software Engineer - Java</small>
+                                <span class="badge bg-info">Deadline: Jan 1</span>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-danger me-1" onclick="applyJob('emirates-java')" title="Apply on Careers Portal">
+                                    <i class="fas fa-plane"></i> Apply
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Emirates Python Application -->
+                        <div class="d-flex justify-content-between align-items-center mb-2 p-2 rounded" style="background: rgba(233,69,96,0.1);">
+                            <div>
+                                <strong class="text-danger">Emirates</strong>
+                                <small class="d-block text-muted">Senior Software Engineer - Python</small>
+                                <span class="badge bg-info">Deadline: Jan 1</span>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-danger me-1" onclick="applyJob('emirates-python')" title="Apply on Careers Portal">
+                                    <i class="fas fa-plane"></i> Apply
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Emirates QA Application -->
+                        <div class="d-flex justify-content-between align-items-center mb-2 p-2 rounded" style="background: rgba(233,69,96,0.1);">
+                            <div>
+                                <strong class="text-danger">Emirates</strong>
+                                <small class="d-block text-muted">Senior Quality Assurance Engineer</small>
+                                <span class="badge bg-info">Deadline: Dec 31</span>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-danger me-1" onclick="applyJob('emirates-qa')" title="Apply on Careers Portal">
+                                    <i class="fas fa-plane"></i> Apply
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 360tf Application -->
+                        <div class="d-flex justify-content-between align-items-center mb-2 p-2 rounded" style="background: rgba(46,213,115,0.1);">
+                            <div>
+                                <strong class="text-success">360tf</strong>
+                                <small class="d-block text-muted">Senior Software Engineer</small>
+                                <span class="badge bg-success">✓ Verified</span>
+                            </div>
+                            <div>
+                                <button class="btn btn-sm btn-success me-1" onclick="applyJob('360tf')" title="Apply on LinkedIn">
+                                    <i class="fab fa-linkedin"></i> Apply
+                                </button>
+                                <button class="btn btn-sm btn-outline-success" onclick="copyEmail('360tf')" title="Copy Email">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <hr class="border-secondary">
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-warning" onclick="applyAllJobs()">
+                                <i class="fas fa-rocket me-2"></i>Apply to ALL Jobs (6)
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm" onclick="applyAllEmirates()">
+                                <i class="fas fa-plane me-2"></i>Apply All Emirates (4)
+                            </button>
+                            <button class="btn btn-outline-light btn-sm" onclick="openJobTracker()">
+                                <i class="fas fa-clipboard-list me-2"></i>Open Job Tracker
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Email Outreach -->
                 <div class="card">
                     <div class="card-header">
@@ -352,6 +469,133 @@
                 });
             }
         }, 2000);
+
+        // ============================================
+        // JOB APPLICATION FUNCTIONS
+        // ============================================
+
+        const jobLinks = {
+            tcs: 'https://www.linkedin.com/jobs/view/flutter-developer-at-tata-consultancy-services-4323240582',
+            emirates: 'https://www.emiratesgroupcareers.com/search-and-apply/',
+            emiratesLinkedin: 'https://ae.linkedin.com/jobs/view/senior-software-engineer-ai-at-emirates-4348680617',
+            '360tf': 'https://ae.linkedin.com/jobs/view/senior-software-engineer-flutter-and-angular-at-360tf-4326280897'
+        };
+
+        const emailTemplates = {
+            tcs: `Subject: Application for Flutter Developer Position - Dubai, UAE | 10+ Years Experience
+
+Dear Ms. Deepali Upadhyay,
+
+I am writing to apply for the Flutter Developer position at TCS in Dubai.
+
+KEY QUALIFICATIONS:
+- 10+ years software development, 4+ years Flutter/Dart
+- Production apps: IdolMEA ERP (50+ GCC branches), IdolQueue
+- State Management: Provider, Riverpod, BLoC
+- AI Integration: LangChain, OpenAI, YOLO
+- Currently in Dubai with valid UAE Work Visa
+- Available immediately
+
+Best regards,
+Muhammed Fasil PV
++971 555923545 | faztrick@gmail.com
+https://linkedin.com/in/faztrick`,
+
+            emirates: `Subject: Application for Senior Software Engineer - AI | Emirates Group | 10+ Years Experience
+
+Dear Emirates Group IT Recruitment Team,
+
+I am applying for the Senior Software Engineer - AI position.
+
+WHY I'M A PERFECT FIT:
+- AI/ML: LangChain, OpenAI, YOLO, Whisper, TensorFlow
+- Enterprise: IdolMEA ERP (50+ GCC branches)
+- Full-stack: React.js, Node.js, Python, Flutter
+- Gitex Dubai 2024: AI Self-Checkout Kiosk showcase
+- Currently in Dubai with valid UAE Work Visa
+
+Best regards,
+Muhammed Fasil PV
++971 555923545 | faztrick@gmail.com
+https://linkedin.com/in/faztrick`,
+
+            '360tf': `Subject: Application for Senior Software Engineer | 10+ Years Java/Python/AI Experience
+
+Dear 360tf Hiring Team,
+
+I am applying for the Senior Software Engineer position.
+
+MY QUALIFICATIONS:
+- Java & Spring Boot: Enterprise microservices
+- Python: Advanced AI/ML development
+- Agentic AI: LangChain, LangGraph, OpenAI
+- AWS: EC2, S3, Lambda expertise
+- Docker & Kubernetes containerization
+- Currently in Dubai with valid UAE Work Visa
+
+Best regards,
+Muhammed Fasil PV
++971 555923545 | faztrick@gmail.com
+https://linkedin.com/in/faztrick`
+        };
+
+        function applyJob(company) {
+            const url = jobLinks[company];
+            if (url) {
+                window.open(url, '_blank');
+                addLog(`Opened ${company.toUpperCase()} application page`, 'success');
+
+                // Also open LinkedIn job page for Emirates
+                if (company === 'emirates') {
+                    setTimeout(() => {
+                        window.open(jobLinks.emiratesLinkedin, '_blank');
+                        addLog('Opened Emirates LinkedIn job page', 'info');
+                    }, 1000);
+                }
+            }
+        }
+
+        function applyAllJobs() {
+            addLog('🚀 Opening ALL job applications...', 'system');
+
+            window.open(jobLinks.tcs, '_blank');
+            addLog('Opened TCS application', 'success');
+
+            setTimeout(() => {
+                window.open(jobLinks.emirates, '_blank');
+                addLog('Opened Emirates Careers Portal', 'success');
+            }, 1000);
+
+            setTimeout(() => {
+                window.open(jobLinks.emiratesLinkedin, '_blank');
+                addLog('Opened Emirates LinkedIn job', 'info');
+            }, 2000);
+
+            setTimeout(() => {
+                window.open(jobLinks['360tf'], '_blank');
+                addLog('Opened 360tf application', 'success');
+            }, 3000);
+
+            addLog('✅ All job pages opened! Apply in each tab.', 'system');
+        }
+
+        function copyEmail(company) {
+            const email = emailTemplates[company];
+            if (email) {
+                navigator.clipboard.writeText(email).then(() => {
+                    addLog(`📋 Copied ${company.toUpperCase()} email to clipboard!`, 'success');
+                    alert(`Email template for ${company.toUpperCase()} copied to clipboard!\n\nPaste it in Gmail or LinkedIn message.`);
+                }).catch(err => {
+                    addLog(`Failed to copy: ${err}`, 'error');
+                });
+            }
+        }
+
+        function openJobTracker() {
+            // Open the job tracker markdown file
+            window.open('/JOB-TRACKER-DEC-2025.md', '_blank');
+            addLog('Opened Job Tracker', 'info');
+        }
     </script>
 </body>
 </html>

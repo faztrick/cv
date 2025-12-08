@@ -1,0 +1,74 @@
+Subject: Application for Senior Software Engineer - AI | Emirates Group | 10+ Years Software & AI Experience
+
+Dear Emirates Group IT Recruitment Team,
+
+I am writing to express my strong interest in the Senior Software Engineer - AI position at Emirates Group. With 10+ years of software engineering experience and specialized expertise in AI/ML integration, I am excited about the opportunity to contribute to the world's largest international airline's cutting-edge technology initiatives.
+
+--- WHY I'M AN EXCEPTIONAL FIT FOR THIS ROLE ---
+
+Your Requirements → My Proven Experience:
+
+✅ AI Principles & Machine Learning Integration:
+   • Production-deployed AI systems using LangChain, LangGraph, and OpenAI APIs
+   • Computer Vision with YOLO for real-time object detection
+   • Voice AI with Whisper and ElevenLabs integration
+   • TensorFlow and ML model deployment in enterprise environments
+   • Built AI Self-Checkout Kiosk showcased at Gitex Dubai 2024
+
+✅ AI-Powered Development Tools:
+   • Integrated AI agents into enterprise software workflows
+   • RAG pipelines with OpenAI & LangChain for knowledge systems
+   • Agentic AI development for autonomous systems
+
+✅ Enterprise Software Development:
+   • Designed and deployed IdolMEA ERP across 50+ GCC branches
+   • Full-stack development: React.js, Node.js, Python, C#, Flutter
+   • Microservices architecture and scalable cloud solutions
+
+✅ Agile & Quality Engineering:
+   • Strong Agile/Scrum methodology experience
+   • CI/CD pipeline implementation (GitHub Actions, Azure DevOps)
+   • Unit testing and test automation practices
+
+✅ Technical Diversity:
+   • Cloud: AWS, Azure, GCP
+   • Containerization: Docker, Kubernetes
+   • Mobile: Flutter, React Native, Kotlin
+   • IoT: ESP32, Raspberry Pi, MQTT protocols
+
+--- KEY ACHIEVEMENTS ---
+
+• IdolMEA ERP System: Enterprise solution deployed to 50+ branches across GCC
+• AI Self-Checkout Kiosk: Demonstrated at Gitex Dubai 2024 featuring YOLO detection
+• IdolQueue (i-QMS): Flutter-based queue management with hardware integration
+• Full-stack delivery across passenger services, operations, and cargo domains
+
+--- WHY EMIRATES ---
+
+Emirates Group's commitment to aviation innovation perfectly aligns with my passion for leveraging cutting-edge technologies to solve complex challenges. The opportunity to work on software solutions powering passenger services, crew operations, and cargo systems on a global scale is exactly the kind of impactful work I seek.
+
+--- AVAILABILITY ---
+
+📍 Location: Dubai, UAE (Currently based in Dubai)
+📄 Work Status: Valid UAE Work Visa
+⏰ Availability: Immediate start
+
+--- CONTACT ---
+
+Muhammed Fasil PV
+📧 Email: faztrick@gmail.com
+📱 Phone: +971 555923545
+🔗 LinkedIn: https://linkedin.com/in/faztrick
+🌐 Portfolio: https://www.uaecodes.com
+
+I would welcome the opportunity to discuss how my AI engineering expertise and enterprise software development experience can contribute to Emirates Group's continued success and innovation.
+
+Thank you for considering my application.
+
+Best regards,
+Muhammed Fasil PV
+Senior Full Stack Developer & AI/IoT Systems Engineer
+
+---
+Apply Via: https://www.emiratesgroupcareers.com/
+LinkedIn Job: https://ae.linkedin.com/jobs/view/senior-software-engineer-ai-at-emirates-4348680617

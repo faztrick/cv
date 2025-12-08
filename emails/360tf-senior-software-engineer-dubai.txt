@@ -1,0 +1,61 @@
+Subject: Application for Senior Software Engineer – Java/Python/Agentic AI | 10+ Years Experience | Dubai
+
+Dear Hiring Manager at 360tf,
+
+I am excited to apply for the Senior Software Engineer position in Dubai. With 10+ years of software development experience and specialized expertise in the exact technologies you require, I am confident I can contribute significantly to your development team.
+
+--- WHY I'M A PERFECT FIT FOR THIS ROLE ---
+
+Your Requirements → My Experience:
+
+✅ Java & Spring Boot:
+   • Enterprise-level Java development with microservices architecture
+   • Built scalable backend systems handling 50+ GCC branch operations
+
+✅ Python:
+   • Advanced Python expertise for AI/ML and backend development
+   • Developed AI integration pipelines and data processing systems
+
+✅ Agentic AI (Highly Relevant):
+   • Production experience with LangChain, LangGraph for agentic workflows
+   • OpenAI API integration for autonomous AI systems
+   • Built AI Self-Checkout Kiosk (Gitex Dubai 2024) with YOLO detection
+   • RAG pipelines for enterprise knowledge systems
+
+✅ AWS Services (EC2, S3, Lambda):
+   • Full AWS cloud architecture experience
+   • Also proficient in Azure and GCP
+
+✅ CI/CD & Modern Development:
+   • Docker & Kubernetes containerization
+   • GitHub Actions, Azure DevOps pipelines
+   • Agile/Scrum methodology
+
+--- KEY ACHIEVEMENTS ---
+
+• IdolMEA ERP System: Deployed to 50+ branches across GCC countries
+• AI Self-Checkout Kiosk: Showcased at Gitex Dubai 2024
+• IoT Integration: ESP32, Raspberry Pi systems with MQTT protocols
+• Full Stack Delivery: React.js, Node.js, Flutter, Python backends
+
+--- AVAILABILITY ---
+
+📍 Location: Dubai, UAE (Currently based here)
+📄 Work Status: Valid UAE Work Visa
+⏰ Availability: Immediate start
+
+--- CONTACT ---
+
+Muhammed Fasil PV
+📧 Email: faztrick@gmail.com
+📱 Phone: +971 555923545
+🔗 LinkedIn: https://linkedin.com/in/faztrick
+🌐 Portfolio: https://www.uaecodes.com
+
+I am passionate about developing robust applications and working on emerging AI technologies. I would welcome the opportunity to discuss how my expertise in Agentic AI and enterprise software development can contribute to 360tf's success.
+
+Thank you for considering my application.
+
+Best regards,
+Muhammed Fasil PV
+Senior Full Stack Developer & AI/IoT Systems Engineer

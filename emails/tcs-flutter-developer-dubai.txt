@@ -1,0 +1,87 @@
+Subject: Application for Flutter Developer Position - Dubai, UAE | 10+ Years Experience
+
+Dear Hiring Team / Ms. Deepali Upadhyay,
+
+I am writing to express my strong interest in the Flutter Developer position at Tata Consultancy Services (TCS) in Dubai, UAE, as advertised on LinkedIn. With over 10 years of professional experience in software development, including 5+ years specifically in Flutter development, I am confident in my ability to make an immediate and valuable contribution to your mobile development team.
+
+ABOUT ME:
+---------
+• Name: Muhammed Fasil PV
+• Current Role: Senior Software Engineer at Idol Technology LLC, Dubai
+• Location: Dubai, UAE (Valid UAE Work Visa)
+• Availability: Immediate
+• Contact: +971 555923545 | faztrick@gmail.com
+• LinkedIn: https://linkedin.com/in/faztrick
+• Portfolio: https://www.uaecodes.com
+
+WHY I'M THE PERFECT FIT:
+------------------------
+Your requirements align perfectly with my expertise:
+
+✓ Flutter & Dart Expertise (5+ years production level)
+  - Built IdolMEA ERP serving 50+ retail branches across GCC
+  - Developed IdolQueue (i-QMS) with offline-first architecture
+  - Created AI Self-Checkout Kiosk showcased at Gitex Dubai 2024
+
+✓ State Management Mastery
+  - Extensive experience with BLoC, Provider, and Riverpod
+  - Implemented complex state management for enterprise applications
+
+✓ API Integration & Backend Services
+  - RESTful APIs, Firebase, MQTT integration
+  - Node.js backend development with microservices architecture
+
+✓ Native Platform Experience (Added Advantage)
+  - Android AIDL interface for hardware integration
+  - Kotlin for native Android development
+  - Method Channel integration for native functionality
+
+✓ CI/CD & Deployment
+  - Docker containerization
+  - Hybrid CI/CD pipeline management
+  - Version control with Git
+
+✓ AI Integration (Bonus)
+  - YOLO object detection integration
+  - OpenAI/LangChain implementations
+  - AI-powered chatbot automation
+
+KEY ACHIEVEMENTS:
+-----------------
+1. Architected IdolMEA ERP - Enterprise retail platform with POS, QMS, IoT automation & AI analytics deployed across 50+ GCC branches
+
+2. AI Self-Checkout Kiosk - YOLO-based theft detection system with LED/GPIO feedback via Android AIDL interface (Showcased at Gitex Dubai 2024)
+
+3. IdolQueue (i-QMS) - Offline-first queue management system with MQTT automation and WhatsApp/Telegram notifications
+
+4. Enterprise VPN Mesh - Engineered 8+ node WireGuard VPN mesh on MikroTik routers for secure multi-location connectivity
+
+TECHNICAL STACK:
+----------------
+• Mobile: Flutter, Dart, React Native, Kotlin, Android SDK
+• Frontend: React.js, TypeScript, HTML5/CSS3
+• Backend: Node.js, Python, C#, REST APIs
+• AI/ML: OpenAI, LangChain, YOLO, Whisper, TensorFlow
+• Cloud: AWS, Azure, GCP, Docker, Kubernetes
+• Database: MySQL, MongoDB, Firebase, Hive
+• IoT: ESP32, Raspberry Pi, MQTT
+
+I am excited about the opportunity to contribute to TCS's mobile development initiatives and collaborate with your cross-functional teams. I believe my combination of Flutter expertise, enterprise development experience, and AI integration skills makes me an ideal candidate for this role.
+
+I have attached my resume for your review and would welcome the opportunity to discuss how my experience and skills can benefit TCS.
+
+Thank you for considering my application. I look forward to hearing from you.
+
+Best regards,
+
+Muhammed Fasil PV
+Senior Full Stack Developer & AI/IoT Systems Engineer
+📱 +971 555923545
+📧 faztrick@gmail.com
+🔗 https://linkedin.com/in/faztrick
+🌐 https://www.uaecodes.com
+
+---
+Application Reference: LinkedIn Job ID - 4323240582
+Position: Flutter Developer - TCS (MEA) - Dubai, UAE
+Application Deadline: December 15, 2025
