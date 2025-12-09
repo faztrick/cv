@@ -53,7 +53,7 @@ function generateAllEmails() {
   console.log(`Profile: ${profile.name}`);
   console.log(`Location: ${profile.location}`);
   console.log(`Minimum Salary: ${profile.salary.minimum} ${profile.salary.currency}\n`);
-  console.log("="- repeat="50" + "\n");
+  console.log("=".repeat(50) + "\n");
 
   sampleJobs.forEach((job, index) => {
     console.log(`\n[${ index + 1}/${sampleJobs.length}] ${job.company} - ${job.position}`);
