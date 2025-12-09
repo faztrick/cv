@@ -449,7 +449,7 @@ function main() {
 
       case 'batch':
         // Load jobs from file or use sample
-        const jobsFile = args[1] || path.join(__dirname, '..', 'jobs-to-apply.json');
+        const jobsFile = args[1] || path.join(__dirname, '..', 'data', 'jobs-to-apply.json');
 
         let jobs = [];
         if (fs.existsSync(jobsFile)) {

@@ -72,7 +72,7 @@ const config = {
   },
   resumePath: path.join(__dirname, '..', 'resumes', 'resume.md'),
   resumePdfPath: path.join(__dirname, '..', 'resumes', 'resume-fasil-2025.pdf'),
-  trackingFile: path.join(__dirname, '..', 'indeed-applications.json'),
+  trackingFile: path.join(__dirname, '..', 'data', 'indeed-applications.json'),
   // Browser
   headless: false,
   useSystemChrome: true,
@@ -713,7 +713,7 @@ async function autoJobSearch(options = {}) {
   displayMatches(allJobs);
 
   // Save results
-  const resultsFile = path.join(__dirname, '..', 'indeed-matches.json');
+  const resultsFile = path.join(__dirname, '..', 'data', 'indeed-matches.json');
   fs.writeFileSync(resultsFile, JSON.stringify(allJobs, null, 2), 'utf8');
   console.log(`\n💾 Results saved to: ${resultsFile}`);
 

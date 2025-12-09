@@ -715,7 +715,7 @@ app.post('/api/scrape/contacts', (req, res) => {
 
 const INDEED_CONFIG_FILE = path.join(DATA_DIR, 'indeed-config.json');
 const INDEED_JOBS_FILE = path.join(DATA_DIR, 'indeed-jobs.json');
-const INDEED_APPLICATIONS_FILE = path.join(__dirname, 'indeed-applications.json');
+const INDEED_APPLICATIONS_FILE = path.join(DATA_DIR, 'indeed-applications.json');
 
 let indeedProcess = null;
 let indeedLogs = [];
@@ -801,7 +801,7 @@ app.post('/api/indeed/search', (req, res) => {
         indeedLogs.push(`[${new Date().toLocaleTimeString()}] Search completed with code ${code}`);
 
         // Try to load results
-        const resultsFile = path.join(__dirname, 'indeed-matches.json');
+        const resultsFile = path.join(DATA_DIR, 'indeed-matches.json');
         if (fs.existsSync(resultsFile)) {
             const jobs = JSON.parse(fs.readFileSync(resultsFile, 'utf8'));
             fs.writeFileSync(INDEED_JOBS_FILE, JSON.stringify(jobs, null, 2));
@@ -816,7 +816,7 @@ app.get('/api/indeed/jobs', (req, res) => {
     // Try multiple possible result files
     const files = [
         INDEED_JOBS_FILE,
-        path.join(__dirname, 'indeed-matches.json')
+        path.join(DATA_DIR, 'indeed-matches.json')
     ];
 
     for (const file of files) {

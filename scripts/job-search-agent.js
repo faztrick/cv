@@ -427,7 +427,7 @@ async function searchAllPlatforms(query, options = {}) {
 
   // Save results to CSV
   if (allJobs.length > 0) {
-    const csvPath = path.join(__dirname, '..', 'job-search-results.csv');
+    const csvPath = path.join(__dirname, '..', 'data', 'job-search-results.csv');
     saveToCSV(allJobs, csvPath);
   }
 

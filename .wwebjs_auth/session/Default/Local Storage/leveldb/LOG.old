@@ -1,6 +1,0 @@
-2025/12/08-17:36:18.517 3b18 Reusing MANIFEST I:\projects\cv\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
-2025/12/08-17:36:18.535 3b18 Recovering log #10
-2025/12/08-17:36:18.535 3b18 Reusing old log I:\projects\cv\.wwebjs_auth\session\Default\Local Storage\leveldb/000010.log 
-2025/12/08-17:37:20.879 3b18 Level-0 table #14: started
-2025/12/08-17:37:20.884 3b18 Level-0 table #14: 14822 bytes OK
-2025/12/08-17:37:20.886 3b18 Delete type=0 #10

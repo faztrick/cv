@@ -50,7 +50,7 @@ const config = {
     meEditUrl: 'https://www.linkedin.com/in/me/edit/intro/'
   },
   resumePath: path.join(__dirname, '..', 'resumes', 'resume.md'),
-  trackingFile: path.join(__dirname, '..', 'linkedin-applications.json'),
+  trackingFile: path.join(__dirname, '..', 'data', 'linkedin-applications.json'),
   // Credentials (should be in environment variables in production)
   credentials: {
     email: process.env.LINKEDIN_EMAIL || '',
@@ -657,7 +657,7 @@ async function autoLinkedInJobSearch(options = {}) {
   }
 
   // Save results
-  const resultsFile = path.join(__dirname, '..', 'linkedin-matches.json');
+  const resultsFile = path.join(__dirname, '..', 'data', 'linkedin-matches.json');
   fs.writeFileSync(resultsFile, JSON.stringify(allJobs, null, 2), 'utf8');
   console.log(`\n💾 Results saved to: ${resultsFile}`);
   console.log(`📊 Total jobs found: ${allJobs.length}`);
