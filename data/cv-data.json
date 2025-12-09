@@ -5,10 +5,7 @@
     "email": "faztrick@gmail.com",
     "phone": "+971 555923545",
     "location": "Dubai, UAE",
-    "linkedin": "https://linkedin.com/in/faztrick",
-    "github": "https://github.com/faztrick",
-    "portfolio": "https://www.uaecodes.com",
-    "whatsapp": "https://wa.me/971555923545"
+    "summary": ""
   },
   "summary": "Senior Full Stack Developer & AI/IoT Systems Engineer with 10+ years building scalable enterprise systems. I bridge hardware and software—from ESP32 firmware to cloud microservices—creating AI-driven automation with IoT ecosystems. Currently at Idol Technology LLC (Dubai, UAE), architecting production-ready systems that blend AI-driven automation with IoT ecosystems.",
   "skills": [

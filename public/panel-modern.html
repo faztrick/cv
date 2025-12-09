@@ -2963,9 +2963,13 @@
         }
 
         function logToConsole(text) {
-            const consoleEl = document.getElementById('console-output');
-            consoleEl.innerHTML += `\n${text}`;
-            consoleEl.scrollTop = consoleEl.scrollHeight;
+            // Log to console and admin log as fallback
+            console.log(text);
+            const consoleEl = document.getElementById('console-output') || document.getElementById('admin-log');
+            if (consoleEl) {
+                consoleEl.innerHTML += `\n${text}`;
+                consoleEl.scrollTop = consoleEl.scrollHeight;
+            }
         }
 
         function openAddModal() { document.getElementById('add-modal').classList.remove('hidden'); }
@@ -3536,7 +3540,9 @@ Muhammed Fasil
             // Add Applications tab to showTab function handling
             const origShowTab = showTab;
             window.showTab = function(tabId) {
-                origShowTab(tabId);
+                if (typeof origShowTab === 'function') {
+                    origShowTab(tabId);
+                }
                 if (tabId === 'applications') {
                     loadApplications();
                 }
@@ -4289,7 +4295,7 @@ Muhammed Fasil
                 const command = headless
                     ? 'node scripts/job-search-playwright.js indeed --headless'
                     : 'node scripts/job-search-playwright.js indeed';
-                await runCommand(command);
+                await runAutomationCommand(command);
                 updateBrowserStatus('Running', 'bg-green-500');
                 addAutomationLog('✅ Browser launched successfully', 'success');
             } catch (e) {
@@ -4353,7 +4359,7 @@ Muhammed Fasil
             if (!confirm('⚠️ This will attempt to auto-fill AND submit forms. Continue?')) return;
             addAutomationLog('🚀 Auto-fill & submit mode - running playwright automation...', 'warning');
             try {
-                await runCommand('npm run playwright-indeed');
+                await runAutomationCommand('npm run playwright-indeed');
             } catch (e) {
                 addAutomationLog(`❌ Error: ${e.message}`, 'error');
             }
@@ -4469,8 +4475,21 @@ Muhammed Fasil
             if (logEl) logEl.innerHTML = '<div class="text-gray-500">Log cleared. Ready for automation...</div>';
         }
 
-        // Run shell command via API
-        async function runCommand(command) {
+        function exportAutomationLog() {
+            const logEl = document.getElementById('automation-log');
+            if (!logEl) return;
+            const content = logEl.innerText;
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `automation-log-${new Date().toISOString().split('T')[0]}.txt`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // Run shell command via API (for automation tab - logs to automation panel)
+        async function runAutomationCommand(command) {
             try {
                 const res = await fetch('/api/run', {
                     method: 'POST',
@@ -4505,15 +4524,15 @@ Muhammed Fasil
             '360tf': 'https://ae.linkedin.com/jobs/view/senior-software-engineer-flutter-and-angular-at-360tf-4326280897',
             // NEW: Dev-Dubai.com Jobs - Dec 2025
             'dicetek-ai': 'https://www.dev-dubai.com/companies/13/Dicetek%20LLC/jobs/74/Lead%20Generative%20AI%20Engineer',
-            'dubizzle-python': 'https://www.dev-dubai.com/companies/12/dubizzle/jobs/22/Senior%20Software%20Engineer%20(Python)',
+            'dubizzle-python': 'https://www.dev-dubai.com/companies/12/dubizzle/jobs/22/Senior%20Software%20Engineer%20%28Python%29',
             'orbit-flutter': 'https://www.dev-dubai.com/companies/45/orbit/jobs/186/Mobile%20Developer',
             'dicetek-fullstack': 'https://www.dev-dubai.com/companies/13/Dicetek%20LLC/jobs/232/Senior%20Full%20Stack%20Developer',
             'consensys-metamask': 'https://www.dev-dubai.com/companies/67/Consensys/jobs/521/Frontend%20Engineer%20-%20MetaMask',
-            'fluid-ai': 'https://www.dev-dubai.com/companies/297/Fluid%20AI/jobs/542/Backend%20Developer%20-%20AI%20Integrations%20Specialist%20(Remote)',
+            'fluid-ai': 'https://www.dev-dubai.com/companies/297/Fluid%20AI/jobs/542/Backend%20Developer%20-%20AI%20Integrations%20Specialist%20%28Remote%29',
             'astudio-ai': 'https://www.dev-dubai.com/companies/178/ASTUDIO/jobs/526/Senior%20Lead%20Software%20Engineer',
-            'property-finder': 'https://www.dev-dubai.com/companies/296/Property%20Finder%20/jobs/540/Senior%20Backend%20Developer%20',
-            'emaratech-mobile': 'https://www.dev-dubai.com/companies/132/emaratech/jobs/190/Mobile%20Application%20developer%20(React%20Native)',
-            'noon-backend': 'https://www.dev-dubai.com/companies/10/Noon/jobs/538/Software%20Engineer%20(backend)%20',
+            'property-finder': 'https://www.dev-dubai.com/companies/296/Property%20Finder/jobs/540/Senior%20Backend%20Developer',
+            'emaratech-mobile': 'https://www.dev-dubai.com/companies/132/emaratech/jobs/190/Mobile%20Application%20developer%20%28React%20Native%29',
+            'noon-backend': 'https://www.dev-dubai.com/companies/10/Noon/jobs/538/Software%20Engineer%20%28backend%29',
             // NEW: Careem Jobs - Dec 2025
             'careem-ai-engineer': 'https://boards.greenhouse.io/careem/jobs/8047915002',
             'careem-genai': 'https://boards.greenhouse.io/careem/jobs/8075745002',
@@ -5325,7 +5344,9 @@ https://linkedin.com/in/faztrick`
         document.addEventListener('DOMContentLoaded', () => {
             const origShowTab = window.showTab;
             window.showTab = function(tabId) {
-                origShowTab(tabId);
+                if (typeof origShowTab === 'function') {
+                    origShowTab(tabId);
+                }
                 if (tabId === 'system-logs') {
                     initSSE();
                 }
