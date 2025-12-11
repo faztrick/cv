@@ -84,39 +84,54 @@ function resolveChromeExecutable() {
 async function launchBrowser({ headless = config.headless, persistProfile = true } = {}) {
   if (!puppeteer) throw new Error('Puppeteer required. Install with: npm install puppeteer-extra puppeteer-extra-plugin-stealth');
 
-  // Use playwright user_data for consistent session or chrome-profile fallback
-  let userDataDir = process.env.CHROME_USER_DATA_DIR && process.env.CHROME_USER_DATA_DIR.trim()
-    ? process.env.CHROME_USER_DATA_DIR.trim()
-    : path.join(__dirname, '..', 'user_data', 'linkedin');
+  const executablePath = resolveChromeExecutable();
+  if (!executablePath) {
+    throw new Error('Chrome not found. Install Google Chrome.');
+  }
 
+  // Use a unique profile directory to avoid conflicts
+  let userDataDir = null;
   if (persistProfile) {
+    userDataDir = process.env.CHROME_USER_DATA_DIR && process.env.CHROME_USER_DATA_DIR.trim()
+      ? process.env.CHROME_USER_DATA_DIR.trim()
+      : path.join(__dirname, '..', 'user_data', 'linkedin');
     try { fs.mkdirSync(userDataDir, { recursive: true }); } catch (_) {}
   }
 
-  const executablePath = resolveChromeExecutable();
-
   const launchOptions = {
-    headless: headless ? 'new' : false,
+    headless: headless, // Use boolean for puppeteer-extra compatibility
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
       '--disable-blink-features=AutomationControlled',
       '--disable-infobars',
+      '--disable-dev-shm-usage',
+      '--no-first-run',
+      '--no-default-browser-check',
       '--window-size=1920,1080'
     ],
+    ignoreDefaultArgs: ['--enable-automation'],
+    executablePath,
     defaultViewport: { width: 1920, height: 1080 }
   };
 
-  if (executablePath) {
-    launchOptions.executablePath = executablePath;
-  }
-
-  if (persistProfile) {
+  if (userDataDir) {
     launchOptions.userDataDir = userDataDir;
   }
 
   console.log(`🚀 Launching browser ${headless ? '(headless)' : '(visible)'}...`);
-  return puppeteer.launch(launchOptions);
+
+  try {
+    return puppeteer.launch(launchOptions);
+  } catch (err) {
+    // If profile is locked, try without persistent profile
+    if (err.message.includes('Target closed') || err.message.includes('Protocol error')) {
+      console.log('⚠️  Profile may be locked, retrying without persistent profile...');
+      delete launchOptions.userDataDir;
+      return puppeteer.launch(launchOptions);
+    }
+    throw err;
+  }
 }
 
 /**

@@ -100,36 +100,66 @@ function resolveChromeExecutable() {
   return undefined;
 }
 
+// Helper function for delays (replaces deprecated waitForTimeout)
+const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 /** Launch Puppeteer with optional persistent profile */
 async function launchBrowser({ headless = config.headless, persistProfile = true } = {}) {
   if (!puppeteer) {
     throw new Error('Puppeteer is required. Install with: npm install puppeteer');
   }
-  let userDataDir = process.env.CHROME_USER_DATA_DIR && process.env.CHROME_USER_DATA_DIR.trim()
-    ? process.env.CHROME_USER_DATA_DIR.trim()
-    : undefined;
-  if (!userDataDir && persistProfile) {
-    userDataDir = config.chromeProfileDir;
+
+  const executablePath = resolveChromeExecutable();
+  if (!executablePath) {
+    throw new Error('Chrome not found. Install Google Chrome.');
   }
-  if (userDataDir) {
+
+  // Use a unique profile directory to avoid conflicts
+  let userDataDir = null;
+  if (persistProfile) {
+    userDataDir = process.env.CHROME_USER_DATA_DIR && process.env.CHROME_USER_DATA_DIR.trim()
+      ? process.env.CHROME_USER_DATA_DIR.trim()
+      : config.chromeProfileDir;
     try { fs.mkdirSync(userDataDir, { recursive: true }); } catch (_) {}
   }
-  const executablePath = resolveChromeExecutable();
-  const browser = await puppeteer.launch({
-    headless,
+
+  console.log(`🚀 Launching browser ${headless ? '(headless)' : '(visible)'}...`);
+
+  const launchOptions = {
+    headless: headless, // Use boolean for puppeteer-extra compatibility
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
       '--disable-blink-features=AutomationControlled',
       '--disable-features=IsolateOrigins,site-per-process',
-      '--disable-web-security',
+      '--disable-infobars',
+      '--disable-dev-shm-usage',
+      '--no-first-run',
+      '--no-default-browser-check',
+      '--window-size=1920,1080',
       `--user-agent=${stealthUtils.getRandomUserAgent()}`
     ],
     ignoreDefaultArgs: ['--enable-automation'],
     executablePath,
-    userDataDir
-  });
-  return browser;
+    defaultViewport: { width: 1920, height: 1080 }
+  };
+
+  if (userDataDir) {
+    launchOptions.userDataDir = userDataDir;
+  }
+
+  try {
+    const browser = await puppeteer.launch(launchOptions);
+    return browser;
+  } catch (err) {
+    // If profile is locked, try without persistent profile
+    if (err.message.includes('Target closed') || err.message.includes('Protocol error')) {
+      console.log('⚠️  Profile may be locked, retrying without persistent profile...');
+      delete launchOptions.userDataDir;
+      return puppeteer.launch(launchOptions);
+    }
+    throw err;
+  }
 }
 
 /**
@@ -314,37 +344,69 @@ async function searchIndeedJobs(query, options = {}) {
     await stealthUtils.humanDelay(1500, 3000);
 
     // Wait for job listings - try multiple selectors for compatibility
-    await page.waitForSelector('.job_seen_beacon, .jobsearch-ResultsList, [data-testid="job-card"]', { timeout: 15000 }).catch(() => {
+    await page.waitForSelector('.job_seen_beacon, .jobsearch-ResultsList, [data-testid="job-card"], .resultContent, .cardOutline', { timeout: 15000 }).catch(() => {
       console.log('⚠️  No jobs found or page structure changed');
     });
 
+    // Debug: log how many potential job cards we can find
+    const cardCount = await page.evaluate(() => {
+      const selectors = ['.job_seen_beacon', '.resultContent', '[data-testid="job-card"]', '.cardOutline', '.jobsearch-ResultsList li', '.css-5lfssm'];
+      let total = 0;
+      for (const sel of selectors) {
+        total += document.querySelectorAll(sel).length;
+      }
+      return total;
+    });
+    console.log(`🔎 Found ${cardCount} potential job cards on page`);
+
     // Extract job listings with detailed information
     const jobs = await page.evaluate((max) => {
-      const jobCards = document.querySelectorAll('.job_seen_beacon, .resultContent, [data-testid="job-card"]');
+      // Try multiple selector patterns for job cards
+      let jobCards = document.querySelectorAll('.job_seen_beacon');
+      if (jobCards.length === 0) jobCards = document.querySelectorAll('.resultContent');
+      if (jobCards.length === 0) jobCards = document.querySelectorAll('[data-testid="job-card"]');
+      if (jobCards.length === 0) jobCards = document.querySelectorAll('.cardOutline');
+      if (jobCards.length === 0) jobCards = document.querySelectorAll('.jobsearch-ResultsList li');
+      if (jobCards.length === 0) jobCards = document.querySelectorAll('.css-5lfssm'); // New Indeed design
+
       const results = [];
 
       for (let i = 0; i < Math.min(jobCards.length, max); i++) {
         const card = jobCards[i];
 
-        const titleEl = card.querySelector('h2.jobTitle span[title]');
-        const companyEl = card.querySelector('.companyName');
-        const locationEl = card.querySelector('.companyLocation');
-        const salaryEl = card.querySelector('.salary-snippet-container, .metadata.salary-snippet-container');
-        const descEl = card.querySelector('.job-snippet');
-        const linkEl = card.querySelector('h2.jobTitle a');
-        const jobKeyEl = card.querySelector('[data-jk]');
+        // Try multiple title selectors
+        let titleEl = card.querySelector('h2.jobTitle span[title]');
+        if (!titleEl) titleEl = card.querySelector('h2.jobTitle a');
+        if (!titleEl) titleEl = card.querySelector('h2.jobTitle');
+        if (!titleEl) titleEl = card.querySelector('[data-testid="job-title"]');
+        if (!titleEl) titleEl = card.querySelector('.jobTitle');
+        if (!titleEl) titleEl = card.querySelector('a[data-jk]');
 
-        if (titleEl && companyEl) {
+        // Try multiple company selectors
+        let companyEl = card.querySelector('.companyName');
+        if (!companyEl) companyEl = card.querySelector('[data-testid="company-name"]');
+        if (!companyEl) companyEl = card.querySelector('.company_location .companyName');
+        if (!companyEl) companyEl = card.querySelector('span[data-testid="company-name"]');
+
+        const locationEl = card.querySelector('.companyLocation, [data-testid="text-location"]');
+        const salaryEl = card.querySelector('.salary-snippet-container, .metadata.salary-snippet-container, [data-testid="attribute_snippet_testid"]');
+        const descEl = card.querySelector('.job-snippet, [data-testid="job-snippet"]');
+        const linkEl = card.querySelector('h2.jobTitle a, a[data-jk], a.jcs-JobTitle');
+        const jobKeyEl = card.querySelector('[data-jk]') || card.closest('[data-jk]');
+
+        const title = titleEl ? (titleEl.getAttribute('title') || titleEl.textContent.trim()) : null;
+        const company = companyEl ? companyEl.textContent.trim() : null;
+
+        if (title && company) {
           results.push({
-            title: titleEl.getAttribute('title') || titleEl.textContent.trim(),
-            company: companyEl.textContent.trim(),
+            title: title,
+            company: company,
             location: locationEl ? locationEl.textContent.trim() : 'Dubai',
             salary: salaryEl ? salaryEl.textContent.trim() : 'Not specified',
             description: descEl ? descEl.textContent.trim() : '',
-            url: linkEl ? `https://ae.indeed.com${linkEl.getAttribute('href')}` : '',
+            url: linkEl ? (linkEl.href.startsWith('http') ? linkEl.href : `https://ae.indeed.com${linkEl.getAttribute('href')}`) : '',
             jobKey: jobKeyEl ? jobKeyEl.getAttribute('data-jk') : '',
             platform: 'Indeed UAE',
-            searchQuery: query,
             scrapedDate: new Date().toISOString()
           });
         }
@@ -358,18 +420,29 @@ async function searchIndeedJobs(query, options = {}) {
     // Match jobs with CV
     const { cvData } = loadCVData();
     const matchedJobs = jobs.map(job => {
-      const matchScore = matchJobWithCV(job.description + ' ' + job.title, cvData);
+      // Match against title + company + description for better coverage
+      const textToMatch = `${job.title} ${job.company} ${job.description}`.toLowerCase();
+      const matchScore = matchJobWithCV(textToMatch, cvData);
       return {
         ...job,
-        matchScore: matchScore.total,
-        matchedSkills: matchScore.matched
+        matchScore: matchScore.total || 0,
+        matchedSkills: matchScore.matched || []
       };
-    }).filter(job => job.matchScore >= minMatchScore);
+    });
 
-    console.log(`🎯 ${matchedJobs.length} jobs match your skills (${minMatchScore}%+ match)`);
+    // Sort by match score descending
+    matchedJobs.sort((a, b) => b.matchScore - a.matchScore);
+
+    // Filter by minimum match score
+    const filteredJobs = matchedJobs.filter(job => job.matchScore >= minMatchScore);
+
+    console.log(`🎯 ${filteredJobs.length} jobs match your skills (${minMatchScore}%+ match)`);
+    if (filteredJobs.length === 0 && matchedJobs.length > 0) {
+      console.log(`   Top job match score: ${matchedJobs[0].matchScore}% - consider lowering minMatchScore`);
+    }
 
     await browser.close();
-    return matchedJobs;
+    return filteredJobs.length > 0 ? filteredJobs : matchedJobs.slice(0, maxResults);
 
   } catch (error) {
     await browser.close();
@@ -483,7 +556,7 @@ async function applyToJob(job, options = {}) {
 
     // Click apply button
     await applyButton.click();
-    await page.waitForTimeout(2000);
+    await delay(2000);
 
     // Load CV data
     const { formData } = loadCVData();
@@ -515,7 +588,7 @@ async function applyToJob(job, options = {}) {
         // Track application
         trackApplication(job, { status: 'applied', date: new Date().toISOString() });
 
-        await page.waitForTimeout(3000);
+        await delay(3000);
       }
     } else {
       console.log('🔍 DRY RUN: Form filled but not submitted');
