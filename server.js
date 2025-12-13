@@ -543,7 +543,7 @@ app.get('/api/outlook/compose/:id', (req, res) => {
 
 I hope this message finds you well. I wanted to follow up on my application for the ${company.jobTitle} position at ${company.name} that I submitted ${company.appliedDate ? 'on ' + company.appliedDate : 'recently'}.
 
-I remain very interested in this opportunity and would welcome the chance to discuss how my 10+ years of experience in Flutter, React, Node.js, and AI/IoT systems could benefit your team.
+I remain very interested in this opportunity and would welcome the chance to discuss how my 13+ years of experience in Flutter, React, Node.js, and AI/IoT systems could benefit your team.
 
 Key highlights from my background:
 • Architected IdolMEA ERP serving 50+ retail branches across GCC
@@ -569,7 +569,7 @@ Muhammed Fasil PV
 
 I am writing to express my interest in the ${company.jobTitle} position at ${company.name}.
 
-With 10+ years of experience as a Full Stack Developer specializing in Flutter, React, Node.js, and AI/IoT systems, I have successfully delivered enterprise solutions including:
+With 13+ years of experience as a Full Stack Developer specializing in Flutter, React, Node.js, and AI/IoT systems, I have successfully delivered enterprise solutions including:
 
 • IdolMEA ERP - Retail platform serving 50+ branches across GCC
 • AI Self-Checkout Kiosk - YOLO-based detection (Gitex Dubai 2024)

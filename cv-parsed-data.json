@@ -1,7 +1,7 @@
 {
   "personal": {
     "name": "MUHAMMED FASIL PV",
-    "title": "Software Engineer | AI & IoT Systems Engineer | Retail Automation Specialist | MVVM & Infrastructure Expert",
+    "title": "Senior Full-Stack Engineer (React + Node.js) | AI & IoT Systems Engineer",
     "location": "Dubai, UAE",
     "phone": "+971 555923545",
     "email": "faztrick@gmail.com",
@@ -9,130 +9,114 @@
     "github": "https://github.com/faztrick",
     "linkedin": "https://linkedin.com/in/faztrick"
   },
-  "summary": "Innovative **Software Engineer** with over **13 years of experience** in building intelligent, scalable, and distributed enterprise systems. Expert in **AI-driven automation**, **IoT ecosystems**, and **MVVM architecture** — with proven success across **ERP, QMS, POS, and retail IoT infrastructures**. Bridges hardware and software, creating hybrid cloud + local ecosystems that are **secure, real-time, and modular**. Delivers production-ready systems blending **Flutter, Node.js, Python, WPF, and Kotlin**, with strong foundations in **DevOps, AI, and networking**. Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices** for cross-branch communication and deployment automation. ---",
+  "summary": "Senior full-stack engineer with **13+ years** delivering scalable enterprise platforms (ERP/POS/QMS) and automation systems. Strong in **React + TypeScript** frontends and **Node.js** backends, building modular UI, REST APIs, and real-time workflows (MQTT). Experienced integrating practical AI features (OpenAI/LangChain, YOLO) and running production deployments with Docker, CI/CD, and secure networking (MikroTik/WireGuard). ---",
   "skills": {
     "all": [
-      "Flutter (MVVM)",
-      "Node.js microservices",
-      "WPF (.NET)",
-      "modular UI frameworks",
-      "LLM integration (OpenAI",
-      "Qwen3",
-      "LangChain)",
-      "YOLO vision",
-      "Whisper",
-      "Stable Diffusion",
-      "ESP32",
-      "ESP-S3",
-      "Raspberry Pi",
-      "Arduino",
-      "ESL",
-      "OEPL",
-      "MQTT brokers",
-      "MikroTik RouterOS",
-      "WireGuard VPN",
-      "NAT",
-      "VLAN",
-      "DHCP",
-      "Firewall automation",
-      "Docker Compose",
-      "GitHub Actions",
-      "PM2",
-      "Nginx",
-      "GCP",
-      "AWS",
-      "Azure",
-      "Cloudflare tunnels",
-      "MySQL optimization",
-      "Hive",
-      "ObjectBox",
-      "Firebase",
-      "hybrid sync engines",
-      "WhatsApp Business API",
-      "Telegram Bot API",
-      "Webhooks",
-      "schedulers",
-      "Dart",
       "TypeScript",
       "JavaScript",
       "Python",
+      "Dart",
       "C#",
-      "PHP |",
-      "Flutter",
+      "PHP",
+      "React",
+      "component architecture",
+      "performance optimization",
       "Node.js",
       "Express",
-      ".NET (WPF)",
-      "LangChain |"
+      "REST APIs",
+      "Webhooks",
+      "OpenAI",
+      "LangChain",
+      "Qwen3",
+      "YOLOv8",
+      "Whisper",
+      "MQTT",
+      "ESP32",
+      "Raspberry Pi",
+      "Docker",
+      "PM2",
+      "Nginx",
+      "GitHub Actions",
+      "AWS",
+      "Azure",
+      "GCP",
+      "MySQL",
+      "Hive",
+      "MongoDB",
+      "Firebase",
+      "ObjectBox",
+      "MikroTik RouterOS",
+      "WireGuard",
+      "Full Stack",
+      "REST",
+      "APIs",
+      "Microservices",
+      "CI/CD",
+      "YOLO",
+      "ERP",
+      "POS",
+      "QMS",
+      "MikroTik"
     ],
     "languages": [
-      "Dart",
       "TypeScript",
       "JavaScript",
       "Python",
+      "Dart",
       "C#",
-      "PHP |"
+      "PHP"
     ],
     "frameworks": [
-      "Flutter (MVVM)",
-      "Node.js microservices",
-      "WPF (.NET)",
-      "modular UI frameworks",
-      "Flutter",
+      "React",
+      "component architecture",
+      "performance optimization",
       "Node.js",
       "Express",
-      ".NET (WPF)",
-      "LangChain |"
+      "REST APIs",
+      "Webhooks"
     ],
-    "ai": [
-      "LLM integration (OpenAI",
-      "Qwen3",
-      "LangChain)",
-      "YOLO vision",
-      "Whisper",
-      "Stable Diffusion"
-    ],
-    "iot": [
-      "ESP32",
-      "ESP-S3",
-      "Raspberry Pi",
-      "Arduino",
-      "ESL",
-      "OEPL",
-      "MQTT brokers"
-    ],
-    "networking": [
-      "MikroTik RouterOS",
-      "WireGuard VPN",
-      "NAT",
-      "VLAN",
-      "DHCP",
-      "Firewall automation"
-    ],
-    "database": [
-      "MySQL optimization",
-      "Hive",
-      "ObjectBox",
-      "Firebase",
-      "hybrid sync engines"
-    ],
-    "cloud": [
-      "Docker Compose",
-      "GitHub Actions",
-      "PM2",
-      "Nginx",
-      "GCP",
-      "AWS",
-      "Azure",
-      "Cloudflare tunnels"
-    ],
-    "automation": [
-      "WhatsApp Business API",
-      "Telegram Bot API",
-      "Webhooks",
-      "schedulers"
-    ]
+    "ai": [],
+    "iot": [],
+    "networking": [],
+    "database": [],
+    "cloud": [],
+    "automation": []
   },
-  "experience": [],
+  "experience": [
+    {
+      "title": "Software Engineer",
+      "company": "Idol Technology LLC (Dubai, UAE)",
+      "period": "Aug 2024 – Present",
+      "responsibilities": [
+        "Architected **IdolMEA ERP** integrating **POS, QMS, IoT automation, and AI vision** modules.",
+        "Built multi-branch dashboards and services using **Node.js** with secure site connectivity.",
+        "Developed **AI theft detection** (YOLO) for **self-checkout kiosks** with LED/GPIO feedback via **AIDL interface**.",
+        "Designed **IdolVPN mesh (WireGuard)** network for secure multi-branch communication and API routing.",
+        "Integrated **WhatsApp/Telegram chat automation** for live queue alerts and service updates.",
+        "Created **hybrid cloud sync engine** (MySQL ↔ Hive) enabling offline analytics and recovery."
+      ]
+    },
+    {
+      "title": "Senior Software Engineer",
+      "company": "Screl Info Pvt Ltd (India / UAE)",
+      "period": "Apr 2019 – Jan 2024",
+      "responsibilities": [
+        "Designed and deployed **SincA ERP**, combining Flutter, Node.js, and AI analytics in Python.",
+        "Built dashboards, OCR systems, and predictive models using OpenAI and TensorFlow.",
+        "Dockerized microservices across local + cloud sync nodes with CI/CD pipelines.",
+        "Mentored distributed teams across India and UAE in architecture, DevOps, and clean design."
+      ]
+    },
+    {
+      "title": "Software Developer",
+      "company": "Sincap Info Pvt Ltd (Calicut, India)",
+      "period": "Mar 2014 – Mar 2019",
+      "responsibilities": [
+        "Developed enterprise ERP and billing systems using **WPF (C#)** and **PHP/MySQL**.",
+        "Improved UI responsiveness, caching, and modularization for accounting/reporting modules."
+      ]
+    }
+  ],
   "projects": [
     {
       "name": "IdolMEA ERP",
@@ -147,30 +131,6 @@
       "description": "Android AI kiosk with YOLO vision and LED/GPIO control."
     },
     {
-      "name": "IdolVPN Network",
-      "description": "Multi-branch WireGuard VPN over MikroTik for secure retail sync."
-    },
-    {
-      "name": "BookzNow",
-      "description": "Flutter MVVM booking platform for clinics/salons with Material 3 UI."
-    },
-    {
-      "name": "Vlogfied",
-      "description": "Video-based restaurant discovery with AI content tagging."
-    },
-    {
-      "name": "ESL Tools",
-      "description": "Solum/OEPL tag management, ESP32 flash tools, and MQTT controllers."
-    },
-    {
-      "name": "LampAidlInterface",
-      "description": "Android Kotlin + Flutter IPC for real-time LED and lamp automation."
-    },
-    {
-      "name": "Local AI Agents",
-      "description": "Offline AI agents (Qwen3/OpenAI) embedded into retail devices."
-    },
-    {
       "name": "Hybrid Sync Engine",
       "description": "Offline-first delta tracking engine (MySQL ↔ Hive) for POS continuity."
     }
@@ -181,6 +141,7 @@
     "TypeScript",
     "JavaScript",
     "Python",
+    "React",
     "Docker",
     "AWS",
     "Azure",
@@ -189,13 +150,12 @@
     "MongoDB",
     "AI",
     "ai",
-    "Ai",
     "ML",
     "IoT",
     "microservices",
     "Microservices",
     "API",
-    "rest",
+    "REST",
     "MQTT",
     "Nginx",
     "CI/CD",
@@ -205,21 +165,17 @@
     "GitHub",
     "github",
     "TensorFlow",
-    "PyTorch",
     "OpenAI",
     "LangChain",
     "ESP32",
     "Raspberry Pi",
-    "Arduino",
     "YOLO",
     "WireGuard",
     "VPN",
-    "vpn",
     "MikroTik",
     "erp",
     "ERP",
-    "POS",
-    "pos"
+    "POS"
   ],
   "education": []
 }

@@ -9,6 +9,169 @@
 const fs = require('fs');
 const path = require('path');
 
+function escapeRegExp(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function getArgValue(args, name) {
+  const idx = args.indexOf(name);
+  if (idx === -1) return null;
+  const val = args[idx + 1];
+  if (!val || val.startsWith('-')) return null;
+  return val;
+}
+
+function hasFlag(args, ...names) {
+  return names.some(n => args.includes(n));
+}
+
+function resolveRepoPath(p) {
+  if (!p) return null;
+  if (path.isAbsolute(p)) return p;
+  // Resolve relative to repo root (one level above scripts/)
+  return path.resolve(__dirname, '..', p);
+}
+
+function normalizeSkillsForPanel(skills) {
+  const set = new Set((skills || []).filter(Boolean));
+  // Preserve common synonyms used elsewhere in the repo
+  if (set.has('React') && !set.has('React.js')) set.add('React.js');
+  return Array.from(set);
+}
+
+const KNOWN_SKILLS = [
+  // Core
+  'Flutter', 'Dart', 'React', 'React.js', 'Node.js', 'TypeScript', 'JavaScript', 'Python', 'C#', 'Kotlin', 'WPF',
+  // AI
+  'OpenAI', 'LangChain', 'Qwen3', 'YOLO', 'Whisper', 'TensorFlow', 'PyTorch',
+  // IoT / Real-time
+  'IoT', 'ESP32', 'ESP-S3', 'Raspberry Pi', 'Arduino', 'MQTT',
+  // DevOps / Cloud
+  'Docker', 'Kubernetes', 'PM2', 'Nginx', 'AWS', 'Azure', 'GCP', 'Cloudflare',
+  // Data
+  'MySQL', 'MongoDB', 'Firebase', 'Hive', 'ObjectBox',
+  // Networking
+  'MikroTik', 'WireGuard'
+];
+
+function extractCanonicalSkills(cvData) {
+  const parts = [];
+  if (cvData?.summary) parts.push(cvData.summary);
+  if (Array.isArray(cvData?.keywords)) parts.push(cvData.keywords.join(' '));
+  if (Array.isArray(cvData?.skills?.all)) parts.push(cvData.skills.all.join(' '));
+  if (Array.isArray(cvData?.skills?.languages)) parts.push(cvData.skills.languages.join(' '));
+  if (Array.isArray(cvData?.skills?.frameworks)) parts.push(cvData.skills.frameworks.join(' '));
+
+  const haystack = parts.join(' ').toLowerCase();
+  const out = [];
+  for (const skill of KNOWN_SKILLS) {
+    if (haystack.includes(skill.toLowerCase())) out.push(skill);
+  }
+
+  // Add a couple of helpful derived tokens
+  if (out.includes('React') && !out.includes('React.js')) out.push('React.js');
+  return Array.from(new Set(out));
+}
+
+function splitCompanyAndLocation(companyRaw) {
+  if (!companyRaw) return { company: '', location: '' };
+  const m = companyRaw.match(/^(.+?)\s*\((.+?)\)\s*$/);
+  if (m) {
+    return { company: m[1].trim(), location: m[2].trim() };
+  }
+  return { company: companyRaw.trim(), location: '' };
+}
+
+function syncToPanelCvData(cvData, options = {}) {
+  const dataDir = path.join(__dirname, '..', 'data');
+  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+
+  const panelPath = path.join(dataDir, 'cv-data.json');
+  const existing = fs.existsSync(panelPath)
+    ? JSON.parse(fs.readFileSync(panelPath, 'utf8'))
+    : {};
+
+  const phoneDigits = (cvData?.personal?.phone || '').replace(/\D/g, '');
+  const whatsapp = phoneDigits ? `https://wa.me/${phoneDigits}` : (existing?.personalInfo?.whatsapp || '');
+
+  const mappedExperience = (cvData?.experience || []).map(exp => {
+    const { company, location } = splitCompanyAndLocation(exp.company);
+    return {
+      role: exp.title || '',
+      company: company,
+      location: location,
+      duration: exp.period || '',
+      description: (exp.responsibilities || []).join(' ')
+    };
+  });
+
+  const updated = {
+    ...existing,
+    yearsOfExperience: existing?.yearsOfExperience || 13,
+    personalInfo: {
+      ...(existing.personalInfo || {}),
+      name: cvData?.personal?.name || existing?.personalInfo?.name || '',
+      title: cvData?.personal?.title || existing?.personalInfo?.title || '',
+      email: cvData?.personal?.email || existing?.personalInfo?.email || '',
+      phone: cvData?.personal?.phone || existing?.personalInfo?.phone || '',
+      location: cvData?.personal?.location || existing?.personalInfo?.location || '',
+      linkedin: cvData?.personal?.linkedin || existing?.personalInfo?.linkedin || '',
+      github: cvData?.personal?.github || existing?.personalInfo?.github || '',
+      portfolio: cvData?.personal?.website || existing?.personalInfo?.portfolio || '',
+      website: cvData?.personal?.website || existing?.personalInfo?.website || undefined,
+      whatsapp
+    },
+    summary: cvData?.summary || existing?.summary || '',
+    skills: extractCanonicalSkills(cvData).length
+      ? extractCanonicalSkills(cvData)
+      : normalizeSkillsForPanel(existing?.skills || []),
+    experience: mappedExperience.length ? mappedExperience : (existing?.experience || []),
+    highlights: Array.isArray(existing?.highlights)
+      ? existing.highlights.map(h => typeof h === 'string' ? h.replace(/\b10\+\s*years\b/gi, '13+ years') : h)
+      : (existing?.highlights || []),
+    availability: existing?.availability || {
+      status: 'Available Immediately',
+      visa: 'Valid UAE Work Visa',
+      location: cvData?.personal?.location || 'Dubai, UAE'
+    }
+  };
+
+  // Avoid clobbering curated projects unless explicitly requested
+  if (options.syncProjects === true) {
+    updated.projects = (cvData?.projects || []).map(p => ({
+      name: p.name,
+      description: p.description
+    }));
+  }
+
+  fs.writeFileSync(panelPath, JSON.stringify(updated, null, 2), 'utf8');
+  return panelPath;
+}
+
+/**
+ * Extract a markdown section body by its H2 heading text.
+ *
+ * Supports headings like:
+ *   "## Professional Summary"
+ *   "## 🧩 Professional Summary"
+ */
+function extractSection(content, headingText) {
+  const headingRegex = new RegExp(
+    `^##\\s*(?:[^A-Za-z0-9\\n]+\\s*)?${escapeRegExp(headingText)}\\s*$`,
+    'im'
+  );
+
+  const match = headingRegex.exec(content);
+  if (!match) return null;
+
+  const afterHeadingIndex = match.index + match[0].length;
+  const rest = content.slice(afterHeadingIndex);
+  const nextHeadingIndex = rest.search(/^##\s+/m);
+
+  const sectionBody = nextHeadingIndex === -1 ? rest : rest.slice(0, nextHeadingIndex);
+  return sectionBody.trim();
+}
+
 /**
  * Parse resume.md and extract structured data
  */
@@ -51,18 +214,35 @@ function extractPersonalInfo(content) {
   const titleMatch = content.match(/\*\*(.+?)\*\*/);
   if (titleMatch) personal.title = titleMatch[1].trim();
 
-  // Extract contact info
-  const locationMatch = content.match(/📍\s*([^|]+)/);
+  // Extract contact info (supports emoji or label-based formats)
+  const locationMatch = content.match(/^(?:📍\s*|Location:\s*)([^|\n]+)/mi);
   if (locationMatch) personal.location = locationMatch[1].trim();
 
-  const phoneMatch = content.match(/📞\s*([+\d\s]+)/);
+  const phoneMatch = content.match(/^(?:📞\s*|Phone:\s*)([+\d\s\-().]+)/mi);
   if (phoneMatch) personal.phone = phoneMatch[1].trim();
 
-  const emailMatch = content.match(/✉️.*?\[([^\]]+@[^\]]+)\]/);
+  // Fallback: ATS-style single-line contact block
+  // Example: "Dubai, UAE | +971 555... | email@domain"
+  if (!personal.location || !personal.phone) {
+    const contactLineMatch = content.match(
+      /^\s*([^|\n]+?)\s*\|\s*([+\d\s\-().]{7,})\s*\|\s*(?:\[)?([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})(?:\])?/im
+    );
+    if (contactLineMatch) {
+      if (!personal.location) personal.location = contactLineMatch[1].trim();
+      if (!personal.phone) personal.phone = contactLineMatch[2].trim();
+      if (!personal.email) personal.email = contactLineMatch[3].trim();
+    }
+  }
+
+  // Email: prefer markdown mailto, fall back to first email in the doc
+  const emailMatch = content.match(/mailto:([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})/i)
+    || content.match(/\b([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,})\b/i);
   if (emailMatch) personal.email = emailMatch[1].trim();
 
-  const websiteMatch = content.match(/🌐.*?\[https?:\/\/([^\]]+)\]/);
-  if (websiteMatch) personal.website = `https://${websiteMatch[1].trim()}`;
+  // Website/portfolio: prefer explicit https link
+  const websiteMatch = content.match(/(?:🌐|Website:|Portfolio:)\s*\[?(https?:\/\/[^\s\]]+)/i)
+    || content.match(/\bhttps?:\/\/[^\s\]]+/i);
+  if (websiteMatch) personal.website = websiteMatch[1].trim();
 
   const githubMatch = content.match(/GitHub.*?\(https?:\/\/github\.com\/([^\)]+)\)/);
   if (githubMatch) personal.github = `https://github.com/${githubMatch[1].trim()}`;
@@ -77,11 +257,57 @@ function extractPersonalInfo(content) {
  * Extract professional summary
  */
 function extractSummary(content) {
-  const summaryMatch = content.match(/## 🧩 Professional Summary\s+([\s\S]+?)(?=\n##)/);
-  if (summaryMatch) {
-    return summaryMatch[1].trim().replace(/\n/g, ' ').replace(/\s+/g, ' ');
+  const section = extractSection(content, 'Professional Summary');
+  if (!section) return '';
+  return section.trim().replace(/\n/g, ' ').replace(/\s+/g, ' ');
+}
+
+function splitSkillItems(raw) {
+  if (!raw) return [];
+
+  // Keep common compound tokens intact
+  const protectedRaw = raw.replace(/\bCI\/CD\b/g, 'CI-CD');
+
+  // First pass split on commas / pipes / semicolons
+  const primary = protectedRaw
+    .split(/[,|;]+/)
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  // Second pass split tokens like "AWS/Azure/GCP" but avoid over-splitting
+  const out = [];
+  for (const token of primary) {
+    const t = token.trim();
+    if (!t) continue;
+
+    // Split on slashes only when it looks like a list token, not a phrase
+    if (t.includes('/') && t !== 'CI-CD') {
+      const slashParts = t.split('/').map(p => p.trim()).filter(Boolean);
+      if (slashParts.length > 1 && slashParts.every(p => p.length <= 30)) {
+        out.push(...slashParts);
+        continue;
+      }
+    }
+
+    out.push(t);
   }
-  return '';
+
+  return out
+    .map(s => s.replace(/\bCI-CD\b/g, 'CI/CD'))
+    .map(s => s.replace(/^[-•\s]+/, '').trim())
+    .filter(Boolean);
+}
+
+function categorizeCompetencyLabel(label) {
+  const l = (label || '').toLowerCase();
+  if (l.includes('ai') || l.includes('ml')) return 'ai';
+  if (l.includes('iot') || l.includes('edge') || l.includes('real-time') || l.includes('realtime')) return 'iot';
+  if (l.includes('network')) return 'networking';
+  if (l.includes('cloud') || l.includes('devops') || l.includes('infra')) return 'cloud';
+  if (l.includes('data') || l.includes('database')) return 'database';
+  if (l.includes('automation')) return 'automation';
+  if (l.includes('backend') || l.includes('frontend') || l.includes('mobile') || l.includes('framework') || l.includes('.net') || l.includes('desktop')) return 'frameworks';
+  return null;
 }
 
 /**
@@ -101,53 +327,65 @@ function extractSkills(content) {
   };
 
   // Extract from Core Competencies section
-  const competenciesMatch = content.match(/## 💡 Core Competencies([\s\S]+?)(?=\n##)/);
-  if (competenciesMatch) {
-    const competencies = competenciesMatch[1];
+  const competencies = extractSection(content, 'Core Competencies');
+  if (competencies) {
+    // Parse bullet lines like: "- **Backend:** Node.js/Express, REST APIs, ..."
+    const bulletRegex = /\*\*([^*]+)\*\*\s*:\s*([^\n]+)/g;
+    let m;
+    while ((m = bulletRegex.exec(competencies)) !== null) {
+      const label = (m[1] || '').trim();
+      const itemsText = (m[2] || '').trim();
+      const items = splitSkillItems(itemsText);
+      const category = categorizeCompetencyLabel(label);
 
-    // Extract by category
-    const categories = {
-      'Software Architecture': 'frameworks',
-      'AI & Automation': 'ai',
-      'IoT & Edge': 'iot',
-      'Networking': 'networking',
-      'DevOps & Cloud': 'cloud',
-      'Database': 'database',
-      'Automation Platforms': 'automation'
-    };
-
-    for (const [key, category] of Object.entries(categories)) {
-      const regex = new RegExp(`\\*\\*${key}[^:]*:\\*\\*([^\\n]+)`, 'i');
-      const match = competencies.match(regex);
-      if (match) {
-        const items = match[1].split(',').map(s => s.trim());
-        skills[category].push(...items);
-        skills.all.push(...items);
-      }
+      if (category && Array.isArray(skills[category])) skills[category].push(...items);
+      skills.all.push(...items);
     }
   }
 
   // Extract from Technical Skills table
-  const tableMatch = content.match(/## ⚙️ Technical Skills([\s\S]+?)(?=\n##|$)/);
-  if (tableMatch) {
-    const tableContent = tableMatch[1];
+  const tableContent = extractSection(content, 'Technical Skills');
+  if (tableContent) {
+    // Capture any table row values (not just Languages/Frameworks)
+    const lines = tableContent.split('\n');
+    for (const line of lines) {
+      const trimmed = line.trim();
+      if (!trimmed.startsWith('|')) continue;
+      if (/^\|\s*-+\s*\|/.test(trimmed)) continue; // separator row
 
-    const languagesMatch = tableContent.match(/\*\*Languages\*\*\s*\|\s*(.+)/);
-    if (languagesMatch) {
-      skills.languages = languagesMatch[1].split(',').map(s => s.trim());
-      skills.all.push(...skills.languages);
-    }
+      const cols = trimmed.split('|').map(c => c.trim()).filter(Boolean);
+      // Expected: [Category, Value]
+      if (cols.length < 2) continue;
 
-    const frameworksMatch = tableContent.match(/\*\*Frameworks\*\*\s*\|\s*(.+)/);
-    if (frameworksMatch) {
-      const fw = frameworksMatch[1].split(',').map(s => s.trim());
-      skills.frameworks.push(...fw);
-      skills.all.push(...fw);
+      const key = cols[0].replace(/\*\*/g, '').trim().toLowerCase();
+      const value = cols.slice(1).join(' | ').replace(/\*\*/g, '').trim();
+
+      // Skip header row like: "| Category | Tools / Technologies |"
+      if (key === 'category' && /tools\s*\//i.test(value)) {
+        continue;
+      }
+
+      const items = splitSkillItems(value);
+
+      if (key === 'languages') {
+        skills.languages.push(...items);
+      } else if (key === 'frameworks' || key === 'frontend' || key === 'frontend/mobile' || key === 'frontend/mobile' || key === 'desktop' || key === 'backend') {
+        skills.frameworks.push(...items);
+      }
+
+      skills.all.push(...items);
     }
   }
 
+  // Extract from Keywords (ATS) section (common in variants)
+  const atsKeywords = extractSection(content, 'Keywords (ATS)') || extractSection(content, 'Keywords');
+  if (atsKeywords) {
+    const items = splitSkillItems(atsKeywords.replace(/\n/g, ' '));
+    skills.all.push(...items);
+  }
+
   // Remove duplicates
-  skills.all = [...new Set(skills.all)];
+  skills.all = [...new Set(skills.all.map(s => s.trim()).filter(Boolean))];
 
   return skills;
 }
@@ -157,10 +395,10 @@ function extractSkills(content) {
  */
 function extractExperience(content) {
   const experience = [];
-  const expSection = content.match(/## 🏢 Professional Experience([\s\S]+?)(?=\n##)/);
+  const expSection = extractSection(content, 'Professional Experience');
 
   if (expSection) {
-    const jobs = expSection[1].split(/###\s+\*\*/).filter(Boolean);
+    const jobs = expSection.split(/###\s+\*\*/).filter(Boolean);
 
     jobs.forEach(job => {
       const titleMatch = job.match(/^(.+?)—\s*(.+?)\*\*/);
@@ -189,10 +427,10 @@ function extractExperience(content) {
  */
 function extractProjects(content) {
   const projects = [];
-  const projectsMatch = content.match(/## 🚀 Major Projects([\s\S]+?)(?=\n##)/);
+  const projectsSection = extractSection(content, 'Major Projects');
 
-  if (projectsMatch) {
-    const projectList = projectsMatch[1].match(/- \*\*(.+?):\*\* (.+)/g);
+  if (projectsSection) {
+    const projectList = projectsSection.match(/- \*\*(.+?):\*\* (.+)/g);
     if (projectList) {
       projectList.forEach(p => {
         const match = p.match(/- \*\*(.+?):\*\* (.+)/);
@@ -214,10 +452,10 @@ function extractProjects(content) {
  */
 function extractEducation(content) {
   const education = [];
-  const eduMatch = content.match(/## 🎓 Education([\s\S]+?)(?=\n##|$)/);
+  const eduSection = extractSection(content, 'Education');
 
-  if (eduMatch) {
-    const degrees = eduMatch[1].match(/###\s+(.+)/g);
+  if (eduSection) {
+    const degrees = eduSection.match(/###\s+(.+)/g);
     if (degrees) {
       degrees.forEach(d => {
         education.push(d.replace(/###\s+/, '').trim());
@@ -388,7 +626,13 @@ module.exports = {
 
 // CLI usage
 if (require.main === module) {
-  const resumePath = path.join(__dirname, '..', 'resumes', 'resume.md');
+  const args = process.argv.slice(2);
+  const resumeArg = getArgValue(args, '--resume') || getArgValue(args, '-r');
+  const outArg = getArgValue(args, '--out');
+  const syncData = hasFlag(args, '--sync-data', '--sync');
+  const syncProjects = hasFlag(args, '--sync-projects');
+
+  const resumePath = resolveRepoPath(resumeArg) || path.join(__dirname, '..', 'resumes', 'resume.md');
 
   if (!fs.existsSync(resumePath)) {
     console.error('❌ Resume not found at:', resumePath);
@@ -446,7 +690,12 @@ if (require.main === module) {
   console.log('');
 
   // Save parsed data
-  const outputPath = path.join(__dirname, '..', 'cv-parsed-data.json');
+  const outputPath = resolveRepoPath(outArg) || path.join(__dirname, '..', 'cv-parsed-data.json');
   fs.writeFileSync(outputPath, JSON.stringify(cvData, null, 2), 'utf8');
   console.log('💾 Full parsed data saved to:', outputPath);
+
+  if (syncData) {
+    const panelPath = syncToPanelCvData(cvData, { syncProjects });
+    console.log('🔄 Synced panel CV data to:', panelPath);
+  }
 }

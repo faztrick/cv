@@ -81,7 +81,7 @@ class SkillsJobMatcher {
             this.cvData = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
             this.skills = this.cvData.skills || [];
             this.experience = this.cvData.experience || [];
-            this.yearsOfExperience = this.calculateYearsOfExperience();
+            this.yearsOfExperience = Number(this.cvData.yearsOfExperience) || this.calculateYearsOfExperience();
         }
     }
 
@@ -208,6 +208,27 @@ class SkillsJobMatcher {
         // Add combination queries based on skill combinations
         if (this.skills.includes('Flutter') && this.skills.includes('Node.js')) {
             queries.add('Full Stack Mobile Developer');
+            queries.add('Flutter Node.js Developer');
+        }
+        if ((this.skills.includes('React') || this.skills.includes('React.js')) && this.skills.includes('TypeScript')) {
+            queries.add('React TypeScript Developer');
+            queries.add('Frontend Engineer React TypeScript');
+        }
+        if ((this.skills.includes('React') || this.skills.includes('React.js')) && this.skills.includes('Node.js')) {
+            queries.add('Full Stack Developer React Node.js');
+            queries.add('React Node.js Developer');
+            queries.add('Full Stack JavaScript Developer');
+        }
+        if (this.skills.includes('Node.js') && this.skills.includes('TypeScript')) {
+            queries.add('Node.js TypeScript Developer');
+            queries.add('Backend Developer Node.js TypeScript');
+        }
+        if (this.skills.includes('C#') && (this.skills.includes('React') || this.skills.includes('React.js'))) {
+            queries.add('.NET Full Stack Developer');
+            queries.add('Full Stack Developer .NET React');
+        }
+        if (this.skills.includes('C#') && this.skills.includes('Azure')) {
+            queries.add('.NET Azure Developer');
         }
         if (this.skills.includes('AI/ML') || this.skills.includes('OpenAI')) {
             queries.add('AI Solutions Architect');
@@ -238,6 +259,11 @@ class SkillsJobMatcher {
             'Software Architect',
             'Full Stack Developer',
             'Senior Flutter Developer',
+            'Senior React Developer',
+            'Full Stack Developer React Node.js',
+            '.NET Full Stack Developer',
+            'Senior .NET Developer',
+            'Node.js TypeScript Developer',
             'AI Engineer',
             'Solutions Architect'
         ];

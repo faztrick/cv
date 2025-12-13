@@ -10,7 +10,7 @@ Subject: Application for {{ROLE_TITLE}}
 
 Dear {{HIRING_MANAGER_NAME}},
 
-I’m writing to express my interest in the {{ROLE_TITLE}} position at {{COMPANY_NAME}}. With 10+ years designing and shipping scalable systems across ERP, POS, QMS, and IoT automation—and hands‑on experience with AI agents (OpenAI, LangChain, Qwen3), Flutter (MVVM), Node.js, and Python—I’m excited to contribute to {{TEAM_OR_PRODUCT}}.
+I’m writing to express my interest in the {{ROLE_TITLE}} position at {{COMPANY_NAME}}. With 13+ years designing and shipping scalable systems across ERP, POS, QMS, and IoT automation—and hands‑on experience with AI agents (OpenAI, LangChain, Qwen3), Flutter (MVVM), Node.js, and Python—I’m excited to contribute to {{TEAM_OR_PRODUCT}}.
 
 Selected highlights aligned to your needs:
 

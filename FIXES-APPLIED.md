@@ -3,29 +3,35 @@
 ## Date: December 8, 2025
 
 ## Summary
+
 This document details all fixes applied to restore full functionality to the CV Job Search Toolkit.
 
 ## Issues Fixed
 
 ### 1. Syntax Error in Email Generator (CRITICAL)
+
 **File:** `scripts/generate-job-emails.js` (Line 56)
 **Issue:** Invalid syntax `"="- repeat="50"` causing script to fail
 **Fix:** Changed to `"=".repeat(50)`
 **Impact:** Email generation now works correctly
 
 ### 2. WhatsApp Integration Crash (HIGH)
+
 **File:** `server.js` (Lines 146-194)
 **Issue:** Server crashed on startup when Chromium was not installed
 **Fix:** Added error handling and graceful degradation:
+
 - Wrapped `waClient.initialize()` with `.catch()` handler
 - Set status to 'UNAVAILABLE' instead of crashing
 - Added user-friendly error message
 **Impact:** Server now starts successfully even without Chromium installed
 
 ### 3. Playwright Headless Mode Detection (MEDIUM)
+
 **File:** `scripts/job-search-playwright.js` (Line 11)
 **Issue:** Scripts failed in CI/headless environments (no X server)
 **Fix:** Auto-detect headless mode based on:
+
 - `--headless` flag
 - Missing `DISPLAY` environment variable
 - `CI=true` environment variable
@@ -34,11 +40,13 @@ This document details all fixes applied to restore full functionality to the CV 
 ## Testing Results
 
 ### All JavaScript Files Validated
+
 ✅ 33 JavaScript files checked
 ✅ All files have valid syntax
 ✅ No syntax errors found
 
 ### NPM Scripts Tested
+
 ✅ `npm start` - Shows help menu
 ✅ `npm run generate-emails` - Generates job emails
 ✅ `npm run parse-cv` - Parses resume data
@@ -51,6 +59,7 @@ This document details all fixes applied to restore full functionality to the CV 
 ✅ `npm run auto-fill` - Universal auto-fill agent
 
 ### Core Modules Tested
+
 ✅ Express server
 ✅ CV parser
 ✅ Skills job matcher
@@ -63,6 +72,7 @@ This document details all fixes applied to restore full functionality to the CV 
 ✅ Playwright integration
 
 ### Dependencies Status
+
 ✅ All core dependencies installed
 ✅ Playwright Chromium installed
 ✅ Express working
@@ -72,12 +82,15 @@ This document details all fixes applied to restore full functionality to the CV 
 ## Security Status
 
 ### Code Security Scan
+
 ✅ CodeQL analysis completed
 ✅ 0 security alerts found
 ✅ No vulnerabilities in code changes
 
 ### NPM Audit
+
 ⚠️ 5 high severity vulnerabilities in whatsapp-web.js dependencies
+
 - These are in third-party dependencies (tar-fs, ws, puppeteer-core)
 - WhatsApp integration is optional feature
 - Server gracefully handles missing dependencies
@@ -86,6 +99,7 @@ This document details all fixes applied to restore full functionality to the CV 
 ## Functionality Status
 
 ### ✅ Working Features
+
 - Email generation (6 templates)
 - CV parsing and data extraction
 - Job matching with skill scoring
@@ -98,11 +112,13 @@ This document details all fixes applied to restore full functionality to the CV 
 - Cache cleanup utilities
 
 ### ⚠️ Optional Features (Gracefully Disabled)
+
 - WhatsApp integration (requires Chromium installation)
   - Status: UNAVAILABLE
   - Can be enabled by running: `npm install` with PUPPETEER_SKIP_DOWNLOAD=false
 
 ### 🔧 External Dependencies Required
+
 - OpenAI API key (for AI-powered features)
 - Active internet connection (for job searches)
 - Chromium browser (for WhatsApp integration)
@@ -147,3 +163,39 @@ This document details all fixes applied to restore full functionality to the CV 
 ✅ **Ready for use**
 
 The CV Job Search Toolkit is now fully operational and ready for job search automation!
+
+---
+
+## Date: December 13, 2025
+
+## Summary
+
+Improved CV consistency and made the CV parser resilient to ATS-friendly formatting changes.
+
+## Issues Fixed
+
+### 1. CV Parser Too Fragile for Resume Formatting (HIGH)
+
+**File:** `scripts/cv-parser.js`
+**Issue:** Parsing relied on emoji-based section headings and emoji-based contact lines; updating `resumes/resume.md` could silently break CV extraction.
+**Fix:** Added robust section extraction that supports both emoji and non-emoji headings, and improved contact parsing with fallbacks (single-line ATS contact block).
+**Impact:** `npm run parse-cv` continues to work even after cleaning up resume formatting.
+
+### 2. ATS-Friendly Resume Formatting (MEDIUM)
+
+**File:** `resumes/resume.md`
+**Issue:** Emoji-heavy headings/contact lines are less ATS-friendly and harder to parse reliably.
+**Fix:** Converted headings/contact lines to label-based, ATS-friendly formatting while preserving content.
+**Impact:** Better ATS compatibility while keeping automation functional.
+
+### 3. Experience Years Consistency (LOW)
+
+**Files:** `server.js`, `public/cv.html`, `cover-letters/cover-letter-template.md`
+**Issue:** Some templates referenced “10+ years” while the master CV and other templates use “13+ years”.
+**Fix:** Updated these templates to “13+ years”.
+**Impact:** Consistent messaging across CV, website, and generated emails.
+
+## Testing Results
+
+✅ `npm run parse-cv` - Successfully extracted name, email, phone, location, experience, and skills after resume format change
+✅ `npm start` - Help menu runs successfully

@@ -2,12 +2,12 @@
 
 **Software Engineer | AI & IoT Systems Engineer | Retail Automation Specialist | MVVM & Infrastructure Expert**
 
-📍 Dubai, UAE | 📞 +971 555923545 | ✉️ [faztrick@gmail.com](mailto:faztrick@gmail.com)
-🌐 [https://uaecodes.com](https://uaecodes.com) | 🧠 [GitHub](https://github.com/faztrick) | 💼 [LinkedIn](https://linkedin.com/in/faztrick)
+Dubai, UAE | +971 555923545 | [faztrick@gmail.com](mailto:faztrick@gmail.com)
+Website: [https://uaecodes.com](https://uaecodes.com) | GitHub: [https://github.com/faztrick](https://github.com/faztrick) | LinkedIn: [https://linkedin.com/in/faztrick](https://linkedin.com/in/faztrick)
 
 ---
 
-## 🧩 Professional Summary
+## Professional Summary
 
 Innovative **Software Engineer** with over **13 years of experience** in building intelligent, scalable, and distributed enterprise systems.
 Expert in **AI-driven automation**, **IoT ecosystems**, and **MVVM architecture** — with proven success across **ERP, QMS, POS, and retail IoT infrastructures**.
@@ -18,7 +18,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ---
 
-## 💡 Core Competencies
+## Core Competencies
 
 - **Software Architecture:** Flutter (MVVM), Node.js microservices, WPF (.NET), modular UI frameworks
 - **AI & Automation:** LLM integration (OpenAI, Qwen3, LangChain), YOLO vision, Whisper, Stable Diffusion
@@ -32,7 +32,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ---
 
-## 🏢 Professional Experience
+## Professional Experience
 
 ### **Software Engineer — Idol Technology LLC (Dubai, UAE)**
 
@@ -71,7 +71,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ---
 
-## 🚀 Major Projects
+## Major Projects
 
 - **IdolMEA ERP:** Retail ERP integrating POS, IoT, and cloud hybrid analytics.
 - **IdolQueue (i-QMS):** Smart queue automation (Flutter + Node.js + Hive + MQTT).
@@ -86,7 +86,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ---
 
-## ⚙️ Technical Skills
+## Technical Skills
 
 | Category | Tools / Technologies |
 |-----------|----------------------|
@@ -102,7 +102,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ---
 
-## 🧠 Research & Innovation Highlights
+## Research & Innovation Highlights
 
 - **AI-Edge Retail Mesh:** Hybrid inference + MQTT layer for low-latency AI automation.
 - **Offline-First ERP Engine:** MySQL ↔ Hive replication with delta conflict resolution.
@@ -112,7 +112,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ---
 
-## 🌍 Open-Source & Community Contributions
+## Open-Source & Community Contributions
 
 - **GitHub Projects:**
   - [`idol-mea`](https://github.com/faztrick) — ERP hybrid architecture
@@ -124,7 +124,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ---
 
-## 👨‍💼 Technical Leadership
+## Technical Leadership
 
 - Led **cross-location developer teams** (India/UAE) with hybrid CI/CD pipelines.
 - Established **multi-branch deployment pipelines** with GitHub Actions and Docker.
@@ -133,7 +133,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ---
 
-## 🔌 Hardware & Embedded Engineering
+## Hardware & Embedded Engineering
 
 - Designed **ESP32/S3 jigs** for Solum ESL flashing and tag diagnostics.
 - Built **UART/HID bridges** for Newland and Datalogic barcode scanners.
@@ -143,7 +143,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ---
 
-## 🌐 Networking & Security Engineering
+## Networking & Security Engineering
 
 - Engineered **IdolVPN Mesh** using MikroTik + WireGuard with 8+ nodes.
 - Designed **port-forward/NAT automation scripts** for dynamic intranet access.
@@ -153,7 +153,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ---
 
-## 🤖 AI & LLM Projects
+## AI & LLM Projects
 
 - **AI Queue Agent:** LLM assistant for queue management and scheduling.
 - **Retail AI Copilot:** LangChain ERP query assistant embedded in POS.
@@ -163,7 +163,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ---
 
-## 🏆 Achievements & Recognition
+## Achievements & Recognition
 
 - **Gitex Dubai 2024:** Showcased Idol Self-Checkout Kiosk prototype.
 - **Internal R&D Recognition (Idol Technology):** Edge AI automation project of the year.
@@ -171,7 +171,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ---
 
-## 🧩 Entrepreneurial & Side Projects
+## Entrepreneurial & Side Projects
 
 - **BlueBolt Automation:** ESP-based smart office/home automation concept.
 - **Stalwart Studio:** Branding + automation wing integrating AI marketing tools.
@@ -180,13 +180,13 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ---
 
-## 🎯 Vision Statement
+## Vision Statement
 
 > “My goal is to build globally deployable **AI-driven retail ecosystems**, where every device, queue, and operation communicates intelligently across secure hybrid networks — combining automation, edge AI, and human simplicity.”
 
 ---
 
-## 🎓 Education
+## Education
 
 **Diploma in Computer Engineering**
 JDT Islam Polytechnic, Calicut, Kerala, India
@@ -194,7 +194,7 @@ JDT Islam Polytechnic, Calicut, Kerala, India
 
 ---
 
-## 📜 Certifications & Courses
+## Certifications & Courses
 
 - **MikroTik RouterOS & WireGuard Advanced Routing (Self-Certified)**
 - **Flutter & Dart Advanced (Udemy/Coursera)**
@@ -204,7 +204,7 @@ JDT Islam Polytechnic, Calicut, Kerala, India
 
 ---
 
-## 🌏 Additional Information
+## Additional Information
 
 - **Nationality:** Indian
 - **Visa:** Company Visa
@@ -214,6 +214,6 @@ JDT Islam Polytechnic, Calicut, Kerala, India
 
 ---
 
-## 🧩 Keywords (ATS)
+## Keywords (ATS)
 
 Flutter, MVVM, Node.js, Express, WPF, .NET, Python, PHP, TypeScript, AI, LLM, LangChain, OpenAI, Qwen3, YOLO, MQTT, ESP32, Raspberry Pi, Arduino, ESL, OEPL, MikroTik, WireGuard, Docker, Docker Compose, PM2, Nginx, GitHub Actions, GCP, AWS, Azure, MySQL, Hive, ObjectBox, Firebase, MongoDB, JWT, OAuth2, HTTPS, SSL, CI/CD, ERP, POS, QMS, IoT, Automation, Edge, Retail, Microservices, AI Vision, AIDL, IPC, LED Control, Hybrid Sync, Queue Management, VPN, DevOps

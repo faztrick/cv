@@ -1,28 +1,29 @@
 {
   "personalInfo": {
-    "name": "Muhammed Fasil PV",
-    "title": "Senior Full Stack Developer & AI/IoT Systems Engineer",
+    "name": "MUHAMMED FASIL PV",
+    "title": "Senior Full-Stack Engineer (React + Node.js) | AI & IoT Systems Engineer",
     "email": "faztrick@gmail.com",
     "phone": "+971 555923545",
     "location": "Dubai, UAE",
     "linkedin": "https://linkedin.com/in/faztrick",
     "github": "https://github.com/faztrick",
-    "portfolio": "https://www.uaecodes.com",
-    "whatsapp": "https://wa.me/971555923545"
+    "portfolio": "https://uaecodes.com",
+    "whatsapp": "https://wa.me/971555923545",
+    "website": "https://uaecodes.com"
   },
-  "summary": "Senior Full Stack Developer & AI/IoT Systems Engineer with 10+ years building scalable enterprise systems. I bridge hardware and software—from ESP32 firmware to cloud microservices—creating AI-driven automation with IoT ecosystems. Currently at Idol Technology LLC (Dubai, UAE), architecting production-ready systems that blend AI-driven automation with IoT ecosystems.",
+  "summary": "Senior full-stack engineer with **13+ years** delivering scalable enterprise platforms (ERP/POS/QMS) and automation systems. Strong in **React + TypeScript** frontends and **Node.js** backends, building modular UI, REST APIs, and real-time workflows (MQTT). Experienced integrating practical AI features (OpenAI/LangChain, YOLO) and running production deployments with Docker, CI/CD, and secure networking (MikroTik/WireGuard). ---",
   "skills": [
     "Flutter",
     "Dart",
-    "React.js",
+    "React",
     "Node.js",
+    "TypeScript",
+    "JavaScript",
     "Python",
     "C#",
-    "Kotlin",
-    "TypeScript",
-    "AI/ML",
     "OpenAI",
     "LangChain",
+    "Qwen3",
     "YOLO",
     "Whisper",
     "TensorFlow",
@@ -31,40 +32,41 @@
     "Raspberry Pi",
     "MQTT",
     "Docker",
-    "Kubernetes",
+    "PM2",
+    "Nginx",
     "AWS",
     "Azure",
     "GCP",
-    "WPF",
-    "SQL",
     "MySQL",
     "MongoDB",
     "Firebase",
     "Hive",
+    "ObjectBox",
     "MikroTik",
-    "WireGuard"
+    "WireGuard",
+    "React.js"
   ],
   "experience": [
     {
-      "role": "Senior Software Engineer",
+      "role": "Software Engineer",
       "company": "Idol Technology LLC",
       "location": "Dubai, UAE",
-      "duration": "August 2024 – Present",
-      "description": "Architected and deployed IdolMEA ERP system driving digital transformation for 50+ retail branches across the GCC. Developed IdolQueue (i-QMS) using Flutter and Node.js with offline-first architecture. Implemented AI-powered chatbot automation for WhatsApp/Telegram. Integrated YOLO object detection for AI Self-Checkout Kiosk (showcased at Gitex Dubai 2024). Engineered 8+ node WireGuard VPN mesh on MikroTik routers."
+      "duration": "Aug 2024 – Present",
+      "description": "Architected **IdolMEA ERP** integrating **POS, QMS, IoT automation, and AI vision** modules. Built multi-branch dashboards and services using **Node.js** with secure site connectivity. Developed **AI theft detection** (YOLO) for **self-checkout kiosks** with LED/GPIO feedback via **AIDL interface**. Designed **IdolVPN mesh (WireGuard)** network for secure multi-branch communication and API routing. Integrated **WhatsApp/Telegram chat automation** for live queue alerts and service updates. Created **hybrid cloud sync engine** (MySQL ↔ Hive) enabling offline analytics and recovery."
     },
     {
       "role": "Senior Software Engineer",
       "company": "Screl Info Pvt Ltd",
       "location": "India / UAE",
-      "duration": "April 2019 – January 2024",
-      "description": "Led development of SincA ERP platform (Flutter + Node.js + Python AI backend). Implemented AI-powered dashboards and predictive analytics. Developed OCR invoice parsing system with 95% accuracy. Built automated WhatsApp/Telegram bots for customer interaction. Managed cross-location developer teams with hybrid CI/CD pipelines."
+      "duration": "Apr 2019 – Jan 2024",
+      "description": "Designed and deployed **SincA ERP**, combining Flutter, Node.js, and AI analytics in Python. Built dashboards, OCR systems, and predictive models using OpenAI and TensorFlow. Dockerized microservices across local + cloud sync nodes with CI/CD pipelines. Mentored distributed teams across India and UAE in architecture, DevOps, and clean design."
     },
     {
       "role": "Software Developer",
       "company": "Sincap Info Pvt Ltd",
       "location": "Calicut, India",
-      "duration": "March 2014 – March 2019",
-      "description": "Developed comprehensive ERP, accounting, and billing systems using WPF (C#) with MVVM architecture. Built admin portals and reporting dashboards. Created inventory management and POS systems for retail clients."
+      "duration": "Mar 2014 – Mar 2019",
+      "description": "Developed enterprise ERP and billing systems using **WPF (C#)** and **PHP/MySQL**. Improved UI responsiveness, caching, and modularization for accounting/reporting modules."
     }
   ],
   "projects": [
@@ -202,11 +204,12 @@
     "Gitex Dubai 2024: AI Self-Checkout Kiosk showcase",
     "50+ enterprise clients across retail, healthcare & hospitality",
     "Led cross-location teams with CI/CD & Docker pipelines",
-    "10+ years of full-stack development experience"
+    "13+ years of full-stack development experience"
   ],
   "availability": {
     "status": "Available Immediately",
     "visa": "Valid UAE Work Visa",
     "location": "Dubai, UAE"
-  }
+  },
+  "yearsOfExperience": 13
 }
