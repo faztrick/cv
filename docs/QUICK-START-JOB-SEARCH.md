@@ -273,7 +273,7 @@ Applied → Follow-up → Interview → Offer
 
 ### Your Portfolio
 
-- Website: <https://uaecodes.com>
+- Website: <https://www.uaecodes.com>
 - GitHub: <https://github.com/faztrick>
 - LinkedIn: <https://linkedin.com/in/faztrick>
 

@@ -558,7 +558,7 @@ Best regards,
 Muhammed Fasil PV
 📞 +971 555923545
 📧 faztrick@gmail.com
-🌐 https://uaecodes.com`;
+🌐 https://www.uaecodes.com`;
     } else {
         // Application email
         if (company.generatedEmailPath && fs.existsSync(company.generatedEmailPath)) {
@@ -583,7 +583,7 @@ Best regards,
 Muhammed Fasil PV
 📞 +971 555923545
 📧 faztrick@gmail.com
-🌐 https://uaecodes.com`;
+🌐 https://www.uaecodes.com`;
         }
         subject = `Application - ${company.jobTitle} - ${company.name} - Muhammed Fasil PV`;
     }

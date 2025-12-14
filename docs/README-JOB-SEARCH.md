@@ -305,7 +305,7 @@ Post-interview appreciation and reinforcement.
 
 ## Resources
 
-- **Portfolio**: <https://uaecodes.com>
+- **Portfolio**: <https://www.uaecodes.com>
 - **GitHub**: <https://github.com/faztrick>
 - **LinkedIn**: <https://linkedin.com/in/faztrick>
 - **Email**: <faztrick@gmail.com>

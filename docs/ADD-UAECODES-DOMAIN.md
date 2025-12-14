@@ -97,8 +97,8 @@ This process takes **5-10 minutes** after DNS validation completes.
 
 After DNS propagation (usually 5-30 minutes), test:
 
-- ✅ <https://www.uaecodes.com>
-- ✅ <https://uaecodes.com>
+- ✅ <https://www.uaecodes.com> (recommended canonical)
+- ✅ <https://uaecodes.com> (optional apex)
 
 ---
 
@@ -176,5 +176,5 @@ az staticwebapp hostname delete --name cv-portfolio --resource-group cv-portfoli
 
 **Your portfolio will be live at:**
 
-- <https://uaecodes.com>
 - <https://www.uaecodes.com>
+- <https://uaecodes.com> (optional)

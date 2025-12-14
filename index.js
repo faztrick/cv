@@ -64,7 +64,7 @@ console.log("\n");
 console.log("Quick Links:");
 console.log("─".repeat(70));
 console.log("");
-console.log("  🌐 Website:  https://uaecodes.com");
+console.log("  🌐 Website:  https://www.uaecodes.com");
 console.log("  💼 LinkedIn: https://linkedin.com/in/faztrick");
 console.log("  💻 GitHub:   https://github.com/faztrick");
 console.log("  📧 Email:    faztrick@gmail.com");

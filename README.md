@@ -330,7 +330,7 @@ Use `job-tracker-uae.csv` to track applications:
 
 ## 🔗 Quick Links
 
-- **Website**: <https://uaecodes.com>
+- **Website**: <https://www.uaecodes.com>
 - **LinkedIn**: <https://linkedin.com/in/faztrick>
 - **GitHub**: <https://github.com/faztrick>
 - **Email**: <faztrick@gmail.com>
