@@ -12,3 +12,12 @@
 [1213/173304.584:INFO:CONSOLE(0)] "Document-Policy HTTP header: Unrecognized document policy feature name include-js-call-stacks-in-crash-reports.", source: https://web.whatsapp.com/ (0)
 [1213/173317.494:INFO:CONSOLE(113)] "Event handler of 'x-storagemutated-1' event must be added on the initial evaluation of worker script.", source: https://static.whatsapp.net/rsrc.php/v4/yp/r/v8GbN37DEQT.js (113)
 [1213/173423.364:INFO:CONSOLE(113)] "Event handler of 'x-storagemutated-1' event must be added on the initial evaluation of worker script.", source: https://static.whatsapp.net/rsrc.php/v4/yp/r/v8GbN37DEQT.js (113)
+[1213/173559.810:INFO:CONSOLE(77)] "ErrorUtils caught an error:
+
+window is not defined
+
+Subsequent non-fatal errors won't be logged; see https://fburl.com/debugjs. [object Object]", source: https://static.whatsapp.net/rsrc.php/v4/yC/r/F9511sy6u10.js (77)
+[1213/173601.196:INFO:CONSOLE(113)] "Event handler of 'x-storagemutated-1' event must be added on the initial evaluation of worker script.", source: https://static.whatsapp.net/rsrc.php/v4/yp/r/v8GbN37DEQT.js (113)
+[1213/173650.276:INFO:CONSOLE(113)] "Event handler of 'x-storagemutated-1' event must be added on the initial evaluation of worker script.", source: https://static.whatsapp.net/rsrc.php/v4/yp/r/v8GbN37DEQT.js (113)
+[1213/173816.158:INFO:CONSOLE(113)] "Event handler of 'x-storagemutated-1' event must be added on the initial evaluation of worker script.", source: https://static.whatsapp.net/rsrc.php/v4/yp/r/v8GbN37DEQT.js (113)
+[1213/174021.850:INFO:CONSOLE(113)] "Event handler of 'x-storagemutated-1' event must be added on the initial evaluation of worker script.", source: https://static.whatsapp.net/rsrc.php/v4/yp/r/v8GbN37DEQT.js (113)

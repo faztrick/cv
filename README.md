@@ -69,6 +69,12 @@ npm run indeed-stats
 npm run parse-cv              # Parse resume.md and extract all data
 ```
 
+### Application Pack (Cover Letter + Resume Variant)
+
+```bash
+npm run apply-pack            # Generate a cover letter + pack summary from templates
+```
+
 ### Job Search
 
 ```bash

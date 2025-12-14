@@ -41,6 +41,7 @@
     "smart-email": "node scripts/smart-email-generator.js generate",
     "email-variants": "node scripts/smart-email-generator.js variants",
     "batch-emails": "node scripts/smart-email-generator.js batch",
+    "apply-pack": "node scripts/apply-pack.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

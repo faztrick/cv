@@ -5,9 +5,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <script>
             // Domain routing for UAECodes.com
-            if (window.location.hostname.includes('uaecodes.com') && window.location.pathname === '/' && !window.location.search.includes('portfolio')) {
-                window.location.replace('/uaecodes.html');
-            }
+            // IMPORTANT: Only match the apex host (uaecodes.com). Using `.includes()` also matches
+            // www.uaecodes.com and would incorrectly redirect the main portfolio landing page.
+            (function () {
+                const host = (window.location.hostname || '').toLowerCase();
+                const path = window.location.pathname || '/';
+
+                // If someone visits the apex domain root, show the UAECodes landing page.
+                // (If/when you configure the apex domain DNS + custom domain in Azure SWA)
+                if (host === 'uaecodes.com' && path === '/' && !window.location.search.includes('portfolio')) {
+                    window.location.replace('/uaecodes.html');
+                }
+            })();
         </script>
         <meta name="description" content="Muhammed Fasil PV - Senior Software Engineer specializing in AI/ML, IoT, Flutter & Node.js. 10+ years building intelligent systems for retail, ERP, and automation in Dubai, UAE." />
         <meta name="keywords" content="Muhammed Fasil PV, Software Engineer Dubai, AI Developer UAE, IoT Solutions, Flutter Developer, Node.js, Senior Developer, ERP Systems, Machine Learning" />
