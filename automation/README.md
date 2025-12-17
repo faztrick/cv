@@ -54,18 +54,21 @@ Quick start (Windows PowerShell)
 4) Run the bots:
 
    ```powershell
-   # LinkedIn Node.js
-   cd automation\repos\linkedin-job-apply-automation
-   node index.js
 
-   # LinkedIn Python
-   cd automation\repos\EasyApplyBot
-   .\.venv\Scripts\Activate.ps1
-   python .\main.py
+# LinkedIn Node.js (recommended): reads LINKEDIN_EMAIL/LINKEDIN_PASSWORD from the workspace .env
 
-   # Indeed Python
-   cd automation\repos\indeed_bot
-   python .\indeed_bot.py
+# injects them into config.json at runtime, then restores the original file
+
+  .\automation\run-linkedin-bot.ps1
+
+# Indeed Python: activates the workspace .venv and runs the bot using automation\repos\indeed_bot\config.yaml
+
+  .\automation\run-indeed-bot.ps1
+
+# Email outreach (Gmail SMTP): sends emails listed in data\target-companies.json
+
+  .\automation\run-email-outreach.ps1
+
    ```
 
 Repo notes
@@ -91,6 +94,11 @@ Located in `automation/`:
 - `configure-indeed-bot.ps1` - Interactive Indeed bot configuration
 - `test-linkedin-bot.ps1` - Pre-flight check for LinkedIn bot
 - `test-indeed-bot.ps1` - Pre-flight check for Indeed bot
+- `test-whatsapp.ps1` - Pre-flight check for WhatsApp panel integration (QR/connection status)
+- `run-linkedin-bot.ps1` - Run LinkedIn bot using credentials from workspace `.env` (secrets are not left in config)
+- `run-indeed-bot.ps1` - Run Indeed bot using workspace Python `.venv`
+- `run-email-outreach.ps1` - Send outreach emails via Gmail SMTP using `.env` (see `automation/README-SMTP.md`)
+- `run-whatsapp-message.ps1` - Send a single personal WhatsApp message via the local panel WhatsApp integration
 - `LINKEDIN-BOT-READY.md` - Complete LinkedIn bot guide (UAE-focused)
 
 Located in `tools/`:
@@ -99,7 +107,9 @@ Located in `tools/`:
 
 Centralized secrets (optional)
 
-- A shared .env template is provided at automation/.env.example for central storage of credentials. The selected repos may not read this file directly; it is just a convenience. Prefer each repo’s native config file first.
+- A shared .env template is provided at `automation/.env.example` for central storage of credentials.
+- The secure runner scripts (`run-linkedin-bot.ps1`) read from the **workspace root** `.env`.
+- The selected repos may not read `.env` directly; the runner scripts exist to avoid hard-coding credentials into repo config files.
 
 Compliance & safety checklist
 

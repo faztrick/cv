@@ -57,6 +57,7 @@ automation/repos/*/
 job-search-results.csv
 indeed-matches.json
 indeed-applications.json
+data/indeed-config.json
 scraped-contacts.json
 temp-apply-job.json
 *.pdf

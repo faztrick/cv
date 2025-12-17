@@ -12,7 +12,34 @@ This directory contains scripts to automate sending job applications via email, 
     * Create a new app password (name it "Job Automation").
     * Copy the 16-character code.
 
+Tip: You can store these locally (gitignored) in the workspace `.env`:
+
+* `GMAIL_SENDER_EMAIL=your@gmail.com`
+* `GMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx`
+
 ## Scripts
+
+### `test-email-smtp.ps1`
+
+Quick pre-flight check for email automation (Python, files, and optional `.env` variables).
+
+**Usage:**
+
+```powershell
+.\automation\test-email-smtp.ps1
+```
+
+### `run-email-outreach.ps1`
+
+Sends all generated outreach emails listed in `data/target-companies.json` with your resume attached.
+
+**Usage:**
+
+```powershell
+.\automation\run-email-outreach.ps1
+```
+
+This will read `GMAIL_SENDER_EMAIL` and `GMAIL_APP_PASSWORD` from the workspace `.env` (if present), otherwise it will prompt.
 
 ### `apply-emirates-smtp.ps1`
 

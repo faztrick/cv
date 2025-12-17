@@ -10,11 +10,13 @@ This update adds **WhatsApp Web** integration directly into the Control Panel.
 
 ## How to Use
 
-1. **Restart the Server**:
+1. **Start / Restart the Server**:
 
     ```bash
-    node server.js
+    npm run panel
     ```
+
+    (Equivalent: `node server.js`)
 
 2. **Open the Panel**: Go to [http://localhost:3000/panel](http://localhost:3000/panel).
 3. **Go to WhatsApp Tab**: Click "WhatsApp" in the sidebar.
@@ -23,6 +25,39 @@ This update adds **WhatsApp Web** integration directly into the Control Panel.
     - Go to **Settings** > **Linked Devices** > **Link a Device**.
     - Scan the QR code shown on the screen.
 5. **Connected**: Once connected, you will see a green success message.
+
+## Send a personal message (CLI)
+
+This repo already includes a WhatsApp tab in the panel **and** a safe CLI helper that sends **one** message (no bulk).
+
+1) Start the panel and connect WhatsApp:
+
+- Run `npm run panel`
+- Open: <http://localhost:3000/panel>
+- Go to **WhatsApp** tab and scan QR
+
+2) Send a single message:
+
+- Node CLI (dry-run by default): `node scripts/whatsapp-send-cli.js --number "+9715XXXXXXXX" --message "Hi ..."`
+- Actually send: `node scripts/whatsapp-send-cli.js --number "+9715XXXXXXXX" --message "Hi ..." --yes`
+
+Optional: send a PDF resume:
+
+- `node scripts/whatsapp-send-cli.js --number "+9715XXXXXXXX" --message "CV attached" --pdf "resumes/resume-fasil-software-2025.pdf" --yes`
+
+There is also a PowerShell wrapper:
+
+- `\.\automation\run-whatsapp-message.ps1`
+
+## Preflight (recommended)
+
+Before sending, you can run a quick preflight check:
+
+- `\.\automation\test-whatsapp.ps1`
+
+If the panel server is not running, this can also start it for you:
+
+- `\.\automation\test-whatsapp.ps1 -StartPanel`
 
 ## Troubleshooting
 

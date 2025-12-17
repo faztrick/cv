@@ -434,42 +434,7 @@ az staticwebapp delete \
 
 ## Observability (Application Insights)
 
-You can add end-to-end telemetry and live metrics with Azure Application Insights.
-
-### App Service (Image Server)
-
-```powershell
-# Create (or reuse) an Application Insights resource
-$AiName = "image-server-ai"
-az monitor app-insights component create \
-  --app $AiName \
-  --location $Location \
-  --resource-group $ResourceGroup \
-  --application-type web
-
-# Get the connection string
-$AIConn = az monitor app-insights component show \
-  --app $AiName \
-  --resource-group $ResourceGroup \
-  --query connectionString -o tsv
-
-# Add to App Service as an app setting
-az webapp config appsettings set \
-  --name $AppName \
-  --resource-group $ResourceGroup \
-  --settings APPLICATIONINSIGHTS_CONNECTION_STRING=$AIConn
-
-# Optional: enable logging to filesystem for quick diagnosis
-az webapp log config \
-  --name $AppName \
-  --resource-group $ResourceGroup \
-  --application-logging filesystem \
-  --detailed-error-messages true \
-  --failed-request-tracing true \
-  --web-server-logging filesystem
-```
-
-### Static Web Apps (Frontend)
+Static Web Apps integrates with Azure Monitor logs via "Diagnostic settings" in the Portal. To enable:
 
 Static Web Apps integrates with Azure Monitor logs via "Diagnostic settings" in the Portal. To enable:
 
@@ -528,50 +493,6 @@ This mirrors your local `swa-cli.config.json` which points to `/public`.
 
 ---
 
-## Store Images in Azure Blob Storage (Recommended)
-
-For production, store uploaded images in Blob Storage instead of the App Service filesystem.
-
-### Create storage account and container
-
-```powershell
-$StorageName = ("imgstore" + (Get-Random -Maximum 99999))
-az storage account create \
-  --name $StorageName \
-  --resource-group $ResourceGroup \
-  --location $Location \
-  --sku Standard_LRS \
-  --kind StorageV2
-
-# Get connection string
-$Conn = az storage account show-connection-string \
-  --name $StorageName \
-  --resource-group $ResourceGroup \
-  --query connectionString -o tsv
-
-# Create a private container for images
-az storage container create \
-  --name images \
-  --connection-string $Conn \
-  --auth-mode key
-
-# Save connection string to App Service settings
-az webapp config appsettings set \
-  --name $AppName \
-  --resource-group $ResourceGroup \
-  --settings BLOB_CONNECTION_STRING="$Conn" BLOB_CONTAINER=images
-```
-
-### App changes (high-level)
-
-- Use `@azure/storage-blob` to upload/download images
-- Generate short-lived SAS URLs for secure access if needed
-- Keep existing endpoints (`/v1/savebese64file`, gallery) but back them with Blob APIs
-
-This improves durability, scalability, and avoids quota limits of the App Service filesystem.
-
----
-
 ## Next Steps (updated)
 
 1. ✅ Deploy portfolio to Azure
@@ -579,127 +500,47 @@ This improves durability, scalability, and avoids quota limits of the App Servic
 3. ✅ Verify HTTPS certificate
 4. 🔄 Set up CI/CD with GitHub Actions
 5. 🔄 Enable Diagnostic settings / Application Insights
-6. 🔄 Migrate images to Azure Blob Storage
-7. 🔄 Add Log Analytics dashboards and alerts
+6. 🔄 Add Log Analytics dashboards and alerts
 
 ---
 
 **Last Updated:** 2025-11-12
 
-```javascript
-require('dotenv').config();
-const express = require('express');
-const app = express();
-const bodyParser = require('body-parser');
-const fs = require('fs');
-const https = require('https');
-const cors = require('cors');
-const path = require("path");
+> Note: This guide intentionally covers **Static Web Apps only**. The previous “image server / gallery” App Service has been removed to cut cost.
 
-app.use(bodyParser.json({ limit: '30mb' }));
-app.use(bodyParser.urlencoded({ limit: '30mb', extended: true }));
-app.use(express.json());
-app.use(cors());
+## Cost cut: remove Image Gallery resources
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Internal Server Error');
-});
+If you previously deployed an **Image Server / Gallery** (App Service or Function App), delete it to stop charges.
 
-// Static files
-app.use(express.static('public'));
-app.use(express.static('./data'));
-app.use('/data', express.static('data'));
+### Azure Portal
 
-// Save base64 image file
-app.post('/v1/savebese64file', async (req, res) => {
-  const { body } = req;
-  try {
-    const api_key = body.api_key;
-    let filename = body.filename ?? "image.jpg";
-    const base64Data = body.file ?? "";
-    const basePath = 'data/';
-    const userPath = path.join(basePath, api_key);
+1. Go to **Azure Portal** → **Resource groups**.
+2. Open the resource group that contains the image server.
+3. Delete these resources (typical):
+   - **App Service** (Web App)
+   - **App Service plan** (this is often the main cost driver)
+   - **Storage account** (if created for images)
+   - **Application Insights** (optional)
+4. If the resource group is *only* for the image server, delete the entire **resource group**.
 
-    console.log(`Filename= ${filename}`);
+### Azure CLI (PowerShell)
 
-    // Ensure user path exists
-    if (!fs.existsSync(userPath)) {
-      console.log('Folder not found. Creating.');
-      fs.mkdirSync(userPath, { recursive: true });
-    }
+Use these to find and delete the web app + its plan:
 
-    // Ensure destination path exists
-    const destinationPath = path.join(userPath, 'documents');
-    if (!fs.existsSync(destinationPath)) {
-      console.log(`Folder ${destinationPath} not found. Creating.`);
-      fs.mkdirSync(destinationPath, { recursive: true });
-    }
+```powershell
+# List web apps (and their resource groups)
+az webapp list --query "[].{name:name, rg:resourceGroup, state:state, host:defaultHostName}" -o table
 
-    // Decode base64 and save the file
-    const buffer = Buffer.from(base64Data, 'base64');
-    fs.writeFileSync(path.join(destinationPath, filename), buffer);
+# Delete a specific web app
+az webapp delete --name <APP_NAME> --resource-group <RESOURCE_GROUP>
 
-    return res.status(200).json({
-      message: "File saved successfully.",
-      url: `https://uaecodes.com:2211/${api_key}/documents/${filename}`
-    });
-  } catch (err) {
-    console.log(err.message);
-    return res.status(500).json({ msg: "Internal server error" });
-  }
-});
+# List App Service plans (to find the one still billing)
+az appservice plan list --query "[].{name:name, rg:resourceGroup, sku:sku.name, tier:sku.tier}" -o table
 
-// Show all images with pagination and delete option
-app.get('/showallimg', (req, res) => {
-  const folderPath = './data/key/documents';
-  const page = parseInt(req.query.page) || 1;
-  const limit = parseInt(req.query.limit) || 12;
-  const sortOrder = req.query.sort || 'desc'; // 'asc' or 'desc'
+# Delete the App Service plan (stops most charges)
+az appservice plan delete --name <PLAN_NAME> --resource-group <RESOURCE_GROUP> --yes
+```
 
-  fs.readdir(folderPath, (err, items) => {
-    if (err) {
-      console.error(`Error reading the folder: ${err}`);
-      res.status(500).send('Internal Server Error');
-      return;
-    }
-
-    // Filter only image files
-    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
-    const imageFiles = items.filter(item => {
-      const ext = path.extname(item).toLowerCase();
-      return imageExtensions.includes(ext);
-    });
-
-    // Get file stats and sort by date
-    const itemsWithStats = imageFiles.map(item => {
-      const filePath = path.join(folderPath, item);
-      const stats = fs.statSync(filePath);
-      return {
-        item,
-        mtime: stats.mtime,
-        size: stats.size,
-        formattedDate: stats.mtime.toLocaleDateString(),
-        formattedTime: stats.mtime.toLocaleTimeString()
-      };
-    });
-
-    // Sort by date
-    itemsWithStats.sort((a, b) => {
-      return sortOrder === 'desc' ? b.mtime - a.mtime : a.mtime - b.mtime;
-    });
-
-    // Pagination
-    const totalItems = itemsWithStats.length;
-    const totalPages = Math.ceil(totalItems / limit);
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    const paginatedItems = itemsWithStats.slice(startIndex, endIndex);
-
-    // Generate HTML
-    let html = `
-    <!DOCTYPE html>
-    <html>
     <head>
     <title>Image Gallery</title>
     <meta charset="UTF-8">

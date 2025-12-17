@@ -2,14 +2,14 @@
 param(
     [string]$Email,
     [string]$Password,
-    [string]$Keyword = "Software Architect",
+    [string]$Keyword = "Full Stack Developer Flutter",
     [string]$Location = "United Arab Emirates",
     [ValidateSet("Past 24 hours", "Past Week")]
     [string]$Period = "Past Week",
     [int]$Pages = 3
 )
 
-$configPath = "E:\cv\automation\repos\linkedin-job-apply-automation\config.json"
+$configPath = Join-Path $PSScriptRoot "repos\linkedin-job-apply-automation\config.json"
 
 Write-Host "`n=== LinkedIn Job Bot - Quick Configuration ===" -ForegroundColor Cyan
 
@@ -23,7 +23,7 @@ if (-not $Email) {
     )
 
     Write-Host "`nJob Search Preferences:" -ForegroundColor Yellow
-    $keywordInput = Read-Host "Job Keyword (default: Software Architect)"
+    $keywordInput = Read-Host "Job Keyword (default: Full Stack Developer Flutter)"
     if ($keywordInput) { $Keyword = $keywordInput }
 
     $locationInput = Read-Host "Location (default: United Arab Emirates)"

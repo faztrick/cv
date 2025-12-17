@@ -1,6 +1,6 @@
 # Quick Configuration Helper for Indeed Job Bot
 param(
-  [string]$JobTitle = "React Flutter Developer",
+  [string]$JobTitle = "Full Stack Developer Flutter",
   [string]$Location = "Dubai",
   [ValidateSet("ae", "us", "uk", "fr", "de", "sa")]
   [string]$Country = "ae",
@@ -9,7 +9,7 @@ param(
   [int]$PostedWithinDays = 14
 )
 
-$configPath = "E:\cv\automation\repos\indeed_bot\config.yaml"
+$configPath = Join-Path $PSScriptRoot "repos\indeed_bot\config.yaml"
 
 Write-Host "`n=== Indeed Job Bot - Quick Configuration ===" -ForegroundColor Cyan
 
@@ -17,7 +17,7 @@ Write-Host "`n=== Indeed Job Bot - Quick Configuration ===" -ForegroundColor Cya
 if (-not $PSBoundParameters.ContainsKey('JobTitle')) {
   Write-Host "`nEnter your job search preferences:" -ForegroundColor Yellow
 
-  $titleInput = Read-Host "Job Title (default: Software Architect)"
+  $titleInput = Read-Host "Job Title (default: Full Stack Developer Flutter)"
   if ($titleInput) { $JobTitle = $titleInput }
 
   $locationInput = Read-Host "Location (default: Dubai)"

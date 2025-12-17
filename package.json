@@ -44,6 +44,7 @@
     "apply-pack": "node scripts/apply-pack.js",
     "job-pack": "node scripts/job-pack.js",
     "automate": "node scripts/automate.js",
+    "mcp:job-agent": "node mcp/job-agent-server.mjs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -70,6 +71,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^5.2.1",
+    "@modelcontextprotocol/sdk": "^1.0.0",
     "openai": "^6.10.0",
     "playwright": "^1.57.0",
     "puppeteer-core": "^24.32.0",

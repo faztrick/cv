@@ -3,7 +3,7 @@
 
 Write-Host "`n=== Indeed Job Application Bot - Pre-Flight Check ===" -ForegroundColor Cyan
 
-$repoPath = "E:\cv\automation\repos\indeed_bot"
+$repoPath = Join-Path $PSScriptRoot "repos\indeed_bot"
 
 # Check 1: Python Installation
 Write-Host "`n[1/5] Checking Python installation..." -ForegroundColor Yellow
@@ -139,7 +139,7 @@ Write-Host "     cd automation\repos\indeed_bot" -ForegroundColor Gray
 Write-Host "     pip install -r requirements.txt" -ForegroundColor Gray
 Write-Host "`n  3. Upload CV to Indeed and complete profile" -ForegroundColor White
 Write-Host "`n  4. Run bot (first time - manual login):" -ForegroundColor White
-Write-Host "     python indeed_bot.py" -ForegroundColor Gray
+Write-Host "     .\automation\run-indeed-bot.ps1" -ForegroundColor Gray
 Write-Host "`n  5. After login, restart bot to auto-apply" -ForegroundColor White
 
 Write-Host "`n⚠️  WARNING: May violate Indeed's Terms of Service!" -ForegroundColor Red

@@ -11,48 +11,40 @@
     "whatsapp": "https://wa.me/971555923545",
     "website": "https://uaecodes.com"
   },
-  "summary": "Senior full-stack engineer with **13+ years** delivering scalable enterprise platforms (ERP/POS/QMS) and automation systems. Strong in **React + TypeScript** frontends and **Node.js** backends, building modular UI, REST APIs, and real-time workflows (MQTT). Experienced integrating practical AI features (OpenAI/LangChain, YOLO) and running production deployments with Docker, CI/CD, and secure networking (MikroTik/WireGuard). ---",
+  "summary": "Senior full-stack engineer with **13+ years** delivering scalable enterprise platforms (ERP/POS/QMS) and automation systems. Strong in **React + TypeScript** frontends and **Node.js** backends, building modular UI, REST APIs, and real-time workflows. Experienced integrating practical AI features (OpenAI/LangChain, YOLO) and running production deployments with Docker, CI/CD, and cloud infrastructure. ---",
   "skills": [
-    "Flutter",
-    "Dart",
     "React",
     "Node.js",
     "TypeScript",
     "JavaScript",
     "Python",
+    "Flutter",
+    "Dart",
     "C#",
     "OpenAI",
     "LangChain",
-    "Qwen3",
     "YOLO",
-    "Whisper",
     "TensorFlow",
-    "IoT",
-    "ESP32",
-    "Raspberry Pi",
-    "MQTT",
     "Docker",
-    "PM2",
-    "Nginx",
+    "Kubernetes",
     "AWS",
     "Azure",
     "GCP",
     "MySQL",
     "MongoDB",
+    "PostgreSQL",
     "Firebase",
     "Hive",
-    "ObjectBox",
-    "MikroTik",
-    "WireGuard",
-    "React.js"
+    "CI/CD",
+    "Microservices"
   ],
   "experience": [
     {
-      "role": "Software Engineer",
+      "role": "Senior Software Engineer",
       "company": "Idol Technology LLC",
       "location": "Dubai, UAE",
       "duration": "Aug 2024 – Present",
-      "description": "Architected **IdolMEA ERP** integrating **POS, QMS, IoT automation, and AI vision** modules. Built multi-branch dashboards and services using **Node.js** with secure site connectivity. Developed **AI theft detection** (YOLO) for **self-checkout kiosks** with LED/GPIO feedback via **AIDL interface**. Designed **IdolVPN mesh (WireGuard)** network for secure multi-branch communication and API routing. Integrated **WhatsApp/Telegram chat automation** for live queue alerts and service updates. Created **hybrid cloud sync engine** (MySQL ↔ Hive) enabling offline analytics and recovery."
+      "description": "Architected **IdolMEA ERP** integrating **POS, QMS, and AI vision** modules. Built multi-branch dashboards and services using **Node.js** with secure site connectivity. Developed **AI theft detection** (YOLO) for **self-checkout kiosks**. Designed secure API routing and microservices architecture. Integrated **WhatsApp/Telegram chat automation** for live queue alerts and service updates. Created **hybrid cloud sync engine** (MySQL ↔ Hive) enabling offline analytics and recovery."
     },
     {
       "role": "Senior Software Engineer",
@@ -110,11 +102,11 @@
     },
     {
       "name": "Enterprise VPN Mesh",
-      "description": "8+ node WireGuard VPN mesh on MikroTik routers for secure multi-branch connectivity",
+      "description": "Secure multi-branch connectivity solution for distributed retail networks",
       "technologies": [
-        "MikroTik",
-        "WireGuard",
-        "RouterOS"
+        "Networking",
+        "Security",
+        "Infrastructure"
       ],
       "status": "Active",
       "category": "Infrastructure"
@@ -190,7 +182,7 @@
     },
     {
       "name": "LampAidlInterface",
-      "description": "Android Kotlin + Flutter IPC bridge for real-time LED/lamp automation in retail devices",
+      "description": "Android Kotlin + Flutter IPC bridge for real-time device automation",
       "technologies": [
         "Kotlin",
         "Flutter",
@@ -208,7 +200,6 @@
   ],
   "availability": {
     "status": "Available Immediately",
-    "visa": "Valid UAE Work Visa",
     "location": "Dubai, UAE"
   },
   "yearsOfExperience": 13

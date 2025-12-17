@@ -7,6 +7,7 @@ All modules have been tested and are working correctly!
 ## Quick Commands
 
 ### 📧 Email Generation
+
 ```bash
 # Generate sample job emails
 npm run generate-emails
@@ -19,6 +20,7 @@ npm run email-variants "AI Engineer" "Tech Company"
 ```
 
 ### 📄 CV Management
+
 ```bash
 # Parse your CV and extract data
 npm run parse-cv
@@ -28,6 +30,7 @@ npm run job-agent
 ```
 
 ### 🌐 Web Panel
+
 ```bash
 # Start the web dashboard
 npm run panel
@@ -36,6 +39,7 @@ npm run panel
 ```
 
 ### 🤖 Job Automation
+
 ```bash
 # Auto-fill job application
 npm run auto-fill apply "https://www.bayt.com/job/..."
@@ -47,12 +51,14 @@ npm run playwright-bayt
 ```
 
 ### 📊 Outreach Management
+
 ```bash
 # Manage outreach campaigns
 npm run outreach
 ```
 
 ### 🧹 Maintenance
+
 ```bash
 # Clean browser cache
 npm run clean-cache
@@ -82,17 +88,30 @@ npm run clean-cache
 ## Optional Setup
 
 ### Enable AI Features
+
 ```bash
 # Set OpenAI API key
 export OPENAI_API_KEY="your-api-key-here"
 ```
 
 ### Enable WhatsApp Integration
+
 ```bash
 # Install Chromium
 npm install
 # (without PUPPETEER_SKIP_DOWNLOAD)
 ```
+
+### MCP (VS Code + Docker MCP Toolkit)
+
+This repo includes a workspace-level MCP configuration at `cv/.vscode/mcp.json` that runs the Docker MCP gateway.
+
+- Recommended: enable only the MCP servers you need in Docker Desktop (MCP Toolkit) and run the gateway without `--enable-all-servers`.
+- If you run with `--enable-all-servers`, Docker may log many "couldn't read secret ..." warnings for catalog servers you haven't configured.
+- To enable “dynamic agent” behavior (agents can discover/add MCP servers on-demand), enable Docker’s Dynamic MCP tools:
+ 	- `docker mcp feature enable dynamic-tools`
+ 	- Restart VS Code after enabling.
+- If you use Sentry MCP, use Streamable HTTP at `https://mcp.sentry.dev/mcp` (the legacy SSE endpoint `/sse` was removed).
 
 ## Support
 

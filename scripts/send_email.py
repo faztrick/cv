@@ -65,7 +65,8 @@ if __name__ == "__main__":
     parser.add_argument("--subject", required=True, help="Email subject")
     parser.add_argument("--body", required=True, help="Path to body text file")
     parser.add_argument("--attachment", help="Path to attachment file")
-    parser.add_argument("--sender", default="faztrick@gmail.com", help="Sender email")
+    default_sender = os.environ.get("GMAIL_SENDER_EMAIL") or "faztrick@gmail.com"
+    parser.add_argument("--sender", default=default_sender, help="Sender email")
 
     args = parser.parse_args()
 

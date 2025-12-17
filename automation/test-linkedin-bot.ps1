@@ -38,7 +38,7 @@ catch {
 
 # Check 3: Dependencies
 Write-Host "`n[3/5] Checking npm packages..." -ForegroundColor Yellow
-$repoPath = "E:\cv\automation\repos\linkedin-job-apply-automation"
+$repoPath = Join-Path $PSScriptRoot "repos\linkedin-job-apply-automation"
 if (Test-Path "$repoPath\node_modules") {
   Write-Host "  ✓ Dependencies installed" -ForegroundColor Green
 

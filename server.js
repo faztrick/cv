@@ -332,8 +332,8 @@ app.get('/api/ai/config', (req, res) => {
         return res.json({
             provider: 'openai',
             apiKey: '',
-            baseUrl: 'http://localhost:11434/v1',
-            model: 'gpt-4o',
+            baseUrl: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
+            model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
             temperature: 0.7,
             maxTokens: 2000,
             autoApply: false

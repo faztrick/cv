@@ -175,7 +175,7 @@ cv/
 ├── public/                         # Static website
 │   ├── index.html                  # Landing page
 │   ├── cv.html                     # Web resume
-│   └── imgserver/                  # Image hosting service
+│   └── (static assets only)
 │
 └── docs/                          # Documentation
     ├── QUICK-START.md
@@ -327,7 +327,6 @@ The `public/` folder contains a static website with your resume:
 
 - **Landing Page**: `public/index.html`
 - **Web Resume**: `public/cv.html`
-- **Image Server**: `public/imgserver/` (Azure Function)
 
 Deploy to Azure Static Web Apps:
 
