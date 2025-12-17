@@ -1,0 +1,28 @@
+{
+	"inputs": [],
+	"servers": {
+		"MCP_DOCKER": {
+			"autoStart": true,
+			"command": "docker",
+			"args": [
+				"mcp",
+				"gateway",
+				"run"
+			],
+			"type": "stdio"
+		},
+		"cv-job-agent-mcp": {
+			"autoStart": false,
+			"command": "node",
+			"args": [
+				"mcp/job-agent-server.mjs"
+			],
+			"type": "stdio"
+		},
+		"sentry": {
+			"autoStart": false,
+			"type": "http",
+			"url": "https://mcp.sentry.dev/mcp"
+		}
+	}
+}

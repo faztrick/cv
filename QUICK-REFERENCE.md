@@ -111,6 +111,7 @@ This repo includes a workspace-level MCP configuration at `cv/.vscode/mcp.json` 
 - To enable “dynamic agent” behavior (agents can discover/add MCP servers on-demand), enable Docker’s Dynamic MCP tools:
  	- `docker mcp feature enable dynamic-tools`
  	- Restart VS Code after enabling.
+- Copilot Chat tool sets (optional): this repo includes `cv/.vscode/toolsets.jsonc` with a few handy tool groups (`#reader`, `#dockerMcpAdmin`, `#safeFix`).
 - If you use Sentry MCP, use Streamable HTTP at `https://mcp.sentry.dev/mcp` (the legacy SSE endpoint `/sse` was removed).
 
 ## Support

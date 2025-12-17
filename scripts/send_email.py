@@ -9,7 +9,7 @@ from email.mime.application import MIMEApplication
 def parse_body(file_path):
     """Reads the body file and strips headers like Date:, Subject:, etc."""
     if not os.path.exists(file_path):
-        return f"Error: Body file not found at {file_path}"
+        raise FileNotFoundError(f"Body file not found at {file_path}")
 
     with open(file_path, 'r', encoding='utf-8') as f:
         lines = f.readlines()
@@ -58,6 +58,7 @@ def send_email(to_email, subject, body_file, attachment_path, sender_email, pass
         print(f"❌ Failed to send email: {e}")
         print("Tip: Ensure you are using an App Password, not your regular Gmail password.")
         print("Generate one at: https://myaccount.google.com/apppasswords")
+        raise SystemExit(1)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Send email with attachment via Gmail SMTP")
@@ -77,4 +78,14 @@ if __name__ == "__main__":
         print("If you don't have one, generate it at: https://myaccount.google.com/apppasswords")
         password = getpass.getpass("Password: ")
 
-    send_email(args.to, args.subject, args.body, args.attachment, args.sender, password)
+    try:
+        send_email(args.to, args.subject, args.body, args.attachment, args.sender, password)
+    except FileNotFoundError as e:
+        print(f"❌ {e}")
+        raise SystemExit(1)
+    except SystemExit:
+        # Preserve explicit exit codes raised elsewhere.
+        raise
+    except Exception as e:
+        print(f"❌ Unexpected error: {e}")
+        raise SystemExit(1)

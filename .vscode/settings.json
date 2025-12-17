@@ -25,5 +25,11 @@
         "copilot/oswe-vscode-prime"
       ]
     }
-  }
+  },
+  "azureFunctions.deploySubpath": "public\\imgserver",
+  "azureFunctions.postDeployTask": "npm install (functions)",
+  "azureFunctions.projectLanguage": "JavaScript",
+  "azureFunctions.projectRuntime": "~4",
+  "debug.internalConsoleOptions": "neverOpen",
+  "azureFunctions.preDeployTask": "npm prune (functions)"
 }

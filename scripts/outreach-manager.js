@@ -7,8 +7,12 @@
 
 const fs = require('fs');
 const path = require('path');
-const { execSync } = require('child_process');
+const { spawnSync } = require('child_process');
 const { generatePersonalizedEmail, saveEmailToFile } = require('./smart-email-generator');
+const { buildInlineBodyForOutreach } = require('./outreach-inline-body');
+
+// Load local env vars when running via CLI (panel server also loads env).
+require('dotenv').config({ path: path.join(__dirname, '..', '.env') });
 
 const DB_PATH = path.join(__dirname, '..', 'data', 'target-companies.json');
 const EMAILS_DIR = path.join(__dirname, '..', 'emails', 'outreach');
@@ -145,39 +149,90 @@ function sendEmails(realSend = false) {
 
     console.log(`\n🚀 Sending emails to ${ready.length} companies...\n`);
 
+    const repoRoot = path.join(__dirname, '..');
+    const venvPython = path.join(repoRoot, '.venv', 'Scripts', 'python.exe');
+    const pythonExe = fs.existsSync(venvPython) ? venvPython : 'python';
+
+    const defaultResume = path.join(repoRoot, 'resumes', 'resume-fasil-software-2025.pdf');
+    const resumeAttachment = fs.existsSync(defaultResume) ? defaultResume : null;
+
+    const senderEmail = process.env.GMAIL_SENDER_EMAIL || undefined;
+
+    if (realSend && !process.env.GMAIL_APP_PASSWORD) {
+        console.error('❌ GMAIL_APP_PASSWORD is not set.');
+        console.error('This command runs non-interactively (panel/server). Set it in .env before sending real emails.');
+        console.error('Example: GMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx');
+        process.exit(1);
+    }
+
+    const inline = process.argv.includes('--inline') || process.argv.includes('--no-attachment');
+    const includeInlineCV = process.argv.includes('--cv-inline');
+    const includeAICoverLetter = process.argv.includes('--cover-letter-openai');
+
     ready.forEach(c => {
         if (!c.generatedEmailPath || !fs.existsSync(c.generatedEmailPath)) {
             console.log(`⚠️  Skipping ${c.name}: Email file not found.`);
             return;
         }
 
+        if (realSend && !c.email) {
+            console.log(`⚠️  Skipping ${c.name}: Missing recipient email.`);
+            return;
+        }
+
         console.log(`Sending to ${c.name} (${c.email})...`);
 
-        if (realSend) {
-            // Construct python command
-            // python scripts/send_email.py --to "email" --subject "Subject" --body "path"
+        // Extract subject from file (first line)
+        const content = fs.readFileSync(c.generatedEmailPath, 'utf8');
+        const subjectMatch = content.match(/^Subject: (.+)$/m);
+        const subject = subjectMatch ? subjectMatch[1] : `Application for ${c.jobTitle}`;
 
-            // Extract subject from file (first line)
-            const content = fs.readFileSync(c.generatedEmailPath, 'utf8');
-            const subjectMatch = content.match(/^Subject: (.+)$/m);
-            const subject = subjectMatch ? subjectMatch[1] : `Application for ${c.jobTitle}`;
+        if (!realSend) {
+            console.log(`   [DRY RUN] Email ready for ${c.email || '(no email set)'}. Use --real to send.`);
+            return;
+        }
 
+        // Build body:
+        // - default: existing generated email file
+        // - inline mode: generates an augmented body file including AI cover letter and/or CV text
+        let bodyPath = c.generatedEmailPath;
+        if (inline || includeInlineCV || includeAICoverLetter) {
             try {
-                // We use the python script
-                const cmd = `python scripts/send_email.py --to "${c.email}" --subject "${subject}" --body "${c.generatedEmailPath}" --sender "faztrick@gmail.com"`;
-                // Note: This requires GMAIL_APP_PASSWORD env var or manual input.
-                // For automation, we assume it's set or we skip.
-
-                // For safety in this demo, we won't actually execute the send unless explicitly confirmed
-                // execSync(cmd, { stdio: 'inherit' });
-
-                console.log(`   [MOCK SEND] Would execute: ${cmd}`);
-                c.status = 'Sent'; // Update status even in mock for flow demonstration
-            } catch (err) {
-                console.error(`   -> Failed to send: ${err.message}`);
+                bodyPath = buildInlineBodyForOutreach({
+                    company: c,
+                    subject,
+                    baseEmailPath: c.generatedEmailPath,
+                    includeCV: includeInlineCV,
+                    includeCoverLetterAI: includeAICoverLetter
+                });
+            } catch (e) {
+                console.error(`   ❌ Failed to build inline body for ${c.name}: ${e.message}`);
+                c.lastError = `inline body build failed: ${e.message}`;
+                return;
             }
+        }
+
+        const args = [
+            'scripts/send_email.py',
+            '--to', String(c.email),
+            '--subject', String(subject),
+            '--body', String(bodyPath)
+        ];
+
+        // Attachments are optional, but in inline mode we intentionally avoid attaching files.
+        if (!inline && resumeAttachment) args.push('--attachment', resumeAttachment);
+        if (senderEmail) args.push('--sender', senderEmail);
+
+        const r = spawnSync(pythonExe, args, { cwd: repoRoot, encoding: 'utf8' });
+        if (r.stdout) process.stdout.write(r.stdout);
+        if (r.stderr) process.stderr.write(r.stderr);
+
+        if (r.status === 0) {
+            c.status = 'Sent';
+            console.log(`   ✅ Sent to ${c.email}`);
         } else {
-            console.log(`   [DRY RUN] Email ready for ${c.email}. Use --real to send.`);
+            console.error(`   ❌ Failed to send to ${c.email} (exit code ${r.status ?? 'unknown'})`);
+            c.lastError = `send_email.py failed (exit code ${r.status ?? 'unknown'})`;
         }
     });
 

@@ -3,10 +3,14 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
-const { exec } = require('child_process');
+const { exec, spawnSync } = require('child_process');
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const QRCode = require('qrcode');
 const { SkillsJobMatcher } = require('./scripts/skills-job-matcher');
+
+// Load local env vars (SMTP creds, model settings, etc.) when running the panel.
+// Safe: this server is intended for local use.
+require('dotenv').config({ path: path.join(__dirname, '.env') });
 
 const app = express();
 const PORT = 3000;
@@ -63,6 +67,8 @@ app.post('/api/run', (req, res) => {
         'npm run outreach generate',
         'npm run outreach send', // Dry run
         'npm run outreach send -- --real',
+        'npm run outreach send -- --real --cover-letter-openai',
+        'npm run outreach send -- --real --inline --cv-inline --cover-letter-openai',
         'npm run playwright-indeed',
         'npm run playwright-linkedin',
         'npm run playwright-dubizzle',
@@ -99,6 +105,100 @@ app.get('/api/emails', (req, res) => {
         return { filename: file, content };
     });
     res.json(emails);
+});
+
+// Email (Gmail SMTP) preflight for UI
+app.get('/api/email/preflight', (req, res) => {
+    const repoRoot = __dirname;
+
+    // Optional: panel-saved AI config may contain apiKey (not recommended, but supported).
+    let openaiApiKeyFromSavedConfig = false;
+    try {
+        const cfgPath = path.join(repoRoot, 'data', 'ai-config.json');
+        if (fs.existsSync(cfgPath)) {
+            const cfg = JSON.parse(fs.readFileSync(cfgPath, 'utf8'));
+            openaiApiKeyFromSavedConfig = Boolean(cfg && cfg.apiKey);
+        }
+    } catch {
+        // ignore
+    }
+
+    const checks = {
+        python: {
+            ok: false,
+            executable: null,
+            source: null
+        },
+        files: {
+            sendEmailPy: {
+                path: path.join(repoRoot, 'scripts', 'send_email.py'),
+                ok: false
+            },
+            targetsJson: {
+                path: path.join(repoRoot, 'data', 'target-companies.json'),
+                ok: false
+            },
+            defaultResumePdf: {
+                path: path.join(repoRoot, 'resumes', 'resume-fasil-software-2025.pdf'),
+                ok: false
+            }
+        },
+        env: {
+            gmailSenderEmail: process.env.GMAIL_SENDER_EMAIL || null,
+            gmailAppPasswordSet: Boolean(process.env.GMAIL_APP_PASSWORD),
+            openaiApiKeySet: Boolean(process.env.OPENAI_API_KEY) || openaiApiKeyFromSavedConfig
+        }
+    };
+
+    // Python (prefer venv)
+    const venvPython = path.join(repoRoot, '.venv', 'Scripts', 'python.exe');
+    if (fs.existsSync(venvPython)) {
+        checks.python.ok = true;
+        checks.python.executable = venvPython;
+        checks.python.source = 'venv';
+    } else {
+        try {
+            const r = spawnSync('python', ['--version'], { encoding: 'utf8', timeout: 3000 });
+            if (!r.error && r.status === 0) {
+                checks.python.ok = true;
+                checks.python.executable = 'python';
+                checks.python.source = 'system';
+            }
+        } catch {
+            // ignore
+        }
+    }
+
+    // Files
+    checks.files.sendEmailPy.ok = fs.existsSync(checks.files.sendEmailPy.path);
+    checks.files.targetsJson.ok = fs.existsSync(checks.files.targetsJson.path);
+    checks.files.defaultResumePdf.ok = fs.existsSync(checks.files.defaultResumePdf.path);
+
+    const baseOk = Boolean(
+        checks.python.ok &&
+        checks.files.sendEmailPy.ok &&
+        checks.files.targetsJson.ok
+    );
+
+    const readyForRealSend = Boolean(baseOk && checks.env.gmailAppPasswordSet);
+
+    const warnings = [];
+    if (!checks.files.defaultResumePdf.ok) {
+        warnings.push('Default resume PDF not found. Real sends may proceed without attachment unless you provide one elsewhere.');
+    }
+    if (!checks.env.gmailSenderEmail) {
+        warnings.push('GMAIL_SENDER_EMAIL not set. send_email.py will fall back to its default sender.');
+    }
+    if (!checks.env.openaiApiKeySet) {
+        warnings.push('OpenAI key not set. AI cover letter generation will fail unless you set OPENAI_API_KEY in .env (recommended) or save a key in the panel AI settings.');
+    }
+
+    res.json({
+        ok: baseOk,
+        readyForRealSend,
+        checks,
+        warnings
+    });
 });
 
 // Serve Dashboard

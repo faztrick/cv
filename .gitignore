@@ -21,7 +21,7 @@ public/imgserver/node_modules/
 .env.*.local
 
 # IDE
-.vscode/
+
 .idea/
 *.swp
 *.swo

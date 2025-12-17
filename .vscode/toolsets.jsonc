@@ -1,0 +1,36 @@
+{
+  // Tool sets for VS Code Copilot Chat (Agent mode)
+  // Use: Chat → Configure Tools → Tool Sets (or type #<toolsetName> in chat)
+  "reader": {
+    "tools": [
+      "changes",
+      "codebase",
+      "problems",
+      "usages"
+    ],
+    "description": "Read-only context: diff, code search, problems, references",
+    "icon": "book"
+  },
+  "dockerMcpAdmin": {
+    "tools": [
+      "mcp-find",
+      "mcp-add",
+      "mcp-config-set",
+      "mcp-remove",
+      "mcp-exec"
+    ],
+    "description": "Docker MCP Dynamic tools: find/add/remove servers in the current gateway session",
+    "icon": "tools"
+  },
+  "safeFix": {
+    "tools": [
+      "changes",
+      "codebase",
+      "problems",
+      "usages",
+      "terminal"
+    ],
+    "description": "Balanced set for small fixes (review + terminal when needed)",
+    "icon": "wrench"
+  }
+}

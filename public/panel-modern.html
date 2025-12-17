@@ -1902,6 +1902,51 @@
         <!-- Emails Tab -->
         <div id="tab-emails" class="tab-content hidden space-y-4">
             <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Generated Emails</h2>
+
+            <!-- Email Outreach Controls -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                        <h3 class="font-semibold text-gray-800 dark:text-white">Email Outreach (SMTP)</h3>
+                        <p class="text-xs text-gray-500 dark:text-gray-400">Runs locally via Gmail App Password stored in <code>.env</code>. Real sending requires explicit confirmation.</p>
+                    </div>
+                    <span id="email-preflight-badge" class="px-2.5 py-1 rounded-full text-xs bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300">Not checked</span>
+                </div>
+
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-2 mt-4">
+                    <button onclick="runEmailPreflight()" class="compact-btn bg-blue-600 hover:bg-blue-700 text-white">
+                        <i class="fas fa-stethoscope mr-2"></i>Preflight
+                    </button>
+                    <button onclick="runCommand('npm run outreach generate')" class="compact-btn bg-purple-600 hover:bg-purple-700 text-white">
+                        <i class="fas fa-magic mr-2"></i>Generate Emails
+                    </button>
+                    <button onclick="runCommand('npm run outreach send')" class="compact-btn bg-gray-800 hover:bg-gray-900 text-white">
+                        <i class="fas fa-paper-plane mr-2"></i>Dry-run Send
+                    </button>
+                    <button onclick="sendRealOutreachEmails()" class="compact-btn bg-red-600 hover:bg-red-700 text-white">
+                        <i class="fas fa-triangle-exclamation mr-2"></i>Send REAL
+                    </button>
+                </div>
+
+                <div class="mt-2">
+                    <button onclick="sendRealOutreachEmailsInlineAI()" class="compact-btn bg-emerald-600 hover:bg-emerald-700 text-white w-full">
+                        <i class="fas fa-wand-magic-sparkles mr-2"></i>Send REAL (Inline CV + AI Cover Letter)
+                    </button>
+                    <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">This mode sends no attachments. It embeds a text CV and an OpenAI-generated cover letter into the email body.</p>
+                </div>
+
+                <div class="mt-2">
+                    <button onclick="sendRealOutreachEmailsAttachCVWithAI()" class="compact-btn bg-teal-600 hover:bg-teal-700 text-white w-full">
+                        <i class="fas fa-paperclip mr-2"></i>Send REAL (Attach CV + AI Cover Letter)
+                    </button>
+                    <p class="text-[11px] text-gray-500 dark:text-gray-400 mt-1">This mode attaches your default CV PDF and adds an OpenAI-generated cover letter in the email body.</p>
+                </div>
+
+                <div id="email-preflight-details" class="mt-4 hidden text-xs text-gray-700 dark:text-gray-300">
+                    <!-- filled by JS -->
+                </div>
+            </div>
+
             <div class="grid md:grid-cols-3 gap-4">
                 <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden">
                     <div class="p-3 bg-gray-50 dark:bg-gray-700 font-semibold text-sm text-gray-800 dark:text-white">Email Files</div>
@@ -1913,6 +1958,17 @@
                     <h3 id="email-preview-title" class="font-semibold text-gray-800 dark:text-white mb-4 pb-2 border-b border-gray-200 dark:border-gray-700">Select an email</h3>
                     <pre id="email-preview-content" class="text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap"></pre>
                 </div>
+            </div>
+
+            <!-- Command Output Console (shared) -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-semibold text-gray-800 dark:text-white">Command Output</h3>
+                    <button onclick="clearConsoleOutput()" class="compact-btn bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 text-gray-800 dark:text-white">
+                        <i class="fas fa-trash mr-2"></i>Clear
+                    </button>
+                </div>
+                <pre id="console-output" class="mt-3 text-xs text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-900/40 rounded-lg p-3 max-h-64 overflow-y-auto whitespace-pre-wrap">Ready.</pre>
             </div>
         </div>
 
@@ -2510,7 +2566,10 @@
             document.getElementById('nav-' + tabId).classList.add('active');
 
             if(tabId === 'outreach') loadCompanies();
-            if(tabId === 'emails') loadEmails();
+            if(tabId === 'emails') {
+                loadEmails();
+                runEmailPreflight();
+            }
             if(tabId === 'dashboard') loadStats();
             if(tabId === 'cv') loadCVData();
             if(tabId === 'whatsapp') {
@@ -2911,22 +2970,6 @@
             loadCompanies();
         }
 
-        async function runCommand(command) {
-            logToConsole(`> ${command}...`);
-            try {
-                const res = await fetch('/api/run', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ command })
-                });
-                const data = await res.json();
-                logToConsole(data.output);
-                if(command.includes('outreach')) loadCompanies();
-            } catch (err) {
-                logToConsole(`Error: ${err.message}`);
-            }
-        }
-
         function runSearch(platform) {
             const keyword = document.getElementById(`${platform}-keyword`).value;
             const location = document.getElementById(`${platform}-location`).value;
@@ -2950,6 +2993,167 @@
             });
         }
 
+        function setEmailPreflightBadge(kind, text) {
+            const el = document.getElementById('email-preflight-badge');
+            if (!el) return;
+            const styles = {
+                ok: 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300',
+                warn: 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300',
+                bad: 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300',
+                idle: 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+            };
+            el.className = `px-2.5 py-1 rounded-full text-xs ${styles[kind] || styles.idle}`;
+            el.textContent = text;
+        }
+
+        function appendConsoleOutput(text) {
+            const consoleEl = document.getElementById('console-output');
+            if (!consoleEl) return;
+            const stamp = new Date().toLocaleTimeString();
+            const prefix = `[${stamp}] `;
+            if (consoleEl.textContent === 'Ready.') {
+                consoleEl.textContent = `${prefix}${text}`;
+            } else {
+                consoleEl.textContent += `\n${prefix}${text}`;
+            }
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        function clearConsoleOutput() {
+            const consoleEl = document.getElementById('console-output');
+            if (consoleEl) consoleEl.textContent = 'Ready.';
+        }
+
+        async function runEmailPreflight() {
+            setEmailPreflightBadge('idle', 'Checking...');
+            const detailsEl = document.getElementById('email-preflight-details');
+            if (detailsEl) detailsEl.classList.add('hidden');
+
+            try {
+                const res = await fetch('/api/email/preflight');
+                const data = await res.json();
+
+                const ok = !!data.ok;
+                const ready = !!data.readyForRealSend;
+                const warnings = Array.isArray(data.warnings) ? data.warnings : [];
+
+                if (ready) setEmailPreflightBadge('ok', 'Ready for REAL send');
+                else if (ok) setEmailPreflightBadge('warn', 'OK (missing secrets)');
+                else setEmailPreflightBadge('bad', 'Not ready');
+
+                const checks = data.checks || {};
+                const files = checks.files || {};
+                const env = checks.env || {};
+
+                const rows = [];
+                rows.push(`<div class="grid md:grid-cols-2 gap-2">`);
+                rows.push(`<div class="p-3 rounded-lg bg-gray-50 dark:bg-gray-900/40">`);
+                rows.push(`<div class="font-semibold mb-1">Checks</div>`);
+                rows.push(`<ul class="space-y-1">`);
+                rows.push(`<li>${checks.python?.ok ? '✅' : '❌'} Python: <span class="font-mono">${checks.python?.executable || 'not found'}</span></li>`);
+                rows.push(`<li>${files.sendEmailPy?.ok ? '✅' : '❌'} scripts/send_email.py</li>`);
+                rows.push(`<li>${files.targetsJson?.ok ? '✅' : '❌'} data/target-companies.json</li>`);
+                rows.push(`<li>${files.defaultResumePdf?.ok ? '✅' : '⚠️'} resumes/resume-fasil-software-2025.pdf</li>`);
+                rows.push(`</ul>`);
+                rows.push(`</div>`);
+                rows.push(`<div class="p-3 rounded-lg bg-gray-50 dark:bg-gray-900/40">`);
+                rows.push(`<div class="font-semibold mb-1">Environment</div>`);
+                rows.push(`<ul class="space-y-1">`);
+                rows.push(`<li>Sender: <span class="font-mono">${env.gmailSenderEmail || '(not set)'}</span></li>`);
+                rows.push(`<li>App password set: ${env.gmailAppPasswordSet ? '✅' : '❌'}</li>`);
+                rows.push(`<li>OpenAI key set (for AI cover letter): ${env.openaiApiKeySet ? '✅' : '❌'}</li>`);
+                rows.push(`</ul>`);
+                if (warnings.length) {
+                    rows.push(`<div class="mt-2 font-semibold text-yellow-700 dark:text-yellow-300">Warnings</div>`);
+                    rows.push(`<ul class="mt-1 space-y-1">`);
+                    warnings.forEach(w => rows.push(`<li>⚠️ ${w}</li>`));
+                    rows.push(`</ul>`);
+                }
+                rows.push(`</div>`);
+                rows.push(`</div>`);
+
+                if (detailsEl) {
+                    detailsEl.innerHTML = rows.join('');
+                    detailsEl.classList.remove('hidden');
+                }
+            } catch (e) {
+                setEmailPreflightBadge('bad', 'Preflight failed');
+                if (detailsEl) {
+                    detailsEl.innerHTML = `<div class="text-red-600 dark:text-red-400">Failed to run preflight: ${e.message}</div>`;
+                    detailsEl.classList.remove('hidden');
+                }
+            }
+        }
+
+        async function sendRealOutreachEmails() {
+            try {
+                const res = await fetch('/api/email/preflight');
+                const data = await res.json();
+                if (!data.readyForRealSend) {
+                    alert('Not ready for REAL sending. Run Preflight and ensure GMAIL_APP_PASSWORD is set in .env.');
+                    return;
+                }
+            } catch (e) {
+                alert('Unable to confirm readiness. Please run Preflight first.');
+                return;
+            }
+
+            const confirmText = 'This will send REAL emails to all eligible targets (status Pending/Generated) using your Gmail App Password.\n\nType SEND to confirm:';
+            const input = prompt(confirmText);
+            if (input !== 'SEND') return;
+
+            await runCommand('npm run outreach send -- --real');
+        }
+
+        async function sendRealOutreachEmailsInlineAI() {
+            // For this mode we need BOTH: SMTP ready + OpenAI key configured
+            let preflight;
+            try {
+                const res = await fetch('/api/email/preflight');
+                preflight = await res.json();
+                if (!preflight.readyForRealSend) {
+                    alert('Not ready for REAL sending. Run Preflight and ensure GMAIL_APP_PASSWORD is set in .env.');
+                    return;
+                }
+            } catch (e) {
+                alert('Unable to confirm SMTP readiness. Please run Preflight first.');
+                return;
+            }
+
+            const confirmText = 'This will send REAL emails WITHOUT attachments and will GENERATE a cover letter via OpenAI for each target.\n\nType SEND to confirm:';
+            const input = prompt(confirmText);
+            if (input !== 'SEND') return;
+
+            await runCommand('npm run outreach send -- --real --inline --cv-inline --cover-letter-openai');
+        }
+
+        async function sendRealOutreachEmailsAttachCVWithAI() {
+            // Needs SMTP + OpenAI key.
+            let preflight;
+            try {
+                const res = await fetch('/api/email/preflight');
+                preflight = await res.json();
+                if (!preflight.readyForRealSend) {
+                    alert('Not ready for REAL sending. Run Preflight and ensure GMAIL_APP_PASSWORD is set in .env.');
+                    return;
+                }
+                const env = preflight?.checks?.env || {};
+                if (!env.openaiApiKeySet) {
+                    alert('OpenAI key is not set. Set OPENAI_API_KEY in .env (recommended) or save it in the panel AI settings.');
+                    return;
+                }
+            } catch (e) {
+                alert('Unable to confirm readiness. Please run Preflight first.');
+                return;
+            }
+
+            const confirmText = 'This will send REAL emails with your CV PDF attached AND generate a cover letter via OpenAI for each target.\n\nType SEND to confirm:';
+            const input = prompt(confirmText);
+            if (input !== 'SEND') return;
+
+            await runCommand('npm run outreach send -- --real --cover-letter-openai');
+        }
+
         function updateStats(data) {
             document.getElementById('stat-companies').textContent = data.length;
             document.getElementById('stat-pending').textContent = data.filter(c => c.status === 'Pending').length;
@@ -2960,12 +3164,6 @@
             const res = await fetch('/api/companies');
             const data = await res.json();
             updateStats(data);
-        }
-
-        function logToConsole(text) {
-            const consoleEl = document.getElementById('console-output');
-            consoleEl.innerHTML += `\n${text}`;
-            consoleEl.scrollTop = consoleEl.scrollHeight;
         }
 
         function openAddModal() { document.getElementById('add-modal').classList.remove('hidden'); }
@@ -4469,8 +4667,9 @@ Muhammed Fasil
             if (logEl) logEl.innerHTML = '<div class="text-gray-500">Log cleared. Ready for automation...</div>';
         }
 
-        // Run shell command via API
+        // Run shell command via API (shared across all tabs)
         async function runCommand(command) {
+            appendConsoleOutput(`> ${command}`);
             try {
                 const res = await fetch('/api/run', {
                     method: 'POST',
@@ -4478,14 +4677,31 @@ Muhammed Fasil
                     body: JSON.stringify({ command })
                 });
                 const data = await res.json();
+
                 if (data.success) {
+                    if (typeof data.output === 'string' && data.output.trim()) {
+                        appendConsoleOutput(data.output.trimEnd());
+                    } else {
+                        appendConsoleOutput('(no output)');
+                    }
+
                     addAutomationLog(`✅ Command completed: ${command}`, 'success');
+
+                    // Refresh relevant UI bits
+                    if (command.includes('outreach')) {
+                        try { await loadCompanies(); } catch (_) {}
+                        try { await loadEmails(); } catch (_) {}
+                    }
+
                     return data.output;
                 } else {
-                    addAutomationLog(`⚠️ Command failed: ${data.output || data.error}`, 'error');
-                    throw new Error(data.output || data.error);
+                    const msg = data.output || data.error || 'Command failed';
+                    appendConsoleOutput(`ERROR: ${msg}`);
+                    addAutomationLog(`⚠️ Command failed: ${msg}`, 'error');
+                    throw new Error(msg);
                 }
             } catch (e) {
+                appendConsoleOutput(`Error: ${e.message}`);
                 addAutomationLog(`❌ Error: ${e.message}`, 'error');
                 throw e;
             }

@@ -1,0 +1,176 @@
+{
+  "inputs": [
+    {
+      "id": "browser_url",
+      "type": "promptString",
+      "description": "Optional: connect to an already-running Chrome (remote debugging / port-forward). Example: http://127.0.0.1:9222",
+      "password": false
+    },
+    {
+      "id": "headless",
+      "type": "promptString",
+      "description": "Run Chrome headless (true/false). Default: false",
+      "password": false,
+      "default": "false"
+    },
+    {
+      "id": "isolated",
+      "type": "promptString",
+      "description": "Use a temporary user-data-dir (true/false). Default: false",
+      "password": false,
+      "default": "false"
+    },
+    {
+      "id": "chrome_channel",
+      "type": "promptString",
+      "description": "Chrome channel: stable | canary | beta | dev (default: stable).",
+      "password": false,
+      "default": "stable"
+    },
+    {
+      "id": "context7_api_key",
+      "type": "promptString",
+      "description": "Context7 API key (optional; increases rate limits). Get one at https://context7.com/dashboard",
+      "password": true
+    },
+    {
+      "id": "Authorization",
+      "type": "promptString",
+      "description": "Authentication token (PAT or App token)",
+      "password": true
+    },
+    {
+      "id": "api_key",
+      "type": "promptString",
+      "description": "your API key",
+      "password": true
+    },
+    {
+      "id": "ado_org",
+      "type": "promptString",
+      "description": "Azure DevOps organization name (e.g., contoso).",
+      "password": false
+    },
+    {
+      "id": "ado_domain",
+      "type": "promptString",
+      "description": "Repeat to enable specific domains: core, work, work-items, search, test-plans, repositories, wiki, pipelines, advanced-security.",
+      "password": false
+    },
+    {
+      "id": "e",
+      "type": "promptString",
+      "description": "Set an environment variable in the runtime",
+      "password": false
+    },
+    {
+      "id": "TFE_ADDRESS",
+      "type": "promptString",
+      "description": "HCP Terraform or Terraform Enterprise base URL.",
+      "password": false,
+      "default": "https://app.terraform.io"
+    },
+    {
+      "id": "TFE_TOKEN",
+      "type": "promptString",
+      "description": "HCP Terraform or Terraform Enterprise API token used to authenticate requests.",
+      "password": true
+    },
+    {
+      "id": "ENABLE_TF_OPERATIONS",
+      "type": "pickString",
+      "description": "Set to true to enable tools that execute Terraform operations requiring explicit approval.",
+      "password": false,
+      "default": "false",
+      "options": [
+        "true",
+        "false"
+      ]
+    },
+    {
+      "id": "octopus_api_key",
+      "type": "promptString",
+      "description": "Your Octopus Deploy API key.",
+      "password": true
+    },
+    {
+      "id": "octopus_server_url",
+      "type": "promptString",
+      "description": "Your Octopus Deploy server URL.",
+      "password": false
+    }
+  ],
+  "servers": {
+    "MCP_DOCKER": {
+      "autoStart": true,
+      "command": "docker",
+      "args": [
+        "mcp",
+        "gateway",
+        "run"
+      ],
+      "type": "stdio"
+    },
+    "oraios/serena": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "serena==latest",
+        "--context",
+        "ide-assistant"
+      ],
+      "gallery": "https://api.mcp.github.com/2025-09-15/v0/servers/0658e342-7ae7-493a-b378-a324363ee322",
+      "version": "1.0.0",
+      "description": "Advanced code assistance for Flutter, Python, and Node.js",
+      "autoStart": true,
+      "allowedModels": [
+        "copilot/auto",
+        "copilot/claude-opus-4",
+        "copilot/claude-opus-41",
+        "copilot/claude-sonnet-4",
+        "copilot/claude-sonnet-4.5",
+        "copilot/gemini-2.0-flash-001",
+        "copilot/gemini-2.5-pro",
+        "copilot/gpt-4.1",
+        "copilot/gpt-5",
+        "copilot/gpt-5-mini",
+        "copilot/o3",
+        "copilot/o3-mini",
+        "copilot/o4-mini"
+      ]
+    },
+    "microsoftdocs/mcp": {
+      "autoStart": true,
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp",
+      "gallery": "https://api.mcp.github.com",
+      "version": "1.0.0"
+    },
+    "io.github.github/github-mcp-server": {
+      "autoStart": true,
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "gallery": "https://api.mcp.github.com",
+      "version": "0.24.1"
+    },
+    "microsoft/playwright-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ],
+      "gallery": "https://api.mcp.github.com",
+      "version": "0.0.1-seed"
+    },
+    "getsentry/sentry-mcp": {
+      "type": "http",
+      "url": "https://mcp.sentry.dev/mcp",
+      "gallery": "https://api.mcp.github.com",
+      "version": "1.0.0"
+    }
+  }
+}
