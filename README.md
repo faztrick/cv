@@ -75,6 +75,41 @@ npm run parse-cv              # Parse resume.md and extract all data
 npm run apply-pack            # Generate a cover letter + pack summary from templates
 ```
 
+### Job Pack (Cover Letter + Match Highlights + Email Draft)
+
+```bash
+# Recommended: put the job description in a text file for best results
+npm run job-pack -- --company "Careem" --role "Senior Software Engineer" --jobUrl "https://..." --jdFile ".\\jd.txt"
+
+# You can also pass JD inline (quote it)
+npm run job-pack -- --company "Noon" --role "Backend Engineer" --jd "Node.js, TypeScript, Docker..."
+```
+
+Outputs:
+
+- `cover-letters/generated/*.md` (cover letter)
+- `docs/application-packs/generated/*.md` (pack summary + suggested bullets)
+- `emails/generated/*.txt` (application email draft; optional)
+
+### Automation (Best-effort, Safe Mode)
+
+This automates the boring parts **without auto-submitting applications**:
+
+- reads your existing `data/job-search-results.csv`
+- scores + shortlists jobs using your CV skills
+- appends new items to `data/job-tracker-uae.csv` (no duplicates by URL)
+- generates job packs for the top N (cover letter + pack summary)
+
+```bash
+npm run automate -- --minScore 30 --max 15 --packs 5
+```
+
+Outputs:
+
+- `docs/shortlists/generated/YYYY-MM-DD-shortlist.md`
+- `data/shortlist-latest.json`
+- updates `data/job-tracker-uae.csv`
+
 ### Job Search
 
 ```bash

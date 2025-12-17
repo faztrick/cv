@@ -42,6 +42,8 @@
     "email-variants": "node scripts/smart-email-generator.js variants",
     "batch-emails": "node scripts/smart-email-generator.js batch",
     "apply-pack": "node scripts/apply-pack.js",
+    "job-pack": "node scripts/job-pack.js",
+    "automate": "node scripts/automate.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
