@@ -18,7 +18,7 @@ This is a focused vertical slice of FanHouse demonstrating:
 ### Backend (API - Express + TypeScript + Prisma)
 
 | Feature | Status | Files |
-|---------|--------|-------|
+| --- | --- | --- |
 | Database schema | ✅ Done | `apps/api/prisma/schema.prisma` |
 | Auth (register/login/me) | ✅ Done | `apps/api/src/routes/auth.ts` |
 | Creator onboarding | ✅ Done | `apps/api/src/routes/creator.ts` |
@@ -35,7 +35,7 @@ This is a focused vertical slice of FanHouse demonstrating:
 ### Frontend (Web - Next.js App Router)
 
 | Feature | Status | Files |
-|---------|--------|-------|
+| --- | --- | --- |
 | Landing page | ✅ Done | `apps/web/src/app/page.tsx` |
 | Auth provider | ✅ Done | `apps/web/src/components/auth-provider.tsx` |
 | Navigation | ✅ Done | `apps/web/src/components/nav.tsx` |
@@ -49,7 +49,7 @@ This is a focused vertical slice of FanHouse demonstrating:
 ### Infrastructure
 
 | Feature | Status | Files |
-|---------|--------|-------|
+| --- | --- | --- |
 | Docker Compose (Postgres) | ✅ Done | `docker-compose.yml` |
 | Environment templates | ✅ Done | `.env.example`, `.env.local.example` |
 
@@ -161,7 +161,7 @@ npm test
 ## Demo Accounts
 
 | Role | Email | Password |
-|------|-------|----------|
+| --- | --- | --- |
 | Admin | <admin@fanhouse.test> | admin123 |
 | Fan | <fan@fanhouse.test> | fan123 |
 | Creator | <creator@fanhouse.test> | creator123 |
@@ -184,7 +184,7 @@ npm test
 
 The web app follows **Model-View-ViewModel** pattern for clean separation of concerns:
 
-```
+```text
 apps/web/src/
 ├── models/           # DATA LAYER
 │   ├── types.ts      # Domain entities & DTOs
@@ -213,7 +213,7 @@ apps/web/src/
 ### Layer Responsibilities
 
 | Layer | Responsibility | State? | Side Effects? |
-|-------|---------------|--------|---------------|
+| --- | --- | --- | --- |
 | **Models** | Types, API calls, data transformation | No | Yes (fetch) |
 | **ViewModels** | State management, business logic, computed properties | Yes | Yes |
 | **Views** | Rendering, user interaction, layout | No (via VM) | No |

@@ -9,7 +9,8 @@
     "start": "node dist/index.js",
     "db:migrate": "prisma migrate dev --name init",
     "db:push": "prisma db push",
-    "db:seed": "tsx prisma/seed.ts"
+    "db:seed": "tsx prisma/seed.ts",
+    "test": "vitest"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",
@@ -29,8 +30,12 @@
     "@types/jsonwebtoken": "^9.0.6",
     "@types/multer": "^1.4.12",
     "@types/node": "^20.14.12",
+    "@types/supertest": "^6.0.3",
     "prisma": "^5.22.0",
+    "supertest": "^7.1.4",
     "tsx": "^4.16.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "vitest": "^4.0.16",
+    "vitest-mock-extended": "^3.1.0"
   }
 }

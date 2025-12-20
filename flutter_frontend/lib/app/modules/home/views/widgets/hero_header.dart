@@ -151,7 +151,7 @@ class _Badge extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.sparkles, size: 16, color: Colors.white),
+          const Icon(Icons.auto_awesome, size: 16, color: Colors.white),
           const SizedBox(width: 6),
           Text(
             label,

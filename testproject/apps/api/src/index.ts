@@ -1,13 +1,13 @@
-import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import authRouter from './routes/auth';
-import creatorRouter from './routes/creator';
-import postsRouter from './routes/posts';
-import billingRouter from './routes/billing';
+import express from 'express';
 import adminRouter from './routes/admin';
-import notificationsRouter from './routes/notifications';
+import authRouter from './routes/auth';
+import billingRouter from './routes/billing';
+import creatorRouter from './routes/creator';
 import mediaRouter from './routes/media';
+import notificationsRouter from './routes/notifications';
+import postsRouter from './routes/posts';
 
 dotenv.config();
 
@@ -29,7 +29,11 @@ app.use('/admin', adminRouter);
 app.use('/notifications', notificationsRouter);
 app.use('/media', mediaRouter);
 
-const port = Number(process.env.PORT ?? 4000);
-app.listen(port, () => {
-  console.log(`[api] listening on ${port}`);
-});
+export { app };
+
+if (process.env.NODE_ENV !== 'test') {
+  const port = Number(process.env.PORT ?? 4000);
+  app.listen(port, () => {
+    console.log(`[api] listening on ${port}`);
+  });
+}

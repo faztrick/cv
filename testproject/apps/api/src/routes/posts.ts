@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { z } from 'zod';
+import fs from 'fs';
 import multer from 'multer';
 import path from 'path';
-import fs from 'fs';
+import { z } from 'zod';
 import prisma from '../lib/prisma';
-import { AuthRequest, optionalAuth, requireAuth, requireApprovedCreator } from '../middleware/auth';
+import { AuthRequest, optionalAuth, requireApprovedCreator, requireAuth } from '../middleware/auth';
 import { publishEvent } from '../services/ably';
 
 const router = Router();
@@ -49,11 +49,13 @@ router.get('/', optionalAuth, async (req: AuthRequest, res) => {
   }
 
   const response = posts.map((post) => {
-    const isOwner = user?.creator?.id === post.creatorId || user?.role === 'ADMIN';
-    const entitled = isOwner
-      || post.priceType === 'FREE'
-      || (user && post.priceType === 'SUBSCRIBER' && subscriptionCreatorIds.has(post.creatorId))
-      || (user && post.priceType === 'PPV' && unlockedPostIds.has(post.id));
+    const isOwner = !!(user?.creator?.id === post.creatorId || user?.role === 'ADMIN');
+    const entitled = Boolean(
+      isOwner
+        || post.priceType === 'FREE'
+        || (user && post.priceType === 'SUBSCRIBER' && subscriptionCreatorIds.has(post.creatorId))
+        || (user && post.priceType === 'PPV' && unlockedPostIds.has(post.id))
+    );
 
     return {
       id: post.id,

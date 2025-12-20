@@ -24,7 +24,7 @@ class AppTheme {
       textTheme: textTheme,
       scaffoldBackgroundColor: scheme.surface,
       useMaterial3: true,
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: scheme.surface,
         elevation: 4,
         margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
