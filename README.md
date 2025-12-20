@@ -150,7 +150,7 @@ npm run clean-cache           # Clean Puppeteer cache
 
 ## 📁 Project Structure
 
-```
+```text
 cv/
 ├── index.js                        # Main entry point
 ├── package.json                    # Node.js configuration
@@ -185,7 +185,7 @@ cv/
 
 ## 🛠️ Features
 
-### Email Generation
+### Email generation (features)
 
 - **6 Professional Templates**: General, Referral, Follow-up, Recruiter, Executive, Thank You
 - **Pre-configured Profile**: Auto-populated with your skills and experience
@@ -416,12 +416,12 @@ Use `job-tracker-uae.csv` to track applications:
 
 ### Flutter Fan Page (GetX + MVVM)
 
-The `flutter_frontend/` folder contains a lightweight fan/portfolio page built with Flutter, GetX, and a glassy compact UI that pulls from `assets/data/cv_data.json`.
+The `testproject/flutter_frontend/` folder contains a lightweight fan/portfolio page built with Flutter, GetX, and a glassy compact UI that pulls from `assets/data/cv_data.json`.
 
 Run it locally:
 
 ```bash
-cd flutter_frontend
+cd testproject/flutter_frontend
 flutter pub get
 flutter run
 ```

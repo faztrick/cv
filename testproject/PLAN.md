@@ -37,14 +37,15 @@ This is a focused vertical slice of FanHouse demonstrating:
 | Feature | Status | Files |
 | --- | --- | --- |
 | Landing page | ✅ Done | `apps/web/src/app/page.tsx` |
-| Auth provider | ✅ Done | `apps/web/src/components/auth-provider.tsx` |
+| Auth state (MVVM) | ✅ Done | `apps/web/src/viewmodels/useAuth.tsx` |
+| App providers | ✅ Done | `apps/web/src/app/providers.tsx` |
 | Navigation | ✅ Done | `apps/web/src/components/nav.tsx` |
 | Feed page with gating | ✅ Done | `apps/web/src/app/feed/page.tsx` |
 | Creator hub | ✅ Done | `apps/web/src/app/creator/page.tsx` |
 | Admin console | ✅ Done | `apps/web/src/app/admin/page.tsx` |
 | UI components (shadcn-style) | ✅ Done | `apps/web/src/components/ui/` |
-| Realtime subscription | ✅ Done | `apps/web/src/lib/realtime.ts` |
-| API client | ✅ Done | `apps/web/src/lib/api.ts` |
+| Realtime subscription | ✅ Done | `apps/web/src/lib/realtime.ts`, `apps/web/src/viewmodels/usePosts.ts` |
+| API client (Models layer) | ✅ Done | `apps/web/src/models/api.ts` |
 
 ### Infrastructure
 

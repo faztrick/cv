@@ -67,6 +67,28 @@ apps/
 - Notifications are stored in Postgres instead of calling Knock directly.
 - Ably is optional: without a key, the realtime UI shows a placeholder.
 
+## Deliverables (Submission Checklist)
+
+- **GitHub repo:** this repository
+- **Running app:** see Quick Start above (local)
+- **README:** this file (setup + architecture + tradeoffs)
+- **Loom video (3–5 min):** _add link here_
+  - Architecture walkthrough
+  - Data model overview
+  - One smart decision
+  - One shortcut knowingly taken
+
+## Environment variables
+
+### Web (`apps/web/.env.local`)
+
+- `NEXT_PUBLIC_API_URL` (default: `http://localhost:4000`)
+- `NEXT_PUBLIC_ABLY_KEY` (optional) — when unset, the app runs without realtime.
+
+### API (`apps/api/.env`)
+
+- Copy from `apps/api/.env.example`
+
 ## Notes
 
 - Uploads are saved locally in `apps/api/uploads/`.

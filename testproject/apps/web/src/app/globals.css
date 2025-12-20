@@ -19,6 +19,8 @@
 
 body {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
   background:
     radial-gradient(1400px 700px at 15% -10%, #ffe9de 0%, transparent 70%),
     radial-gradient(1200px 600px at 110% 10%, #d2f2ea 0%, transparent 65%),
@@ -28,5 +30,6 @@ body {
 }
 
 main {
-  min-height: 100vh;
+  flex: 1;
+  width: 100%;
 }
