@@ -10,6 +10,8 @@ param(
 )
 
 $configPath = Join-Path $PSScriptRoot "repos\indeed_bot\config.yaml"
+$repoRoot = Resolve-Path (Join-Path $PSScriptRoot '..')
+$venvPython = Join-Path $repoRoot '.venv\Scripts\python.exe'
 
 Write-Host "`n=== Indeed Job Bot - Quick Configuration ===" -ForegroundColor Cyan
 
@@ -104,8 +106,14 @@ Write-Host ""
 # Verify Python installation
 Write-Host "`n🔍 Checking Python..." -ForegroundColor Yellow
 try {
-  $pythonVersion = python --version 2>&1
-  Write-Host "  ✓ $pythonVersion" -ForegroundColor Green
+  if (Test-Path $venvPython) {
+    $pythonVersion = & $venvPython --version 2>&1
+    Write-Host "  ✓ Workspace venv: $pythonVersion" -ForegroundColor Green
+  }
+  else {
+    $pythonVersion = python --version 2>&1
+    Write-Host "  ✓ System Python: $pythonVersion" -ForegroundColor Green
+  }
 }
 catch {
   Write-Host "  ✗ Python not found! Install Python 3.8+ first" -ForegroundColor Red

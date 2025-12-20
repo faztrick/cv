@@ -1,0 +1,698 @@
+:root {
+  color-scheme: light dark;
+
+  /* theme tokens (default: light) */
+  --bg: #f8f9fa;
+  --panel: #ffffff;
+  --panel2: #f1f3f5;
+  --text: #212529;
+  --muted: #6c757d;
+  --muted2: #adb5bd;
+  --accent: #0d6efd;
+  --accent2: #198754;
+  --warn: #ffc107;
+  --danger: #dc3545;
+  --border: #dee2e6;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --radius: 12px;
+  --topbarBg: rgba(255, 255, 255, 0.9);
+  --chipBg: #e9ecef;
+  --chipBorder: #dee2e6;
+  --chipText: #495057;
+  --chipHoverBorder: #0d6efd;
+  --chipHoverText: #0d6efd;
+
+  /* background gradients */
+  --g1: rgba(13, 110, 253, 0.05);
+  --g2: rgba(25, 135, 84, 0.05);
+  --g3: rgba(255, 193, 7, 0.05);
+
+  /* chart/system colors (read by JS) */
+  --chartGrid: #e9ecef;
+  --chartText: #212529;
+  --chartMuted: #adb5bd;
+  --chartA: #0d6efd;
+  --chartB: #198754;
+  --chartC: #ffc107;
+  --chartStroke: #dee2e6;
+
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto,
+    Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* Dark Mode Overrides */
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0b1220;
+  --panel: rgba(16, 26, 51, 0.92);
+  --panel2: rgba(15, 23, 48, 0.70);
+  --text: #e8eefc;
+  --muted: rgba(232, 238, 252, 0.74);
+  --muted2: rgba(232, 238, 252, 0.62);
+  --accent: #66e3ff;
+  --accent2: #8cffc1;
+  --warn: #ffd166;
+  --danger: #ff6384;
+  --border: rgba(232, 238, 252, 0.12);
+  --shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+  --topbarBg: rgba(11, 18, 32, 0.62);
+  --chipBg: rgba(0, 0, 0, 0.12);
+  --chipBorder: rgba(232, 238, 252, 0.14);
+  --chipText: rgba(232, 238, 252, 0.78);
+  --chipHoverBorder: rgba(102, 227, 255, 0.28);
+  --chipHoverText: rgba(232, 238, 252, 0.92);
+
+  --g1: rgba(102, 227, 255, 0.18);
+  --g2: rgba(140, 255, 193, 0.14);
+  --g3: rgba(255, 209, 102, 0.10);
+
+  --chartGrid: rgba(232, 238, 252, 0.10);
+  --chartText: rgba(232, 238, 252, 0.92);
+  --chartMuted: rgba(232, 238, 252, 0.70);
+  --chartA: rgba(102, 227, 255, 0.90);
+  --chartB: rgba(140, 255, 193, 0.85);
+  --chartC: rgba(255, 209, 102, 0.85);
+  --chartStroke: rgba(232, 238, 252, 0.55);
+}
+
+/* SVG Diagrams in Light Mode */
+/* Keep diagrams on a dark surface because SVG text/colors are authored for dark mode */
+/* Or invert them if possible, but for now keeping dark background for diagrams is safer */
+[data-theme="light"] .svgWrap {
+  background: #ffffff;
+  border-color: var(--border);
+}
+/* However, the SVG content itself (text colors) might need adjustment if background is white.
+   The original CSS kept .svgWrap dark in light mode.
+   Let's try to make it cleaner by using CSS variables inside SVGs if possible,
+   or stick to the original strategy of dark background for diagrams if they are hardcoded.
+   The user wants "clean and best". Dark diagrams on light theme can look jarring.
+   Let's try to use the variables.
+*/
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: var(--sans);
+  color: var(--text);
+  background: radial-gradient(
+      1200px 600px at 20% 10%,
+      var(--g1),
+      transparent 65%
+    ),
+    radial-gradient(
+      1000px 500px at 85% 20%,
+      var(--g2),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 600px at 50% 110%,
+      var(--g3),
+      transparent 55%
+    ),
+    var(--bg);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 24px 56px;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--topbarBg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s ease;
+}
+
+.topbarInner {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 24px;
+  align-items: center;
+}
+
+.brand {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text);
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+}
+
+.brandTitle {
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+.brandMeta {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.nav {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.nav a {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 99px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 1px solid transparent;
+}
+
+.nav a:hover {
+  color: var(--text);
+  background: var(--panel2);
+}
+
+.nav a.active {
+  color: var(--accent);
+  background: var(--g1);
+  border-color: rgba(13, 110, 253, 0.1);
+}
+
+.controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  height: 36px;
+  padding: 0 16px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: var(--shadow);
+}
+
+.btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 1024px) {
+  .topbarInner {
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+    gap: 16px;
+  }
+  .nav {
+    grid-column: 1 / -1;
+    order: 3;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav a {
+    white-space: nowrap;
+  }
+}
+
+.optTitle {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.ico {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  vertical-align: -4px;
+}
+
+.pc {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.pc li {
+  margin: 4px 0;
+}
+
+.langBlock {
+  display: none;
+}
+
+:root[data-lang="en"] .lang-en { display: inline; }
+:root[data-lang="ar"] .lang-ar { display: inline; }
+:root[data-lang="ar"] .lang-arBlock { display: block; }
+:root[data-lang="en"] .lang-enBlock { display: block; }
+
+.lang-ar { direction: rtl; unicode-bidi: plaintext; }
+.lang-arBlock { direction: rtl; unicode-bidi: plaintext; text-align: right; }
+
+:root[data-lang="ar"] .nav { direction: rtl; }
+:root[data-lang="ar"] .controls { direction: rtl; }
+
+header {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.title {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  flex: 1;
+}
+
+.title h1 {
+  margin: 0 0 12px;
+  font-size: 24px;
+  letter-spacing: -0.5px;
+  color: var(--text);
+}
+
+.title p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+.badge {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--accent);
+  background: var(--g1);
+  border: 1px solid var(--g1);
+  padding: 8px 12px;
+  border-radius: 999px;
+  height: fit-content;
+  white-space: nowrap;
+  font-weight: 600;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+@media (max-width: 920px) {
+  .grid { grid-template-columns: 1fr; }
+  header { flex-direction: column; }
+  .badge { align-self: flex-start; }
+}
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  /* subtle lift effect */
+  transform: translateY(-2px);
+  box-shadow: 0 8px 12px rgba(0,0,0,0.08);
+}
+
+.card h2 {
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card p, .card li {
+  color: var(--muted);
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+ul { margin: 8px 0 0 20px; }
+
+.kpiRow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+
+html { scroll-behavior: smooth; }
+[id] { scroll-margin-top: 80px; }
+
+@media (max-width: 760px) {
+  .kpiRow { grid-template-columns: 1fr; }
+}
+
+.kpi {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+
+.kpi .label {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+  font-weight: 600;
+}
+.kpi .value {
+  font-size: 24px;
+  color: var(--text);
+  margin-top: 8px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+.kpi .note {
+  font-size: 12px;
+  color: var(--muted2);
+  margin-top: 6px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  margin-top: 16px;
+}
+.table th, .table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+  vertical-align: top;
+}
+.table th {
+  text-align: left;
+  color: var(--text);
+  background: var(--bg);
+  font-weight: 600;
+}
+.table td {
+  color: var(--muted);
+  background: var(--panel);
+}
+.table tr:last-child td { border-bottom: none; }
+
+.pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  margin-right: 6px;
+  margin-top: 4px;
+}
+
+.chartWrap {
+  margin-top: 16px;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.chartTitleRow {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.subtle {
+  font-size: 12px;
+  color: var(--muted2);
+}
+
+.miniGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 24px;
+}
+
+@media (max-width: 920px) {
+  .miniGrid { grid-template-columns: 1fr; }
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 16px;
+}
+@media (max-width: 760px) {
+  .formRow { grid-template-columns: 1fr; }
+}
+.field {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 14px;
+}
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.field input[type="range"] { width: 100%; accent-color: var(--accent); }
+.field input[type="number"], .field select {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  font-family: var(--sans);
+  box-sizing: border-box;
+  font-size: 14px;
+}
+.field input:focus, .field select:focus {
+  outline: 2px solid var(--accent);
+  border-color: var(--accent);
+}
+
+.svgWrap {
+  margin-top: 16px;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  /* A slightly lifted surface helps diagrams feel “designed” instead of flat.
+     (Still theme-aware via CSS variables.) */
+  background: var(--panel2);
+  overflow: hidden;
+  text-align: center;
+}
+
+/* Mermaid (pre-rendered to inline SVG)
+   We embed both light+dark SVG variants and swap via [data-theme]. */
+.mermaidSvgSwap {
+  width: 100%;
+}
+
+.mermaidSvgSwap .mermaidSvg {
+  width: 100%;
+}
+
+.mermaidSvgSwap .mermaidSvg svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+[data-theme="light"] .mermaidSvgSwap .mermaidSvg--dark {
+  display: none;
+}
+
+[data-theme="dark"] .mermaidSvgSwap .mermaidSvg--light {
+  display: none;
+}
+.svgWrap svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+/* Mermaid diagrams (modernized graphs) */
+.svgWrap .mermaid {
+  text-align: left; /* Mermaid lays out better with left-aligned source */
+  max-width: 900px;
+  margin: 0 auto;
+
+  /* Fallback: if Mermaid JS doesn't load (or before it renders),
+     the raw source should still look intentional instead of “broken”. */
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--muted);
+  background: var(--panel);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+/* When Mermaid has rendered, it replaces the content with an SVG and sets
+   a processed marker. Remove the fallback “code block” styling. */
+.svgWrap .mermaid[data-processed],
+.svgWrap .mermaid[data-processed="true"] {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+
+  /* IMPORTANT: don't let rendered SVG inherit the monospace fallback */
+  font-family: inherit;
+  font-size: inherit;
+  line-height: normal;
+  white-space: normal;
+  word-break: normal;
+}
+
+.svgWrap .mermaid svg {
+  width: 100%;
+  height: auto;
+  max-width: 900px;
+  display: block;
+  margin: 0 auto;
+}
+
+.heat {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid transparent;
+}
+.heatLow {
+  background: rgba(25, 135, 84, 0.1);
+  color: #198754;
+  border-color: rgba(25, 135, 84, 0.2);
+}
+.heatMed {
+  background: rgba(255, 193, 7, 0.1);
+  color: #b58900; /* Darker yellow for contrast */
+  border-color: rgba(255, 193, 7, 0.2);
+}
+.heatHigh {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+  border-color: rgba(220, 53, 69, 0.2);
+}
+
+canvas {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Ensure each chart has a stable, responsive height.
+   (Canvas drawing uses the element's rendered size via getBoundingClientRect.) */
+#costChart {
+  aspect-ratio: 900 / 240;
+}
+
+#capacityChart {
+  aspect-ratio: 900 / 360;
+}
+
+#breakdownChart {
+  aspect-ratio: 900 / 280;
+}
+
+.foot {
+  margin-top: 24px;
+  font-size: 13px;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+.foot a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+.foot a:hover { text-decoration: underline; }
+
+/* Icon styling */
+.icon-img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  vertical-align: middle;
+}

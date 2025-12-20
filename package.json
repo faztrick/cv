@@ -45,6 +45,7 @@
     "job-pack": "node scripts/job-pack.js",
     "automate": "node scripts/automate.js",
     "mcp:job-agent": "node mcp/job-agent-server.mjs",
+    "fanhouse:typeform": "node automation/fanhouse-typeform/fill-typeform.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

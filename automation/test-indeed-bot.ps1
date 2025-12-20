@@ -4,11 +4,17 @@
 Write-Host "`n=== Indeed Job Application Bot - Pre-Flight Check ===" -ForegroundColor Cyan
 
 $repoPath = Join-Path $PSScriptRoot "repos\indeed_bot"
+$repoRoot = Resolve-Path (Join-Path $PSScriptRoot '..')
+$venvPython = Join-Path $repoRoot '.venv\Scripts\python.exe'
 
 # Check 1: Python Installation
 Write-Host "`n[1/5] Checking Python installation..." -ForegroundColor Yellow
 try {
-  $pythonVersion = python --version 2>&1
+  if (-not (Test-Path $venvPython)) {
+    throw "Workspace venv Python not found at $venvPython"
+  }
+
+  $pythonVersion = & $venvPython --version 2>&1
   Write-Host "  ✓ Python installed: $pythonVersion" -ForegroundColor Green
 
   # Check Python version (needs 3.8+)
@@ -21,7 +27,8 @@ try {
   }
 }
 catch {
-  Write-Host "  ✗ Python not found! Please install Python 3.8+" -ForegroundColor Red
+  Write-Host "  ✗ Python not found in workspace venv (.venv)!" -ForegroundColor Red
+  Write-Host "    Create it first, then install requirements." -ForegroundColor Yellow
   exit 1
 }
 
@@ -53,7 +60,7 @@ else {
 Write-Host "`n[3/5] Checking Python packages..." -ForegroundColor Yellow
 try {
   # Check for key packages
-  $packages = python -c "import pkg_resources; print('\n'.join([f'{d.key}=={d.version}' for d in pkg_resources.working_set]))" 2>&1
+  $packages = & $venvPython -c "import pkg_resources; print('\\n'.join([f'{d.key}=={d.version}' for d in pkg_resources.working_set]))" 2>&1
 
   if ($packages -match "camoufox") {
     Write-Host "  ✓ Camoufox installed" -ForegroundColor Green

@@ -1,0 +1,79 @@
+# FanHouse Test Project (Vertical Slice)
+
+This project is a focused vertical slice of FanHouse: authentication, creator onboarding, gated content, mock payments + ledger, realtime updates, and admin controls.
+
+## Stack
+
+- **Frontend:** Next.js App Router, TypeScript, TailwindCSS, shadcn/ui-style components
+- **Backend:** Node.js + Express (TypeScript)
+- **Database:** PostgreSQL via Prisma
+- **Realtime:** Ably (optional key)
+- **Notifications:** Knock-style in-app feed (mocked)
+
+## Quick Start
+
+### 1) Start Postgres
+
+```bash
+docker compose up -d
+```
+
+### 2) API setup
+
+```bash
+cd apps/api
+cp .env.example .env
+npm install
+npm run db:push
+npm run db:seed
+npm run dev
+```
+
+### 3) Web setup
+
+```bash
+cd ../web
+cp .env.local.example .env.local
+npm install
+npm run dev
+```
+
+### Demo Accounts (seeded)
+
+- Admin: `admin@fanhouse.test` / `admin123`
+- Fan: `fan@fanhouse.test` / `fan123`
+- Creator: `creator@fanhouse.test` / `creator123`
+
+## Core Flows
+
+- **Auth + Roles:** fan, creator, admin via JWT.
+- **Creator onboarding:** apply -> pending -> admin approval.
+- **Content gating:** free, subscriber-only, or PPV (API enforced).
+- **Payments:** mock subscription + PPV unlock with append-only ledger entries.
+- **Realtime:** Ably channel `posts` publishes `post.created` and `ppv.unlocked` events.
+- **Admin panel:** approve/reject/disable creators, view ledger.
+
+## Project Structure
+
+```
+apps/
+  api/        # Express API + Prisma
+  web/        # Next.js App Router UI
+```
+
+## Tradeoffs
+
+- Media access uses a short-lived token query param for the image tag in the demo.
+- Notifications are stored in Postgres instead of calling Knock directly.
+- Ably is optional: without a key, the realtime UI shows a placeholder.
+
+## Notes
+
+- Uploads are saved locally in `apps/api/uploads/`.
+- Prisma schema lives in `apps/api/prisma/schema.prisma`.
+
+## Next Steps
+
+- Add tests for API gating logic.
+- Swap mock payment hooks for actual CCBill workflows.
+- Replace local media with object storage and signed URLs.

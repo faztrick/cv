@@ -5,9 +5,14 @@ $ErrorActionPreference = 'Stop'
 
 $repoRoot = Resolve-Path (Join-Path $PSScriptRoot '..')
 $venvActivate = Join-Path $repoRoot '.venv\Scripts\Activate.ps1'
+$venvPython = Join-Path $repoRoot '.venv\Scripts\python.exe'
 
 if (-not (Test-Path $venvActivate)) {
   throw "Python venv not found at $venvActivate. Create it and install requirements first."
+}
+
+if (-not (Test-Path $venvPython)) {
+  throw "Python executable not found at $venvPython. Recreate the venv (.venv) first."
 }
 
 . $venvActivate
@@ -24,5 +29,5 @@ if (-not (Test-Path $configPath)) {
 
 Push-Location $botDir
 Write-Host "Starting Indeed bot (first run may require manual login)..." -ForegroundColor Cyan
-python indeed_bot.py
+& $venvPython indeed_bot.py
 Pop-Location

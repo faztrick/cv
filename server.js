@@ -825,19 +825,39 @@ app.get('/api/indeed/config', (req, res) => {
     if (!fs.existsSync(INDEED_CONFIG_FILE)) {
         return res.json({
             email: '',
+            // Never return or persist passwords via this endpoint.
             password: '',
             autoResume: true,
             skipApplied: true,
             headless: false
         });
     }
-    res.json(JSON.parse(fs.readFileSync(INDEED_CONFIG_FILE, 'utf8')));
+
+    const saved = JSON.parse(fs.readFileSync(INDEED_CONFIG_FILE, 'utf8'));
+    // Ensure we never leak persisted credentials if an old file exists.
+    if (saved && typeof saved === 'object') {
+        delete saved.password;
+    }
+    res.json({
+        email: saved?.email || '',
+        password: '',
+        autoResume: saved?.autoResume ?? true,
+        skipApplied: saved?.skipApplied ?? true,
+        headless: saved?.headless ?? false
+    });
 });
 
 // Save Indeed Config
 app.post('/api/indeed/config', (req, res) => {
     const config = req.body;
-    fs.writeFileSync(INDEED_CONFIG_FILE, JSON.stringify(config, null, 2));
+    // Persist only non-sensitive settings.
+    const safeConfig = {
+        email: config?.email || '',
+        autoResume: config?.autoResume ?? true,
+        skipApplied: config?.skipApplied ?? true,
+        headless: config?.headless ?? false
+    };
+    fs.writeFileSync(INDEED_CONFIG_FILE, JSON.stringify(safeConfig, null, 2));
 
     // Also update .env file for the script
     const envPath = path.join(__dirname, '.env');

@@ -414,6 +414,20 @@ Use `job-tracker-uae.csv` to track applications:
 - PowerShell (for automation scripts)
 - Azure CLI (for deployment)
 
+### Flutter Fan Page (GetX + MVVM)
+
+The `flutter_frontend/` folder contains a lightweight fan/portfolio page built with Flutter, GetX, and a glassy compact UI that pulls from `assets/data/cv_data.json`.
+
+Run it locally:
+
+```bash
+cd flutter_frontend
+flutter pub get
+flutter run
+```
+
+You can customize data by editing `assets/data/cv_data.json` or styling in `lib/app/theme/app_theme.dart`.
+
 ### Install Dependencies
 
 ```bash

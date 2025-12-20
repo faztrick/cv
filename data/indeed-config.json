@@ -1,4 +1,18 @@
 {
+  "email": "",
+  "password": "",
+  "autoResume": true,
+  "skipApplied": true,
+  "headless": false
+}
+{
+  "email": "",
+  "password": "",
+  "autoResume": true,
+  "skipApplied": true,
+  "headless": false
+}
+{
   "email": "faztrick@gmail.com",
   "password": "9946101055.Faz",
   "autoResume": true,

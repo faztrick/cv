@@ -1,0 +1,181 @@
+{
+  "personal": {
+    "name": "MUHAMMED FASIL PV",
+    "title": "Senior Full-Stack Engineer (React + Node.js) | AI & IoT Systems Engineer",
+    "location": "Dubai, UAE",
+    "phone": "+971 555923545",
+    "email": "faztrick@gmail.com",
+    "website": "https://www.uaecodes.com",
+    "github": "https://github.com/faztrick",
+    "linkedin": "https://linkedin.com/in/faztrick"
+  },
+  "summary": "Senior full-stack engineer with **13+ years** delivering scalable enterprise platforms (ERP/POS/QMS) and automation systems. Strong in **React + TypeScript** frontends and **Node.js** backends, building modular UI, REST APIs, and real-time workflows (MQTT). Experienced integrating practical AI features (OpenAI/LangChain, YOLO) and running production deployments with Docker, CI/CD, and secure networking (MikroTik/WireGuard). ---",
+  "skills": {
+    "all": [
+      "TypeScript",
+      "JavaScript",
+      "Python",
+      "Dart",
+      "C#",
+      "PHP",
+      "React",
+      "component architecture",
+      "performance optimization",
+      "Node.js",
+      "Express",
+      "REST APIs",
+      "Webhooks",
+      "OpenAI",
+      "LangChain",
+      "Qwen3",
+      "YOLOv8",
+      "Whisper",
+      "MQTT",
+      "ESP32",
+      "Raspberry Pi",
+      "Docker",
+      "PM2",
+      "Nginx",
+      "GitHub Actions",
+      "AWS",
+      "Azure",
+      "GCP",
+      "MySQL",
+      "Hive",
+      "MongoDB",
+      "Firebase",
+      "ObjectBox",
+      "MikroTik RouterOS",
+      "WireGuard",
+      "Full Stack",
+      "REST",
+      "APIs",
+      "Microservices",
+      "CI/CD",
+      "YOLO",
+      "ERP",
+      "POS",
+      "QMS",
+      "MikroTik"
+    ],
+    "languages": [
+      "TypeScript",
+      "JavaScript",
+      "Python",
+      "Dart",
+      "C#",
+      "PHP"
+    ],
+    "frameworks": [
+      "React",
+      "component architecture",
+      "performance optimization",
+      "Node.js",
+      "Express",
+      "REST APIs",
+      "Webhooks"
+    ],
+    "ai": [],
+    "iot": [],
+    "networking": [],
+    "database": [],
+    "cloud": [],
+    "automation": []
+  },
+  "experience": [
+    {
+      "title": "Software Engineer",
+      "company": "Idol Technology LLC (Dubai, UAE)",
+      "period": "Aug 2024 – Present",
+      "responsibilities": [
+        "Architected **IdolMEA ERP** integrating **POS, QMS, IoT automation, and AI vision** modules.",
+        "Built multi-branch dashboards and services using **Node.js** with secure site connectivity.",
+        "Developed **AI theft detection** (YOLO) for **self-checkout kiosks** with LED/GPIO feedback via **AIDL interface**.",
+        "Designed **IdolVPN mesh (WireGuard)** network for secure multi-branch communication and API routing.",
+        "Integrated **WhatsApp/Telegram chat automation** for live queue alerts and service updates.",
+        "Created **hybrid cloud sync engine** (MySQL ↔ Hive) enabling offline analytics and recovery."
+      ]
+    },
+    {
+      "title": "Senior Software Engineer",
+      "company": "Screl Info Pvt Ltd (India / UAE)",
+      "period": "Apr 2019 – Jan 2024",
+      "responsibilities": [
+        "Designed and deployed **SincA ERP**, combining Flutter, Node.js, and AI analytics in Python.",
+        "Built dashboards, OCR systems, and predictive models using OpenAI and TensorFlow.",
+        "Dockerized microservices across local + cloud sync nodes with CI/CD pipelines.",
+        "Mentored distributed teams across India and UAE in architecture, DevOps, and clean design."
+      ]
+    },
+    {
+      "title": "Software Developer",
+      "company": "Sincap Info Pvt Ltd (Calicut, India)",
+      "period": "Mar 2014 – Mar 2019",
+      "responsibilities": [
+        "Developed enterprise ERP and billing systems using **WPF (C#)** and **PHP/MySQL**.",
+        "Improved UI responsiveness, caching, and modularization for accounting/reporting modules."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "IdolMEA ERP",
+      "description": "Retail ERP integrating POS, IoT, and cloud hybrid analytics."
+    },
+    {
+      "name": "IdolQueue (i-QMS)",
+      "description": "Smart queue automation (Flutter + Node.js + Hive + MQTT)."
+    },
+    {
+      "name": "AI Self-Checkout Kiosk",
+      "description": "Android AI kiosk with YOLO vision and LED/GPIO control."
+    },
+    {
+      "name": "Hybrid Sync Engine",
+      "description": "Offline-first delta tracking engine (MySQL ↔ Hive) for POS continuity."
+    }
+  ],
+  "keywords": [
+    "Flutter",
+    "Node.js",
+    "TypeScript",
+    "JavaScript",
+    "Python",
+    "React",
+    "Docker",
+    "AWS",
+    "Azure",
+    "GCP",
+    "MySQL",
+    "MongoDB",
+    "AI",
+    "ai",
+    "ML",
+    "IoT",
+    "microservices",
+    "Microservices",
+    "API",
+    "REST",
+    "MQTT",
+    "Nginx",
+    "CI/CD",
+    "DevOps",
+    "Git",
+    "git",
+    "GitHub",
+    "github",
+    "TensorFlow",
+    "OpenAI",
+    "LangChain",
+    "ESP32",
+    "Raspberry Pi",
+    "YOLO",
+    "WireGuard",
+    "VPN",
+    "MikroTik",
+    "erp",
+    "ERP",
+    "POS"
+  ],
+  "education": []
+}

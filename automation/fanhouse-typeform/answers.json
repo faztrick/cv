@@ -1,0 +1,8 @@
+{
+  "rolePreference": "Backend-leaning Senior Engineer (full-stack capable).",
+  "whyFanHouse": "I’m looking for a founding-engineer environment where shipping a correct vertical slice matters more than ticket throughput. I’ve built production ERP/POS/QMS platforms with real-time workflows, secure networking, and ledger-style transaction patterns, and I enjoy making pragmatic architecture tradeoffs. FanHouse’s focus on clean foundations (auth/roles, content gating, media handling, realtime, ledger) matches how I like to build.",
+  "stackFit": "Frontend: Strong React + TypeScript; comfortable shipping Next.js (App Router) quickly with Tailwind/shadcn-style components.\nBackend: Node.js/TypeScript services, REST APIs, auth/roles, media/file workflows.\nData: Strong relational modelling; can deliver Postgres cleanly; experienced with append-only ledger/event patterns.\nRealtime: Built real-time systems (MQTT etc.) and can implement Ably presence/events confidently.\nInfra: Docker, CI/CD, pragmatic deployment decisions.",
+  "timezone": "UTC+4 (Dubai)",
+  "location": "Dubai",
+  "compensationNote": "Open to market rate; happy to proceed with the paid test terms as described."
+}

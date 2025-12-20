@@ -1,0 +1,151 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "docker: Start Postgres",
+      "type": "shell",
+      "command": "docker compose up -d",
+      "options": {
+        "cwd": "${workspaceFolder}/testproject"
+      },
+      "problemMatcher": [],
+      "group": "build"
+    },
+    {
+      "label": "docker: Stop Postgres",
+      "type": "shell",
+      "command": "docker compose down",
+      "options": {
+        "cwd": "${workspaceFolder}/testproject"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "api: Install dependencies",
+      "type": "shell",
+      "command": "npm install",
+      "options": {
+        "cwd": "${workspaceFolder}/testproject/apps/api"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "api: Push database schema",
+      "type": "shell",
+      "command": "npm run db:push",
+      "options": {
+        "cwd": "${workspaceFolder}/testproject/apps/api"
+      },
+      "dependsOn": "docker: Start Postgres",
+      "problemMatcher": []
+    },
+    {
+      "label": "api: Seed database",
+      "type": "shell",
+      "command": "npm run db:seed",
+      "options": {
+        "cwd": "${workspaceFolder}/testproject/apps/api"
+      },
+      "dependsOn": "api: Push database schema",
+      "problemMatcher": []
+    },
+    {
+      "label": "api: Dev server",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": {
+        "cwd": "${workspaceFolder}/testproject/apps/api"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^\\[api\\]",
+          "file": 1,
+          "location": 2,
+          "message": 3
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^\\[api\\] listening",
+          "endsPattern": "^\\[api\\] listening"
+        }
+      },
+      "group": "build"
+    },
+    {
+      "label": "api: Run tests",
+      "type": "shell",
+      "command": "npm test",
+      "options": {
+        "cwd": "${workspaceFolder}/testproject/apps/api"
+      },
+      "problemMatcher": "$tsc",
+      "group": "test"
+    },
+    {
+      "label": "web: Install dependencies",
+      "type": "shell",
+      "command": "npm install",
+      "options": {
+        "cwd": "${workspaceFolder}/testproject/apps/web"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "web: Dev server",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": {
+        "cwd": "${workspaceFolder}/testproject/apps/web"
+      },
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "^\\s+Ready",
+          "file": 1,
+          "location": 2,
+          "message": 3
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "^\\s+▲ Next.js",
+          "endsPattern": "^\\s+✓ Ready"
+        }
+      },
+      "group": "build"
+    },
+    {
+      "label": "web: Build",
+      "type": "shell",
+      "command": "npm run build",
+      "options": {
+        "cwd": "${workspaceFolder}/testproject/apps/web"
+      },
+      "problemMatcher": "$tsc",
+      "group": "build"
+    },
+    {
+      "label": "Full Setup: Postgres + API + Seed",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "docker: Start Postgres",
+        "api: Install dependencies",
+        "api: Push database schema",
+        "api: Seed database"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Full Dev: API + Web",
+      "dependsOn": [
+        "api: Dev server",
+        "web: Dev server"
+      ],
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}
