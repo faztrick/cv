@@ -2,32 +2,48 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../routes/app_routes.dart';
+import '../../../widgets/app_scaffold.dart';
+import '../controllers/home_controller.dart';
+
+class HomeView extends GetView<HomeController> {
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return AppScaffold(
-      title: 'Fanhouse',
+      title: 'FanHouse',
       selectedIndex: 0,
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               'Home',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                  ),
+              style: theme.textTheme.headlineSmall?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w800,
+              ),
             ),
-                    ?.copyWith(color: Colors.white70),
+            const SizedBox(height: 10),
+            Obx(() {
+              final email = controller.email;
+              return Text(
+                email == null
+                    ? 'Not signed in. Use Auth to register/login.'
+                    : 'Signed in as $email',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: Colors.white70,
+                ),
               );
             }),
-            SizedBox(height = 18),
+            const SizedBox(height: 18),
             Wrap(
-              spacing = 10,
-              runSpacing = 10,
-              children = [
+              spacing: 10,
+              runSpacing: 10,
+              children: [
                 FilledButton.tonalIcon(
                   onPressed: () => Get.toNamed(AppRoutes.auth),
                   icon: const Icon(Icons.login_outlined),
@@ -50,21 +66,21 @@ import '../../../routes/app_routes.dart';
                 ),
               ],
             ),
-            SizedBox(height = 18),
+            const SizedBox(height: 18),
             Container(
-              width = double.infinity,
-              padding = const EdgeInsets.all(14),
-              decoration = BoxDecoration(
+              width: double.infinity,
+              padding: const EdgeInsets.all(14),
+              decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.06),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: Colors.white10),
               ),
-              child = Text(
-                'CV/resume demo content has been removed. This app now focuses on the Fanhouse-style pages wired to the Express API.',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodyMedium
-                    ?.copyWith(color: Colors.white70, height: 1.35),
+              child: Text(
+                'CV/resume demo content has been removed. This app now focuses on the FanHouse-style pages wired to the Express API.',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                  color: Colors.white70,
+                  height: 1.35,
+                ),
               ),
             ),
           ],
@@ -73,4 +89,3 @@ import '../../../routes/app_routes.dart';
     );
   }
 }
-``````````````q`
