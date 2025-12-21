@@ -138,9 +138,7 @@ Why: easiest HTTPS hosting, clean SPA routing, free SSL, great DX.
 High-level steps:
 
 1. Create a Firebase project (or link it to the same GCP project).
-2. In `flutter_frontend/`, build web:
-
-- `flutter build web --release --dart-define=API_BASE_URL=<API_URL> --dart-define=ABLY_API_KEY=<OPTIONAL>`
+1. In `flutter_frontend/`, build web: `flutter build web --release --dart-define=API_BASE_URL=<API_URL> --dart-define=ABLY_API_KEY=<OPTIONAL>`
 
 1. Deploy `flutter_frontend/build/web/` via Firebase Hosting.
 
@@ -157,12 +155,37 @@ High-level steps:
 3. Upload the contents of `flutter_frontend/build/web/` to the bucket.
 4. Configure SPA routing (rewrite all paths to `index.html`) using a load balancer; GCS “website hosting” alone is limited.
 
+For this test project (cost-first), you can also use the helper script:
+
+- `deploy/gcp/deploy_flutter_storage.ps1`
+
+This uploads to a public bucket and prints a simple URL like:
+
+- `https://storage.googleapis.com/<bucket>/index.html`
+
+If you need deep links like `/auth` and `/feed` to work directly, you’ll likely need an HTTPS load balancer rewrite (extra cost).
+
 ## Notes / production considerations
 
 - **Uploads**: `apps/api/uploads/` is local filesystem storage. Cloud Run filesystems are ephemeral.
   - For production, move uploads to **Cloud Storage** and store the `storageKey` as a GCS object path.
 - **Secrets**: prefer Secret Manager for `JWT_SECRET`, DB password, Ably key.
 - **Networking**: if you want private API access from web, use an HTTPS Load Balancer + serverless NEG; otherwise, public API is fine (JWT protects protected routes).
+
+## Cost minimization (best for a test project)
+
+The biggest cost driver is usually **Cloud SQL** (it does *not* scale to zero). For lowest cost:
+
+- Prefer **Cloud Run** for API + Next.js:
+  - Keep **min instances = 0** (scales to zero)
+  - Set **max instances = 1** to avoid surprise scaling
+  - Use small sizing like **1 vCPU / 512Mi** (bump if you hit OOM)
+- For **Cloud SQL**:
+  - Choose the **smallest non-HA (zonal) instance** available in your region
+  - Avoid high availability, replicas, and large backups for a demo
+  - When you’re not using the project, **stop the Cloud SQL instance** (you still pay storage, but compute stops)
+
+For Flutter Web hosting, Firebase Hosting is typically the cheapest + simplest option for HTTPS and SPA routing.
 
 ## Suggested values to collect from you (so I can tailor commands exactly)
 
@@ -178,3 +201,10 @@ For Flutter web hosting, also tell me:
 
 - Hosting preference: Firebase Hosting or Cloud Storage
 - Whether you want SPA routing for deep links (usually yes)
+
+## Optional: automated deploy scripts
+
+If you want a more repeatable workflow, this repo includes GCP deployment helpers:
+
+- Cloud Build configs (API + web): `deploy/gcp/cloudbuild.*.yaml`
+- PowerShell deploy script templates: `deploy/gcp/deploy.ps1` + `deploy/gcp/vars.example.ps1`

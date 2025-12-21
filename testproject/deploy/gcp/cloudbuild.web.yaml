@@ -1,0 +1,27 @@
+# Cloud Build config for apps/web
+# Builds a container image from apps/web/Dockerfile.
+# Requires NEXT_PUBLIC_API_URL as a build arg (baked into Next.js client bundle).
+#
+# Usage example:
+#   gcloud builds submit . --config deploy/gcp/cloudbuild.web.yaml \
+#     --substitutions=_IMAGE=gcr.io/PROJECT/fanhouse-web,_NEXT_PUBLIC_API_URL=https://YOUR_API
+
+substitutions:
+  _IMAGE: ""
+  _NEXT_PUBLIC_API_URL: ""
+
+steps:
+  - id: "Build Web image"
+    name: "gcr.io/cloud-builders/docker"
+    args:
+      - "build"
+      - "-f"
+      - "apps/web/Dockerfile"
+      - "--build-arg"
+      - "NEXT_PUBLIC_API_URL=${_NEXT_PUBLIC_API_URL}"
+      - "-t"
+      - "${_IMAGE}"
+      - "."
+
+images:
+  - "${_IMAGE}"
