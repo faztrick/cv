@@ -53,6 +53,9 @@ This is a focused vertical slice of FanHouse demonstrating:
 | --- | --- | --- |
 | Docker Compose (Postgres) | ✅ Done | `docker-compose.yml` |
 | Environment templates | ✅ Done | `.env.example`, `.env.local.example` |
+| Next.js monorepo module resolution fix (Turbopack root) | ✅ Done | `apps/web/next.config.js`, `apps/web/next.config.ts` |
+
+Note: This fix is necessary to ensure that module resolution works correctly across the monorepo setup, allowing for seamless integration of Next.js and Tailwind CSS.
 
 ---
 
@@ -62,42 +65,44 @@ This is a focused vertical slice of FanHouse demonstrating:
 
 #### 1. Auth Tests (`apps/api/__tests__/auth.test.ts`)
 
-- [ ] Register new user (FAN role)
-- [ ] Register new creator (CREATOR role + pending profile)
-- [ ] Login with valid credentials
-- [ ] Login with invalid credentials (401)
-- [ ] Get /auth/me with valid token
-- [ ] Get /auth/me with invalid token (401)
+- [x] Register new user (FAN role)
+- [x] Register new creator (CREATOR role + pending profile)
+- [x] Login with valid credentials
+- [x] Login with invalid credentials (401)
+- [x] Get /auth/me with valid token
+- [x] Get /auth/me with invalid token (401)
 
 #### 2. Posts Gating Tests (`apps/api/__tests__/posts.test.ts`)
 
-- [ ] FREE posts visible to unauthenticated users
-- [ ] FREE posts include media for everyone
-- [ ] SUBSCRIBER posts body visible, media hidden for non-subscribers
-- [ ] SUBSCRIBER posts fully visible after subscription
-- [ ] PPV posts body visible, media hidden for non-purchasers
-- [ ] PPV posts fully visible after unlock
-- [ ] Disabled posts not returned
-- [ ] Disabled creator posts not returned
+- [x] FREE posts visible to unauthenticated users
+- [x] FREE posts include media for everyone
+- [x] SUBSCRIBER posts body visible, media hidden for non-subscribers
+- [x] SUBSCRIBER posts fully visible after subscription
+- [x] PPV posts body visible, media hidden for non-purchasers
+- [x] PPV posts fully visible after unlock
+- [x] Disabled posts not returned
+- [x] Disabled creator posts not returned
 
 #### 3. Billing Tests (`apps/api/__tests__/billing.test.ts`)
 
-- [ ] Subscribe creates subscription record
-- [ ] Subscribe creates ledger entry
-- [ ] Subscribe sends notification to creator
-- [ ] Re-subscribe reactivates existing subscription
-- [ ] Unlock PPV creates unlock record
-- [ ] Unlock PPV creates ledger entry
-- [ ] Unlock non-PPV post returns error
+- [x] Subscribe creates subscription record
+- [x] Subscribe creates ledger entry
+- [x] Subscribe sends notification to creator
+- [x] Re-subscribe reactivates existing subscription
+- [x] Unlock PPV creates unlock record
+- [x] Unlock PPV creates ledger entry
+- [x] Unlock non-PPV post returns error
 
 #### 4. Admin Tests (`apps/api/__tests__/admin.test.ts`)
 
-- [ ] Non-admin cannot access admin routes
-- [ ] Approve creator changes status
-- [ ] Reject creator changes status
-- [ ] Disable creator hides their posts
-- [ ] Disable post removes from feed
-- [ ] Transactions endpoint returns ledger entries
+- [x] Non-admin cannot access admin routes
+- [x] Approve creator changes status
+- [x] Reject creator changes status
+- [x] Disable creator hides their posts
+- [x] Disable post removes from feed
+- [x] Transactions endpoint returns ledger entries
+
+> Note: Current API unit tests run with a mocked Prisma client (no DB required) and are passing (25 tests).
 
 ---
 
@@ -105,10 +110,10 @@ This is a focused vertical slice of FanHouse demonstrating:
 
 ### Test Infrastructure Setup
 
-- [ ] Add vitest to API `package.json`
-- [ ] Create `apps/api/vitest.config.ts`
-- [ ] Create `apps/api/__tests__/setup.ts` with Prisma mock
-- [ ] Create `apps/api/__tests__/helpers.ts` with test utilities
+- [x] Add vitest to API `package.json`
+- [x] Create `apps/api/vitest.config.ts`
+- [x] Create `apps/api/__tests__/setup.ts` with Prisma mock
+- [x] Create `apps/api/__tests__/helpers.ts` with test utilities
 
 ### VS Code Tasks
 
