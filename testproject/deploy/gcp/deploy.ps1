@@ -99,6 +99,13 @@ if ($AllowUnauthenticated) {
 
 gcloud @apiDeployArgs
 
+# Resolve deployed API URL (for web build)
+$ApiUrl = gcloud run services describe $ApiService --region $Region --format "value(status.url)" | Select-Object -First 1
+if (-not [string]::IsNullOrWhiteSpace($ApiUrl)) {
+  Write-Host "Resolved API URL: $ApiUrl" -ForegroundColor Green
+  $NextPublicApiUrl = $ApiUrl
+}
+
 # 3) Create/update Cloud Run Job for DB init
 # Re-uses the API image so Prisma CLI and seed script are available.
 $jobName = "$ApiService-db-init"
@@ -148,6 +155,23 @@ if ($AllowUnauthenticated) {
 }
 
 gcloud @webDeployArgs
+
+# Resolve web URL and update API CORS allowlist to include it
+$WebUrl = gcloud run services describe $WebService --region $Region --format "value(status.url)" | Select-Object -First 1
+if (-not [string]::IsNullOrWhiteSpace($WebUrl)) {
+  Write-Host "Resolved Web URL: $WebUrl" -ForegroundColor Green
+  $originList = @()
+  if (-not [string]::IsNullOrWhiteSpace($WebOrigin)) {
+    $originList += ($WebOrigin -split ",")
+  }
+  $originList += $WebUrl
+  $originList = $originList | ForEach-Object { $_.Trim() } | Where-Object { $_ -ne "" } | Select-Object -Unique
+  $WebOrigin = [string]::Join(',', $originList)
+
+  Write-Host "Redeploying API to include Web origin in CORS: $WebOrigin" -ForegroundColor Cyan
+  $apiDeployArgs[$apiDeployArgs.IndexOf("--set-env-vars") + 1] = "DATABASE_URL=$DatabaseUrl,JWT_SECRET=$JwtSecret,WEB_ORIGIN=$WebOrigin,SUBSCRIPTION_PRICE_CENTS=$SubscriptionPriceCents"
+  gcloud @apiDeployArgs
+}
 
 Write-Host "Done." -ForegroundColor Green
 Write-Host "Next:" -ForegroundColor Green
