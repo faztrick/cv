@@ -4,65 +4,71 @@ version: '3.9'
 # Use: docker compose -f docker-compose.mcp.yml up -d
 # This keeps MCP server containers running to avoid cold-start delays
 
+x-mcp-healthcheck: &mcp-healthcheck
+  test: ["CMD", "echo", "healthy"]
+  interval: 30s
+  timeout: 10s
+  retries: 3
+
+x-mcp-logging: &mcp-logging
+  driver: "json-file"
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+x-mcp-env: &mcp-env
+  MCP_TIMEOUT: "120000"
+  MCP_STARTUP_TIMEOUT: "60000"
+
+x-mcp-service: &mcp-service
+  restart: unless-stopped
+  network_mode: host
+  init: true
+  stdin_open: true
+  tty: true
+  logging: *mcp-logging
+
 services:
   mcp-filesystem:
+    <<: *mcp-service
     image: mcp/filesystem
     container_name: mcp_filesystem
-    restart: unless-stopped
-    network_mode: host
-    stdin_open: true
-    tty: true
     volumes:
       - .:/workspace:rw
     working_dir: /workspace
     environment:
-      - MCP_TIMEOUT=120000
-      - MCP_STARTUP_TIMEOUT=60000
+      <<: *mcp-env
     healthcheck:
-      test: ["CMD", "echo", "healthy"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      <<: *mcp-healthcheck
       start_period: 10s
 
   mcp-postgres:
+    <<: *mcp-service
     image: mcp/postgres
     container_name: mcp_postgres
-    restart: unless-stopped
-    network_mode: host
-    stdin_open: true
-    tty: true
     environment:
-      - DATABASE_URL=${DATABASE_URL:-postgresql://fanhouse:secret@localhost:5432/fanhouse_test}
-      - MCP_TIMEOUT=120000
-      - MCP_STARTUP_TIMEOUT=60000
+      <<: *mcp-env
+      DATABASE_URL: "${DATABASE_URL:-postgresql://fanhouse:secret@localhost:5432/fanhouse_test}"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     healthcheck:
-      test: ["CMD", "echo", "healthy"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      <<: *mcp-healthcheck
       start_period: 15s
 
   mcp-code-analysis:
+    <<: *mcp-service
     image: mcp/code-analysis
     container_name: mcp_code_analysis
-    restart: unless-stopped
-    network_mode: host
-    stdin_open: true
-    tty: true
     volumes:
       - .:/workspace:ro
     working_dir: /workspace
     environment:
-      - MCP_TIMEOUT=180000
-      - MCP_STARTUP_TIMEOUT=90000
+      <<: *mcp-env
+      MCP_TIMEOUT: "180000"
+      MCP_STARTUP_TIMEOUT: "90000"
     healthcheck:
-      test: ["CMD", "echo", "healthy"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
+      <<: *mcp-healthcheck
       start_period: 20s
 
   # Reference to main postgres from docker-compose.yml

@@ -17,7 +17,7 @@ steps:
       - "apps/api/Dockerfile"
       - "-t"
       - "${_IMAGE}"
-      - "."
+      - "apps/api"
 
 images:
   - "${_IMAGE}"

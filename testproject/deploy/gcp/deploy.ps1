@@ -44,6 +44,7 @@ Assert-NotEmpty "CloudSqlInstanceConnectionName" $CloudSqlInstanceConnectionName
 Assert-NotEmpty "DatabaseUrl" $DatabaseUrl
 Assert-NotEmpty "JwtSecret" $JwtSecret
 Assert-NotEmpty "WebOrigin" $WebOrigin
+Assert-NotEmpty "UploadsBucket" $UploadsBucket
 
 # Optional cost knobs (defaults are OK if unset)
 if ([string]::IsNullOrWhiteSpace($ApiCpu)) { $ApiCpu = "1" }
@@ -63,7 +64,34 @@ Write-Host "Using project $ProjectId in region $Region" -ForegroundColor Cyan
 
 gcloud config set project $ProjectId | Out-Null
 
-gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com sqladmin.googleapis.com | Out-Null
+gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com sqladmin.googleapis.com storage.googleapis.com | Out-Null
+
+# Ensure uploads bucket exists and Cloud Run service account can write to it.
+Write-Host "Ensuring uploads bucket exists: gs://$UploadsBucket" -ForegroundColor Cyan
+$uploadsBucketExists = $false
+try {
+  gcloud storage buckets describe "gs://$UploadsBucket" | Out-Null
+  $uploadsBucketExists = $true
+}
+catch {
+  $uploadsBucketExists = $false
+}
+
+if (-not $uploadsBucketExists) {
+  gcloud storage buckets create "gs://$UploadsBucket" --location=$Region --uniform-bucket-level-access | Out-Null
+}
+
+$projectNumber = gcloud projects describe $ProjectId --format "value(projectNumber)" | Select-Object -First 1
+if (-not [string]::IsNullOrWhiteSpace($projectNumber)) {
+  $defaultRunSa = "$projectNumber-compute@developer.gserviceaccount.com"
+  Write-Host "Granting upload bucket access to service account: $defaultRunSa" -ForegroundColor Cyan
+  try {
+    gcloud storage buckets add-iam-policy-binding "gs://$UploadsBucket" --member="serviceAccount:$defaultRunSa" --role="roles/storage.objectAdmin" | Out-Null
+  }
+  catch {
+    Write-Host "Bucket IAM binding may already exist; continuing." -ForegroundColor DarkYellow
+  }
+}
 
 # 1) Build + push API image
 Write-Host "Building API image: $ApiImage" -ForegroundColor Cyan
@@ -83,7 +111,7 @@ $apiDeployArgs = @(
   "--memory", $ApiMemory,
   "--min-instances", $ApiMinInstances,
   "--max-instances", $ApiMaxInstances,
-  "--set-env-vars", "DATABASE_URL=$DatabaseUrl,JWT_SECRET=$JwtSecret,WEB_ORIGIN=$WebOrigin,SUBSCRIPTION_PRICE_CENTS=$SubscriptionPriceCents",
+  "--set-env-vars", "DATABASE_URL=$DatabaseUrl,JWT_SECRET=$JwtSecret,WEB_ORIGIN=$WebOrigin,SUBSCRIPTION_PRICE_CENTS=$SubscriptionPriceCents,UPLOADS_BUCKET=$UploadsBucket",
   "--add-cloudsql-instances", $CloudSqlInstanceConnectionName
 )
 
@@ -172,7 +200,7 @@ if (-not [string]::IsNullOrWhiteSpace($WebUrl)) {
   $WebOrigin = [string]::Join(',', $originList)
 
   Write-Host "Redeploying API to include Web origin in CORS: $WebOrigin" -ForegroundColor Cyan
-  $apiDeployArgs[$apiDeployArgs.IndexOf("--set-env-vars") + 1] = "DATABASE_URL=$DatabaseUrl,JWT_SECRET=$JwtSecret,WEB_ORIGIN=$WebOrigin,SUBSCRIPTION_PRICE_CENTS=$SubscriptionPriceCents"
+  $apiDeployArgs[$apiDeployArgs.IndexOf("--set-env-vars") + 1] = "DATABASE_URL=$DatabaseUrl,JWT_SECRET=$JwtSecret,WEB_ORIGIN=$WebOrigin,SUBSCRIPTION_PRICE_CENTS=$SubscriptionPriceCents,UPLOADS_BUCKET=$UploadsBucket"
   gcloud @apiDeployArgs
 }
 

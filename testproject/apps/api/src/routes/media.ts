@@ -1,11 +1,9 @@
 import { Router } from 'express';
-import path from 'path';
-import fs from 'fs';
-import prisma from '../lib/prisma';
 import { verifyToken } from '../lib/auth';
+import prisma from '../lib/prisma';
+import { getFileStream } from '../services/storage';
 
 const router = Router();
-const uploadsDir = path.join(process.cwd(), 'uploads');
 
 router.get('/:id', async (req, res) => {
   const asset = await prisma.mediaAsset.findUnique({
@@ -57,14 +55,20 @@ router.get('/:id', async (req, res) => {
     return res.status(403).json({ error: 'Not entitled' });
   }
 
-  const filePath = path.join(uploadsDir, asset.storageKey);
-  if (!fs.existsSync(filePath)) {
+  try {
+    const stream = await getFileStream(asset.storageKey);
+    res.setHeader('Content-Type', asset.mimeType);
+    stream.on('error', () => {
+      if (!res.headersSent) {
+        res.status(404).json({ error: 'Missing file' });
+      } else {
+        res.end();
+      }
+    });
+    stream.pipe(res);
+  } catch {
     return res.status(404).json({ error: 'Missing file' });
   }
-
-  res.setHeader('Content-Type', asset.mimeType);
-  const stream = fs.createReadStream(filePath);
-  stream.pipe(res);
 });
 
 export default router;

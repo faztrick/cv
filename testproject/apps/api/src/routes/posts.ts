@@ -1,20 +1,16 @@
+import crypto from 'crypto';
 import { Router } from 'express';
-import fs from 'fs';
 import multer from 'multer';
-import path from 'path';
 import { z } from 'zod';
 import prisma from '../lib/prisma';
 import { AuthRequest, optionalAuth, requireApprovedCreator, requireAuth } from '../middleware/auth';
 import { publishEvent } from '../services/ably';
+import { uploadFile } from '../services/storage';
 
 const router = Router();
 
-const uploadsDir = path.join(process.cwd(), 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-const upload = multer({ dest: uploadsDir });
+// Use memory storage so we can write to Cloud Storage (or local fallback) ourselves.
+const upload = multer({ storage: multer.memoryStorage() });
 
 const createSchema = z.object({
   title: z.string().min(2),
@@ -156,10 +152,13 @@ router.post('/', requireAuth, requireApprovedCreator, upload.single('media'), as
   });
 
   if (req.file) {
+    const storageKey = crypto.randomUUID();
+    await uploadFile(storageKey, req.file.buffer, req.file.mimetype);
+
     await prisma.mediaAsset.create({
       data: {
         postId: post.id,
-        storageKey: req.file.filename,
+        storageKey,
         mimeType: req.file.mimetype
       }
     });

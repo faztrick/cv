@@ -24,8 +24,12 @@ $DatabaseUrl = "postgresql://$($DbUser):$($DbPassword)@localhost/$($DbName)?host
 # JWT Secret
 $JwtSecret = "change-me-to-something-secure-in-production"
 
-# CORS allowlist (comma-separated). Start with local + GCS; we'll append the web URL after deploy.
-$WebOrigin = "http://localhost:3000,https://storage.googleapis.com"
+# File uploads (Cloud Storage bucket). Must be globally unique.
+# Example: "carbon-airlock-426814-n3-uploads"
+$UploadsBucket = "carbon-airlock-426814-n3-uploads"
+
+# CORS allowlist (comma-separated). Start simple; deploy script will append the deployed web URL.
+$WebOrigin = "http://localhost:3000"
 
 # Optional subscription price (cents)
 $SubscriptionPriceCents = "0"

@@ -1,5 +1,5 @@
+import { Prisma, type LedgerType } from '@prisma/client';
 import prisma from '../lib/prisma';
-import type { LedgerType } from '@prisma/client';
 
 export async function createLedgerEntry(input: {
   type: LedgerType;
@@ -7,7 +7,7 @@ export async function createLedgerEntry(input: {
   fanId?: string | null;
   creatorId?: string | null;
   postId?: string | null;
-  metadata?: Record<string, unknown> | null;
+  metadata?: Prisma.InputJsonValue | null;
 }) {
   return prisma.ledgerEntry.create({
     data: {
@@ -16,7 +16,7 @@ export async function createLedgerEntry(input: {
       fanId: input.fanId ?? null,
       creatorId: input.creatorId ?? null,
       postId: input.postId ?? null,
-      metadata: input.metadata ?? null
+      metadata: input.metadata ?? undefined
     }
   });
 }
