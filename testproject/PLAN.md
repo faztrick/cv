@@ -135,7 +135,7 @@ Per the README tradeoffs:
 - [ ] Replace mock payments with CCBill integration
 - [ ] Replace local media storage with object storage + signed URLs
 - [ ] Replace Knock-style notifications with actual Knock SDK
-- [ ] Add E2E tests with Playwright
+- [x] Add E2E tests with Playwright (`apps/web/e2e/`, `apps/web/playwright.config.ts`)
 
 ---
 
@@ -160,6 +160,10 @@ npm run dev
 # Run tests (after setup)
 cd apps/api
 npm test
+
+# Web E2E tests
+cd apps/web
+npm run test:e2e
 ```
 
 ---

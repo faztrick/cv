@@ -1,0 +1,44 @@
+{
+  "$schema": "https://raw.githubusercontent.com/anthropics/claude-code/main/schemas/mcp-config.schema.json",
+  "mcpServers": {
+    "filesystem": {
+      "command": "docker",
+      "args": [
+        "exec",
+        "-i",
+        "mcp_filesystem",
+        "mcp-server"
+      ],
+      "timeout": 120000,
+      "startupTimeout": 10000
+    },
+    "postgres": {
+      "command": "docker",
+      "args": [
+        "exec",
+        "-i",
+        "mcp_postgres",
+        "mcp-server"
+      ],
+      "timeout": 120000,
+      "startupTimeout": 10000
+    },
+    "code-analysis": {
+      "command": "docker",
+      "args": [
+        "exec",
+        "-i",
+        "mcp_code_analysis",
+        "mcp-server"
+      ],
+      "timeout": 180000,
+      "startupTimeout": 10000
+    }
+  },
+  "defaults": {
+    "timeout": 120000,
+    "startupTimeout": 30000,
+    "retryAttempts": 3,
+    "retryDelay": 2000
+  }
+}

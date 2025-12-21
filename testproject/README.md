@@ -117,8 +117,37 @@ Routes are declared in `flutter_frontend/lib/app/routes/app_routes.dart` and reg
 - Uploads are saved locally in `apps/api/uploads/`.
 - Prisma schema lives in `apps/api/prisma/schema.prisma`.
 
+## Tests
+
+### API (Vitest)
+
+API tests live in `apps/api/__tests__/` and run with a mocked Prisma client (no DB required).
+
+- Watch mode:
+  - `cd apps/api` → `npm test`
+- One-shot run (CI-style):
+  - `cd apps/api` → `npx vitest run`
+
+### Web (Playwright E2E)
+
+Basic E2E tests live in `apps/web/e2e/` and are configured via `apps/web/playwright.config.ts`.
+
+- Run E2E tests (will start the web dev server automatically):
+  - `cd apps/web` → `npm run test:e2e`
+
+## Troubleshooting
+
+### Next.js monorepo + Tailwind module resolution
+
+If you see an error like “Can’t resolve `tailwindcss`” while running the web app, it usually means Next/Turbopack inferred the monorepo root incorrectly and is resolving dependencies from a parent folder.
+
+This repo pins the app root/tracing in:
+
+- `apps/web/next.config.js`
+- `apps/web/next.config.ts`
+
 ## Next Steps
 
-- Add tests for API gating logic.
+- Add a CI-friendly test script (e.g. `vitest run`) and GitHub Actions pipeline.
 - Swap mock payment hooks for actual CCBill workflows.
 - Replace local media with object storage and signed URLs.

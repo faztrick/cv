@@ -1,0 +1,90 @@
+version: '3.9'
+
+# MCP Servers Docker Compose
+# Use: docker compose -f docker-compose.mcp.yml up -d
+# This keeps MCP server containers running to avoid cold-start delays
+
+services:
+  mcp-filesystem:
+    image: mcp/filesystem
+    container_name: mcp_filesystem
+    restart: unless-stopped
+    network_mode: host
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/workspace:rw
+    working_dir: /workspace
+    environment:
+      - MCP_TIMEOUT=120000
+      - MCP_STARTUP_TIMEOUT=60000
+    healthcheck:
+      test: ["CMD", "echo", "healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  mcp-postgres:
+    image: mcp/postgres
+    container_name: mcp_postgres
+    restart: unless-stopped
+    network_mode: host
+    stdin_open: true
+    tty: true
+    environment:
+      - DATABASE_URL=${DATABASE_URL:-postgresql://fanhouse:secret@localhost:5432/fanhouse_test}
+      - MCP_TIMEOUT=120000
+      - MCP_STARTUP_TIMEOUT=60000
+    depends_on:
+      - postgres
+    healthcheck:
+      test: ["CMD", "echo", "healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+  mcp-code-analysis:
+    image: mcp/code-analysis
+    container_name: mcp_code_analysis
+    restart: unless-stopped
+    network_mode: host
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/workspace:ro
+    working_dir: /workspace
+    environment:
+      - MCP_TIMEOUT=180000
+      - MCP_STARTUP_TIMEOUT=90000
+    healthcheck:
+      test: ["CMD", "echo", "healthy"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+
+  # Reference to main postgres from docker-compose.yml
+  postgres:
+    image: postgres:15
+    container_name: fanhouse_test_db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: fanhouse
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: fanhouse_test
+    volumes:
+      - fanhouse_test_pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fanhouse -d fanhouse_test"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+volumes:
+  fanhouse_test_pg:
+    external: true

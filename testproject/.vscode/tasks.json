@@ -125,6 +125,16 @@
 			"group": "build"
 		},
 		{
+			"label": "web: E2E tests",
+			"type": "shell",
+			"command": "npm run test:e2e",
+			"options": {
+				"cwd": "${workspaceFolder}/apps/web"
+			},
+			"problemMatcher": [],
+			"group": "test"
+		},
+		{
 			"label": "Full Setup: Postgres + API + Seed",
 			"dependsOrder": "sequence",
 			"dependsOn": [
