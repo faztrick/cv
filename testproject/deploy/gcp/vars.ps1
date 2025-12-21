@@ -5,6 +5,10 @@ $Region = "us-central1"
 $ApiService = "cv-api"
 $WebService = "cv-web"
 
+# Container images (Artifact Registry / GCR)
+$ApiImage = "gcr.io/$ProjectId/cv-api:latest"
+$WebImage = "gcr.io/$ProjectId/cv-web:latest"
+
 # Cloud SQL Config
 # We will create this instance if it doesn't exist
 $CloudSqlInstanceName = "cv-db-test"
@@ -19,6 +23,12 @@ $DatabaseUrl = "postgresql://$($DbUser):$($DbPassword)@localhost/$($DbName)?host
 
 # JWT Secret
 $JwtSecret = "change-me-to-something-secure-in-production"
+
+# CORS allowlist (comma-separated). Start with local + GCS; we'll append the web URL after deploy.
+$WebOrigin = "http://localhost:3000,https://storage.googleapis.com"
+
+# Optional subscription price (cents)
+$SubscriptionPriceCents = "0"
 
 # Web Config
 $NextPublicApiUrl = "https://$ApiService-$ProjectId.$Region.run.app" # Approximate, will be updated after API deploy if needed, but Cloud Run URLs are predictable-ish if we knew the hash. Actually we don't.
