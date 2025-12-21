@@ -12,9 +12,24 @@ import postsRouter from './routes/posts';
 dotenv.config();
 
 const app = express();
-const webOrigin = process.env.WEB_ORIGIN ?? 'http://localhost:3000';
+const webOriginsRaw = process.env.WEB_ORIGIN ?? 'http://localhost:3000';
+const allowedOrigins = webOriginsRaw
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
 
-app.use(cors({ origin: webOrigin, credentials: true }));
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow non-browser clients (curl, server-to-server) where Origin is undefined.
+      if (!origin) return callback(null, true);
+      // Allow one or more explicit origins: WEB_ORIGIN="https://a.com,https://b.com"
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(null, false);
+    },
+    credentials: true
+  })
+);
 app.use(express.json({ limit: '5mb' }));
 
 app.get('/health', (_req, res) => {

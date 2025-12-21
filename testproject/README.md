@@ -135,6 +135,11 @@ Basic E2E tests live in `apps/web/e2e/` and are configured via `apps/web/playwri
 - Run E2E tests (will start the web dev server automatically):
   - `cd apps/web` → `npm run test:e2e`
 
+## Deploy
+
+- **GCP (Cloud Run + Cloud SQL):** see `deploy/gcp/README.md`
+- **Flutter Web hosting (Firebase/GCS):** see `deploy/gcp/flutter-web.md`
+
 ## Troubleshooting
 
 ### Next.js monorepo + Tailwind module resolution
