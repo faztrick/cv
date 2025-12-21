@@ -59,7 +59,30 @@ npm run dev
 apps/
   api/        # Express API + Prisma
   web/        # Next.js App Router UI
+flutter_frontend/  # Optional Flutter client (extra)
 ```
+
+## App pages
+
+### Web (Next.js App Router)
+
+- `/` → `apps/web/src/app/page.tsx`
+- `/auth` → `apps/web/src/app/auth/page.tsx`
+- `/feed` → `apps/web/src/app/feed/page.tsx`
+- `/creator` → `apps/web/src/app/creator/page.tsx`
+- `/admin` → `apps/web/src/app/admin/page.tsx`
+
+### Flutter (GetX)
+
+Routes are declared in `flutter_frontend/lib/app/routes/app_routes.dart` and registered in `flutter_frontend/lib/app/routes/app_pages.dart`.
+
+- `/` → `flutter_frontend/lib/app/modules/home/views/home_view.dart`
+- `/auth` → `flutter_frontend/lib/app/modules/auth/views/auth_view.dart`
+- `/feed` → `flutter_frontend/lib/app/modules/feed/views/feed_view.dart`
+- `/creator` → `flutter_frontend/lib/app/modules/creator/views/creator_view.dart`
+- `/creator/new` → `flutter_frontend/lib/app/modules/creator/views/create_post_view.dart`
+- `/admin` → `flutter_frontend/lib/app/modules/admin/views/admin_view.dart`
+- `/notifications` → `flutter_frontend/lib/app/modules/notifications/views/notifications_view.dart`
 
 ## Tradeoffs
 
