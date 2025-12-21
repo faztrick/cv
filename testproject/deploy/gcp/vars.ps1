@@ -30,26 +30,12 @@ $WebOrigin = "http://localhost:3000,https://storage.googleapis.com"
 # Optional subscription price (cents)
 $SubscriptionPriceCents = "0"
 
-# Web Config
-$NextPublicApiUrl = "https://$ApiService-$ProjectId.$Region.run.app" # Approximate, will be updated after API deploy if needed, but Cloud Run URLs are predictable-ish if we knew the hash. Actually we don't.
-# Better strategy: Deploy API first, get URL, update this.
-# For now, we'll leave it as a placeholder or try to predict it.
-# Actually, Cloud Run URLs are `service-name-hash-uc.a.run.app`. We can't predict the hash easily.
-# The deploy script might need to handle this dependency.
-# Let's look at deploy.ps1 again. It deploys API, then Web.
-# But Web needs API URL at build time.
-# So we must deploy API, get URL, then build Web.
-# The current deploy.ps1 does:
-# 1. Build API & Web images (in parallel or sequence)
-# 2. Deploy API
-# 3. Deploy Web
-# This is a problem if Web needs API URL at build time.
-# I will need to modify deploy.ps1 to split the build process if I want to inject the real URL.
-# OR, for the first run, we deploy API, get URL, then re-deploy Web.
+# Web Config (deploy script will resolve API URL after API deploy)
+$NextPublicApiUrl = ""
 
-# Flutter Config
+# Flutter Config (fill FlutterApiBaseUrl after API deploy)
 $FlutterBucket = "carbon-airlock-426814-n3-flutter-web"
-$FlutterApiBaseUrl = "https://$ApiService-hash-uc.a.run.app" # Placeholder, needs update after API deploy
+$FlutterApiBaseUrl = ""
 $FlutterAblyApiKey = ""
 
 # Cost / Scaling Config (Test Project Defaults)

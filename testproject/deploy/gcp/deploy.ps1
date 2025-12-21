@@ -44,7 +44,6 @@ Assert-NotEmpty "CloudSqlInstanceConnectionName" $CloudSqlInstanceConnectionName
 Assert-NotEmpty "DatabaseUrl" $DatabaseUrl
 Assert-NotEmpty "JwtSecret" $JwtSecret
 Assert-NotEmpty "WebOrigin" $WebOrigin
-Assert-NotEmpty "NextPublicApiUrl" $NextPublicApiUrl
 
 # Optional cost knobs (defaults are OK if unset)
 if ([string]::IsNullOrWhiteSpace($ApiCpu)) { $ApiCpu = "1" }
@@ -104,6 +103,10 @@ $ApiUrl = gcloud run services describe $ApiService --region $Region --format "va
 if (-not [string]::IsNullOrWhiteSpace($ApiUrl)) {
   Write-Host "Resolved API URL: $ApiUrl" -ForegroundColor Green
   $NextPublicApiUrl = $ApiUrl
+}
+
+if ([string]::IsNullOrWhiteSpace($NextPublicApiUrl)) {
+  throw "NEXT_PUBLIC_API_URL is not set and could not be resolved from the API deploy."
 }
 
 # 3) Create/update Cloud Run Job for DB init
