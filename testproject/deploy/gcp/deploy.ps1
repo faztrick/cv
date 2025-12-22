@@ -46,6 +46,11 @@ Assert-NotEmpty "JwtSecret" $JwtSecret
 Assert-NotEmpty "WebOrigin" $WebOrigin
 Assert-NotEmpty "UploadsBucket" $UploadsBucket
 
+# Default to public services unless explicitly disabled.
+if ($null -eq $AllowUnauthenticated) {
+  $AllowUnauthenticated = $true
+}
+
 # Optional cost knobs (defaults are OK if unset)
 if ([string]::IsNullOrWhiteSpace($ApiCpu)) { $ApiCpu = "1" }
 if ([string]::IsNullOrWhiteSpace($ApiMemory)) { $ApiMemory = "512Mi" }
@@ -66,16 +71,44 @@ gcloud config set project $ProjectId | Out-Null
 
 gcloud services enable run.googleapis.com cloudbuild.googleapis.com artifactregistry.googleapis.com sqladmin.googleapis.com storage.googleapis.com | Out-Null
 
+# Ensure Cloud SQL instance/db/user exist (vars.ps1 provides connection name and credentials).
+# This keeps the deploy script "one shot" for test projects.
+Write-Host "Ensuring Cloud SQL instance exists: $CloudSqlInstanceName" -ForegroundColor Cyan
+$null = gcloud sql instances describe $CloudSqlInstanceName --project $ProjectId 2>$null
+$instanceExists = ($LASTEXITCODE -eq 0)
+
+if (-not $instanceExists) {
+  Write-Host "Creating Cloud SQL Postgres instance (small, cost-first)…" -ForegroundColor Cyan
+  gcloud sql instances create $CloudSqlInstanceName --database-version=POSTGRES_15 --region=$Region --tier=db-f1-micro | Out-Null
+}
+
+if (-not [string]::IsNullOrWhiteSpace($DbName)) {
+  Write-Host "Ensuring database exists: $DbName" -ForegroundColor Cyan
+  $null = gcloud sql databases describe $DbName --instance=$CloudSqlInstanceName --project $ProjectId 2>$null
+  if ($LASTEXITCODE -ne 0) {
+    gcloud sql databases create $DbName --instance=$CloudSqlInstanceName --project $ProjectId | Out-Null
+  }
+}
+
+if (-not [string]::IsNullOrWhiteSpace($DbUser)) {
+  Write-Host "Ensuring DB user exists: $DbUser" -ForegroundColor Cyan
+  $existing = gcloud sql users list --instance=$CloudSqlInstanceName --project $ProjectId --format="value(name)" 2>$null |
+  Where-Object { $_ -eq $DbUser } |
+  Select-Object -First 1
+  $userExists = (-not [string]::IsNullOrWhiteSpace($existing))
+
+  if (-not $userExists) {
+    if ([string]::IsNullOrWhiteSpace($DbPassword)) {
+      throw "DbPassword is required to create the Cloud SQL user $DbUser."
+    }
+    gcloud sql users create $DbUser --instance=$CloudSqlInstanceName --password=$DbPassword --project $ProjectId | Out-Null
+  }
+}
+
 # Ensure uploads bucket exists and Cloud Run service account can write to it.
 Write-Host "Ensuring uploads bucket exists: gs://$UploadsBucket" -ForegroundColor Cyan
-$uploadsBucketExists = $false
-try {
-  gcloud storage buckets describe "gs://$UploadsBucket" | Out-Null
-  $uploadsBucketExists = $true
-}
-catch {
-  $uploadsBucketExists = $false
-}
+$null = gcloud storage buckets describe "gs://$UploadsBucket" 2>$null
+$uploadsBucketExists = ($LASTEXITCODE -eq 0)
 
 if (-not $uploadsBucketExists) {
   gcloud storage buckets create "gs://$UploadsBucket" --location=$Region --uniform-bucket-level-access | Out-Null
@@ -85,11 +118,9 @@ $projectNumber = gcloud projects describe $ProjectId --format "value(projectNumb
 if (-not [string]::IsNullOrWhiteSpace($projectNumber)) {
   $defaultRunSa = "$projectNumber-compute@developer.gserviceaccount.com"
   Write-Host "Granting upload bucket access to service account: $defaultRunSa" -ForegroundColor Cyan
-  try {
-    gcloud storage buckets add-iam-policy-binding "gs://$UploadsBucket" --member="serviceAccount:$defaultRunSa" --role="roles/storage.objectAdmin" | Out-Null
-  }
-  catch {
-    Write-Host "Bucket IAM binding may already exist; continuing." -ForegroundColor DarkYellow
+  $null = gcloud storage buckets add-iam-policy-binding "gs://$UploadsBucket" --member="serviceAccount:$defaultRunSa" --role="roles/storage.objectAdmin" 2>$null
+  if ($LASTEXITCODE -ne 0) {
+    Write-Host "Bucket IAM binding may already exist (or the bucket was just created); continuing." -ForegroundColor DarkYellow
   }
 }
 
@@ -149,7 +180,7 @@ $jobArgs = @(
   "--cpu", $DbJobCpu,
   "--memory", $DbJobMemory,
   "--set-env-vars", "DATABASE_URL=$DatabaseUrl",
-  "--add-cloudsql-instances", $CloudSqlInstanceConnectionName,
+  "--set-cloudsql-instances", $CloudSqlInstanceConnectionName,
   "--command", "bash",
   "--args", "-lc",
   "--args", "npm run db:deploy && npm run db:seed"
@@ -164,7 +195,7 @@ gcloud run jobs execute $jobName --region $Region --wait
 # 4) Build + push Web image (requires build-time NEXT_PUBLIC_API_URL)
 Write-Host "Building Web image: $WebImage (NEXT_PUBLIC_API_URL=$NextPublicApiUrl)" -ForegroundColor Cyan
 
-gcloud builds submit . --config deploy/gcp/cloudbuild.web.yaml --substitutions=_IMAGE=$WebImage, _NEXT_PUBLIC_API_URL=$NextPublicApiUrl
+gcloud builds submit . --config deploy/gcp/cloudbuild.web.yaml --substitutions="_IMAGE=$WebImage,_NEXT_PUBLIC_API_URL=$NextPublicApiUrl"
 
 # 5) Deploy Web service
 Write-Host "Deploying Web Cloud Run service: $WebService" -ForegroundColor Cyan

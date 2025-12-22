@@ -21,7 +21,7 @@ steps:
       - "NEXT_PUBLIC_API_URL=${_NEXT_PUBLIC_API_URL}"
       - "-t"
       - "${_IMAGE}"
-      - "."
+      - "apps/web"
 
 images:
   - "${_IMAGE}"

@@ -1,4 +1,12 @@
-FROM node:20-slim AS deps
+FROM node:20-slim AS base
+
+# Prisma engines require OpenSSL at runtime (and sometimes at generate-time).
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends openssl ca-certificates \
+	&& rm -rf /var/lib/apt/lists/*
+
+
+FROM base AS deps
 
 WORKDIR /app
 
@@ -7,7 +15,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 
 
-FROM node:20-slim AS build
+FROM base AS build
 
 WORKDIR /app
 
@@ -21,7 +29,7 @@ RUN npx prisma generate
 RUN npm run build
 
 
-FROM node:20-slim AS runner
+FROM base AS runner
 
 WORKDIR /app
 
