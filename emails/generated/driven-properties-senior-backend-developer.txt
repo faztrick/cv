@@ -1,0 +1,25 @@
+Subject: Application – Senior Backend Developer – Driven Properties – Muhammed Fasil PV
+
+Dear Hiring Manager,
+
+I'm a Dubai-based Software Architect and hands-on engineer with 13+ years building production systems (ERP/POS/QMS/IoT) using TypeScript/Node.js, Flutter, Python, and Docker. I'm immediately available in UAE (Company Visa) and interested in the Senior Backend Developer opportunity at Driven Properties.
+
+Relevant Experience:
+At Screl Info Pvt Ltd (India / UAE), I Designed and deployed **SincA ERP**, combining Flutter, Node.js, and AI analytics in Python., and Built **AI dashboards**, OCR systems, and predictive models using OpenAI and TensorFlow.. At Idol Technology LLC (Dubai, UAE), I Architected **IdolMEA ERP** integrating **POS, QMS, IoT automation, and AI vision** modules., and Built **IdolQueue (i-QMS)** in Flutter + Node.js with **Hive offline sync**, **MQTT events**, and....
+
+Highlights:
+• Development: Python, Flutter, Node.js
+• AI/ML: AI
+• DevOps: Docker
+
+Notable Projects:
+• IdolQueue (i-QMS): Smart queue automation (Flutter + Node.js + Hive + MQTT).
+• LampAidlInterface: Android Kotlin + Flutter IPC for real-time LED and lamp automation.
+
+Attached are my resume and a brief overview. Happy to share code samples and discuss how I can contribute to your team.
+
+Thank you for your consideration.
+
+MUHAMMED FASIL PV
+Dubai, UAE | +971 555923545 | faztrick@gmail.com
+LinkedIn: https://linkedin.com/in/faztrick | GitHub: https://github.com/faztrick | Portfolio: https://www.uaecodes.com

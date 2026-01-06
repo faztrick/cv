@@ -48,9 +48,33 @@ app.post('/api/companies', (req, res) => {
     }
 
     // Generate ID
-    const newId = companies.length > 0 ? Math.max(...companies.map(c => parseInt(c.id))) + 1 : 1;
+    const numericIds = companies
+        .map(c => Number.parseInt(String(c.id), 10))
+        .filter(n => Number.isFinite(n));
+    const newId = numericIds.length > 0 ? Math.max(...numericIds) + 1 : 1;
     newCompany.id = String(newId);
-    newCompany.status = 'Pending';
+
+    // Preserve caller-provided status when present (e.g., extension tracking sets Applied).
+    if (!newCompany.status) {
+        newCompany.status = 'Pending';
+    }
+
+    // If this is an application record, ensure appliedDate + followUpDate exist.
+    if (newCompany.status === 'Applied') {
+        const today = new Date().toISOString().split('T')[0];
+        const appliedDate = newCompany.appliedDate || today;
+        newCompany.appliedDate = appliedDate;
+
+        if (!newCompany.followUpDate) {
+            const followUpDate = new Date(appliedDate);
+            // If appliedDate isn't parseable, fall back to today.
+            if (Number.isNaN(followUpDate.getTime())) {
+                followUpDate.setTime(Date.now());
+            }
+            followUpDate.setDate(followUpDate.getDate() + 7);
+            newCompany.followUpDate = followUpDate.toISOString().split('T')[0];
+        }
+    }
 
     companies.push(newCompany);
     fs.writeFileSync(COMPANIES_FILE, JSON.stringify(companies, null, 2));
@@ -605,16 +629,55 @@ app.post('/api/companies/:id/response', (req, res) => {
 app.get('/api/companies/followups', (req, res) => {
     if (!fs.existsSync(COMPANIES_FILE)) return res.json([]);
 
+    const { source, platform } = req.query;
+
     const companies = JSON.parse(fs.readFileSync(COMPANIES_FILE, 'utf8'));
     const today = new Date().toISOString().split('T')[0];
 
     const needsFollowUp = companies.filter(c => {
         if (!c.followUpDate) return false;
         if (c.status === 'Rejected' || c.status === 'Offer' || c.status === 'Interview') return false;
+        // Optional filters
+        if (source && String(c.source || '').toLowerCase() !== String(source).toLowerCase()) return false;
+        if (platform && String(c.platform || '').toLowerCase() !== String(platform).toLowerCase()) return false;
         return c.followUpDate <= today;
     });
 
     res.json(needsFollowUp);
+});
+
+// Backfill follow-up dates for already applied companies (useful for older Indeed-tracked items)
+app.post('/api/companies/backfill-followups', (req, res) => {
+    if (!fs.existsSync(COMPANIES_FILE)) return res.json({ updated: 0 });
+
+    const { source } = req.body || {};
+    const companies = JSON.parse(fs.readFileSync(COMPANIES_FILE, 'utf8'));
+    const today = new Date().toISOString().split('T')[0];
+
+    let updated = 0;
+    for (const c of companies) {
+        if (!c) continue;
+        if (c.status !== 'Applied') continue;
+        if (c.followUpDate) continue;
+        if (source && String(c.source || '').toLowerCase() !== String(source).toLowerCase()) continue;
+
+        const appliedDate = c.appliedDate || today;
+        const followUpDate = new Date(appliedDate);
+        if (Number.isNaN(followUpDate.getTime())) {
+            followUpDate.setTime(Date.now());
+        }
+        followUpDate.setDate(followUpDate.getDate() + 7);
+
+        c.appliedDate = appliedDate;
+        c.followUpDate = followUpDate.toISOString().split('T')[0];
+        updated++;
+    }
+
+    if (updated > 0) {
+        fs.writeFileSync(COMPANIES_FILE, JSON.stringify(companies, null, 2));
+    }
+
+    res.json({ updated });
 });
 
 // --- OUTLOOK EMAIL INTEGRATION ---

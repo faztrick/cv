@@ -3,27 +3,83 @@
 
 console.log('CV Auto-Apply Extension loaded');
 
+function _text(el) {
+  return (el?.textContent || '').trim();
+}
+
+function _firstText(selectors) {
+  for (const s of selectors) {
+    const el = document.querySelector(s);
+    const t = _text(el);
+    if (t) return t;
+  }
+  return '';
+}
+
+function _meta(nameOrProp) {
+  const el = document.querySelector(`meta[name="${nameOrProp}"]`) || document.querySelector(`meta[property="${nameOrProp}"]`);
+  return (el?.getAttribute('content') || '').trim();
+}
+
+function _companyFromTitle(title) {
+  const t = (title || '').trim();
+  // Common patterns: "Role at Company" | "Role - Company" | "Job Application for Role at Company"
+  const atIdx = t.toLowerCase().lastIndexOf(' at ');
+  if (atIdx !== -1) {
+    const after = t.slice(atIdx + 4).trim();
+    if (after) return after;
+  }
+  const parts = t.split(' - ').map(p => p.trim()).filter(Boolean);
+  if (parts.length >= 2) {
+    const tail = parts[parts.length - 1];
+    if (tail && tail.length <= 80) return tail;
+  }
+  return '';
+}
+
+function _bestTitleFallback() {
+  const og = _meta('og:title');
+  if (og) return og;
+  const h1 = _firstText(['h1', '[data-automation-id*="jobTitle" i]', '[data-automation-id*="jobPostingHeader" i]']);
+  if (h1) return h1;
+  return (document.title || '').trim();
+}
+
+function _bestCompanyFallback() {
+  const ogSite = _meta('og:site_name');
+  if (ogSite && !/workday|taleo|oracle/i.test(ogSite)) return ogSite;
+  const fromTitle = _companyFromTitle(document.title);
+  if (fromTitle && !/workday|taleo|oracle/i.test(fromTitle)) return fromTitle;
+  // As a last resort, use hostname (better than blank)
+  return (location.hostname || '').replace(/^www\./, '');
+}
+
 // Field selectors for different platforms
 const FIELD_SELECTORS = {
   firstName: [
     'input[name*="firstName" i]', 'input[id*="firstName" i]', 'input[name*="first_name" i]',
     'input[placeholder*="first name" i]', 'input[name="fname"]', 'input[aria-label*="first name" i]'
+    , 'input[data-automation-id*="firstName" i]', 'input[data-automation-id*="legalFirstName" i]'
   ],
   lastName: [
     'input[name*="lastName" i]', 'input[id*="lastName" i]', 'input[name*="last_name" i]',
     'input[placeholder*="last name" i]', 'input[name="lname"]', 'input[aria-label*="last name" i]'
+    , 'input[data-automation-id*="lastName" i]', 'input[data-automation-id*="legalLastName" i]'
   ],
   fullName: [
     'input[name*="fullName" i]', 'input[name*="full_name" i]', 'input[name="name"]',
     'input[id*="fullName" i]', 'input[placeholder*="full name" i]', 'input[aria-label*="name" i]'
+    , 'input[data-automation-id*="fullName" i]'
   ],
   email: [
     'input[type="email"]', 'input[name*="email" i]', 'input[id*="email" i]',
     'input[placeholder*="email" i]', 'input[aria-label*="email" i]'
+    , 'input[data-automation-id*="email" i]', 'input[data-automation-id*="emailAddress" i]'
   ],
   phone: [
     'input[type="tel"]', 'input[name*="phone" i]', 'input[name*="mobile" i]',
     'input[id*="phone" i]', 'input[placeholder*="phone" i]', 'input[aria-label*="phone" i]'
+    , 'input[data-automation-id*="phone" i]', 'input[data-automation-id*="mobile" i]'
   ],
   city: [
     'input[name*="city" i]', 'input[id*="city" i]', 'input[placeholder*="city" i]',
@@ -96,6 +152,61 @@ const JOB_EXTRACTORS = {
     location: () => document.querySelector('.location, .job-location')?.textContent?.trim(),
     salary: () => document.querySelector('.salary, .job-salary')?.textContent?.trim(),
     applyButton: () => document.querySelector('#apply-button, .apply-btn, button[class*="apply"]')
+  },
+  workday: {
+    title: () => _firstText([
+      '[data-automation-id="jobPostingHeader"]',
+      '[data-automation-id*="jobPostingHeader" i]',
+      '[data-automation-id*="jobTitle" i]',
+      'h1',
+      'h2'
+    ]) || _bestTitleFallback(),
+    company: () => _firstText([
+      '[data-automation-id*="company" i]',
+      '[data-automation-id*="jobCompany" i]'
+    ]) || _bestCompanyFallback(),
+    location: () => _firstText([
+      '[data-automation-id*="locations" i]',
+      '[data-automation-id*="location" i]',
+      '[data-automation-id*="jobLocation" i]'
+    ]),
+    salary: () => '',
+    applyButton: () => document.querySelector(
+      'button[data-automation-id*="apply" i], a[data-automation-id*="apply" i], button[aria-label*="apply" i], a[aria-label*="apply" i]'
+    )
+  },
+  taleo: {
+    title: () => _firstText([
+      '#requisitionDescriptionInterface h1',
+      '#requisitionDescriptionInterface h2',
+      'h1',
+      'h2'
+    ]) || _bestTitleFallback(),
+    company: () => _bestCompanyFallback(),
+    location: () => _firstText([
+      '[id*="location" i]',
+      '[class*="location" i]'
+    ]),
+    salary: () => '',
+    applyButton: () => document.querySelector(
+      'a[id*="apply" i], button[id*="apply" i], a[class*="apply" i], button[class*="apply" i]'
+    )
+  },
+  oraclehcm: {
+    title: () => _firstText([
+      'h1',
+      'h2',
+      '[class*="job" i][class*="title" i]'
+    ]) || _bestTitleFallback(),
+    company: () => _bestCompanyFallback(),
+    location: () => _firstText([
+      '[class*="location" i]',
+      '[id*="location" i]'
+    ]),
+    salary: () => '',
+    applyButton: () => document.querySelector(
+      'button[aria-label*="apply" i], a[aria-label*="apply" i], button[class*="apply" i], a[class*="apply" i], button[id*="apply" i], a[id*="apply" i]'
+    )
   }
 };
 
@@ -107,6 +218,9 @@ function detectPlatform() {
   if (url.includes('bayt.com')) return 'bayt';
   if (url.includes('gulftalent.com')) return 'gulftalent';
   if (url.includes('naukrigulf.com')) return 'naukrigulf';
+  if (url.includes('myworkdayjobs.com') || url.includes('workday.com')) return 'workday';
+  if (url.includes('taleo.net')) return 'taleo';
+  if (url.includes('oraclecloud.com')) return 'oraclehcm';
   return 'generic';
 }
 
@@ -154,7 +268,16 @@ function fillField(selectors, value, options = {}) {
             element.dispatchEvent(new Event('change', { bubbles: true }));
             return true;
           }
-        } else if (tagName === 'textarea' || element.type === 'text' || element.type === 'email' || element.type === 'tel') {
+        } else if (
+          tagName === 'textarea' ||
+          element.type === 'text' ||
+          element.type === 'email' ||
+          element.type === 'tel' ||
+          element.type === 'search' ||
+          element.type === 'url' ||
+          element.type === 'number' ||
+          !element.type
+        ) {
           // Clear and fill text fields
           element.focus();
           element.value = value;
@@ -377,7 +500,8 @@ function createFloatingButton() {
   });
 }
 
-// Create FAB on supported pages
-if (detectPlatform() !== 'generic') {
+// Create FAB on supported pages (job boards + common ATS)
+const _platform = detectPlatform();
+if (_platform !== 'generic') {
   setTimeout(createFloatingButton, 1500);
 }

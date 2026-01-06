@@ -152,7 +152,18 @@ chrome.commands?.onCommand?.addListener(async (command) => {
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.status !== 'complete') return;
 
-  const jobSites = ['indeed.com', 'linkedin.com/jobs', 'bayt.com', 'gulftalent.com', 'naukrigulf.com'];
+  const jobSites = [
+    'indeed.com',
+    'linkedin.com/jobs',
+    'bayt.com',
+    'gulftalent.com',
+    'naukrigulf.com',
+    'dubizzle.com',
+    'myworkdayjobs.com',
+    'workday.com',
+    'taleo.net',
+    'oraclecloud.com'
+  ];
   const isJobSite = jobSites.some(site => tab.url?.includes(site));
 
   if (isJobSite) {

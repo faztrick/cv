@@ -1,7 +1,7 @@
 {
   "personal": {
     "name": "MUHAMMED FASIL PV",
-    "title": "Senior Full-Stack Engineer (React + Node.js) | AI & IoT Systems Engineer",
+    "title": "Software Engineer | AI & IoT Systems Engineer | Retail Automation Specialist | MVVM & Infrastructure Expert",
     "location": "Dubai, UAE",
     "phone": "+971 555923545",
     "email": "faztrick@gmail.com",
@@ -9,71 +9,101 @@
     "github": "https://github.com/faztrick",
     "linkedin": "https://linkedin.com/in/faztrick"
   },
-  "summary": "Senior full-stack engineer with **13+ years** delivering scalable enterprise platforms (ERP/POS/QMS) and automation systems. Strong in **React + TypeScript** frontends and **Node.js** backends, building modular UI, REST APIs, and real-time workflows (MQTT). Experienced integrating practical AI features (OpenAI/LangChain, YOLO) and running production deployments with Docker, CI/CD, and secure networking (MikroTik/WireGuard). ---",
+  "summary": "Innovative **Software Engineer** with over **13 years of experience** in building intelligent, scalable, and distributed enterprise systems. Expert in **AI-driven automation**, **IoT ecosystems**, and **MVVM architecture** — with proven success across **ERP, QMS, POS, and retail IoT infrastructures**. Bridges hardware and software, creating hybrid cloud + local ecosystems that are **secure, real-time, and modular**. Delivers production-ready systems blending **Flutter, Node.js, Python, WPF, and Kotlin**, with strong foundations in **DevOps, AI, and networking**. Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices** for cross-branch communication and deployment automation. ---",
   "skills": {
     "all": [
+      "Dart",
       "TypeScript",
       "JavaScript",
       "Python",
-      "Dart",
       "C#",
       "PHP",
-      "React",
-      "component architecture",
-      "performance optimization",
+      "Flutter",
       "Node.js",
       "Express",
-      "REST APIs",
-      "Webhooks",
-      "OpenAI",
+      ".NET (WPF)",
       "LangChain",
+      "OpenAI",
       "Qwen3",
       "YOLOv8",
       "Whisper",
-      "MQTT",
+      "TensorFlow",
+      "PyTorch",
+      "WhatsApp Business API",
+      "Telegram Bot API",
+      "cron",
+      "schedulers",
       "ESP32",
+      "ESP-S3",
       "Raspberry Pi",
+      "Solum ESL",
+      "OEPL",
+      "MQTT",
+      "MikroTik RouterOS",
+      "WireGuard",
+      "DHCP",
+      "NAT",
+      "VLAN",
+      "VPN",
+      "MySQL",
+      "Hive",
+      "ObjectBox",
+      "Firebase",
+      "MongoDB",
       "Docker",
       "PM2",
       "Nginx",
       "GitHub Actions",
+      "GCP",
       "AWS",
       "Azure",
-      "GCP",
-      "MySQL",
-      "Hive",
-      "MongoDB",
-      "Firebase",
-      "ObjectBox",
-      "MikroTik RouterOS",
-      "WireGuard",
-      "Full Stack",
-      "REST",
-      "APIs",
-      "Microservices",
-      "CI/CD",
+      "JWT",
+      "OAuth2",
+      "HTTPS",
+      "SSL",
+      "TLS",
+      "Firewall scripting",
+      "MVVM",
+      "WPF",
+      ".NET",
+      "AI",
+      "LLM",
       "YOLO",
+      "Arduino",
+      "ESL",
+      "MikroTik",
+      "Docker Compose",
+      "CI/CD",
       "ERP",
       "POS",
       "QMS",
-      "MikroTik"
+      "IoT",
+      "Automation",
+      "Edge",
+      "Retail",
+      "Microservices",
+      "AI Vision",
+      "AIDL",
+      "IPC",
+      "LED Control",
+      "Hybrid Sync",
+      "Queue Management",
+      "DevOps"
     ],
     "languages": [
+      "Dart",
       "TypeScript",
       "JavaScript",
       "Python",
-      "Dart",
       "C#",
       "PHP"
     ],
     "frameworks": [
-      "React",
-      "component architecture",
-      "performance optimization",
+      "Flutter",
       "Node.js",
       "Express",
-      "REST APIs",
-      "Webhooks"
+      ".NET (WPF)",
+      "LangChain"
     ],
     "ai": [],
     "iot": [],
@@ -89,11 +119,12 @@
       "period": "Aug 2024 – Present",
       "responsibilities": [
         "Architected **IdolMEA ERP** integrating **POS, QMS, IoT automation, and AI vision** modules.",
-        "Built multi-branch dashboards and services using **Node.js** with secure site connectivity.",
+        "Built **IdolQueue (i-QMS)** in Flutter + Node.js with **Hive offline sync**, **MQTT events**, and **multi-branch dashboards**.",
         "Developed **AI theft detection** (YOLO) for **self-checkout kiosks** with LED/GPIO feedback via **AIDL interface**.",
         "Designed **IdolVPN mesh (WireGuard)** network for secure multi-branch communication and API routing.",
         "Integrated **WhatsApp/Telegram chat automation** for live queue alerts and service updates.",
-        "Created **hybrid cloud sync engine** (MySQL ↔ Hive) enabling offline analytics and recovery."
+        "Created **hybrid cloud sync engine** (MySQL ↔ Hive) enabling offline analytics and recovery.",
+        "Engineered **Android AIDL bridge** for Flutter hardware control in retail edge devices."
       ]
     },
     {
@@ -102,9 +133,11 @@
       "period": "Apr 2019 – Jan 2024",
       "responsibilities": [
         "Designed and deployed **SincA ERP**, combining Flutter, Node.js, and AI analytics in Python.",
-        "Built dashboards, OCR systems, and predictive models using OpenAI and TensorFlow.",
+        "Built **AI dashboards**, OCR systems, and predictive models using OpenAI and TensorFlow.",
+        "Automated WhatsApp/Telegram bots for invoice updates, support, and customer interaction.",
         "Dockerized microservices across local + cloud sync nodes with CI/CD pipelines.",
-        "Mentored distributed teams across India and UAE in architecture, DevOps, and clean design."
+        "Implemented **AI queue prediction**, **dynamic pricing**, and **modular API architecture**.",
+        "Mentored distributed teams across India and UAE in architecture, DevOps, and MVVM design."
       ]
     },
     {
@@ -113,7 +146,8 @@
       "period": "Mar 2014 – Mar 2019",
       "responsibilities": [
         "Developed enterprise ERP and billing systems using **WPF (C#)** and **PHP/MySQL**.",
-        "Improved UI responsiveness, caching, and modularization for accounting/reporting modules."
+        "Improved UI responsiveness, caching, and modularization for accounting/reporting modules.",
+        "Delivered solutions for 50+ enterprise clients with performance-tuned SQL databases."
       ]
     }
   ],
@@ -131,6 +165,30 @@
       "description": "Android AI kiosk with YOLO vision and LED/GPIO control."
     },
     {
+      "name": "IdolVPN Network",
+      "description": "Multi-branch WireGuard VPN over MikroTik for secure retail sync."
+    },
+    {
+      "name": "BookzNow",
+      "description": "Flutter MVVM booking platform for clinics/salons with Material 3 UI."
+    },
+    {
+      "name": "Vlogfied",
+      "description": "Video-based restaurant discovery with AI content tagging."
+    },
+    {
+      "name": "ESL Tools",
+      "description": "Solum/OEPL tag management, ESP32 flash tools, and MQTT controllers."
+    },
+    {
+      "name": "LampAidlInterface",
+      "description": "Android Kotlin + Flutter IPC for real-time LED and lamp automation."
+    },
+    {
+      "name": "Local AI Agents",
+      "description": "Offline AI agents (Qwen3/OpenAI) embedded into retail devices."
+    },
+    {
       "name": "Hybrid Sync Engine",
       "description": "Offline-first delta tracking engine (MySQL ↔ Hive) for POS continuity."
     }
@@ -141,7 +199,6 @@
     "TypeScript",
     "JavaScript",
     "Python",
-    "React",
     "Docker",
     "AWS",
     "Azure",
@@ -150,12 +207,13 @@
     "MongoDB",
     "AI",
     "ai",
+    "Ai",
     "ML",
     "IoT",
     "microservices",
     "Microservices",
     "API",
-    "REST",
+    "rest",
     "MQTT",
     "Nginx",
     "CI/CD",
@@ -165,17 +223,21 @@
     "GitHub",
     "github",
     "TensorFlow",
+    "PyTorch",
     "OpenAI",
     "LangChain",
     "ESP32",
     "Raspberry Pi",
+    "Arduino",
     "YOLO",
     "WireGuard",
     "VPN",
+    "vpn",
     "MikroTik",
     "erp",
     "ERP",
-    "POS"
+    "POS",
+    "pos"
   ],
   "education": []
 }

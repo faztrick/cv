@@ -1,0 +1,679 @@
+{
+  "lastUpdated": "2025-12-27",
+  "description": "Direct company career pages for UAE tech jobs - Apply directly without job boards",
+  "companies": [
+    {
+      "name": "Emirates Group (Emirates Airlines)",
+      "industry": "Aviation/Tech",
+      "careersUrl": "https://www.emiratesgroupcareers.com/",
+      "techJobs": "https://www.emiratesgroupcareers.com/search-and-apply/?search=software",
+      "notes": "Major employer, IT/Digital roles, competitive salary"
+    },
+    {
+      "name": "Etisalat (e&)",
+      "industry": "Telecom/Tech",
+      "careersUrl": "https://careers.etisalat.ae/",
+      "techJobs": "https://careers.etisalat.ae/jobs",
+      "notes": "UAE's largest telecom, AI/ML, Cloud, IoT roles"
+    },
+    {
+      "name": "du (EITC)",
+      "industry": "Telecom/Tech",
+      "careersUrl": "https://careers.du.ae/",
+      "techJobs": "https://careers.du.ae/",
+      "notes": "Second largest telecom, software engineering roles"
+    },
+    {
+      "name": "Careem (Uber)",
+      "industry": "Tech/Mobility",
+      "careersUrl": "https://www.careem.com/careers",
+      "techJobs": "https://www.careem.com/careers",
+      "notes": "Super app, Flutter, React Native, Node.js"
+    },
+    {
+      "name": "Noon",
+      "industry": "E-commerce",
+      "careersUrl": "https://careers.noon.com/",
+      "techJobs": "https://careers.noon.com/jobs?department=Technology",
+      "notes": "Middle East Amazon, large tech team"
+    },
+    {
+      "name": "Talabat (Delivery Hero)",
+      "industry": "Food Tech",
+      "careersUrl": "https://www.talabat.com/uae/careers",
+      "techJobs": "https://careers.deliveryhero.com/global/en/c/talabat-jobs",
+      "notes": "Food delivery, mobile development"
+    },
+    {
+      "name": "Majid Al Futtaim",
+      "industry": "Retail/Tech",
+      "careersUrl": "https://www.majidalfuttaim.com/en/who-we-are/careers",
+      "techJobs": "https://careers.majidalfuttaim.com/",
+      "notes": "Mall of Emirates owner, digital transformation"
+    },
+    {
+      "name": "Dubai Holding",
+      "industry": "Conglomerate/Tech",
+      "careersUrl": "https://www.dubaiholding.com/careers/",
+      "techJobs": "https://careers.dubaiholding.com/",
+      "notes": "Government-linked, stable employment"
+    },
+    {
+      "name": "DEWA (Dubai Electricity)",
+      "industry": "Utilities/Smart Grid",
+      "careersUrl": "https://www.dewa.gov.ae/en/about-us/careers",
+      "techJobs": "https://www.dewa.gov.ae/en/about-us/careers",
+      "notes": "Smart city tech, IoT, AI applications"
+    },
+    {
+      "name": "RTA (Roads & Transport Authority)",
+      "industry": "Government/Smart City",
+      "careersUrl": "https://www.rta.ae/wps/portal/rta/ae/home/about-rta/career-in-rta",
+      "techJobs": "https://www.rta.ae/wps/portal/rta/ae/home/about-rta/career-in-rta",
+      "notes": "Smart transportation, AI, IoT"
+    },
+    {
+      "name": "Mashreq Bank",
+      "industry": "Banking/Fintech",
+      "careersUrl": "https://www.mashreqbank.com/uae/en/about/careers",
+      "techJobs": "https://jobs.mashreq.com/",
+      "notes": "Digital banking, fintech innovation"
+    },
+    {
+      "name": "Emirates NBD",
+      "industry": "Banking/Fintech",
+      "careersUrl": "https://www.emiratesnbd.com/en/careers",
+      "techJobs": "https://emiratesnbd.taleo.net/careersection/enbd_external/jobsearch.ftl",
+      "notes": "Largest bank in UAE, digital transformation"
+    },
+    {
+      "name": "First Abu Dhabi Bank (FAB)",
+      "industry": "Banking/Fintech",
+      "careersUrl": "https://www.bankfab.com/en-ae/about-fab/careers",
+      "techJobs": "https://fab.taleo.net/careersection/fab_external_career/jobsearch.ftl",
+      "notes": "UAE's largest bank by assets"
+    },
+    {
+      "name": "Amazon AWS (UAE)",
+      "industry": "Cloud/Tech",
+      "careersUrl": "https://www.amazon.jobs/en/locations/dubai-united-arab-emirates",
+      "techJobs": "https://www.amazon.jobs/en/search?base_query=software&loc_query=Dubai",
+      "notes": "AWS data center in UAE, cloud roles"
+    },
+    {
+      "name": "Microsoft UAE",
+      "industry": "Tech",
+      "careersUrl": "https://careers.microsoft.com/us/en/search-results?keywords=&location=United%20Arab%20Emirates",
+      "techJobs": "https://careers.microsoft.com/us/en/search-results?keywords=software&location=United%20Arab%20Emirates",
+      "notes": "Azure, AI, Enterprise solutions"
+    },
+    {
+      "name": "Google UAE",
+      "industry": "Tech",
+      "careersUrl": "https://careers.google.com/jobs/results/?location=United%20Arab%20Emirates",
+      "techJobs": "https://careers.google.com/jobs/results/?location=United%20Arab%20Emirates&q=software",
+      "notes": "Cloud, AI/ML, Engineering roles"
+    },
+    {
+      "name": "Oracle UAE",
+      "industry": "Enterprise Tech",
+      "careersUrl": "https://www.oracle.com/ae/corporate/careers/",
+      "techJobs": "https://careers.oracle.com/jobs/#en/sites/jobsearch/requisitions?location=United+Arab+Emirates",
+      "notes": "Cloud, Database, ERP roles"
+    },
+    {
+      "name": "SAP UAE",
+      "industry": "Enterprise Tech",
+      "careersUrl": "https://jobs.sap.com/search/?q=&locationsearch=united+arab+emirates",
+      "techJobs": "https://jobs.sap.com/search/?q=developer&locationsearch=united+arab+emirates",
+      "notes": "ERP, Cloud, HANA development"
+    },
+    {
+      "name": "IBM UAE",
+      "industry": "Tech/Consulting",
+      "careersUrl": "https://www.ibm.com/employment/",
+      "techJobs": "https://www.ibm.com/employment/search/?q=&country=AE",
+      "notes": "AI, Cloud, Enterprise solutions"
+    },
+    {
+      "name": "Accenture Middle East",
+      "industry": "Consulting/Tech",
+      "careersUrl": "https://www.accenture.com/ae-en/careers",
+      "techJobs": "https://www.accenture.com/ae-en/careers/jobsearch?jk=software&sb=0&pg=1",
+      "notes": "Digital transformation, tech consulting"
+    },
+    {
+      "name": "Deloitte Middle East",
+      "industry": "Consulting/Tech",
+      "careersUrl": "https://www2.deloitte.com/ae/en/careers.html",
+      "techJobs": "https://apply.deloitte.com/careers/SearchJobs/?2=239&alrpm=ALL&ascf=[{%22key%22:%22custom_fields.Language%22,%22value%22:%22%22}]",
+      "notes": "Tech advisory, digital solutions"
+    },
+    {
+      "name": "PwC Middle East",
+      "industry": "Consulting/Tech",
+      "careersUrl": "https://www.pwc.com/m1/en/careers.html",
+      "techJobs": "https://www.pwc.com/m1/en/careers/search-jobs.html",
+      "notes": "Digital, cloud, cybersecurity"
+    },
+    {
+      "name": "McKinsey & Company",
+      "industry": "Consulting",
+      "careersUrl": "https://www.mckinsey.com/careers/search-jobs",
+      "techJobs": "https://www.mckinsey.com/careers/search-jobs?locations=Dubai",
+      "notes": "Tech/Digital practice roles"
+    },
+    {
+      "name": "G42 (Group 42)",
+      "industry": "AI/Tech",
+      "careersUrl": "https://g42.ai/careers",
+      "techJobs": "https://g42.ai/careers",
+      "notes": "UAE AI champion, cutting-edge AI roles"
+    },
+    {
+      "name": "Injazat (G42 Cloud)",
+      "industry": "Cloud/AI",
+      "careersUrl": "https://www.injazat.com/careers/",
+      "techJobs": "https://www.injazat.com/careers/",
+      "notes": "Government cloud, data centers"
+    },
+    {
+      "name": "Hub71 Startups",
+      "industry": "Startup Ecosystem",
+      "careersUrl": "https://hub71.com/community/",
+      "techJobs": "https://hub71.com/community/",
+      "notes": "Abu Dhabi tech hub, multiple startups"
+    },
+    {
+      "name": "Dubai Internet City Companies",
+      "industry": "Tech Hub",
+      "careersUrl": "https://dic.ae/community/",
+      "techJobs": "https://dic.ae/community/",
+      "notes": "500+ tech companies in free zone"
+    },
+    {
+      "name": "Expo City Dubai",
+      "industry": "Smart City",
+      "careersUrl": "https://www.expocitydubai.com/en/careers",
+      "techJobs": "https://www.expocitydubai.com/en/careers",
+      "notes": "Smart city, sustainability tech"
+    },
+    {
+      "name": "Mubadala",
+      "industry": "Investment/Tech",
+      "careersUrl": "https://www.mubadala.com/en/careers",
+      "techJobs": "https://www.mubadala.com/en/careers",
+      "notes": "Abu Dhabi sovereign fund, tech investments"
+    },
+    {
+      "name": "ADNOC",
+      "industry": "Energy/Digital",
+      "careersUrl": "https://www.adnoc.ae/en/careers",
+      "techJobs": "https://careers.adnoc.ae/",
+      "notes": "Digital transformation, AI/ML in energy"
+    },
+    {
+      "name": "Chalhoub Group",
+      "industry": "Retail/Tech",
+      "careersUrl": "https://www.chalhoubgroup.com/careers",
+      "techJobs": "https://careers.chalhoubgroup.com/",
+      "notes": "Luxury retail, e-commerce tech"
+    },
+    {
+      "name": "Landmark Group",
+      "industry": "Retail/Tech",
+      "careersUrl": "https://www.landmarkgroup.com/int/en/careers",
+      "techJobs": "https://careers.landmarkgroup.com/",
+      "notes": "Major retailer, digital commerce"
+    },
+    {
+      "name": "Aramex",
+      "industry": "Logistics/Tech",
+      "careersUrl": "https://www.aramex.com/ae/en/about-us/careers",
+      "techJobs": "https://careers.aramex.com/",
+      "notes": "Last-mile tech, IoT logistics"
+    },
+    {
+      "name": "DP World",
+      "industry": "Ports/Tech",
+      "careersUrl": "https://www.dpworld.com/careers",
+      "techJobs": "https://careers.dpworld.com/",
+      "notes": "Smart ports, automation, IoT"
+    },
+    {
+      "name": "Emaar Properties",
+      "industry": "Real Estate/Smart Buildings",
+      "careersUrl": "https://www.emaar.com/en/careers",
+      "techJobs": "https://careers.emaar.com/",
+      "notes": "Burj Khalifa owner, PropTech"
+    },
+    {
+      "name": "Damac Properties",
+      "industry": "Real Estate/Tech",
+      "careersUrl": "https://www.damacgroup.com/en/careers",
+      "techJobs": "https://www.damacgroup.com/en/careers",
+      "notes": "Real estate tech, digital solutions"
+    }
+  ],
+  "supermarketsHypermarkets": [
+    {
+      "name": "Lulu Group International",
+      "industry": "Supermarket/Hypermarket",
+      "careersUrl": "https://www.lulugroupinternational.com/careers/",
+      "techJobs": "https://www.lulugroupinternational.com/careers/",
+      "notes": "Major GCC hypermarket group; look for retail tech, e-commerce, ERP/POS integrations"
+    },
+    {
+      "name": "Spinneys (UAE)",
+      "industry": "Supermarket",
+      "careersUrl": "https://spinneyscareers.com/",
+      "techJobs": "https://spinneyscareers.com/",
+      "notes": "Premium grocery chain; roles can include retail systems and digital"
+    },
+    {
+      "name": "Union Coop",
+      "industry": "Retail Cooperative/Supermarket",
+      "careersUrl": "https://www.unioncoop.ae/careers/",
+      "techJobs": "https://www.unioncoop.ae/careers/",
+      "notes": "Dubai cooperative retailer; check IT, digital transformation, POS"
+    },
+    {
+      "name": "Choithrams",
+      "industry": "Supermarket",
+      "careersUrl": "https://www.choithrams.com/careers",
+      "techJobs": "https://www.choithrams.com/careers",
+      "notes": "Retail chain across UAE; often hires IT support and retail tech"
+    },
+    {
+      "name": "Al Maya Group",
+      "industry": "Supermarket/Retail",
+      "careersUrl": "https://almayagroup.com/careers/",
+      "techJobs": "https://almayagroup.com/careers/",
+      "notes": "Retail group (supermarkets & distribution); POS/ERP opportunities"
+    },
+    {
+      "name": "aswaaq (Dubai)",
+      "industry": "Supermarket",
+      "careersUrl": "https://www.aswaaq.ae/en/careers",
+      "techJobs": "https://www.aswaaq.ae/en/careers",
+      "notes": "Dubai retail brand; watch for IT roles"
+    },
+    {
+      "name": "Nesto Hypermarket",
+      "industry": "Hypermarket",
+      "careersUrl": "https://nesto.com/careers",
+      "techJobs": "https://nesto.com/careers",
+      "notes": "Hypermarket group; roles may include retail systems, POS, ERP"
+    },
+    {
+      "name": "West Zone Supermarket",
+      "industry": "Supermarket",
+      "careersUrl": "https://westzone.com/careers",
+      "techJobs": "https://westzone.com/careers",
+      "notes": "UAE supermarket chain; check IT / systems openings"
+    }
+  ],
+  "uaeCorporateGroups": [
+    {
+      "name": "Al-Futtaim Group",
+      "industry": "Conglomerate (Retail/Auto/Real Estate)",
+      "careersUrl": "https://www.afuturewithus.com/",
+      "techJobs": "https://www.afuturewithus.com/search/?q=software",
+      "notes": "Runs Toyota/Lexus, IKEA, ACE, Marks & Spencer, Waitrose; strong ERP/POS programs"
+    },
+    {
+      "name": "Al Tayer Group",
+      "industry": "Conglomerate (Retail/Auto)",
+      "careersUrl": "https://www.altayer.com/careers/",
+      "techJobs": "https://www.altayer.com/careers/",
+      "notes": "Retail + automotive; digital and retail IT roles"
+    },
+    {
+      "name": "Al Ghurair",
+      "industry": "Conglomerate",
+      "careersUrl": "https://www.al-ghurair.com/careers/",
+      "techJobs": "https://www.al-ghurair.com/careers/",
+      "notes": "Large UAE group; check IT/digital roles across subsidiaries"
+    },
+    {
+      "name": "Al Naboodah Group",
+      "industry": "Conglomerate",
+      "careersUrl": "https://www.alnaboodah.com/careers/",
+      "techJobs": "https://www.alnaboodah.com/careers/",
+      "notes": "Engineering, construction, automotive; ERP/enterprise systems roles"
+    },
+    {
+      "name": "Al Rostamani Group",
+      "industry": "Conglomerate",
+      "careersUrl": "https://careers.alrostamani.com/",
+      "techJobs": "https://careers.alrostamani.com/search/",
+      "notes": "Nissan distributor and services; enterprise apps and digital roles"
+    },
+    {
+      "name": "Juma Al Majid Holding Group",
+      "industry": "Conglomerate",
+      "careersUrl": "https://www.jumaalmjid.com/careers",
+      "techJobs": "https://www.jumaalmjid.com/careers",
+      "notes": "Diversified group; IT and enterprise systems"
+    },
+    {
+      "name": "Apparel Group",
+      "industry": "Retail Group",
+      "careersUrl": "https://apparelgroup.com/careers/",
+      "techJobs": "https://apparelgroup.com/careers/",
+      "notes": "Major fashion retail group; e-commerce + POS/ERP integrations"
+    },
+    {
+      "name": "ENOC",
+      "industry": "Energy/Retail (Convenience)",
+      "careersUrl": "https://www.enoc.com/english/careers/",
+      "techJobs": "https://www.enoc.com/english/careers/",
+      "notes": "Fuel + convenience retail; POS/payment and retail systems"
+    },
+    {
+      "name": "Dubai Duty Free",
+      "industry": "Retail/Travel",
+      "careersUrl": "https://www.dubaidutyfree.com/corporate/careers",
+      "techJobs": "https://www.dubaidutyfree.com/corporate/careers",
+      "notes": "Airport retail; large-scale POS, inventory and retail systems"
+    }
+  ],
+  "jobBoards": [
+    {
+      "name": "GulfTalent",
+      "url": "https://www.gulftalent.com/uae/jobs/software-engineer",
+      "notes": "Premium Middle East job board"
+    },
+    {
+      "name": "Bayt",
+      "url": "https://www.bayt.com/en/uae/jobs/software-engineer-jobs/",
+      "notes": "Largest Arab job site"
+    },
+    {
+      "name": "NaukriGulf",
+      "url": "https://www.naukrigulf.com/software-engineer-jobs-in-uae",
+      "notes": "Popular for South Asian expats"
+    },
+    {
+      "name": "Dubizzle Jobs",
+      "url": "https://dubai.dubizzle.com/jobs/information-technology/",
+      "notes": "Local classifieds, direct employer posts"
+    },
+    {
+      "name": "Indeed UAE",
+      "url": "https://ae.indeed.com/jobs?q=software+engineer&l=Dubai",
+      "notes": "Aggregates many sources"
+    },
+    {
+      "name": "Glassdoor UAE",
+      "url": "https://www.glassdoor.com/Job/dubai-software-engineer-jobs-SRCH_IL.0,5_IC2204498_KO6,23.htm",
+      "notes": "Reviews + job listings"
+    }
+  ],
+  "posHardwareProviders": [
+    {
+      "name": "Newland Payment",
+      "industry": "POS/Payment Terminals",
+      "careersUrl": "https://www.newlandpayment.com/en/about/join-us/",
+      "techJobs": "https://www.newlandpayment.com/en/about/join-us/",
+      "notes": "Leading Chinese POS hardware manufacturer, Android terminals N950, N910"
+    },
+    {
+      "name": "CCJ (CCJ Electronics)",
+      "industry": "POS Hardware/Peripherals",
+      "careersUrl": "https://www.ccjelectronics.com/careers/",
+      "techJobs": "https://www.ccjelectronics.com/careers/",
+      "notes": "POS peripherals, receipt printers, barcode scanners, cash drawers"
+    },
+    {
+      "name": "Verifone",
+      "industry": "Payment Terminals",
+      "careersUrl": "https://www.verifone.com/en/global/careers/jobs",
+      "techJobs": "https://www.verifone.com/en/global/careers/jobs",
+      "notes": "Global payment terminal leader, $8T annual transactions, 165+ countries"
+    },
+    {
+      "name": "Ingenico",
+      "industry": "Payment Terminals",
+      "careersUrl": "https://worldline.com/en/home/main-navigation/company/careers.html",
+      "techJobs": "https://careers.worldline.com/en",
+      "notes": "Merged with Worldline, payment terminals, POS solutions"
+    },
+    {
+      "name": "PAX Technology",
+      "industry": "POS/Payment Terminals",
+      "careersUrl": "https://www.pax.com.hk/en/join-pax",
+      "techJobs": "https://www.pax.com.hk/en/join-pax",
+      "notes": "3rd largest payment terminal maker globally, Android SmartPOS"
+    },
+    {
+      "name": "Castles Technology",
+      "industry": "Payment Terminals",
+      "careersUrl": "https://www.castlestech.com/careers/",
+      "techJobs": "https://www.castlestech.com/careers/",
+      "notes": "Android/Linux terminals, countertop & portable POS - Apply: recruitment.uk@castlestech.com"
+    },
+    {
+      "name": "SUNMI",
+      "industry": "Smart POS/Android Terminals",
+      "careersUrl": "https://www.sunmi.com/en-US/contact/",
+      "techJobs": "https://www.sunmi.com/en-US/contact/",
+      "notes": "Popular Android POS terminals, V series, T series"
+    },
+    {
+      "name": "Epson (POS Division)",
+      "industry": "POS Printers/Hardware",
+      "careersUrl": "https://global.epson.com/company/career/",
+      "techJobs": "https://global.epson.com/company/career/",
+      "notes": "Receipt printers (TM series), POS peripherals"
+    },
+    {
+      "name": "Star Micronics",
+      "industry": "POS Printers",
+      "careersUrl": "https://www.starmicronics.com/about-us/careers/",
+      "techJobs": "https://www.starmicronics.com/about-us/careers/",
+      "notes": "Receipt/label printers, mPOP cash drawer combos"
+    },
+    {
+      "name": "Bixolon",
+      "industry": "POS Printers/Hardware",
+      "careersUrl": "https://www.bixolon.com/company/career",
+      "techJobs": "https://www.bixolon.com/company/career",
+      "notes": "Mobile/desktop receipt printers, label printers"
+    },
+    {
+      "name": "Posiflex",
+      "industry": "POS Hardware/Terminals",
+      "careersUrl": "https://www.posiflex.com/en-global/Career",
+      "techJobs": "https://www.posiflex.com/en-global/Career",
+      "notes": "All-in-one POS terminals, kiosks, peripherals"
+    },
+    {
+      "name": "Elo Touch Solutions",
+      "industry": "POS Touchscreens/Kiosks",
+      "careersUrl": "https://www.elotouch.com/careers.html",
+      "techJobs": "https://www.elotouch.com/careers.html",
+      "notes": "Touchscreen POS, self-service kiosks, digital signage"
+    },
+    {
+      "name": "Partner Tech",
+      "industry": "POS Hardware",
+      "careersUrl": "https://www.partner.com.tw/en/career",
+      "techJobs": "https://www.partner.com.tw/en/career",
+      "notes": "POS systems, kiosks, mobile computers"
+    },
+    {
+      "name": "Flytech Technology",
+      "industry": "POS/Kiosk Hardware",
+      "careersUrl": "https://www.flytech.com/en/career.html",
+      "techJobs": "https://www.flytech.com/en/career.html",
+      "notes": "POS terminals, kiosks, panel PCs"
+    },
+    {
+      "name": "IMIN Technology",
+      "industry": "Android POS",
+      "careersUrl": "https://www.iminpos.com/contact-us",
+      "techJobs": "https://www.iminpos.com/contact-us",
+      "notes": "Android POS terminals, mPOS solutions"
+    }
+  ],
+  "posErpSelfCheckout": [
+    {
+      "name": "Diebold Nixdorf",
+      "industry": "POS/Self-Checkout/ATM",
+      "careersUrl": "https://eeug.fa.us6.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/requisitions?mode=location",
+      "techJobs": "https://eeug.fa.us6.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/requisitions?keyword=software&location=Dubai",
+      "notes": "Global leader in self-checkout, ATM, retail POS - 21,000+ employees in 100+ countries"
+    },
+    {
+      "name": "NCR Voyix",
+      "industry": "POS/Self-Checkout/Banking",
+      "careersUrl": "https://www.ncrvoyix.com/careers",
+      "techJobs": "https://ncr.wd1.myworkdayjobs.com/en-US/NCR_Careers?location=dc0c2d45b7034ed29e14bfc48f5e54c3",
+      "notes": "World's largest POS provider, self-service kiosks, restaurant POS"
+    },
+    {
+      "name": "Easy2Touch (Vanderlande)",
+      "industry": "Self-Checkout/Retail Automation",
+      "careersUrl": "https://careers.vanderlande.com/",
+      "techJobs": "https://careers.vanderlande.com/search/?q=software&location=dubai",
+      "notes": "Self-checkout kiosks, baggage handling, warehouse automation - GITEX exhibitor"
+    },
+    {
+      "name": "Toshiba Global Commerce Solutions",
+      "industry": "POS/Self-Checkout",
+      "careersUrl": "https://commerce.toshiba.com/careers/",
+      "techJobs": "https://commerce.toshiba.com/careers/",
+      "notes": "Major retail POS and self-checkout systems"
+    },
+    {
+      "name": "Fujitsu",
+      "industry": "POS/Retail Technology",
+      "careersUrl": "https://www.fujitsu.com/ae/about/local/careers/",
+      "techJobs": "https://fujitsu.wd3.myworkdayjobs.com/FujitsuGlobal?locationCountry=e70c0a0a5ad24fd08f00aab83fff5e63",
+      "notes": "Self-checkout, POS hardware and software"
+    },
+    {
+      "name": "AEVI (Payment Solutions)",
+      "industry": "POS/Payments",
+      "careersUrl": "https://aevi.com/careers/",
+      "techJobs": "https://aevi.com/careers/",
+      "notes": "Smart payment terminals, POS integration"
+    },
+    {
+      "name": "Inditech (POS Dubai)",
+      "industry": "POS/Retail Software UAE",
+      "careersUrl": "https://www.inditechme.com/careers/",
+      "techJobs": "https://www.inditechme.com/careers/",
+      "notes": "No.1 POS software provider in Dubai/UAE, retail systems"
+    },
+    {
+      "name": "Peniel Technology",
+      "industry": "POS/ERP UAE",
+      "careersUrl": "https://www.penieltech.com/career/",
+      "techJobs": "https://www.penieltech.com/career/",
+      "notes": "POS, ERP, accounting software in UAE"
+    },
+    {
+      "name": "Focus Softnet (Focus9)",
+      "industry": "ERP Software",
+      "careersUrl": "https://focussoftnet.com/careers/",
+      "techJobs": "https://focussoftnet.com/careers/",
+      "notes": "UAE-based ERP software, large enterprise clients"
+    },
+    {
+      "name": "Elate DSMME (ERPNext)",
+      "industry": "ERP/Cloud Software",
+      "careersUrl": "https://www.elatesoft.com/careers",
+      "techJobs": "https://www.elatesoft.com/careers",
+      "notes": "ERPNext partner in UAE, cloud ERP"
+    },
+    {
+      "name": "SAP UAE",
+      "industry": "ERP/Enterprise Software",
+      "careersUrl": "https://jobs.sap.com/search/?q=&locationsearch=united+arab+emirates",
+      "techJobs": "https://jobs.sap.com/search/?q=developer&locationsearch=united+arab+emirates",
+      "notes": "World's largest ERP vendor, S/4HANA"
+    },
+    {
+      "name": "Oracle UAE",
+      "industry": "ERP/Cloud/Database",
+      "careersUrl": "https://careers.oracle.com/jobs/#en/sites/jobsearch/requisitions?location=United+Arab+Emirates",
+      "techJobs": "https://careers.oracle.com/jobs/#en/sites/jobsearch/requisitions?location=United+Arab+Emirates&keyword=developer",
+      "notes": "Oracle ERP Cloud, NetSuite, Fusion"
+    },
+    {
+      "name": "Microsoft Dynamics UAE",
+      "industry": "ERP/CRM",
+      "careersUrl": "https://careers.microsoft.com/us/en/search-results?keywords=dynamics&location=United%20Arab%20Emirates",
+      "techJobs": "https://careers.microsoft.com/us/en/search-results?keywords=dynamics&location=United%20Arab%20Emirates",
+      "notes": "Dynamics 365 ERP/CRM implementation"
+    },
+    {
+      "name": "Zoho (UAE Office)",
+      "industry": "ERP/CRM/Business Apps",
+      "careersUrl": "https://careers.zoho.com/jobs/Careers",
+      "techJobs": "https://careers.zoho.com/jobs/Careers",
+      "notes": "Zoho One, Zoho Books, Indian company with UAE presence"
+    },
+    {
+      "name": "Retail Pro (UAE Partner)",
+      "industry": "Retail POS",
+      "careersUrl": "https://www.retailpro.com/careers/",
+      "techJobs": "https://www.retailpro.com/careers/",
+      "notes": "Enterprise retail POS, omnichannel"
+    },
+    {
+      "name": "LS Retail (LS Central)",
+      "industry": "Retail/ERP",
+      "careersUrl": "https://www.lsretail.com/about-us/careers",
+      "techJobs": "https://www.lsretail.com/about-us/careers",
+      "notes": "Retail/hospitality POS on Microsoft Dynamics"
+    },
+    {
+      "name": "Lightspeed Commerce",
+      "industry": "POS/E-commerce",
+      "careersUrl": "https://www.lightspeedhq.com/careers/",
+      "techJobs": "https://www.lightspeedhq.com/careers/",
+      "notes": "Cloud POS, restaurant and retail"
+    },
+    {
+      "name": "GS1 UAE",
+      "industry": "Retail Standards/Barcode",
+      "careersUrl": "https://www.gs1ae.org/about-us/careers/",
+      "techJobs": "https://www.gs1ae.org/about-us/careers/",
+      "notes": "Barcode standards, retail data"
+    },
+    {
+      "name": "Zebra Technologies",
+      "industry": "Retail Hardware/IoT",
+      "careersUrl": "https://www.zebra.com/us/en/about-zebra/careers.html",
+      "techJobs": "https://zebra.eightfold.ai/careers?location=Dubai",
+      "notes": "Barcode scanners, mobile computers, RFID"
+    },
+    {
+      "name": "Honeywell (Retail)",
+      "industry": "Retail Hardware/IoT",
+      "careersUrl": "https://careers.honeywell.com/us/en/",
+      "techJobs": "https://careers.honeywell.com/us/en/search-results?keywords=retail%20software&location=Dubai",
+      "notes": "Scanning, mobile, productivity solutions"
+    }
+  ],
+  "governmentPortals": [
+    {
+      "name": "Nafis (Emirati Employment)",
+      "url": "https://nafis.gov.ae/",
+      "notes": "Government program for UAE nationals, but lists company jobs"
+    },
+    {
+      "name": "Dubai Careers",
+      "url": "https://dubaicareers.ae/",
+      "notes": "Dubai Government jobs portal"
+    },
+    {
+      "name": "Abu Dhabi Government Jobs",
+      "url": "https://www.tamm.abudhabi/en/aspects-of-life/EducationandLearning/Jobs",
+      "notes": "Abu Dhabi Government portal"
+    }
+  ]
+}

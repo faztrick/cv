@@ -18,6 +18,10 @@
     "https://*.gulftalent.com/*",
     "https://*.naukrigulf.com/*",
     "https://*.dubizzle.com/*",
+    "https://*.myworkdayjobs.com/*",
+    "https://*.workday.com/*",
+    "https://*.taleo.net/*",
+    "https://*.oraclecloud.com/*",
     "http://localhost:3000/*"
   ],
   "action": {
@@ -39,7 +43,12 @@
         "https://*.linkedin.com/*",
         "https://*.bayt.com/*",
         "https://*.gulftalent.com/*",
-        "https://*.naukrigulf.com/*"
+        "https://*.naukrigulf.com/*",
+        "https://*.dubizzle.com/*",
+        "https://*.myworkdayjobs.com/*",
+        "https://*.workday.com/*",
+        "https://*.taleo.net/*",
+        "https://*.oraclecloud.com/*"
       ],
       "js": [
         "content.js"
