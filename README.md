@@ -3,16 +3,6 @@
 > **AI-powered job search automation with CV-based auto-fill, smart matching, and personalized email generation**
 > Muhammed Fasil PV - Software Engineer - Dubai, UAE
 
-## 🔧 Quick Fix (December 2024)
-
-**If you're experiencing installation issues**, use this command:
-
-```bash
-PUPPETEER_SKIP_DOWNLOAD=true npm install
-```
-
-**All features now work!** WhatsApp integration is optional. See [FIXES-APPLIED.md](FIXES-APPLIED.md) for details.
-
 ## ✨ NEW: CV-Powered Automation
 
 **Your resume now powers everything!** Auto-fill applications, match jobs, and generate personalized emails using YOUR actual CV data.
@@ -20,8 +10,8 @@ PUPPETEER_SKIP_DOWNLOAD=true npm install
 ### Quick Start (5 Minutes)
 
 ```bash
-# Install dependencies (with fix)
-PUPPETEER_SKIP_DOWNLOAD=true npm install
+# Install dependencies
+npm install
 
 # 1. Parse your CV
 npm run parse-cv
@@ -40,7 +30,7 @@ npm run auto-fill apply "https://www.bayt.com/job/..."
 npm run indeed-stats
 ```
 
-📖 **[Read What's New](WHATS-NEW.md)** | **[Quick Start Guide](QUICK-START-CV-POWERED.md)** | **[Complete Documentation](JOB-SEARCH-CV-INTEGRATION.md)** | **[Fixes Applied](FIXES-APPLIED.md)**
+📖 **[Read What's New](WHATS-NEW.md)** | **[Quick Start Guide](QUICK-START-CV-POWERED.md)** | **[Complete Documentation](JOB-SEARCH-CV-INTEGRATION.md)**
 
 ## 🎯 Key Features
 
