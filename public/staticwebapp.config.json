@@ -12,6 +12,17 @@
                        "redirect":  "/callcenter/",
                        "statusCode":  301
                    },
+                                           {
+                                               "route": "/admin-panel",
+                                               "redirect": "/admin-panel.html",
+                                               "statusCode": 301
+                                           },
+                                           {
+                                               "route": "/admin-panel.html",
+                                               "allowedRoles": [
+                                                   "admin"
+                                               ]
+                                           },
                    {
                        "route":  "/assets/*",
                        "headers":  {
@@ -19,6 +30,16 @@
                                    }
                    }
                ],
+                            "responseOverrides": {
+                                                     "401": {
+                                                                 "statusCode": 302,
+                                                                 "redirect": "/.auth/login/aad?post_login_redirect_uri=/admin-panel.html"
+                                                             },
+                                                     "403": {
+                                                                 "statusCode": 302,
+                                                                 "redirect": "/"
+                                                             }
+                                                 },
     "globalHeaders":  {
                           "X-Content-Type-Options":  "nosniff",
                           "X-Frame-Options":  "DENY",

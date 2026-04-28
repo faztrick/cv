@@ -2,10 +2,11 @@ Subject: Application – Software Engineer (Backend/Full‑Stack) – Muhammed F
 
 Hi {{Name}},
 
-I’m a Dubai‑based Software Architect and hands‑on engineer with 13+ years building production systems (ERP/POS/QMS/IoT) using TypeScript/Node.js, Flutter, Python, and Docker. I’m immediately available in UAE (Company Visa) and interested in opportunities for Software Engineer (Backend/Full‑Stack) at {{Company}}.
+I’m a Dubai-based Software Architect and hands-on engineer with 13+ years building production systems (ERP/POS/QMS/IoT) using TypeScript/Node.js, Flutter, Python, and Docker. I’m currently in UAE on Visit Visa, immediately available, and interested in opportunities for Software Engineer (Backend/Full-Stack) at {{Company}}.
 
 Highlights:
-• Built modular Node.js/TypeScript APIs with offline‑first sync, MQTT automation, and secure WireGuard connectivity across branches.
+• Mainly implemented IdolMEA ERP and IdolQueue software for Carrefour and Union Coop environments, including Node.js APIs, offline-first sync, MQTT automation, and branch workflows.
+• Built AI-based self-checkout and QMS applications showcased by Idol at GITEX in 2024 and 2025.
 • Delivered AI integrations (YOLO, Whisper) and chat automation (WhatsApp/Telegram) to streamline operations.
 • Strong DevOps: Docker/Compose, PM2, Nginx, GitHub Actions; MySQL/MongoDB/Firebase on cloud and edge.
 

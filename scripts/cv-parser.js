@@ -602,7 +602,7 @@ function generateApplicationFormData(cvData) {
     noticePeriod: 'Immediately Available',
 
     // Work authorization
-    workAuthorization: 'Authorized to work in UAE (Company Visa)',
+    workAuthorization: 'Currently in UAE on Visit Visa',
     sponsorship: 'No',
 
     // Education

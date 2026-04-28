@@ -21,19 +21,15 @@ Your job search automation toolkit has been significantly enhanced with **AI-pow
    - Creates form-fill data
    - **Run:** `npm run parse-cv`
 
-2. **`indeed-auto-apply.js`** - Indeed UAE automation
-   - Searches jobs with CV matching
-   - Auto-fills application forms
-   - Uploads resume automatically
-   - Tracks applications
-   - **Run:** `npm run indeed-search`, `npm run indeed-apply`
+2. **Historical automation note** - Indeed UAE automation entrypoints are disabled in this workspace.
+   - Old auto-apply flows are no longer active
+   - Resume parsing and data generation remain available
+   - Do not use the removed npm automation commands
 
-3. **`linkedin-auto-apply.js`** - LinkedIn Easy Apply automation
-   - Searches Easy Apply jobs
-   - Auto-fills multi-step forms
-   - CV-based matching
-   - Connection automation
-   - **Run:** `npm run linkedin-search`, `npm run linkedin-apply`
+3. **Historical automation note** - LinkedIn Easy Apply automation is disabled in this workspace.
+   - Manual applications only
+   - CV matching and outreach features remain available
+   - Do not use the removed npm automation commands
 
 4. **`universal-auto-fill.js`** - Works on ANY job platform
    - Platform detection (Bayt, Naukrigulf, GulfTalent, generic)

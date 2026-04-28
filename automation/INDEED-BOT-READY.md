@@ -287,34 +287,30 @@ cd E:\cv\automation
 
 ```powershell
 # Run LinkedIn bot first
-cd E:\cv\automation\repos\linkedin-job-apply-automation
-node index.js
+.\automation\run-linkedin-bot.ps1
 
 # After LinkedIn finishes, run Indeed bot
-cd E:\cv\automation\repos\indeed_bot
-python indeed_bot.py
+.\automation\run-indeed-bot.ps1
 ```
 
 **Option 2: Parallel** (faster, but harder to monitor)
 
 ```powershell
 # Terminal 1: LinkedIn
-cd E:\cv\automation\repos\linkedin-job-apply-automation
-node index.js
+.\automation\run-linkedin-bot.ps1
 
 # Terminal 2: Indeed (new terminal window)
-cd E:\cv\automation\repos\indeed_bot
-python indeed_bot.py
+.\automation\run-indeed-bot.ps1
 ```
 
 ---
 
 ## 📚 Additional Resources
 
-- **Configuration Helper**: `E:\cv\automation\configure-indeed-bot.ps1`
-- **Pre-flight Check**: `E:\cv\automation\test-indeed-bot.ps1`
-- **Main README**: `E:\cv\automation\README.md`
-- **Action Plan**: `E:\cv\automation\ACTION-PLAN.md`
+- **Configuration Helper**: `automation\configure-indeed-bot.ps1`
+- **Pre-flight Check**: `automation\test-indeed-bot.ps1`
+- **Main README**: `automation\README.md`
+- **Action Plan**: `automation\ACTION-PLAN.md`
 - **Original Repo**: [meteor314/indeed_bot](https://github.com/meteor314/indeed_bot)
 
 ---

@@ -64,7 +64,7 @@ document.querySelectorAll('.tab').forEach(tab => {
 function setupEventListeners() {
   // Auto-Fill buttons
   document.getElementById('btnAutoFill').addEventListener('click', () => executeAction('autoFill'));
-  document.getElementById('btnAutoFillSubmit').addEventListener('click', () => executeAction('autoFillSubmit'));
+  document.getElementById('btnManualReview').addEventListener('click', () => addLog('Auto-fill completed. Review the page and submit manually.', 'warning'));
   document.getElementById('btnHighlightFields').addEventListener('click', () => executeAction('highlight'));
 
   // Apply buttons
@@ -370,13 +370,13 @@ async function loadCVData() {
     const response = await fetch(`${serverUrl}/api/cv`);
     if (response.ok) {
       cvData = await response.json();
-      await chrome.storage.local.set({ [CV_DATA_KEY]: cvData });
+      await chrome.storage.session.set({ [CV_DATA_KEY]: cvData });
       displayCVPreview();
       addLog('CV data synced');
     }
   } catch (err) {
     // Try loading from storage
-    const result = await chrome.storage.local.get([CV_DATA_KEY]);
+    const result = await chrome.storage.session.get([CV_DATA_KEY]);
     if (result[CV_DATA_KEY]) {
       cvData = result[CV_DATA_KEY];
       displayCVPreview();
@@ -477,6 +477,11 @@ async function executeAction(action) {
     return;
   }
 
+  if (action === 'apply') {
+    addLog('Automatic submission is disabled. Review the form and submit manually.', 'warning');
+    return;
+  }
+
   const options = {
     autoResume: document.getElementById('optAutoResume').checked,
     autoCover: document.getElementById('optAutoCover').checked
@@ -492,7 +497,7 @@ async function executeAction(action) {
     if (response?.success) {
       addLog(`${action} completed: ${response.message || 'Success'}`);
 
-      if (action === 'apply' || action === 'autoFillSubmit') {
+      if (action === 'apply') {
         updateStats('applied');
       } else if (action === 'saveJob') {
         updateStats('saved');
@@ -598,6 +603,7 @@ function exportLog() {
 async function clearAllData() {
   if (confirm('Clear all extension data?')) {
     await chrome.storage.local.clear();
+    await chrome.storage.session.clear();
     addLog('All data cleared');
     location.reload();
   }

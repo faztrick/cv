@@ -1,7 +1,7 @@
 {
   "personalInfo": {
     "name": "MUHAMMED FASIL PV",
-    "title": "Software Engineer | AI & IoT Systems Engineer | Retail Automation Specialist | MVVM & Infrastructure Expert",
+    "title": "Senior Full-Stack Engineer | React, Flutter, Node.js, AI & IoT Platforms",
     "email": "faztrick@gmail.com",
     "phone": "+971 555923545",
     "location": "Dubai, UAE",
@@ -11,7 +11,7 @@
     "whatsapp": "https://wa.me/971555923545",
     "website": "https://www.uaecodes.com"
   },
-  "summary": "Innovative **Software Engineer** with over **13 years of experience** in building intelligent, scalable, and distributed enterprise systems. Expert in **AI-driven automation**, **IoT ecosystems**, and **MVVM architecture** — with proven success across **ERP, QMS, POS, and retail IoT infrastructures**. Bridges hardware and software, creating hybrid cloud + local ecosystems that are **secure, real-time, and modular**. Delivers production-ready systems blending **Flutter, Node.js, Python, WPF, and Kotlin**, with strong foundations in **DevOps, AI, and networking**. Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices** for cross-branch communication and deployment automation. ---",
+  "summary": "Dubai-based Senior Full-Stack Engineer with 13+ years delivering production ERP, QMS, POS, retail automation and AI-enabled platforms. Strong across React, TypeScript, Node.js, Flutter, Python, Docker, MySQL and cloud deployments, with hands-on delivery from architecture to rollout and support. Currently in UAE on Visit Visa and immediately available for onsite or hybrid roles in Dubai, Abu Dhabi, and Sharjah.",
   "skills": [
     "Flutter",
     "Dart",
@@ -88,7 +88,7 @@
     },
     {
       "name": "AI Self-Checkout Kiosk",
-      "description": "YOLO-based theft detection with LED/GPIO feedback via Android AIDL interface. Showcased at Gitex Dubai 2024.",
+      "description": "YOLO-based self-checkout detection with LED/GPIO feedback via Android AIDL interface. Showcased with Idol at GITEX Dubai 2024 and 2025.",
       "technologies": [
         "Android",
         "YOLO",
@@ -96,7 +96,7 @@
         "Kotlin",
         "Python"
       ],
-      "status": "Gitex 2024",
+      "status": "GITEX 2024/2025",
       "category": "AI/Vision"
     },
     {
@@ -204,14 +204,15 @@
     }
   ],
   "highlights": [
-    "Gitex Dubai 2024: AI Self-Checkout Kiosk showcase",
+    "GITEX Dubai 2024 and 2025: AI self-checkout and QMS showcase",
     "50+ enterprise clients across retail, healthcare & hospitality",
     "Led cross-location teams with CI/CD & Docker pipelines",
     "13+ years of full-stack development experience"
   ],
   "availability": {
     "status": "Available Immediately",
-    "location": "Dubai, UAE"
+    "location": "Dubai, UAE",
+    "visa": "Visit Visa"
   },
   "yearsOfExperience": 13
 }

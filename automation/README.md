@@ -36,10 +36,10 @@ Quick start (Windows PowerShell)
    .\automation\configure-indeed-bot.ps1
    ```
 
-   **Or edit config files manually:**
-   - EasyApplyBot (LinkedIn Python): `config.yaml` (email, password, positions, locations)
-   - LinkedIn Node (Puppeteer): `config.json` (creds and search criteria)
-   - Indeed Bot (Python): `config.yaml` (base_url search, language)
+  **Credential guidance:**
+  - Keep secrets in the workspace root `.env`
+  - Use `configure-linkedin-bot.ps1` only for non-sensitive LinkedIn search preferences
+  - Indeed uses its own repo config plus a local browser/session directory; keep that local and out of git
 
 3) Verify setup:
 
@@ -57,7 +57,7 @@ Quick start (Windows PowerShell)
 
 # LinkedIn Node.js (recommended): reads LINKEDIN_EMAIL/LINKEDIN_PASSWORD from the workspace .env
 
-# injects them into config.json at runtime, then restores the original file
+# non-sensitive targeting preferences live in data\linkedin-bot-settings.json
 
   .\automation\run-linkedin-bot.ps1
 
@@ -78,12 +78,12 @@ Repo notes
   - requirements.txt included
   - Warns about account risk; educational use only
 - LinkedIn Puppeteer (Node)
-  - config.json driven; basic bot that targets Easy Apply
+  - Uses `.env` for credentials and a local settings file for search preferences
   - ⭐ **Recommended for beginners** - easier setup than Python version
   - Full guide: `automation/LINKEDIN-BOT-READY.md`
 - indeed_bot (Python)
   - Uses config.yaml; focuses on jobs with "Indeed Apply"
-  - Stores session in user_data_dir to preserve login
+  - Stores session in `user_data_dir` to preserve login; keep that directory local and gitignored
   - Uses Camoufox to bypass bot detection
 
 Helper scripts
@@ -123,7 +123,7 @@ Troubleshooting
 
 - Element not found: the site UI likely changed; update selectors in the repo code
 - CAPTCHA/blocks: slow down, add randomized waits, consider manual intervention
-- Login loops: clear cookies, ensure correct user_data_dir (indeed_bot), or re-authenticate
+- Login loops: clear the local `user_data_dir`, ensure it stays gitignored, or re-authenticate
 - Dependencies: ensure Python 3.10+ or Node 18+, and Chrome/Chromedriver compatibility where required
 
 Links

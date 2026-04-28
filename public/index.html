@@ -46,18 +46,33 @@
                     <span class="brand__name">Muhammed Fasil PV</span>
                 </a>
 
-                <button class="nav-toggle" aria-label="Toggle navigation">
-                    <i class="ri-menu-3-line"></i>
-                </button>
+                <div class="header-actions">
+                    <button class="nav-toggle" aria-label="Toggle navigation">
+                        <i class="ri-menu-3-line"></i>
+                    </button>
 
-                <nav class="nav" aria-label="Primary">
-                    <a href="#home" class="nav__link"><i class="ri-home-5-line"></i><span>Home</span></a>
-                    <a href="#about" class="nav__link"><i class="ri-user-3-line"></i><span>About</span></a>
-                    <a href="#skills" class="nav__link"><i class="ri-flashlight-line"></i><span>Skills</span></a>
-                    <a href="#projects" class="nav__link"><i class="ri-apps-2-line"></i><span>Projects</span></a>
-                    <a href="#experience" class="nav__link"><i class="ri-timeline-view"></i><span>Experience</span></a>
-                    <a href="#contact" class="nav__link"><i class="ri-send-plane-2-line"></i><span>Contact</span></a>
-                </nav>
+                    <nav class="nav" aria-label="Primary">
+                        <a href="#home" class="nav__link"><i class="ri-home-5-line"></i><span>Home</span></a>
+                        <a href="#about" class="nav__link"><i class="ri-user-3-line"></i><span>About</span></a>
+                        <a href="#skills" class="nav__link"><i class="ri-flashlight-line"></i><span>Skills</span></a>
+                        <a href="#projects" class="nav__link"><i class="ri-apps-2-line"></i><span>Projects</span></a>
+                        <a href="#experience" class="nav__link"><i class="ri-timeline-view"></i><span>Experience</span></a>
+                        <a href="#contact" class="nav__link"><i class="ri-send-plane-2-line"></i><span>Contact</span></a>
+                        <a href="/admin-panel.html" class="nav__link is-hidden" data-auth-role="admin"><i class="ri-shield-keyhole-line"></i><span>Admin</span></a>
+                    </nav>
+
+                    <div class="header-auth" aria-live="polite">
+                        <span class="auth-pill" id="authStatus">Guest</span>
+                        <a class="auth-link" id="loginLink" href="/.auth/login/aad?post_login_redirect_uri=/">
+                            <i class="ri-microsoft-line"></i>
+                            <span>Microsoft Sign In</span>
+                        </a>
+                        <a class="auth-link is-hidden" id="logoutLink" href="/.auth/logout?post_logout_redirect_uri=/">
+                            <i class="ri-logout-box-r-line"></i>
+                            <span>Logout</span>
+                        </a>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -88,6 +103,7 @@
                     <a class="btn btn--ghost" href="#about"><i class="ri-user-3-line"></i> About Me</a>
                     <a class="btn btn--ghost" href="/cv.html"><i class="ri-file-user-line"></i> View CV</a>
                     <a class="btn btn--ghost" href="mailto:faztrick@gmail.com"><i class="ri-mail-line"></i> Contact</a>
+                    <a class="btn btn--ghost is-hidden" href="/admin-panel.html" data-auth-role="admin"><i class="ri-shield-keyhole-line"></i> Admin Panel</a>
                 </div>
                 <div class="profile-header__social">
                     <a class="icon-btn" href="https://github.com/faztrick" target="_blank" rel="noreferrer noopener" aria-label="GitHub"><i class="ri-github-line"></i></a>
@@ -492,6 +508,64 @@
         </button>
 
         <script>
+            async function loadAuthState() {
+                const authStatus = document.getElementById('authStatus');
+                const loginLink = document.getElementById('loginLink');
+                const logoutLink = document.getElementById('logoutLink');
+                const adminItems = document.querySelectorAll('[data-auth-role="admin"]');
+
+                try {
+                    const response = await fetch('/.auth/me', {
+                        credentials: 'same-origin',
+                        headers: { Accept: 'application/json' }
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Auth endpoint unavailable');
+                    }
+
+                    const payload = await response.json();
+                    const principal = payload?.clientPrincipal;
+                    const roles = Array.isArray(principal?.userRoles) ? principal.userRoles : [];
+                    const isAuthenticated = Boolean(principal?.userId);
+                    const isAdmin = roles.includes('admin');
+
+                    adminItems.forEach((item) => {
+                        item.classList.toggle('is-hidden', !isAdmin);
+                    });
+
+                    loginLink?.classList.toggle('is-hidden', isAuthenticated);
+                    logoutLink?.classList.toggle('is-hidden', !isAuthenticated);
+
+                    if (authStatus) {
+                        if (isAdmin) {
+                            authStatus.textContent = `Admin: ${principal.userDetails || 'Microsoft account'}`;
+                            authStatus.classList.add('auth-pill--active');
+                        }
+                        else if (isAuthenticated) {
+                            authStatus.textContent = `Signed in: ${principal.userDetails || 'Microsoft account'}`;
+                            authStatus.classList.remove('auth-pill--active');
+                        }
+                        else {
+                            authStatus.textContent = 'Guest';
+                            authStatus.classList.remove('auth-pill--active');
+                        }
+                    }
+                }
+                catch (error) {
+                    adminItems.forEach((item) => item.classList.add('is-hidden'));
+                    logoutLink?.classList.add('is-hidden');
+                    loginLink?.classList.remove('is-hidden');
+
+                    if (authStatus) {
+                        authStatus.textContent = 'Auth unavailable locally';
+                        authStatus.classList.remove('auth-pill--active');
+                    }
+                }
+            }
+
+            loadAuthState();
+
             // Theme Toggle
             const themeToggle = document.getElementById('themeToggle');
             const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;

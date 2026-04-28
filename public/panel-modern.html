@@ -1696,7 +1696,7 @@
                             <label class="text-xs text-gray-600 dark:text-gray-400">Provider</label>
                             <select id="ai-provider" class="compact-input w-full mt-1" onchange="toggleAIFields()">
                                 <option value="openai">OpenAI API</option>
-                                <option value="local">Local Model (Ollama/LM Studio)</option>
+                                <option value="local">Local Model (LM Studio/Ollama)</option>
                             </select>
                         </div>
                         <div id="field-api-key">
@@ -1705,11 +1705,11 @@
                         </div>
                         <div id="field-base-url" class="hidden">
                             <label class="text-xs text-gray-600 dark:text-gray-400">Base URL</label>
-                            <input type="text" id="ai-base-url" placeholder="http://localhost:11434/v1" class="compact-input w-full mt-1">
+                            <input type="text" id="ai-base-url" placeholder="http://localhost:1234/v1" class="compact-input w-full mt-1">
                         </div>
                         <div>
                             <label class="text-xs text-gray-600 dark:text-gray-400">Model Name</label>
-                            <input type="text" id="ai-model" placeholder="gpt-4o" class="compact-input w-full mt-1">
+                            <input type="text" id="ai-model" placeholder="qwen/qwen3.5-9b" class="compact-input w-full mt-1">
                         </div>
                         <div>
                             <label class="text-xs text-gray-600 dark:text-gray-400">Temperature</label>
@@ -3177,7 +3177,7 @@
             if (provider === 'local') {
                 document.getElementById('field-api-key').classList.add('hidden');
                 document.getElementById('field-base-url').classList.remove('hidden');
-                document.getElementById('ai-model').placeholder = 'llama3';
+                document.getElementById('ai-model').placeholder = 'qwen/qwen3.5-9b';
             } else {
                 document.getElementById('field-api-key').classList.remove('hidden');
                 document.getElementById('field-base-url').classList.add('hidden');
@@ -3190,9 +3190,9 @@
                 const res = await fetch('/api/ai/config');
                 const config = await res.json();
 
-                document.getElementById('ai-provider').value = config.provider || 'openai';
+                document.getElementById('ai-provider').value = config.provider || 'local';
                 document.getElementById('ai-api-key').value = config.apiKey || '';
-                document.getElementById('ai-base-url').value = config.baseUrl || 'http://localhost:11434/v1';
+                document.getElementById('ai-base-url').value = config.baseUrl || 'http://localhost:1234/v1';
                 document.getElementById('ai-model').value = config.model || '';
                 document.getElementById('ai-temp').value = config.temperature || 0.7;
                 document.getElementById('ai-strategy').value = config.strategy || '';
@@ -3311,11 +3311,13 @@
             badge.innerHTML = `<div class="w-2 h-2 rounded-full ${dotClass}"></div> ${text}`;
         }
 
-        // Init
-        loadStats();
-        loadAIConfig();
-        initCVMessageTemplates();
-        loadDashboardData();
+        // Init after the full script is evaluated so template data exists.
+        document.addEventListener('DOMContentLoaded', () => {
+            loadStats();
+            loadAIConfig();
+            initCVMessageTemplates();
+            loadDashboardData();
+        });
 
         // --- Dashboard Data Loading ---
         async function loadDashboardData() {
@@ -4481,19 +4483,8 @@ Muhammed Fasil
         }
 
         async function launchBrowser(headless = false) {
-            updateBrowserStatus('Launching...', 'bg-yellow-500 animate-pulse');
-            addAutomationLog(`🚀 Launching browser (${headless ? 'headless' : 'visible'} mode)...`, 'info');
-            try {
-                const command = headless
-                    ? 'node scripts/job-search-playwright.js indeed --headless'
-                    : 'node scripts/job-search-playwright.js indeed';
-                await runCommand(command);
-                updateBrowserStatus('Running', 'bg-green-500');
-                addAutomationLog('✅ Browser launched successfully', 'success');
-            } catch (e) {
-                updateBrowserStatus('Error', 'bg-red-500');
-                addAutomationLog(`❌ Failed to launch: ${e.message}`, 'error');
-            }
+            updateBrowserStatus('Disabled', 'bg-red-500');
+            addAutomationLog('Browser automation has been disabled in this workspace.', 'error');
         }
 
         function closeBrowser() {

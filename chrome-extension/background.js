@@ -47,7 +47,7 @@ chrome.contextMenus.onClicked.addListener(async (info, tab) => {
 
 // Get CV data from storage
 async function getCVData() {
-  const result = await chrome.storage.local.get(['cvAutoApply_cvData']);
+  const result = await chrome.storage.session.get(['cvAutoApply_cvData']);
   return result.cvAutoApply_cvData;
 }
 
@@ -95,7 +95,10 @@ chrome.notifications.onButtonClicked.addListener(async (notifId, btnIdx) => {
   if (notifId !== NOTIFICATION_ID) return;
 
   if (btnIdx === 0) { // Auto-Fill
-    const result = await chrome.storage.local.get(['lastNotificationTabId', 'cvAutoApply_cvData']);
+    const result = {
+      ...(await chrome.storage.local.get(['lastNotificationTabId'])),
+      ...(await chrome.storage.session.get(['cvAutoApply_cvData']))
+    };
     if (result.lastNotificationTabId) {
       chrome.tabs.sendMessage(result.lastNotificationTabId, {
         action: 'autoFill',
@@ -143,7 +146,7 @@ chrome.commands?.onCommand?.addListener(async (command) => {
       chrome.tabs.sendMessage(tab.id, { action: 'autoFill', cvData });
       break;
     case 'quick-apply':
-      chrome.tabs.sendMessage(tab.id, { action: 'autoFillSubmit', cvData });
+      chrome.tabs.sendMessage(tab.id, { action: 'autoFill', cvData });
       break;
   }
 });

@@ -1,15 +1,15 @@
 # MUHAMMED FASIL PV
 
-Software Engineer • AI & IoT Developer • MVVM & Automation Expert
+Software Engineer - AI & IoT Developer - MVVM & Automation Expert
 
-📍 Dubai, UAE  |  📞 +971 555923545  |  ✉️ <faztrick@gmail.com>  |  🌐 [uaecodes.com](https://uaecodes.com)
-💼 GitHub: [github.com/faztrick](https://github.com/faztrick)  |  🔗 LinkedIn: [linkedin.com/in/faztrick](https://linkedin.com/in/faztrick)
+ Dubai, UAE  |   +971 555923545  |  Email <faztrick@gmail.com>  |   [uaecodes.com](https://uaecodes.com)
+ GitHub: [github.com/faztrick](https://github.com/faztrick)  |   LinkedIn: [linkedin.com/in/faztrick](https://linkedin.com/in/faztrick)
 
 ---
 
 ## Professional Summary
 
-Innovative Software Engineer (13+ years) building scalable, intelligent systems across ERP, QMS, POS, and IoT automation. I specialize in AI‑driven automation, IoT device ecosystems, and MVVM architectures spanning cloud + edge. Comfortable moving from low‑level device control (ESP32, GPIO, MQTT) to high‑level AI agents (OpenAI, LangChain, Qwen3) and robust DevOps (Docker, CI/CD). I lead teams, ship production systems, and care deeply about reliability, security, and maintainability.
+Innovative Software Engineer (13+ years) building scalable, intelligent systems across ERP, QMS, POS, and IoT automation. I specialize in AI-driven automation, IoT device ecosystems, and MVVM architectures spanning cloud + edge. Comfortable moving from low-level device control (ESP32, GPIO, MQTT) to high-level AI agents (OpenAI, LangChain, Qwen3) and robust DevOps (Docker, CI/CD). I lead teams, ship production systems, and care deeply about reliability, security, and maintainability.
 
 ---
 
@@ -28,21 +28,21 @@ Innovative Software Engineer (13+ years) building scalable, intelligent systems 
 
 ## Experience
 
-### Idol Technology LLC — Software Engineer (Dubai, UAE)
+### Idol Technology LLC - Software Engineer (Dubai, UAE)
 
-Aug 2024 – Present
+Aug 2024 - Present
 
 - Architected IdolMEA: ERP platform unifying POS, QMS, IoT automation, and AI vision.
-- Built IdolQueue (i‑QMS) with Flutter (MVVM) + Node.js; Hive offline sync and MQTT events.
+- Built IdolQueue (i-QMS) with Flutter (MVVM) + Node.js; Hive offline sync and MQTT events.
 - Automated queue alerts and AI chat responses via WhatsApp Business and Telegram.
-- Deployed IdolVPN mesh with MikroTik WireGuard for secure multi‑branch routing.
-- Integrated YOLO‑based theft detection into self‑checkout kiosks with LED/GPIO via AIDL.
+- Deployed IdolVPN mesh with MikroTik WireGuard for secure multi-branch routing.
+- Integrated YOLO-based theft detection into self-checkout kiosks with LED/GPIO via AIDL.
 - Shipped LampAidlInterface (Kotlin + Flutter IPC) for retail LED device control.
-- Implemented MySQL ↔ Hive hybrid sync for offline‑first analytics/reporting.
+- Implemented MySQL <-> Hive hybrid sync for offline-first analytics/reporting.
 
-### Screl Info Pvt Ltd — Senior Software Engineer (India / UAE Branch)
+### Screl Info Pvt Ltd - Senior Software Engineer (India / UAE Branch)
 
-Apr 2019 – Jan 2024
+Apr 2019 - Jan 2024
 
 - Delivered SincA ERP: modular hybrid stack (Flutter + Node.js + Python AI).
 - Built AI dashboards, OCR parsing, and prediction engines (TensorFlow, OpenAI APIs).
@@ -51,9 +51,9 @@ Apr 2019 – Jan 2024
 - Designed AI queue prediction, dynamic pricing, and module generators.
 - Mentored teams on MVVM, modular APIs, and DevOps best practices.
 
-### Sincap Info Pvt Ltd — Software Developer (Calicut, India)
+### Sincap Info Pvt Ltd - Software Developer (Calicut, India)
 
-Mar 2014 – Mar 2019
+Mar 2014 - Mar 2019
 
 - Built ERP, accounting, and billing solutions in WPF (C#), PHP, and SQL Server.
 - Created admin/reporting portals with RESTful JSON endpoints.
@@ -63,14 +63,14 @@ Mar 2014 – Mar 2019
 
 ## Selected Projects
 
-- IdolMEA ERP — centralized ERP: POS, booking, QMS, IoT control, AI reporting.
-- IdolQueue (i‑QMS) — Flutter + Node.js, MQTT‑driven automation and monitoring.
-- Self‑Checkout AI Kiosk — Android kiosk, YOLO detection, LED/GPIO automation.
-- IdolVPN Network — multi‑branch WireGuard mesh for secure remote ops.
-- BookzNow — Flutter MVVM booking for salons/clinics.
-- Vlogfied — video‑first restaurant discovery with AI classification/tagging.
-- ESL Tools (OEPL/Solum) — firmware flashing, jigs, MQTT control.
-- Local AI Agents — on‑device OpenAI + Qwen3 for store/ERP automation.
+- IdolMEA ERP - centralized ERP: POS, booking, QMS, IoT control, AI reporting.
+- IdolQueue (i-QMS) - Flutter + Node.js, MQTT-driven automation and monitoring.
+- Self-Checkout AI Kiosk - Android kiosk, YOLO detection, LED/GPIO automation.
+- IdolVPN Network - multi-branch WireGuard mesh for secure remote ops.
+- BookzNow - Flutter MVVM booking for salons/clinics.
+- Vlogfied - video-first restaurant discovery with AI classification/tagging.
+- ESL Tools (OEPL/Solum) - firmware flashing, jigs, MQTT control.
+- Local AI Agents - on-device OpenAI + Qwen3 for store/ERP automation.
 
 ---
 
@@ -91,12 +91,12 @@ Mar 2014 – Mar 2019
 
 ## Education
 
-Diploma in Computer Engineering — JDT Islam Polytechnic, Calicut, Kerala, India
-June 2010 – March 2013
+Diploma in Computer Engineering - JDT Islam Polytechnic, Calicut, Kerala, India
+June 2010 - March 2013
 
 ---
 
 ## Personal
 
-Nationality: Indian • Visa: Company Visa • Languages: English, Malayalam, Hindi
+Nationality: Indian - Visa: Visit Visa - Languages: English, Malayalam, Hindi
 Portfolio: [uaecodes.com](https://uaecodes.com)

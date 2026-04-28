@@ -45,6 +45,8 @@ logs/
 .wwebjs_cache/
 .cache/
 user_data/
+user_data_dir/
+faztrick/
 playwright-report/
 test-results/
 blob-report/
@@ -63,6 +65,8 @@ temp-apply-job.json
 *.pdf
 !resumes/resume-fasil-2025.pdf
 !resumes/resume.pdf
+!resumes/variants/resume-fasil-react-2025.pdf
+!resumes/variants/Muhammed-Fasil-PV-Senior-Full-Stack-Engineer-UAE.pdf
 
 # Build output
 dist/
@@ -72,3 +76,6 @@ out/
 # Temporary files
 *.tmp
 *.temp
+result.txt
+tools/*.exe
+Fasil_0373 copy.JPG

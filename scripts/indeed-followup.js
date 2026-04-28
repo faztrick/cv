@@ -93,7 +93,7 @@ async function getAppliedJobs(page) {
     // Check if logged in
     const pageContent = await page.content();
     if (pageContent.includes('Sign in') && pageContent.includes('Create account')) {
-        console.log('❌ Not logged in to Indeed. Please run setup-session.js first.');
+        console.log('❌ Not logged in to Indeed. Manual sign-in is required in your browser session.');
         return [];
     }
 

@@ -363,11 +363,6 @@ async function run(headless = false) {
   const context = await browser.newContext();
   const page = await context.newPage();
 
-  // Stealth / Anti-bot (basic)
-  await page.addInitScript(() => {
-    Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
-  });
-
   console.log(`[typeform] Navigating to ${TYPEFORM_URL}`);
   await page.goto(TYPEFORM_URL, { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(2000);

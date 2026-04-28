@@ -15,11 +15,12 @@ Subject: Application for Software Engineer (Backend/Full‑Stack)
 
 Dear Hiring Team,
 
-I’m a Software Architect and hands‑on engineer with 13+ years building scalable, production systems across ERP, POS, QMS, and IoT—shipping in cloud and on edge. I’m based in Dubai and immediately available (Company Visa). I’m applying for the Software Engineer role at {{Company Name}} because your focus on high‑impact products aligns with my background delivering real‑time platforms powered by clean architecture and automation.
+I’m a Software Architect and hands‑on engineer with 13+ years building scalable production systems across ERP, POS, QMS, and IoT, shipping in cloud and edge environments. I’m based in Dubai on Visit Visa and immediately available. I’m applying for the Software Engineer role at {{Company Name}} because your focus on high-impact products aligns with my background delivering real-time platforms powered by clean architecture and automation.
 
 Highlights relevant to this role:
 
-- Built IdolMEA ERP and IdolQueue (i‑QMS) end‑to‑end: Flutter MVVM apps, Node.js APIs, offline‑first sync (Hive), and MQTT automation—designed for reliability under spotty networks.
+- Mainly implemented IdolMEA ERP and IdolQueue (i-QMS) software for Carrefour and Union Coop environments: Flutter MVVM apps, Node.js APIs, offline-first sync, and MQTT automation designed for branch operations.
+- Built AI-based self-checkout and QMS applications showcased by Idol at GITEX in 2024 and 2025.
 - Engineered secure multi‑branch connectivity with MikroTik WireGuard mesh; automated deployments via Docker/Compose, PM2, and GitHub Actions.
 - Integrated AI/vision (YOLO, Whisper) and chat automation (WhatsApp/Telegram) to cut manual ops and improve service SLAs.
 - Delivered modular, testable services with TypeScript/Express, Python microservices, and robust observability.

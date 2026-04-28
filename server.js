@@ -3,7 +3,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
-const { exec, spawnSync } = require('child_process');
+const crypto = require('crypto');
+const { spawn, spawnSync } = require('child_process');
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const QRCode = require('qrcode');
 const { SkillsJobMatcher } = require('./scripts/skills-job-matcher');
@@ -20,15 +21,286 @@ const skillsMatcher = new SkillsJobMatcher();
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public')));
 
 // Paths
 const DATA_DIR = path.join(__dirname, 'data');
 const COMPANIES_FILE = path.join(DATA_DIR, 'target-companies.json');
 const EMAILS_DIR = path.join(__dirname, 'emails', 'outreach');
+const REPO_ROOT = path.resolve(__dirname);
+const WHATSAPP_RATE_LIMIT_MAX = 5;
+const WHATSAPP_RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000;
+const waMessageHistory = new Map();
+const ADMIN_SESSION_COOKIE = 'admin_session';
+const ADMIN_SESSION_TTL_MS = 12 * 60 * 60 * 1000;
+const ADMIN_PROTECTED_PATHS = new Set([
+    '/admin',
+    '/admin-old',
+    '/old-panel',
+    '/panel',
+    '/panel-modern',
+    '/panel-skills',
+    '/panel-classic',
+    '/admin-panel.html',
+    '/panel.html',
+    '/panel-modern.html',
+    '/panel-skills.html'
+]);
+
+const ALLOWED_RUN_COMMANDS = new Map([
+    ['npm run outreach generate', { command: 'npm', args: ['run', 'outreach', '--', 'generate'] }],
+    ['npm run outreach send', { command: 'npm', args: ['run', 'outreach', '--', 'send'] }],
+    ['npm run outreach send -- --real', { command: 'npm', args: ['run', 'outreach', '--', 'send', '--real'] }],
+    ['npm run outreach send -- --real --cover-letter-openai', { command: 'npm', args: ['run', 'outreach', '--', 'send', '--real', '--cover-letter-openai'] }],
+    ['npm run outreach send -- --real --inline --cv-inline --cover-letter-openai', { command: 'npm', args: ['run', 'outreach', '--', 'send', '--real', '--inline', '--cv-inline', '--cover-letter-openai'] }],
+    ['npm run playwright-indeed', { command: 'npm', args: ['run', 'playwright-indeed'] }],
+    ['npm run playwright-linkedin', { command: 'npm', args: ['run', 'playwright-linkedin'] }],
+    ['npm run playwright-dubizzle', { command: 'npm', args: ['run', 'playwright-dubizzle'] }],
+    ['npm run playwright-bayt', { command: 'npm', args: ['run', 'playwright-bayt'] }],
+    ['npm run playwright-gulftalent', { command: 'npm', args: ['run', 'playwright-gulftalent'] }],
+    ['npm run playwright-naukrigulf', { command: 'npm', args: ['run', 'playwright-naukrigulf'] }],
+    ['npm run parse-cv', { command: 'npm', args: ['run', 'parse-cv'] }],
+    ['python scripts/render_pdf.py', { command: 'python', args: ['scripts/render_pdf.py'] }],
+    ['npm run clean-cache', { command: 'npm', args: ['run', 'clean-cache'] }]
+]);
+
+function isPathInsideRepo(candidatePath) {
+    const resolvedPath = path.resolve(candidatePath);
+    return resolvedPath === REPO_ROOT || resolvedPath.startsWith(`${REPO_ROOT}${path.sep}`);
+}
+
+function resolveRepoFilePath(inputPath, expectedExtension) {
+    if (typeof inputPath !== 'string' || !inputPath.trim()) {
+        return null;
+    }
+
+    const resolvedPath = path.resolve(REPO_ROOT, inputPath);
+    if (!isPathInsideRepo(resolvedPath)) {
+        return null;
+    }
+
+    if (expectedExtension && path.extname(resolvedPath).toLowerCase() !== expectedExtension) {
+        return null;
+    }
+
+    return resolvedPath;
+}
+
+function checkWhatsAppRateLimit(number) {
+    const now = Date.now();
+    const recent = (waMessageHistory.get(number) || []).filter(ts => now - ts < WHATSAPP_RATE_LIMIT_WINDOW_MS);
+    if (recent.length >= WHATSAPP_RATE_LIMIT_MAX) {
+        waMessageHistory.set(number, recent);
+        return false;
+    }
+
+    recent.push(now);
+    waMessageHistory.set(number, recent);
+    return true;
+}
+
+function isSafeRemoteUrl(inputUrl) {
+    try {
+        const parsed = new URL(inputUrl);
+        if (!['http:', 'https:'].includes(parsed.protocol)) {
+            return false;
+        }
+
+        const hostname = parsed.hostname.toLowerCase();
+        const blockedHosts = new Set(['localhost', '127.0.0.1', '::1']);
+        if (blockedHosts.has(hostname)) {
+            return false;
+        }
+
+        if (/^(10\.|127\.|169\.254\.|172\.(1[6-9]|2\d|3[0-1])\.|192\.168\.)/.test(hostname)) {
+            return false;
+        }
+
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+function getAdminPassword() {
+    return typeof process.env.ADMIN_PASSWORD === 'string' ? process.env.ADMIN_PASSWORD : '';
+}
+
+function getAdminSecurityQuestion() {
+    return typeof process.env.ADMIN_SECURITY_QUESTION === 'string' ? process.env.ADMIN_SECURITY_QUESTION.trim() : '';
+}
+
+function getAdminSecurityAnswer() {
+    return typeof process.env.ADMIN_SECURITY_ANSWER === 'string' ? process.env.ADMIN_SECURITY_ANSWER.trim() : '';
+}
+
+function getAdminSessionSecret() {
+    const configuredSecret = typeof process.env.ADMIN_SESSION_SECRET === 'string' ? process.env.ADMIN_SESSION_SECRET.trim() : '';
+    if (configuredSecret) {
+        return configuredSecret;
+    }
+
+    return crypto.createHash('sha256').update(`${REPO_ROOT}:local-admin-session`).digest('hex');
+}
+
+function safeEqual(left, right) {
+    const leftBuffer = Buffer.from(left || '', 'utf8');
+    const rightBuffer = Buffer.from(right || '', 'utf8');
+    if (leftBuffer.length !== rightBuffer.length) {
+        return false;
+    }
+
+    return crypto.timingSafeEqual(leftBuffer, rightBuffer);
+}
+
+function parseCookies(cookieHeader) {
+    if (!cookieHeader) {
+        return {};
+    }
+
+    return cookieHeader.split(';').reduce((accumulator, part) => {
+        const [rawName, ...rawValue] = part.trim().split('=');
+        if (!rawName) {
+            return accumulator;
+        }
+
+        accumulator[rawName] = decodeURIComponent(rawValue.join('='));
+        return accumulator;
+    }, {});
+}
+
+function createAdminSessionToken(expiresAt) {
+    const payload = `admin:${expiresAt}`;
+    const signature = crypto
+        .createHmac('sha256', getAdminSessionSecret())
+        .update(payload)
+        .digest('hex');
+
+    return Buffer.from(`${payload}:${signature}`, 'utf8').toString('base64url');
+}
+
+function verifyAdminSessionToken(token) {
+    if (!token) {
+        return false;
+    }
+
+    try {
+        const decoded = Buffer.from(token, 'base64url').toString('utf8');
+        const [scope, rawExpiry, signature] = decoded.split(':');
+        if (scope !== 'admin' || !rawExpiry || !signature) {
+            return false;
+        }
+
+        const expiresAt = Number.parseInt(rawExpiry, 10);
+        if (!Number.isFinite(expiresAt) || Date.now() > expiresAt) {
+            return false;
+        }
+
+        const expectedSignature = crypto
+            .createHmac('sha256', getAdminSessionSecret())
+            .update(`${scope}:${rawExpiry}`)
+            .digest('hex');
+
+        return safeEqual(signature, expectedSignature);
+    } catch {
+        return false;
+    }
+}
+
+function setAdminSessionCookie(res) {
+    const expiresAt = Date.now() + ADMIN_SESSION_TTL_MS;
+    const token = createAdminSessionToken(expiresAt);
+    const isSecure = process.env.NODE_ENV === 'production';
+    const securePart = isSecure ? '; Secure' : '';
+    res.setHeader('Set-Cookie', `${ADMIN_SESSION_COOKIE}=${encodeURIComponent(token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${Math.floor(ADMIN_SESSION_TTL_MS / 1000)}${securePart}`);
+}
+
+function clearAdminSessionCookie(res) {
+    res.setHeader('Set-Cookie', `${ADMIN_SESSION_COOKIE}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0`);
+}
+
+function isAdminAuthenticated(req) {
+    const cookies = parseCookies(req.headers.cookie || '');
+    return verifyAdminSessionToken(cookies[ADMIN_SESSION_COOKIE]);
+}
+
+function isProtectedAdminRequest(requestPath) {
+    if (requestPath.startsWith('/api/') && !requestPath.startsWith('/api/admin/auth/')) {
+        return true;
+    }
+
+    return ADMIN_PROTECTED_PATHS.has(requestPath);
+}
+
+function sendAdminUnauthorized(req, res) {
+    if (req.path.startsWith('/api/')) {
+        return res.status(401).json({ error: 'Admin authentication required' });
+    }
+
+    const nextTarget = encodeURIComponent(req.originalUrl || req.path || '/panel');
+    return res.redirect(`/admin-login.html?next=${nextTarget}`);
+}
 
 // Ensure data dir exists
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+
+app.get('/api/admin/auth/status', (req, res) => {
+    res.json({
+        authenticated: isAdminAuthenticated(req),
+        configured: Boolean(getAdminPassword()),
+        securityQuestion: getAdminSecurityQuestion() || null
+    });
+});
+
+app.post('/api/admin/auth/login', (req, res) => {
+    const configuredPassword = getAdminPassword();
+    if (!configuredPassword) {
+        return res.status(503).json({ error: 'ADMIN_PASSWORD is not configured on the server' });
+    }
+
+    const submittedPassword = typeof req.body?.password === 'string' ? req.body.password : '';
+    if (!safeEqual(submittedPassword, configuredPassword)) {
+        return res.status(401).json({ error: 'Invalid password' });
+    }
+
+    const configuredSecurityQuestion = getAdminSecurityQuestion();
+    const configuredSecurityAnswer = getAdminSecurityAnswer();
+    if (configuredSecurityQuestion && configuredSecurityAnswer) {
+        const submittedAnswer = typeof req.body?.securityAnswer === 'string' ? req.body.securityAnswer.trim() : '';
+        if (!safeEqual(submittedAnswer.toLowerCase(), configuredSecurityAnswer.toLowerCase())) {
+            return res.status(401).json({ error: 'Invalid security answer' });
+        }
+    }
+
+    setAdminSessionCookie(res);
+    res.json({ success: true });
+});
+
+app.post('/api/admin/auth/logout', (req, res) => {
+    clearAdminSessionCookie(res);
+    res.json({ success: true });
+});
+
+app.use((req, res, next) => {
+    if (!isProtectedAdminRequest(req.path)) {
+        return next();
+    }
+
+    if (!getAdminPassword()) {
+        if (req.path.startsWith('/api/')) {
+            return res.status(503).json({ error: 'ADMIN_PASSWORD is not configured on the server' });
+        }
+
+        return res.status(503).send('ADMIN_PASSWORD is not configured on the server. Set it in .env before using the admin panel.');
+    }
+
+    if (isAdminAuthenticated(req)) {
+        return next();
+    }
+
+    return sendAdminUnauthorized(req, res);
+});
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 // --- API ENDPOINTS ---
 
@@ -84,39 +356,54 @@ app.post('/api/companies', (req, res) => {
 // Run Command
 app.post('/api/run', (req, res) => {
     const { command } = req.body;
-    console.log(`Executing: ${command}`);
+    if (typeof command !== 'string') {
+        return res.status(400).json({ error: 'Command must be a string' });
+    }
 
-    // Security check: only allow specific npm commands
-    const allowedCommands = [
-        'npm run outreach generate',
-        'npm run outreach send', // Dry run
-        'npm run outreach send -- --real',
-        'npm run outreach send -- --real --cover-letter-openai',
-        'npm run outreach send -- --real --inline --cv-inline --cover-letter-openai',
-        'npm run playwright-indeed',
-        'npm run playwright-linkedin',
-        'npm run playwright-dubizzle',
-        'npm run playwright-bayt',
-        'npm run playwright-gulftalent',
-        'npm run playwright-naukrigulf',
-        'npm run parse-cv',
-        'python scripts/render_pdf.py',
-        'npm run clean-cache'
-    ];
-
-    // Basic validation to allow arguments for playwright
-    const isAllowed = allowedCommands.some(cmd => command.startsWith(cmd.split(' --')[0]));
-
-    if (!isAllowed && !command.startsWith('npm run playwright')) {
+    const trimmedCommand = command.trim();
+    const selectedCommand = ALLOWED_RUN_COMMANDS.get(trimmedCommand);
+    if (!selectedCommand) {
         return res.status(403).json({ error: 'Command not allowed' });
     }
 
-    exec(command, { cwd: __dirname }, (error, stdout, stderr) => {
-        if (error) {
-            console.error(`Error: ${error.message}`);
-            return res.json({ success: false, output: stderr || error.message });
+    console.log(`Executing allowed command: ${trimmedCommand}`);
+
+    const child = spawn(selectedCommand.command, selectedCommand.args, {
+        cwd: REPO_ROOT,
+        shell: false
+    });
+
+    let stdout = '';
+    let stderr = '';
+    let responded = false;
+
+    child.stdout.on('data', (chunk) => {
+        stdout += chunk.toString();
+    });
+
+    child.stderr.on('data', (chunk) => {
+        stderr += chunk.toString();
+    });
+
+    child.on('error', (error) => {
+        if (responded) {
+            return;
         }
-        res.json({ success: true, output: stdout });
+        responded = true;
+        console.error(`Failed to start command: ${error.message}`);
+        res.status(500).json({ success: false, output: error.message });
+    });
+
+    child.on('close', (code) => {
+        if (responded) {
+            return;
+        }
+        responded = true;
+        if (code !== 0) {
+            return res.json({ success: false, output: stderr || stdout || `Command exited with code ${code}` });
+        }
+
+        res.json({ success: true, output: stdout || stderr });
     });
 });
 
@@ -242,6 +529,27 @@ app.get('/panel-classic', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'panel.html'));
 });
 
+app.get('/api/status', (req, res) => {
+    const processes = [];
+
+    if (indeedProcess) {
+        processes.push('indeed');
+    }
+    if (playwrightProcess) {
+        processes.push('automation');
+    }
+    if (aiAgentProcess) {
+        processes.push('ai-agent');
+    }
+
+    res.json({
+        processes,
+        env: {
+            openai: Boolean(process.env.OPENAI_API_KEY)
+        }
+    });
+});
+
 // --- WHATSAPP INTEGRATION ---
 const WA_CONFIG_FILE = path.join(DATA_DIR, 'whatsapp-config.json');
 let waClient;
@@ -273,8 +581,7 @@ function initWhatsApp() {
         waClient = new Client({
             authStrategy: new LocalAuth({ dataPath: path.join(__dirname, '.wwebjs_auth') }),
             puppeteer: {
-                headless: true,
-                args: ['--no-sandbox', '--disable-setuid-sandbox']
+                headless: true
             }
         });
 
@@ -371,6 +678,10 @@ app.post('/api/whatsapp/send', async (req, res) => {
             formattedNumber = formattedNumber + '@c.us';
         }
 
+        if (!checkWhatsAppRateLimit(formattedNumber)) {
+            return res.status(429).json({ success: false, error: 'Rate limit exceeded for this WhatsApp number' });
+        }
+
         console.log('Sending to:', formattedNumber);
 
         // Check if the number is registered on WhatsApp
@@ -409,13 +720,18 @@ app.post('/api/whatsapp/send-pdf', async (req, res) => {
             formattedNumber = formattedNumber + '@c.us';
         }
 
-        console.log('Sending PDF to:', formattedNumber);
-
-        if (!fs.existsSync(pdfPath)) {
-             return res.status(400).json({ success: false, error: `PDF file not found at ${pdfPath}` });
+        if (!checkWhatsAppRateLimit(formattedNumber)) {
+            return res.status(429).json({ success: false, error: 'Rate limit exceeded for this WhatsApp number' });
         }
 
-        const media = MessageMedia.fromFilePath(pdfPath);
+        console.log('Sending PDF to:', formattedNumber);
+
+        const safePdfPath = resolveRepoFilePath(pdfPath, '.pdf');
+        if (!safePdfPath || !fs.existsSync(safePdfPath)) {
+             return res.status(400).json({ success: false, error: 'PDF file not found or path is not allowed' });
+        }
+
+        const media = MessageMedia.fromFilePath(safePdfPath);
 
         const response = await waClient.sendMessage(formattedNumber, media, { caption: message });
         console.log('PDF sent successfully:', response.id);
@@ -445,7 +761,6 @@ app.post('/api/cv', (req, res) => {
 
 // --- AI AGENT INTEGRATION ---
 const AI_CONFIG_FILE = path.join(DATA_DIR, 'ai-config.json');
-const { spawn } = require('child_process');
 
 let agentProcess = null;
 let agentLogs = [];
@@ -454,23 +769,46 @@ let agentLogs = [];
 app.get('/api/ai/config', (req, res) => {
     if (!fs.existsSync(AI_CONFIG_FILE)) {
         return res.json({
-            provider: 'openai',
+            provider: 'local',
             apiKey: '',
-            baseUrl: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
-            model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+            baseUrl: process.env.OPENAI_BASE_URL || 'http://localhost:1234/v1',
+            model: process.env.OPENAI_MODEL || 'qwen/qwen3.5-9b',
             temperature: 0.7,
             maxTokens: 2000,
             autoApply: false
         });
     }
-    res.json(JSON.parse(fs.readFileSync(AI_CONFIG_FILE, 'utf8')));
+
+    const saved = JSON.parse(fs.readFileSync(AI_CONFIG_FILE, 'utf8'));
+    if (saved && typeof saved === 'object') {
+        delete saved.apiKey;
+    }
+
+    res.json({
+        provider: saved?.provider || 'local',
+        apiKey: '',
+        baseUrl: saved?.baseUrl || process.env.OPENAI_BASE_URL || 'http://localhost:1234/v1',
+        model: saved?.model || process.env.OPENAI_MODEL || 'qwen/qwen3.5-9b',
+        temperature: saved?.temperature ?? 0.7,
+        maxTokens: saved?.maxTokens ?? 2000,
+        autoApply: Boolean(saved?.autoApply)
+    });
 });
 
 // Save AI Config
 app.post('/api/ai/config', (req, res) => {
     const config = req.body;
-    fs.writeFileSync(AI_CONFIG_FILE, JSON.stringify(config, null, 2));
-    res.json({ success: true, message: 'Configuration saved' });
+    const safeConfig = {
+        provider: config?.provider || 'local',
+        baseUrl: config?.baseUrl || process.env.OPENAI_BASE_URL || 'http://localhost:1234/v1',
+        model: config?.model || process.env.OPENAI_MODEL || 'qwen/qwen3.5-9b',
+        temperature: config?.temperature ?? 0.7,
+        maxTokens: config?.maxTokens ?? 2000,
+        autoApply: Boolean(config?.autoApply)
+    };
+
+    fs.writeFileSync(AI_CONFIG_FILE, JSON.stringify(safeConfig, null, 2));
+    res.json({ success: true, message: 'Configuration saved without persisting API keys' });
 });
 
 // Start AI Agent
@@ -818,6 +1156,10 @@ app.post('/api/scrape/url', async (req, res) => {
         return res.status(400).json({ success: false, error: 'URL is required' });
     }
 
+    if (!isSafeRemoteUrl(url)) {
+        return res.status(400).json({ success: false, error: 'Only public http(s) URLs are allowed' });
+    }
+
     try {
         // Use fetch to get the page content
         const response = await fetch(url, {
@@ -937,61 +1279,16 @@ app.post('/api/indeed/config', (req, res) => {
             envContent += `\nINDEED_EMAIL=${config.email}`;
         }
     }
-    if (config.password) {
-        if (envContent.includes('INDEED_PASSWORD=')) {
-            envContent = envContent.replace(/INDEED_PASSWORD=.*/g, `INDEED_PASSWORD=${config.password}`);
-        } else {
-            envContent += `\nINDEED_PASSWORD=${config.password}`;
-        }
-    }
     fs.writeFileSync(envPath, envContent.trim());
 
-    res.json({ success: true, message: 'Indeed configuration saved' });
+    res.json({ success: true, message: 'Indeed configuration saved without persisting passwords' });
 });
 
 // Search Indeed Jobs
 app.post('/api/indeed/search', (req, res) => {
-    const { query, location, minMatch } = req.body;
-
     indeedLogs = [];
-    indeedLogs.push(`[${new Date().toLocaleTimeString()}] Starting Indeed search: "${query}" in ${location}`);
-
-    const args = ['scripts/indeed-auto-apply.js', 'search', query || 'Software Engineer'];
-
-    const searchProcess = spawn('node', args, { cwd: __dirname });
-    let output = '';
-
-    searchProcess.stdout.on('data', (data) => {
-        output += data.toString();
-        const lines = data.toString().split('\n');
-        lines.forEach(line => {
-            if (line.trim()) {
-                indeedLogs.push(`[${new Date().toLocaleTimeString()}] ${line.trim()}`);
-            }
-        });
-    });
-
-    searchProcess.stderr.on('data', (data) => {
-        const lines = data.toString().split('\n');
-        lines.forEach(line => {
-            if (line.trim()) {
-                indeedLogs.push(`[${new Date().toLocaleTimeString()}] ERROR: ${line.trim()}`);
-            }
-        });
-    });
-
-    searchProcess.on('close', (code) => {
-        indeedLogs.push(`[${new Date().toLocaleTimeString()}] Search completed with code ${code}`);
-
-        // Try to load results
-        const resultsFile = path.join(DATA_DIR, 'indeed-matches.json');
-        if (fs.existsSync(resultsFile)) {
-            const jobs = JSON.parse(fs.readFileSync(resultsFile, 'utf8'));
-            fs.writeFileSync(INDEED_JOBS_FILE, JSON.stringify(jobs, null, 2));
-        }
-    });
-
-    res.json({ success: true, message: 'Search started' });
+    indeedLogs.push(`[${new Date().toLocaleTimeString()}] Indeed automation is disabled in this workspace.`);
+    res.status(410).json({ success: false, message: 'Indeed automation is disabled' });
 });
 
 // Get Indeed Jobs
@@ -1014,49 +1311,9 @@ app.get('/api/indeed/jobs', (req, res) => {
 
 // Start Auto-Apply
 app.post('/api/indeed/apply', (req, res) => {
-    const { realMode, maxApps } = req.body;
-
-    if (indeedProcess) {
-        return res.json({ success: false, message: 'Auto-apply already running' });
-    }
-
     indeedLogs = [];
-    indeedLogs.push(`[${new Date().toLocaleTimeString()}] Starting auto-apply (${realMode ? 'REAL' : 'DRY RUN'} mode)...`);
-
-    const args = ['scripts/indeed-auto-apply.js', 'apply'];
-    if (realMode) {
-        args.push('--real');
-    }
-    if (maxApps) {
-        args.push('--max', String(maxApps));
-    }
-
-    indeedProcess = spawn('node', args, { cwd: __dirname });
-
-    indeedProcess.stdout.on('data', (data) => {
-        const lines = data.toString().split('\n');
-        lines.forEach(line => {
-            if (line.trim()) {
-                indeedLogs.push(`[${new Date().toLocaleTimeString()}] ${line.trim()}`);
-            }
-        });
-    });
-
-    indeedProcess.stderr.on('data', (data) => {
-        const lines = data.toString().split('\n');
-        lines.forEach(line => {
-            if (line.trim()) {
-                indeedLogs.push(`[${new Date().toLocaleTimeString()}] ERROR: ${line.trim()}`);
-            }
-        });
-    });
-
-    indeedProcess.on('close', (code) => {
-        indeedLogs.push(`[${new Date().toLocaleTimeString()}] Auto-apply finished with code ${code}`);
-        indeedProcess = null;
-    });
-
-    res.json({ success: true, message: 'Auto-apply started' });
+    indeedLogs.push(`[${new Date().toLocaleTimeString()}] Indeed auto-apply is disabled in this workspace.`);
+    res.status(410).json({ success: false, message: 'Indeed auto-apply is disabled' });
 });
 
 // Stop Auto-Apply
@@ -1105,33 +1362,8 @@ app.get('/api/indeed/stats', (req, res) => {
 // Update Indeed Profile Resume
 app.post('/api/indeed/update-profile', (req, res) => {
     indeedLogs = [];
-    indeedLogs.push(`[${new Date().toLocaleTimeString()}] Updating Indeed profile resume...`);
-
-    const updateProcess = spawn('node', ['scripts/indeed-auto-apply.js', 'update-profile'], { cwd: __dirname });
-
-    updateProcess.stdout.on('data', (data) => {
-        const lines = data.toString().split('\n');
-        lines.forEach(line => {
-            if (line.trim()) {
-                indeedLogs.push(`[${new Date().toLocaleTimeString()}] ${line.trim()}`);
-            }
-        });
-    });
-
-    updateProcess.stderr.on('data', (data) => {
-        const lines = data.toString().split('\n');
-        lines.forEach(line => {
-            if (line.trim()) {
-                indeedLogs.push(`[${new Date().toLocaleTimeString()}] ERROR: ${line.trim()}`);
-            }
-        });
-    });
-
-    updateProcess.on('close', (code) => {
-        indeedLogs.push(`[${new Date().toLocaleTimeString()}] Profile update completed with code ${code}`);
-    });
-
-    res.json({ success: true, message: 'Profile update started' });
+    indeedLogs.push(`[${new Date().toLocaleTimeString()}] Indeed profile automation is disabled in this workspace.`);
+    res.status(410).json({ success: false, message: 'Indeed profile automation is disabled' });
 });
 
 // Apply to specific job
@@ -1212,43 +1444,9 @@ let playwrightLogs = [];
 
 // Run job search automation
 app.post('/api/automation/search', (req, res) => {
-    const { platform, keyword, location } = req.body;
-
-    if (playwrightProcess) {
-        return res.status(400).json({ success: false, message: 'Automation already running' });
-    }
-
     playwrightLogs = [];
-    playwrightLogs.push(`[${new Date().toLocaleTimeString()}] Starting ${platform} search: "${keyword}" in ${location}`);
-
-    const args = ['scripts/job-search-playwright.js', platform || 'indeed', keyword || 'Software Engineer', location || 'Dubai'];
-
-    playwrightProcess = spawn('node', args, { cwd: __dirname });
-
-    playwrightProcess.stdout.on('data', (data) => {
-        const lines = data.toString().split('\n');
-        lines.forEach(line => {
-            if (line.trim()) {
-                playwrightLogs.push(`[${new Date().toLocaleTimeString()}] ${line.trim()}`);
-            }
-        });
-    });
-
-    playwrightProcess.stderr.on('data', (data) => {
-        const lines = data.toString().split('\n');
-        lines.forEach(line => {
-            if (line.trim()) {
-                playwrightLogs.push(`[${new Date().toLocaleTimeString()}] ERROR: ${line.trim()}`);
-            }
-        });
-    });
-
-    playwrightProcess.on('close', (code) => {
-        playwrightLogs.push(`[${new Date().toLocaleTimeString()}] Automation finished with code ${code}`);
-        playwrightProcess = null;
-    });
-
-    res.json({ success: true, message: `${platform} search started` });
+    playwrightLogs.push(`[${new Date().toLocaleTimeString()}] Browser automation is disabled in this workspace.`);
+    res.status(410).json({ success: false, message: 'Browser automation is disabled' });
 });
 
 // Stop automation
@@ -1288,6 +1486,10 @@ app.post('/api/automation/batch', async (req, res) => {
         message: `Queued ${searches.length} searches`,
         searches
     });
+});
+
+app.get('/admin-login', (req, res) => {
+    res.redirect('/admin-login.html');
 });
 
 app.listen(PORT, () => {

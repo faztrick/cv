@@ -1,6 +1,8 @@
 # Dubai Job Portals Integration
 
-This update adds support for the following Dubai-based job portals to the automation suite:
+This document is historical. The browser automation suite referenced here has been disabled in this workspace.
+
+It originally added support for the following Dubai-based job portals:
 
 1. **Dubizzle**
 2. **Bayt**
@@ -9,19 +11,14 @@ This update adds support for the following Dubai-based job portals to the automa
 
 ## Changes Made
 
-### 1. Automation Script (`scripts/job-search-playwright.js`)
+### 1. Historical Automation Script (`scripts/job-search-playwright.js`)
 
-- Added dedicated search functions for each portal.
-- Updated the main switch statement to handle new platform arguments.
-- Each function navigates to the portal, enters the keyword and location, and performs the search.
+- This script is now a disabled stub.
+- Use the document only as background reference, not as an active workflow.
 
-### 2. Package Configuration (`package.json`)
+### 2. Current Status
 
-- Added new npm scripts:
-  - `npm run playwright-dubizzle`
-  - `npm run playwright-bayt`
-  - `npm run playwright-gulftalent`
-  - `npm run playwright-naukrigulf`
+- The related npm automation scripts have been removed from the active workflow.
 
 ### 3. Control Panel Backend (`server.js`)
 

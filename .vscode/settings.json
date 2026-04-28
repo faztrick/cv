@@ -22,7 +22,18 @@
         "copilot/gpt-5.1-codex-max",
         "copilot/gpt-5.1-codex-mini",
         "copilot/grok-code-fast-1",
-        "copilot/oswe-vscode-prime"
+        "copilot/oswe-vscode-prime",
+        "supergemma4-26b-uncensored-v2",
+        "qwen/qwen3.6-35b-a3b",
+        "gemma3-malayalam-instruct",
+        "malayalam-llama-7b-instruct-v0.1",
+        "qwen3.5-35b-a3b-uncensored-hauhaucs-aggressive",
+        "google/gemma-4-31b",
+        "openai/gpt-oss-20b",
+        "zai-org/glm-4.6v-flash",
+        "qwen/qwen3.5-9b",
+        "nvidia/nemotron-3-nano-4b",
+        "text-embedding-nomic-embed-text-v1.5"
       ]
     }
   },
@@ -32,5 +43,6 @@
   "azureFunctions.projectRuntime": "~4",
   "debug.internalConsoleOptions": "neverOpen",
   "azureFunctions.preDeployTask": "npm prune (functions)",
-  "github.copilot.chat.virtualTools.threshold": 500
+  "github.copilot.chat.virtualTools.threshold": 500,
+  "cmake.sourceDirectory": "D:/projects/cv/cv/flutter_frontend/windows"
 }

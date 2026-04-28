@@ -1,15 +1,16 @@
-# 🤖 LinkedIn Job Application Bot - Ready to Use
+# LinkedIn Job Application Bot - Disabled
 
-## ✅ What's Set Up
+## Status
 
-Your workspace now has a **fully configured LinkedIn job application automation bot** with:
+This LinkedIn job application automation flow has been disabled in this workspace.
+The helper files remain only as placeholders so old links do not break.
 
-### 📁 Files Created
+### Current State
 
-- `automation/repos/linkedin-job-apply-automation/` - Main bot (Puppeteer/Node.js)
-- `automation/configure-linkedin-bot.ps1` - Quick config helper
-- `automation/test-linkedin-bot.ps1` - Pre-flight check script
-- `automation/repos/linkedin-job-apply-automation/QUICKSTART.md` - Detailed guide
+- `scripts/linkedin-auto-apply.js` - Disabled stub
+- `automation/configure-linkedin-bot.ps1` - Non-sensitive preference helper
+- `automation/test-linkedin-bot.ps1` - Disabled stub
+- `automation/run-linkedin-bot.ps1` - Disabled stub
 
 ### 🎯 Pre-configured Settings
 
@@ -21,43 +22,16 @@ Your workspace now has a **fully configured LinkedIn job application automation 
 
 ---
 
-## 🚀 Quick Start (3 Steps)
+## Recommended Use
 
-### Step 1: Configure Your Credentials
+Use the workspace for:
 
-**Option A - Interactive (Recommended)**
+- CV parsing
+- outreach email generation
+- manual application support
+- resume export and portfolio hosting
 
-```powershell
-.\automation\configure-linkedin-bot.ps1
-```
-
-Then follow the prompts to enter your email/password.
-
-**Option B - Manual**
-Edit `automation/repos/linkedin-job-apply-automation/config.json`:
-
-```json
-{
-    "email": "your-linkedin-email@example.com",
-    "password": "your-password",
-    ...
-}
-```
-
-### Step 2: Verify Setup
-
-```powershell
-.\automation\test-linkedin-bot.ps1
-```
-
-Should show all green checkmarks ✓
-
-### Step 3: Run the Bot
-
-```powershell
-cd automation\repos\linkedin-job-apply-automation
-node index.js
-```
+Do not use it for unattended LinkedIn automation.
 
 ---
 
@@ -92,7 +66,7 @@ node index.js
 3. ✅ Filters for **Easy Apply** jobs only
 4. ✅ Filters by time period (24 hours or past week)
 5. ✅ Auto-fills application forms
-6. ✅ Submits applications automatically
+6. ✅ Stops for manual review before you submit
 7. ✅ Processes multiple pages (you control how many)
 
 ---
@@ -101,11 +75,11 @@ node index.js
 
 | Setting | Location | Default | Recommended |
 |---------|----------|---------|-------------|
-| Email/Password | `config.json` | (empty) | YOUR credentials |
-| Job Keyword | `config.json` | Software Architect | Match your role |
-| Location | `config.json` | UAE | Your target market |
-| Pages | `config.json` | 3 | Start with 3-5 |
-| Experience | `config.json` | 5 | Your YOE |
+| Email/Password | `.env` | (empty) | YOUR credentials |
+| Job Keyword | `data\linkedin-bot-settings.json` | Software Architect | Match your role |
+| Location | `data\linkedin-bot-settings.json` | UAE | Your target market |
+| Pages | `data\linkedin-bot-settings.json` | 3 | Start with 3-5 |
+| Experience | Repo defaults | 5 | Your YOE |
 
 ---
 
@@ -143,7 +117,6 @@ node index.js
 node --version
 
 # Reinstall dependencies
-cd automation\repos\linkedin-job-apply-automation
 npm install
 ```
 
@@ -153,19 +126,19 @@ npm install
 # Find your Chrome path
 Get-ChildItem "C:\Program Files\Google\Chrome\Application\chrome.exe"
 
-# Update config.json with correct path
+# Update your local settings only if your workflow needs a custom Chrome path
 ```
 
 ### Login Fails
 
-- Check email/password in `config.json`
+- Check `LINKEDIN_EMAIL` / `LINKEDIN_PASSWORD` in `.env`
 - LinkedIn may require 2FA (add manual step)
 - Try logging in manually first
 
 ### Selectors Break
 
 - LinkedIn updates UI frequently
-- May need to update selectors in `index.js`
+- The old LinkedIn automation script is disabled in this workspace
 - Check GitHub repo for updates
 
 ---
@@ -174,23 +147,16 @@ Get-ChildItem "C:\Program Files\Google\Chrome\Application\chrome.exe"
 
 ### Multiple Job Searches
 
-Create separate config files:
+Create separate local settings files:
 
 ```powershell
-# config-architect.json
-# config-engineer.json
-node index.js config-architect.json
+# data\linkedin-bot-settings-architect.json
+# data\linkedin-bot-settings-engineer.json
 ```
 
 ### Save Login Session (Optional)
 
-In `index.js`, uncomment:
-
-```javascript
-userDataDir: "./userData",
-```
-
-Then change `baseURL` to `https://www.linkedin.com/feed`
+If you choose to persist browser state locally, keep the profile directory outside git and treat it like credentials.
 
 ### Schedule with Task Scheduler
 
@@ -200,7 +166,7 @@ Run daily at 9 AM to catch fresh postings
 
 ## 🔒 Security Checklist
 
-- ✅ Never commit `config.json` with real credentials
+- ✅ Never commit `.env`, cookies, or browser profile/session directories
 - ✅ Use `.env` for production
 - ✅ `.gitignore` is configured to exclude sensitive files
 - ✅ Repos folder excluded from version control
@@ -209,32 +175,39 @@ Run daily at 9 AM to catch fresh postings
 
 ## 📚 Documentation
 
-- **Quick Start**: `automation/repos/linkedin-job-apply-automation/QUICKSTART.md`
 - **Main README**: `automation/README.md`
+- **Local runner**: `automation/run-linkedin-bot.ps1`
 - **Original Repo**: <https://github.com/adnanedrief/linkedin-job-apply-automation>
 
 ---
 
 ## 🎯 Your Next Actions
 
-1. **Configure bot** with your LinkedIn credentials
+1. **Add credentials** to the workspace `.env`
+
+   ```env
+   LINKEDIN_EMAIL=your-linkedin-email@example.com
+   LINKEDIN_PASSWORD=your-password
+   ```
+
+2. **Optionally update search settings**
 
    ```powershell
    .\automation\configure-linkedin-bot.ps1
    ```
 
-2. **Run pre-flight check**
+3. **Run pre-flight check**
 
    ```powershell
    .\automation\test-linkedin-bot.ps1
    ```
 
-3. **Test with 1 page first**
-   - Edit `config.json`: Set `numberOfPagination: 1`
-   - Run: `cd automation\repos\linkedin-job-apply-automation; node index.js`
+4. **Test with 1 page first**
+   - Edit `data\linkedin-bot-settings.json`: Set `pages: 1`
+   - Run: `.\automation\run-linkedin-bot.ps1`
    - Watch it work in the Chrome window
 
-4. **Scale up gradually**
+5. **Scale up gradually**
    - If successful, increase to 3-5 pages
    - Monitor for CAPTCHAs
    - Check applied jobs on LinkedIn
@@ -253,7 +226,7 @@ Run daily at 9 AM to catch fresh postings
 
 ## 🆘 Need Help?
 
-1. Check `QUICKSTART.md` in the bot folder
+1. Check `automation/README.md` and `automation/run-linkedin-bot.ps1`
 2. Review console output for errors
 3. Run pre-flight check for diagnostics
 4. Original repo issues: <https://github.com/adnanedrief/linkedin-job-apply-automation/issues>

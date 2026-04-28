@@ -135,8 +135,8 @@ cv/
 │   └── resume-fasil-2025.pdf        # PDF for uploads (create this)
 ├── scripts/
 │   ├── cv-parser.js                 # CV data extraction
-│   ├── indeed-auto-apply.js         # Indeed automation
-│   ├── linkedin-auto-apply.js       # LinkedIn automation
+│   ├── indeed-auto-apply.js         # Disabled historical stub
+│   ├── linkedin-auto-apply.js       # Disabled historical stub
 │   ├── universal-auto-fill.js       # Universal form filler
 │   └── smart-email-generator.js     # Email generator
 ├── emails/

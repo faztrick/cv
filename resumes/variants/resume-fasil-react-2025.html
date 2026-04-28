@@ -4,28 +4,132 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Resume for Muhammed Fasil PV — Frontend Developer delivering web platforms with React, TypeScript, AI and IoT integrations.">
+  <meta name="description" content="Resume for Muhammed Fasil PV - Dubai-based Senior Full-Stack Engineer delivering React, Node.js, AI, IoT and retail technology platforms.">
   <meta name="theme-color" content="#0891b2">
-  <title>MUHAMMED FASIL PV — Frontend Developer & Software Engineer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <title>MUHAMMED FASIL PV - Senior Full-Stack Engineer | React, Node.js, AI & IoT</title>
   <link rel="stylesheet" href="../../public/cv.css">
   <style>
-    /* Additional layout helpers specific to this variant */
+    body {
+      font-size: 14px;
+      line-height: 1.52;
+    }
+
+    .container {
+      max-width: 205mm;
+      padding: 13mm 13mm;
+    }
+
     .card {
       background: var(--surface-muted);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+
+    .container {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .container::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 6px;
+      background: linear-gradient(180deg, #0e7490 0%, #14b8a6 52%, #f59e0b 100%);
+    }
+
+    header {
+      text-align: left;
+      position: relative;
+      padding: 16px 18px 18px 20px;
+      border: 1px solid #dbeafe;
+      border-left: 0;
+      border-radius: 0 10px 10px 0;
+      background: linear-gradient(135deg, #f8fafc 0%, #ecfeff 54%, #fff7ed 100%);
+    }
+
+    header h1 {
+      margin-bottom: 6px;
     }
 
     header .title {
       margin-top: 4px;
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 600;
       color: var(--text-muted);
-      letter-spacing: -0.01em;
+      letter-spacing: 0;
+    }
+
+    .contact-info {
+      justify-content: flex-start;
+      gap: 4px 12px;
+    }
+
+    .contact-info p {
+      padding: 2px 0;
+    }
+
+    .impact-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .impact-item {
+      padding: 9px 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.82);
+      box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04);
+    }
+
+    .impact-item strong {
+      display: block;
+      color: var(--heading);
+      font-size: 0.95rem;
+      line-height: 1.2;
+    }
+
+    .impact-item span {
+      display: block;
+      margin-top: 2px;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      line-height: 1.25;
+    }
+
+    section {
+      margin-top: 16px;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+      font-size: 1.08rem;
+      letter-spacing: 0;
+      color: #0f172a;
+      border-bottom-color: #bae6fd;
+    }
+
+    h2::before {
+      background: linear-gradient(180deg, #0e7490 0%, #14b8a6 100%);
+    }
+
+    h3 {
+      margin: 10px 0 6px;
+      font-size: 0.98rem;
+      letter-spacing: 0;
+    }
+
+    p {
+      margin-top: 8px;
+      line-height: 1.55;
+    }
+
+    li {
+      margin: 4px 0;
+      line-height: 1.48;
     }
 
     .projects ul {
@@ -46,7 +150,7 @@
       font-size: 1.05rem;
       font-weight: 700;
       color: var(--heading);
-      letter-spacing: -0.01em;
+      letter-spacing: 0;
     }
 
     .job-header .company,
@@ -61,12 +165,214 @@
     }
 
     .skills-grid {
-      grid-template-columns: 1fr;
-      gap: 16px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 18px;
+    }
+
+    .skill-category,
+    article,
+    .technical-skills p,
+    .additional p {
+      border-left: 3px solid #cffafe;
+      padding-left: 10px;
+    }
+
+    .skill-category h3 {
+      color: #0e7490;
+    }
+
+    .job-header .role {
+      color: #0e7490;
+    }
+
+    .tech-stack {
+      background: #f0fdfa;
+      border-color: #99f6e4;
     }
 
     .additional p {
       margin: 4px 0;
+    }
+
+    @media (max-width: 720px) {
+      header {
+        text-align: center;
+      }
+
+      .contact-info {
+        justify-content: center;
+      }
+
+      .impact-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 9mm;
+      }
+
+      body {
+        font-size: 9pt;
+        line-height: 1.35;
+        background: #fff;
+      }
+
+      .container {
+        padding: 0;
+        max-width: none;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .container::before {
+        width: 3px;
+      }
+
+      .hero-header {
+        gap: 10px;
+        align-items: flex-start;
+        padding: 9px 10px 10px 13px;
+        border-color: #cbd5e1;
+        background: #f8fafc;
+      }
+
+      .hero-copy {
+        min-width: 0;
+      }
+
+      header h1 {
+        font-size: 18pt;
+        line-height: 1.05;
+        margin-bottom: 4px;
+      }
+
+      header .title {
+        font-size: 9pt;
+        margin-top: 2px;
+      }
+
+      .contact-info {
+        gap: 2px 8px;
+        margin-top: 6px;
+      }
+
+      .contact-info p {
+        font-size: 8pt;
+        line-height: 1.25;
+      }
+
+      .impact-strip {
+        margin-top: 8px;
+      }
+
+      header {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      section {
+        margin-top: 11px;
+      }
+
+      .summary,
+      .target-role,
+      .education,
+      .certifications,
+      .additional {
+        break-inside: avoid-page;
+        page-break-inside: avoid;
+      }
+
+      h2,
+      h3,
+      .job-header,
+      .tech-stack,
+      .card,
+      .impact-strip,
+      .skills-grid,
+      .job-fit .skill-category,
+      .certifications ul {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      h2,
+      h3 {
+        break-after: avoid;
+        page-break-after: avoid;
+      }
+
+      article {
+        margin-top: 10px;
+        break-inside: avoid-page;
+        page-break-inside: avoid;
+      }
+
+      article + article {
+        margin-top: 12px;
+      }
+
+      p,
+      li {
+        orphans: 3;
+        widows: 3;
+      }
+
+      .projects li,
+      .experience li,
+      .certifications li {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .impact-strip {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 5px;
+      }
+
+      .impact-item {
+        padding: 5px 7px;
+        background: #fff;
+        border-color: #cbd5e1;
+        box-shadow: none;
+      }
+
+      .skill-category,
+      article,
+      .technical-skills p,
+      .additional p {
+        border-left-color: #d9f99d;
+        padding-left: 7px;
+      }
+
+      .tech-stack {
+        background: #f8fafc;
+        border-color: #cbd5e1;
+      }
+
+      .impact-item strong {
+        font-size: 8.5pt;
+      }
+
+      .impact-item span {
+        font-size: 7.4pt;
+      }
+
+      .profile-photo-frame {
+        flex: 0 0 88px;
+        width: 88px;
+        height: 88px;
+        border-radius: 18px;
+        margin-top: 2px;
+      }
+
+      .contact-info p:not(:last-child)::after {
+        margin-left: 6px;
+      }
     }
   </style>
 </head>
@@ -74,86 +380,102 @@
 <body>
   <main id="main-content">
     <div class="container">
-      <header role="banner">
-        <h1>MUHAMMED FASIL PV</h1>
-        <p class="title">Senior Frontend Developer · AI-enabled Product Builder</p>
-        <div class="contact-info">
-          <p><strong>Location:</strong> Dubai, UAE</p>
-          <p><strong>Phone:</strong> <a href="tel:+971555923545">+971 555923545</a></p>
-          <p><strong>Email:</strong> <a href="mailto:faztrick@gmail.com">faztrick@gmail.com</a></p>
-          <p><strong>LinkedIn:</strong> <a href="https://linkedin.com/in/faztrick" target="_blank" rel="noopener noreferrer">linkedin.com/in/faztrick</a></p>
-          <p><strong>GitHub:</strong> <a href="https://github.com/faztrick" target="_blank" rel="noopener noreferrer">github.com/faztrick</a></p>
-          <p><strong>Portfolio:</strong> <a href="https://www.uaecodes.com" target="_blank" rel="noopener noreferrer">uaecodes.com</a></p>
+      <header role="banner" class="hero-header">
+        <div class="hero-copy">
+          <h1>MUHAMMED FASIL PV</h1>
+          <p class="title">Senior Full-Stack Engineer - React, Flutter, Node.js, AI & IoT Platforms</p>
+          <div class="contact-info">
+            <p><strong>Dubai, UAE</strong></p>
+            <p><a href="tel:+971555923545">+971 555923545</a></p>
+            <p><a href="mailto:faztrick@gmail.com">faztrick@gmail.com</a></p>
+            <p><a href="https://linkedin.com/in/faztrick" target="_blank" rel="noopener noreferrer">linkedin.com/in/faztrick</a></p>
+            <p><a href="https://github.com/faztrick" target="_blank" rel="noopener noreferrer">github.com/faztrick</a></p>
+            <p><a href="https://www.uaecodes.com" target="_blank" rel="noopener noreferrer">uaecodes.com</a></p>
+          </div>
+          <div class="impact-strip" aria-label="Resume highlights">
+            <div class="impact-item"><strong>13+ Years</strong><span>Enterprise software delivery</span></div>
+            <div class="impact-item"><strong>Dubai Based</strong><span>Visit Visa, immediate availability</span></div>
+            <div class="impact-item"><strong>React + Flutter</strong><span>Full-stack product engineering</span></div>
+            <div class="impact-item"><strong>AI + IoT</strong><span>Retail and edge systems</span></div>
+          </div>
+        </div>
+        <div class="profile-photo-frame" aria-label="Profile photo">
+          <img class="profile-photo" src="../../public/assets/profile-photo.jpg" alt="Muhammed Fasil PV">
         </div>
       </header>
 
       <section class="summary" aria-labelledby="summary-heading">
         <h2 id="summary-heading">PROFESSIONAL SUMMARY</h2>
-        <p>Results-driven frontend developer with <strong>13+ years</strong> building ERP, QMS, POS and IoT platforms in the GCC. I work across <strong>React + TypeScript</strong>, Flutter, and modern Node.js backends, pairing UI delivery with IoT/MQTT automations and practical AI copilots. I translate complex retail workflows into fast web experiences, build reusable component libraries, and wire CI/CD plus observability so products remain stable post-launch.</p>
-        <p>I’m comfortable blending React Query data strategies, ML-powered automation, LiveKit/WebRTC support flows, and secure MikroTik + WireGuard meshes. My approach: prototype quickly, then harden with testing (RTL, Cypress, Playwright), performance budgets, accessibility checks, and telemetry.</p>
+        <p>Dubai-based Senior Full-Stack Engineer with <strong>13+ years</strong> delivering production ERP, QMS, POS, retail automation and AI-enabled platforms. Strong across <strong>React, TypeScript, Node.js, Flutter, Python, Docker, MySQL and cloud deployments</strong>, with the ability to move from architecture to rollout and support.</p>
+        <p>I build practical systems for real operations: live dashboards, queue platforms, offline-first sync, WhatsApp/Telegram automation, AI copilots, YOLO vision flows, IoT/MQTT integrations and secure branch networking. My strength is connecting product UI, backend services, infrastructure and edge devices into reliable business workflows.</p>
       </section>
 
-      <section aria-labelledby="competencies-heading" class="skills">
-        <h2 id="competencies-heading">CORE COMPETENCIES</h2>
+      <section aria-labelledby="target-heading" class="target-role">
+        <h2 id="target-heading">TARGET ROLES</h2>
+        <p>Senior Software Engineer, Full-Stack Engineer, Backend Engineer, React/Node.js/Flutter Engineer, AI Platform Engineer, Retail Technology Engineer, or solutions-focused product engineering roles in Dubai, Abu Dhabi, and Sharjah.</p>
+      </section>
+
+      <section aria-labelledby="fit-heading" class="job-fit">
+        <h2 id="fit-heading">RECRUITER QUICK MATCH</h2>
         <div class="skills-grid">
           <div class="skill-category">
-            <h3>Frontend Architecture & UI Systems</h3>
+            <h3>Full-Stack & Flutter Product Engineering</h3>
             <ul>
-              <li>Component libraries with TypeScript, Storybook, Chromatic, visual regression checks.</li>
-              <li>State patterns: Redux Toolkit, React Query, Zustand micro-stores, XState for flows.</li>
-              <li>Design tokens, theming, dark/light, WCAG AA accessibility, RTL readiness.</li>
-              <li>Performance playbook: virtualization, suspense strategies, code splitting, memoization.</li>
+              <li>React/Next.js dashboards, Flutter business apps, Node.js APIs, database-backed workflows and production rollout support.</li>
+              <li>Strong fit for teams building ERP, POS, QMS, CRM, booking, operations, retail, logistics or internal business platforms.</li>
             </ul>
           </div>
           <div class="skill-category">
-            <h3>Platform, DevOps & Quality</h3>
+            <h3>Backend, APIs & Integrations</h3>
             <ul>
-              <li>Node.js/Express APIs, GraphQL, WebSocket, LiveKit WebRTC, TURN/STUN, Nginx reverse proxy.</li>
-              <li>Docker, GitHub Actions, SWA deployments, Application Insights dashboards, log pipelines.</li>
-              <li>Testing matrix: Jest + React Testing Library → Cypress/Playwright → Lighthouse budgets.</li>
-              <li>Secure delivery with MikroTik WireGuard, JWT/OAuth2, secret rotation, environment automation.</li>
+              <li>REST APIs, Express services, auth flows, WebSocket/real-time events, MQTT messaging, sync engines and third-party integrations.</li>
+              <li>Comfortable connecting web/mobile apps with payment, notification, messaging, analytics, hardware and branch-network systems.</li>
             </ul>
           </div>
           <div class="skill-category">
-            <h3>AI, Automation & Edge</h3>
+            <h3>AI & Automation Delivery</h3>
             <ul>
-              <li>OpenAI, LangChain, local LLMs (Qwen3) powering contextual copilots and smart forms.</li>
-              <li>YOLOv8 computer vision, OCR invoices, Whisper ASR, multi-modal prompts for Ops tooling.</li>
-              <li>ESP32/Raspberry Pi automation, MQTT mesh events, Android AIDL LED/GPIO control.</li>
+              <li>Practical AI features using OpenAI, LangChain-style agents, local LLMs, OCR, Whisper, YOLO vision and workflow automation.</li>
+              <li>Builds AI tools around business value: support summaries, smart forms, invoice parsing, queue alerts, kiosk intelligence and reporting.</li>
             </ul>
           </div>
           <div class="skill-category">
-            <h3>Business & Domain Depth</h3>
+            <h3>Cloud, DevOps & Reliability</h3>
             <ul>
-              <li>Retail ERP/POS + Queue Management for Union Coop, Carrefour, multi-branch service ops.</li>
-              <li>WhatsApp/Telegram automation, booking engines, delivery routing, CRM sync.</li>
-              <li>Hybrid analytics (MySQL ↔ Hive) for offline-ready dashboards.</li>
+              <li>Docker, PM2, Nginx, GitHub Actions, Azure/GCP/AWS hosting, logs, deployment scripts and environment configuration.</li>
+              <li>Hands-on with production support, debugging, performance tuning, database optimization and secure branch connectivity.</li>
             </ul>
           </div>
         </div>
       </section>
 
       <section aria-labelledby="projects-heading" class="projects">
-        <h2 id="projects-heading">FEATURED REACT & UI INITIATIVES</h2>
+        <h2 id="projects-heading">SELECTED PRODUCT & PLATFORM WORK</h2>
         <ul>
-          <li><strong>Operations Control Center</strong> — Next.js dashboard for IdolMEA with reusable components, cached data layers, Tailwind kit, and MQTT overlays for live queue telemetry.</li>
-          <li><strong>IdolQueue (i-QMS)</strong> — Flutter kiosks plus web mission control; offline-first sync, MQTT automation, and branch analytics (Union Coop and Carrefour production rollout).</li>
-          <li><strong>Local AI Agents</strong> — Web interface for edge-hosted LLM copilots, enabling staff to interact with local AI models for inventory and support.</li>
-          <li><strong>Live Video Support Platform</strong> — LiveKit-powered console, TURN/STUN infra, Nginx TLS offload, and AI summaries feeding customer tickets.</li>
-          <li><strong>Hybrid Sync Engine</strong> — Admin panel to track MySQL ↔ Hive delta replication with alerts and recovery workflows.</li>
-          <li><strong>Self-Checkout AI Kiosk</strong> — Tablet UI supervising YOLO detections, Kotlin AIDL LED controls, and proactive equipment alerts.</li>
-          <li><strong>Domain & DNS Automation Kit</strong> — Web admin for Azure Static Web Apps/App Service custom domains with PowerShell orchestration.</li>
+          <li><strong>IdolMEA ERP:</strong> Retail and service operations platform covering POS, queue management, IoT control, AI reporting, branch workflows and admin dashboards.</li>
+          <li><strong>IdolQueue (i-QMS):</strong> Flutter and web queue-management system with offline sync, MQTT automation, real-time counters and branch-service workflows.</li>
+          <li><strong>Operations Control Center:</strong> React/Next.js dashboard with reusable components, cached data layers, Tailwind UI patterns and live queue telemetry overlays.</li>
+          <li><strong>AI Self-Checkout Kiosk:</strong> YOLO-based detection workflow connected to Android AIDL LED/GPIO controls and kiosk override screens.</li>
+          <li><strong>Hybrid Sync Engine:</strong> MySQL-to-Hive/local-storage synchronization with monitoring views, recovery workflows and branch-resilience support.</li>
+          <li><strong>Local AI Agents:</strong> Internal AI assistants for inventory, support, ERP guidance and store operations using OpenAI/Qwen-style workflows.</li>
+          <li><strong>OpenEPaperLink-WebUI:</strong> Public GitHub project around AI-enhanced OEPL/ESP32 e-paper tooling, relevant to ESL, embedded devices and retail edge workflows.</li>
+          <li><strong>Flutter Thermal Printer Integration:</strong> Public Flutter printer-integration work aligned with POS, kiosk and receipt-printing use cases.</li>
+          <li><strong>Secure Branch Network:</strong> MikroTik and WireGuard routing setup for private API access, branch connectivity and operational telemetry.</li>
         </ul>
       </section>
 
       <section aria-labelledby="stack-heading" class="technical-skills">
-        <h2 id="stack-heading">TECHNICAL STACK (EXPANDED)</h2>
-        <p><strong>Languages:</strong> JavaScript (ES2023), TypeScript, Python, Dart, C#, SQL, Bash.</p>
-        <p><strong>Frontend:</strong> React, Next.js, Remix, Flutter Web, WPF, Tailwind, SCSS, CSS Modules.</p>
-        <p><strong>Backend & APIs:</strong> Node.js/Express, FastAPI, Django, .NET, GraphQL, REST, WebSocket, LiveKit, WebRTC, MQTT, Socket.io.</p>
-        <p><strong>DevOps & Cloud:</strong> Docker, Kubernetes, GitHub Actions, Azure Static Web Apps & App Service, AWS (EC2/S3/Lambda), GCP, PM2, Nginx, Application Insights.</p>
-        <p><strong>Data:</strong> MySQL, PostgreSQL, SQL Server, MongoDB, Firebase, Apache Hive, Redis, ObjectBox.</p>
-        <p><strong>Security & Networking:</strong> MikroTik RouterOS, WireGuard, JWT/OAuth2, SSL/TLS, TURN/STUN, VPN mesh automation.</p>
+        <h2 id="stack-heading">TECHNICAL STACK & DELIVERY DETAILS</h2>
+        <p><strong>Languages:</strong> JavaScript, TypeScript, Dart, Python, C#, PHP, SQL, Bash/PowerShell.</p>
+        <p><strong>Frontend:</strong> React, Next.js, Flutter Web, Tailwind, SCSS, CSS Modules, responsive dashboards, admin panels, reusable components, forms, tables, charts, data-heavy screens and accessibility-aware UI.</p>
+        <p><strong>Mobile/Desktop:</strong> Flutter MVVM, WPF/.NET MVVM, offline-first apps, local storage, POS/queue/kiosk clients, Android device integration and business workflow screens.</p>
+        <p><strong>Backend & APIs:</strong> Node.js, Express, FastAPI, .NET services, REST, WebSocket, MQTT, JWT/OAuth2 auth, file uploads, notifications and integration APIs.</p>
+        <p><strong>Data & Sync:</strong> MySQL, PostgreSQL, SQL Server, MongoDB, Firebase, Hive, ObjectBox, Redis, indexing, caching, reporting queries, offline sync, replication and recovery workflows.</p>
+        <p><strong>AI / ML:</strong> OpenAI, LangChain-style workflows, Qwen/local LLMs, Whisper, OCR, YOLO, TensorFlow/PyTorch exposure, AI assistants, invoice parsing, vision alerts and automation agents.</p>
+        <p><strong>IoT / Edge:</strong> ESP32, Raspberry Pi, MQTT, Solum/OEPL electronic shelf labels, Android AIDL, LED/GPIO control, kiosk signaling, branch devices and edge-server workflows.</p>
+        <p><strong>Cloud / DevOps:</strong> Docker, Docker Compose, PM2, Nginx, GitHub Actions, Azure Static Web Apps, Azure App Service, AWS, GCP, deployment scripts, environment variables, logging and monitoring.</p>
+        <p><strong>Security / Networking:</strong> HTTPS/TLS, JWT, OAuth2, MikroTik RouterOS, WireGuard, VPN, NAT, DHCP, reverse proxy, secure branch routing and private internal APIs.</p>
+        <p><strong>Quality:</strong> Debugging, browser testing, Playwright/Cypress exposure, API smoke checks, performance tuning, database optimization, production support and release discipline.</p>
       </section>
 
       <section aria-labelledby="experience-heading" class="experience">
@@ -168,14 +490,15 @@
             <p class="duration">Aug 2024 – Present</p>
           </div>
           <ul>
-            <li>Architected IdolMEA ERP React console layered on Flutter POS terminals; modularized components, set design tokens and responsive grid system.</li>
-            <li>Delivered Next.js operations center with live MQTT overlays, React Query caching, and tailwind-themed widgets for Ops, Finance, IoT teams.</li>
-            <li>Implemented LiveKit WebRTC support desk plus AI assistant that summarizes calls and pushes tickets to ERP workflows.</li>
-            <li>Automated WhatsApp Business + Telegram pipelines for queue alerts and AI chat responses, reducing SLA breaches by 70%.</li>
-            <li>Extended React admin to manage YOLO-based theft signals, Android AIDL LED/GPIO states, and override actions per kiosk.</li>
-            <li>Shipped MikroTik WireGuard-backed routing + MySQL↔Hive hybrid sync monitors surfaced inside React dashboards.</li>
+            <li>Mainly implemented IdolMEA ERP and IdolQueue software modules for Carrefour and Union Coop retail/service environments in the UAE.</li>
+            <li>Built AI-based self-checkout and QMS applications showcased by Idol at GITEX in 2024 and 2025.</li>
+            <li>Delivered platform modules spanning Flutter POS/queue clients, React dashboards, Node.js services and operational admin tools.</li>
+            <li>Built live operations views with MQTT overlays, React Query caching and Tailwind-based widgets for queue, finance and IoT teams.</li>
+            <li>Built WhatsApp Business and Telegram automation for queue alerts, service notifications and AI-assisted customer responses.</li>
+            <li>Extended kiosk/admin tools to manage YOLO signals, Android AIDL LED/GPIO states and manual override actions.</li>
+            <li>Supported secure branch communication using MikroTik/WireGuard routing and hybrid MySQL/Hive sync monitoring.</li>
           </ul>
-          <p class="tech-stack"><strong>Stack:</strong> React, Next.js, TypeScript, Tailwind, Zustand, React Query, Node.js, LiveKit, MQTT, Docker, Azure, MikroTik, Hive</p>
+          <p class="tech-stack"><strong>Stack:</strong> React, Next.js, TypeScript, Tailwind, Zustand, React Query, Node.js, MQTT, Docker, Azure, MikroTik, Hive</p>
         </article>
 
         <article>
@@ -187,13 +510,13 @@
             <p class="duration">Apr 2019 – Jan 2024</p>
           </div>
           <ul>
-            <li>Migrated legacy Angular/WPF portals to React + Next.js with shared UI kit, schema-driven forms, and automated testing gates (RTL + Cypress).</li>
-            <li>Led SincA ERP feature pods (Flutter mobile + React web) delivering AI dashboards, OCR invoice parsing and predictive KPIs.</li>
-            <li>Containerized 15+ microservices, wired GitHub Actions CI/CD, and carved preview environments for every pull request.</li>
-            <li>Built WhatsApp/Telegram low-code automation builder surfaced in React admin with templating + analytics.</li>
-            <li>Mentored frontend guild on hooks best practices, performance tuning, accessibility, and TypeScript contracts.</li>
+            <li>Designed and delivered SincA ERP modules across Flutter, web dashboards, Node.js APIs and Python-based AI services.</li>
+            <li>Built AI dashboards, OCR invoice parsing and predictive KPI flows for business reporting and operational decision support.</li>
+            <li>Containerized service components, wired GitHub Actions CI/CD and improved release consistency across environments.</li>
+            <li>Built WhatsApp/Telegram automation screens with templates, analytics and operational notification workflows.</li>
+            <li>Mentored developers on MVVM, modular APIs, performance tuning, accessibility and TypeScript contracts.</li>
           </ul>
-          <p class="tech-stack"><strong>Stack:</strong> React, Next.js, Redux Toolkit, Cypress, Node.js, Python, TensorFlow, Docker, Kubernetes, Firebase, ESP32, MQTT</p>
+          <p class="tech-stack"><strong>Stack:</strong> Flutter, React, Node.js, Python, TensorFlow, Docker, GitHub Actions, Firebase, ESP32, MQTT</p>
         </article>
 
         <article>
@@ -205,11 +528,11 @@
             <p class="duration">Mar 2014 – Mar 2019</p>
           </div>
           <ul>
-            <li>Built ERP/accounting suites in WPF (C#) with MVVM, later exposing features via PHP/JS portals and React pilot dashboards.</li>
-            <li>Introduced REST APIs, caching, and modular UI architecture that reduced delivery time for new customer onboarding.</li>
-            <li>Managed SQL Server tuning, automated reporting, and hands-on support for 50+ SME clients.</li>
+            <li>Built ERP, accounting, billing and reporting systems in WPF (.NET), PHP and relational databases.</li>
+            <li>Introduced REST APIs, caching and modular UI patterns to speed up customer-specific feature delivery.</li>
+            <li>Handled SQL Server tuning, automated reporting and hands-on production support for SME business applications.</li>
           </ul>
-          <p class="tech-stack"><strong>Stack:</strong> WPF, C#, SQL Server, PHP, JavaScript, REST, React pilots, Bootstrap</p>
+          <p class="tech-stack"><strong>Stack:</strong> WPF, C#, SQL Server, PHP, JavaScript, REST, Bootstrap</p>
         </article>
       </section>
 
@@ -225,19 +548,19 @@
       <section class="certifications" aria-labelledby="cert-heading">
         <h2 id="cert-heading">CERTIFICATIONS & CONTINUOUS LEARNING</h2>
         <ul>
-          <li>AWS Certified Solutions Architect (In Progress)</li>
-          <li>Microsoft Azure Fundamentals + Application Insights/Static Web Apps practice</li>
-          <li>Docker & Kubernetes Deployment · GitHub Actions Advanced CI/CD</li>
-          <li>Machine Learning Specialization (Coursera) · Advanced Flutter/React workshops</li>
+          <li>Azure Static Web Apps, App Service and Application Insights deployment practice</li>
+          <li>AWS and GCP deployment exposure for application hosting and infrastructure support</li>
+          <li>Docker, Docker Compose, PM2, Nginx and GitHub Actions delivery workflows</li>
+          <li>Applied AI/ML learning across LLM workflows, OCR, Whisper, YOLO and Flutter/React product interfaces</li>
         </ul>
       </section>
 
       <section class="additional" aria-labelledby="additional-heading">
         <h2 id="additional-heading">ADDITIONAL INFORMATION</h2>
-        <p><strong>Location:</strong> Dubai, UAE · <strong>Work Authorization:</strong> Valid UAE Work Visa · <strong>Nationality:</strong> Indian · <strong>Driving License:</strong> UAE</p>
-        <p><strong>Languages:</strong> English (Fluent), Malayalam (Native), Hindi (Fluent), Arabic (Basic)</p>
+        <p><strong>Location:</strong> Dubai, UAE · <strong>Visa Status:</strong> Visit Visa · <strong>Nationality:</strong> Indian · <strong>Driving License:</strong> UAE</p>
+        <p><strong>Languages:</strong> English, Malayalam, Hindi</p>
         <p><strong>Expertise Areas:</strong> React/TypeScript, AI/ML integrations, IoT/Edge orchestration, Live support tooling, Retail tech, Cloud DevOps</p>
-        <p><strong>Availability:</strong> Immediate · <strong>Notice:</strong> 1 Month</p>
+        <p><strong>Availability:</strong> Immediate · <strong>Preferred Work Mode:</strong> Onsite or hybrid in Dubai, Abu Dhabi, or Sharjah</p>
       </section>
 
     </div>

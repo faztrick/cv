@@ -21,7 +21,7 @@
 - ✅ Config updated for React/Flutter/AI Developer
 - ✅ Location set to Dubai
 - ✅ 5 pages configured (~125 jobs)
-- ⚠️ **TODO**: Add your LinkedIn email/password to `config.json`
+- ⚠️ **TODO**: Add `LINKEDIN_EMAIL` and `LINKEDIN_PASSWORD` to the workspace root `.env`
 
 ### Indeed Bot (Python)
 
@@ -43,19 +43,18 @@
 **Step 1: Add Credentials**
 
 ```powershell
-# Open config.json in editor
-code automation\repos\linkedin-job-apply-automation\config.json
+# Open the workspace root .env
+code .env
 
-# Update these lines:
-"email": "your-actual-email@example.com",
-"password": "your-actual-password",
+# Add these values:
+LINKEDIN_EMAIL=your-actual-email@example.com
+LINKEDIN_PASSWORD=your-actual-password
 ```
 
 **Step 2: Run Bot**
 
 ```powershell
-cd automation\repos\linkedin-job-apply-automation
-node index.js
+.\automation\run-linkedin-bot.ps1
 ```
 
 **What happens:**
@@ -135,7 +134,7 @@ python indeed_bot.py
 
 ### Customize LinkedIn Search
 
-Edit `automation/repos/linkedin-job-apply-automation/config.json`:
+Edit `data\linkedin-bot-settings.json`:
 
 ```json
 {
@@ -242,7 +241,7 @@ end: 200  # More jobs
 | Issue | Solution |
 |-------|----------|
 | "Element not found" | LinkedIn changed UI - check for bot updates |
-| Stuck at login | Add credentials to config.json |
+| Stuck at login | Add `LINKEDIN_EMAIL` and `LINKEDIN_PASSWORD` to `.env` |
 | CAPTCHA appears | Solve manually, bot will continue |
 | Applications skip | Complex forms - manual intervention needed |
 | Chrome crashes | Lower `numberOfPagination` to 3 |
@@ -271,8 +270,7 @@ end: 200  # More jobs
 .\automation\test-indeed-bot.ps1
 
 # Run LinkedIn
-cd automation\repos\linkedin-job-apply-automation
-node index.js
+.\automation\run-linkedin-bot.ps1
 
 # Run Indeed (after installing deps)
 cd automation\repos\indeed_bot
@@ -280,7 +278,8 @@ pip install -r requirements.txt
 python indeed_bot.py
 
 # View configs
-code automation\repos\linkedin-job-apply-automation\config.json
+code .env
+code data\linkedin-bot-settings.json
 code automation\repos\indeed_bot\config.yaml
 ```
 
@@ -305,10 +304,9 @@ Create a simple tracking spreadsheet:
 1. **LinkedIn Bot** (5 minutes setup):
 
    ```powershell
-   code automation\repos\linkedin-job-apply-automation\config.json
-   # Add your email/password
-   cd automation\repos\linkedin-job-apply-automation
-   node index.js
+   code .env
+   # Add LINKEDIN_EMAIL / LINKEDIN_PASSWORD
+   .\automation\run-linkedin-bot.ps1
    ```
 
 2. **Watch it work!** Chrome opens, you can see it apply to jobs
@@ -327,7 +325,7 @@ Create a simple tracking spreadsheet:
 
 - **Main Guide**: `automation/README.md`
 - **LinkedIn Complete**: `automation/LINKEDIN-BOT-READY.md`
-- **LinkedIn Quick**: `automation/repos/linkedin-job-apply-automation/QUICKSTART.md`
+- **LinkedIn Runner**: `automation/run-linkedin-bot.ps1`
 - **Indeed Guide**: `automation/repos/indeed_bot/README.md`
 - **This Action Plan**: `automation/ACTION-PLAN.md`
 

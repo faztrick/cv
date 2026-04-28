@@ -69,7 +69,7 @@ Filters to use:
 ## 6) Ready-to-send snippets
 
 - Subject: “Application – Software Engineer (Backend/Full‑Stack) – Muhammed Fasil PV”
-- First line hook (optional for portals): “Dubai‑based engineer with 13+ years shipping production systems (ERP/POS/QMS/IoT) using Node.js/TypeScript, Flutter, and Docker. Immediately available (Company Visa).”
+- First line hook (optional for portals): “Dubai-based engineer with 13+ years shipping production systems (ERP/POS/QMS/IoT) using Node.js/TypeScript, Flutter, and Docker. Currently in UAE on Visit Visa and immediately available.”
 
 ---
 

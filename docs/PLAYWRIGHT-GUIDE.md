@@ -29,31 +29,15 @@ To search for jobs on Indeed:
 npm run playwright-indeed -- "Software Engineer" "Dubai"
 ```
 
-Or directly:
-
-```bash
-node scripts/job-search-playwright.js indeed "Software Engineer" "Dubai"
-```
+The Playwright job-search automation entrypoint has been disabled in this workspace.
 
 ### LinkedIn Search
 
-To search for jobs on LinkedIn:
+LinkedIn Playwright automation is disabled in this workspace.
 
-```bash
-npm run playwright-linkedin -- "Software Engineer" "Dubai"
-```
+## Status
 
-## ⚙️ Configuration
-
-The script `scripts/job-search-playwright.js` has a configuration section at the top:
-
-```javascript
-const CONFIG = {
-    headless: false, // Set to true to run in background
-    slowMo: 50,      // Delay between actions
-    userDataDir: ... // Stores login session
-};
-```
+The historical `scripts/job-search-playwright.js` file is now a disabled stub.
 
 ## 🔐 Login Persistence
 

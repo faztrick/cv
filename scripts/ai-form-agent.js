@@ -1,6 +1,6 @@
 /**
  * AI-Powered Form Filling Agent
- * Uses OpenAI API to intelligently analyze and fill job application forms
+ * Uses an OpenAI-compatible API to intelligently analyze and fill job application forms
  * No loops or retries - single intelligent pass
  */
 
@@ -12,7 +12,8 @@ try { require('dotenv').config({ path: path.join(__dirname, '..', '.env') }); } 
 
 // OpenAI API configuration
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const OPENAI_MODEL = process.env.OPENAI_MODEL || 'gpt-4o-mini';
+const OPENAI_MODEL = process.env.OPENAI_MODEL || 'qwen/qwen3.5-9b';
+const OPENAI_BASE_URL = (process.env.OPENAI_BASE_URL || 'http://localhost:1234/v1').replace(/\/$/, '');
 
 /**
  * AI Form Agent - Analyzes page and fills forms intelligently
@@ -21,8 +22,9 @@ class AIFormAgent {
     constructor(cvData = null) {
         this.cvData = cvData;
         this.apiKey = OPENAI_API_KEY;
+        this.baseUrl = OPENAI_BASE_URL;
 
-        if (!this.apiKey) {
+        if (!this.apiKey && this.baseUrl.includes('api.openai.com')) {
             console.log('⚠️ OPENAI_API_KEY not set. AI agent will use fallback logic.');
         }
     }
@@ -31,16 +33,21 @@ class AIFormAgent {
      * Call OpenAI API
      */
     async callOpenAI(messages, options = {}) {
-        if (!this.apiKey) {
+        if (!this.apiKey && this.baseUrl.includes('api.openai.com')) {
             throw new Error('OpenAI API key not configured');
         }
 
-        const response = await fetch('https://api.openai.com/v1/chat/completions', {
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+
+        if (this.apiKey) {
+            headers.Authorization = `Bearer ${this.apiKey}`;
+        }
+
+        const response = await fetch(`${this.baseUrl}/chat/completions`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${this.apiKey}`
-            },
+            headers,
             body: JSON.stringify({
                 model: options.model || OPENAI_MODEL,
                 messages: messages,
@@ -52,7 +59,7 @@ class AIFormAgent {
 
         if (!response.ok) {
             const error = await response.text();
-            throw new Error(`OpenAI API error: ${response.status} - ${error}`);
+            throw new Error(`OpenAI-compatible API error: ${response.status} - ${error}`);
         }
 
         const data = await response.json();

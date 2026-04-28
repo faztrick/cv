@@ -1,7 +1,5 @@
 # Quick Configuration Helper for LinkedIn Job Bot
 param(
-    [string]$Email,
-    [string]$Password,
     [string]$Keyword = "Full Stack Developer Flutter",
     [string]$Location = "United Arab Emirates",
     [ValidateSet("Past 24 hours", "Past Week")]
@@ -9,19 +7,14 @@ param(
     [int]$Pages = 3
 )
 
-$configPath = Join-Path $PSScriptRoot "repos\linkedin-job-apply-automation\config.json"
+$settingsPath = Join-Path (Resolve-Path (Join-Path $PSScriptRoot '..')) 'data\linkedin-bot-settings.json'
 
 Write-Host "`n=== LinkedIn Job Bot - Quick Configuration ===" -ForegroundColor Cyan
+Write-Host "This helper stores only non-sensitive search preferences." -ForegroundColor Yellow
+Write-Host "Add LINKEDIN_EMAIL and LINKEDIN_PASSWORD to the workspace .env file instead of writing them to disk.`n" -ForegroundColor Yellow
 
 # If no parameters provided, prompt interactively
-if (-not $Email) {
-    Write-Host "`nEnter your LinkedIn credentials and job preferences:" -ForegroundColor Yellow
-    $Email = Read-Host "LinkedIn Email"
-    $Password = Read-Host "LinkedIn Password" -AsSecureString
-    $Password = [Runtime.InteropServices.Marshal]::PtrToStringAuto(
-        [Runtime.InteropServices.Marshal]::SecureStringToBSTR($Password)
-    )
-
+if (-not $PSBoundParameters.ContainsKey('Keyword')) {
     Write-Host "`nJob Search Preferences:" -ForegroundColor Yellow
     $keywordInput = Read-Host "Job Keyword (default: Full Stack Developer Flutter)"
     if ($keywordInput) { $Keyword = $keywordInput }
@@ -39,34 +32,29 @@ if (-not $Email) {
     if ($pagesInput) { $Pages = [int]$pagesInput }
 }
 
-# Load existing config
-$config = Get-Content $configPath | ConvertFrom-Json
+$settings = [ordered]@{
+    keyword = $Keyword
+    location = $Location
+    period = $Period
+    pages = $Pages
+    updatedAt = (Get-Date).ToString('o')
+}
 
-# Update config
-$config.email = $Email
-$config.password = $Password
-$config.keyword = $Keyword
-$config.location = $Location
-$config.Period = $Period
-$config.numberOfPagination = $Pages
-
-# Save config
-$config | ConvertTo-Json -Depth 10 | Set-Content $configPath
+$settings | ConvertTo-Json -Depth 5 | Set-Content $settingsPath -Encoding UTF8
 
 Write-Host "`n✅ Configuration saved!" -ForegroundColor Green
 Write-Host "`nYour Settings:" -ForegroundColor Cyan
-Write-Host "  Email: $Email" -ForegroundColor White
 Write-Host "  Keyword: $Keyword" -ForegroundColor White
 Write-Host "  Location: $Location" -ForegroundColor White
 Write-Host "  Period: $Period" -ForegroundColor White
 Write-Host "  Pages: $Pages" -ForegroundColor White
 
 Write-Host "`nTo start the bot, run:" -ForegroundColor Yellow
-Write-Host "  cd automation\repos\linkedin-job-apply-automation" -ForegroundColor White
-Write-Host "  node index.js" -ForegroundColor White
+Write-Host "  .\automation\run-linkedin-bot.ps1" -ForegroundColor White
 
 Write-Host "`n⚠️  Important Reminders:" -ForegroundColor Red
 Write-Host "  • This may violate LinkedIn ToS - use at your own risk" -ForegroundColor Yellow
+Write-Host "  • Credentials are no longer written to config files" -ForegroundColor Yellow
 Write-Host "  • The bot runs in visible mode - you can watch it work" -ForegroundColor Yellow
 Write-Host "  • May require manual intervention for CAPTCHAs" -ForegroundColor Yellow
 Write-Host "  • Start with few pages (3-5) to test" -ForegroundColor Yellow

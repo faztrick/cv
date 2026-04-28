@@ -99,6 +99,9 @@
             </span>
             <div class="d-flex align-items-center">
                 <span class="badge bg-success me-3">GPT-5.1 Active</span>
+                <button class="btn btn-sm btn-outline-info me-2" onclick="logoutAdmin()">
+                    <i class="fas fa-right-from-bracket me-1"></i> Logout
+                </button>
                 <button class="btn btn-sm btn-outline-danger" onclick="clearLocks()">
                     <i class="fas fa-skull me-1"></i> Kill All & Clear Locks
                 </button>
@@ -401,11 +404,23 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: method === 'POST' ? JSON.stringify(body) : undefined
                 });
+                if (res.status === 401) {
+                    window.location.href = `/admin-login.html?next=${encodeURIComponent(window.location.pathname)}`;
+                    return { success: false, error: 'Authentication required' };
+                }
                 return await res.json();
             } catch (e) {
                 addLog(`API Error: ${e.message}`, 'error');
                 return { success: false };
             }
+        }
+
+        async function logoutAdmin() {
+            await fetch('/api/admin/auth/logout', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            window.location.href = '/admin-login.html';
         }
 
         async function startSearch(e) {

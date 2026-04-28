@@ -20,8 +20,8 @@ Required env:
 
 Optional env:
 
-- `OPENAI_MODEL` (default: `gpt-4o-mini`)
-- `OPENAI_BASE_URL` (default: `https://api.openai.com/v1`)
+- `OPENAI_MODEL` (default: `qwen/qwen3.5-9b`)
+- `OPENAI_BASE_URL` (default: `http://localhost:1234/v1`)
 
 See: `.env.example`
 

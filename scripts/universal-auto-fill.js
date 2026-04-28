@@ -348,7 +348,7 @@ async function applyWithAutoFill(jobUrl, options = {}) {
 
   const browser = await puppeteer.launch({
     headless: false,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    args: []
   });
 
   const page = await browser.newPage();
@@ -500,8 +500,8 @@ async function main() {
         console.log('  - Bayt.com');
         console.log('  - Naukrigulf');
         console.log('  - GulfTalent');
-        console.log('  - Indeed (via indeed-auto-apply.js)');
-        console.log('  - LinkedIn (via linkedin-auto-apply.js)');
+        console.log('  - Indeed (manual application flow only)');
+        console.log('  - LinkedIn (manual application flow only)');
         console.log('  - Generic job application forms');
         console.log('');
     }

@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MUHAMMED FASIL PV — Full CV</title>
   <link rel="stylesheet" href="cv.css">
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" />
   <style>
     :root {
       --bg: #ffffff;
@@ -103,9 +102,6 @@
   <meta name="robots" content="index,follow">
   <link rel="canonical" href="https://www.uaecodes.com/cv-full.html" />
   <link rel="icon" href="/favicon.ico">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <meta property="og:title" content="MUHAMMED FASIL PV — Full CV">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.uaecodes.com/cv-full.html">
@@ -114,10 +110,17 @@
 <body>
   <div class="container">
     <header>
-      <h1>MUHAMMED FASIL PV</h1>
-      <p><strong>Software Engineer | AI &amp; IoT Systems Engineer | Retail Automation Specialist | MVVM &amp; Infrastructure Expert</strong></p>
-      <p>Dubai, UAE · +971 555923545 · <a href="mailto:faztrick@gmail.com">faztrick@gmail.com</a> · <a href="https://www.uaecodes.com" target="_blank" rel="noreferrer noopener">uaecodes.com</a></p>
-      <p>GitHub: <a href="https://github.com/faztrick" target="_blank" rel="noreferrer noopener">github.com/faztrick</a> · LinkedIn: <a href="https://linkedin.com/in/faztrick" target="_blank" rel="noreferrer noopener">linkedin.com/in/faztrick</a></p>
+      <div class="hero-header">
+        <div class="hero-copy">
+          <h1>MUHAMMED FASIL PV</h1>
+          <p><strong>Software Engineer | AI &amp; IoT Systems Engineer | Retail Automation Specialist | MVVM &amp; Infrastructure Expert</strong></p>
+          <p>Dubai, UAE · +971 555923545 · <a href="mailto:faztrick@gmail.com">faztrick@gmail.com</a> · <a href="https://www.uaecodes.com" target="_blank" rel="noreferrer noopener">uaecodes.com</a></p>
+          <p>GitHub: <a href="https://github.com/faztrick" target="_blank" rel="noreferrer noopener">github.com/faztrick</a> · LinkedIn: <a href="https://linkedin.com/in/faztrick" target="_blank" rel="noreferrer noopener">linkedin.com/in/faztrick</a></p>
+        </div>
+        <div class="profile-photo-frame" aria-label="Profile photo">
+          <img src="assets/profile-photo.jpg" alt="Muhammed Fasil PV portrait" class="profile-photo">
+        </div>
+      </div>
       <p class="top-links"><a href="/cv.html">View compact CV</a></p>
     </header>
 
@@ -191,7 +194,8 @@
 
         <li><strong>Azure Image Server Function:</strong> On‑demand image resizing & caching for CV/site assets (Functions + Node.js).</li>
         <li><strong>Domain & DNS Automation Toolkit:</strong> PowerShell scripts for multi‑domain provisioning & HTTPS enforcement.</li>
-        <li><strong>ATS Optimization Pipeline:</strong> Data scripts ranking roles, generating targeted outreach & tracking metrics.</li>
+        <li><strong>OpenEPaperLink-WebUI:</strong> Public GitHub project focused on AI-enhanced OEPL/ESP32 e-paper tooling for ESL and retail edge-device workflows.</li>
+        <li><strong>Flutter Thermal Printer Integration:</strong> Public Flutter printer-related work aligned with POS, kiosk, and receipt-printing scenarios.</li>
         <li><strong><a href="projects/hozzo.html">Hozzo</a>:</strong> Service booking app with Flutter MVVM front end and Node.js APIs, payments, and push notifications.</li>
         <li><strong>Delivery Pro:</strong> Logistics/dispatch platform with live driver tracking, route optimization, and admin dashboards.</li>
         <li><strong>UZDParts WhatsApp Automation:</strong> WhatsApp bot for catalog lookup, order placement, and automated status updates.</li>
@@ -365,40 +369,12 @@
 
     <section>
       <h2>🌏 Additional Information</h2>
-      <p><strong>Nationality:</strong> Indian · <strong>Visa:</strong> Company Visa · <strong>UAE Driving License:</strong> Valid · <strong>Languages:</strong> English, Malayalam, Hindi · <strong>Portfolio:</strong> <a href="https://www.uaecodes.com" target="_blank" rel="noreferrer noopener">uaecodes.com</a></p>
-    </section>
-
-    <section>
-      <h2>🧩 Keywords (ATS)</h2>
-      <p>Flutter, MVVM, Node.js, Express, WPF, .NET, Python, PHP, TypeScript, AI, LLM, LangChain, OpenAI, Qwen3, YOLO, MQTT, ESP32, Raspberry Pi, Arduino, ESL, OEPL, MikroTik, WireGuard, Docker, Docker Compose, PM2, Nginx, GitHub Actions, GCP, AWS, Azure, MySQL, Hive, ObjectBox, Firebase, MongoDB, JWT, OAuth2, HTTPS, SSL, CI/CD, ERP, POS, QMS, IoT, Automation, Edge, Retail, Microservices, AI Vision, AIDL, IPC, LED Control, Hybrid Sync, Queue Management, VPN, DevOps</p>
+      <p><strong>Nationality:</strong> Indian · <strong>Visa:</strong> Visit Visa · <strong>UAE Driving License:</strong> Valid · <strong>Languages:</strong> English, Malayalam, Hindi · <strong>Portfolio:</strong> <a href="https://www.uaecodes.com" target="_blank" rel="noreferrer noopener">uaecodes.com</a></p>
     </section>
 
     <footer>
-      <p class="muted">© <script>document.write(new Date().getFullYear())</script> Muhammed Fasil PV — <a href="/cv.html">Compact CV</a></p>
+      <p class="muted">© 2026 Muhammed Fasil PV — <a href="/cv.html">Compact CV</a></p>
     </footer>
   </div>
-
-  <!-- Theme Toggle Button -->
-  <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
-    <i class="ri-moon-line moon"></i>
-    <i class="ri-sun-line sun"></i>
-  </button>
-
-  <script>
-    // Theme Toggle
-    const themeToggle = document.getElementById('themeToggle');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const savedTheme = localStorage.getItem('theme');
-
-    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
-        document.documentElement.classList.add('dark');
-    }
-
-    themeToggle?.addEventListener('click', () => {
-        document.documentElement.classList.toggle('dark');
-        const isDark = document.documentElement.classList.contains('dark');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    });
-  </script>
 </body>
 </html>

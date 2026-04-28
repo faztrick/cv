@@ -33,31 +33,10 @@ npm run parse-cv
 
 ---
 
-### 2. Indeed Auto-Apply (`indeed-auto-apply.js`)
+### 2. Indeed Automation
 
-Automated job search and application for Indeed UAE with **CV-based auto-fill**.
-
-**Features:**
-- Searches jobs matching your CV skills
-- Auto-fills application forms using CV data
-- Uploads resume automatically
-- Tracks applications in `indeed-applications.json`
-- Match score for each job (0-100%)
-
-**Usage:**
-```bash
-# Search for jobs
-npm run indeed-search "Software Engineer"
-
-# Auto-apply to matched jobs (DRY RUN)
-npm run indeed-apply
-
-# View application statistics
-npm run indeed-stats
-
-# Test CV data extraction
-node scripts/indeed-auto-apply.js test-cv
-```
+The old Indeed auto-apply flow has been disabled in this workspace.
+Keep using CV parsing, resume generation, and manual application tracking instead.
 
 **What gets auto-filled:**
 - Name, email, phone
@@ -71,35 +50,10 @@ node scripts/indeed-auto-apply.js test-cv
 
 ---
 
-### 3. LinkedIn Auto-Apply (`linkedin-auto-apply.js`)
+### 3. LinkedIn Automation
 
-Automated "Easy Apply" for LinkedIn jobs with CV integration.
-
-**Features:**
-- Searches LinkedIn jobs in Dubai
-- Filters for "Easy Apply" only
-- Auto-fills multi-step Easy Apply forms
-- CV-based skill matching
-- Connection request automation
-
-**Setup:**
-```bash
-# Set LinkedIn credentials (optional - can login manually in browser)
-export LINKEDIN_EMAIL=your@email.com
-export LINKEDIN_PASSWORD=yourpassword
-```
-
-**Usage:**
-```bash
-# Search for Easy Apply jobs
-npm run linkedin-search "AI Engineer"
-
-# Auto-apply to matched jobs
-npm run linkedin-apply
-
-# Custom search
-node scripts/linkedin-auto-apply.js search "Senior Developer"
-```
+The old LinkedIn auto-apply flow has been disabled in this workspace.
+Use manual applications and keep this repository focused on resume data, matching, and outreach support.
 
 **LinkedIn Auto-Fill:**
 - Phone number
@@ -278,8 +232,7 @@ For resume upload, uses: `resumes/resume-fasil-2025.pdf` (create this file)
 
 **Edit your search preferences in:**
 - `scripts/job-search-agent.js` - Main profile and search queries
-- `scripts/indeed-auto-apply.js` - Indeed-specific settings
-- `scripts/linkedin-auto-apply.js` - LinkedIn credentials and queries
+- Disabled automation entrypoints remain only as placeholders and should not be used
 
 **Salary expectations:**
 ```javascript

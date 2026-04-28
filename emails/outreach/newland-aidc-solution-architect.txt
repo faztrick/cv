@@ -1,21 +1,21 @@
-Subject: Application – Solution Architect – Newland AIDC – Muhammed Fasil PV
+Subject: Application - Solution Architect - Newland AIDC - Muhammed Fasil PV
 
 Hi Hiring Manager,
 
-I'm a Dubai-based Software Architect and hands-on engineer with 13+ years building production systems (ERP/POS/QMS/IoT) using TypeScript/Node.js, Flutter, Python, and Docker. I'm immediately available in UAE (Company Visa) and interested in the Solution Architect opportunity at Newland AIDC.
+I'm a Dubai-based Software Architect and hands-on engineer with 13+ years building production systems (ERP/POS/QMS/IoT) using TypeScript/Node.js, Flutter, Python, and Docker. I'm immediately available in UAE (Visit Visa) and interested in the Solution Architect opportunity at Newland AIDC.
 
 
 
 Key Skills:
-• Full-stack development with TypeScript/Node.js, Flutter, Python
-• AI/ML integrations (YOLO, Whisper, OpenAI, LangChain)
-• IoT systems (ESP32, MQTT, edge computing)
-• DevOps: Docker/Compose, GitHub Actions, PM2, Nginx
-• Database: MySQL, MongoDB, Firebase (cloud and edge)
+- Full-stack development with TypeScript/Node.js, Flutter, Python
+- AI/ML integrations (YOLO, Whisper, OpenAI, LangChain)
+- IoT systems (ESP32, MQTT, edge computing)
+- DevOps: Docker/Compose, GitHub Actions, PM2, Nginx
+- Database: MySQL, MongoDB, Firebase (cloud and edge)
 
 Notable Projects:
-• IdolMEA ERP: Retail ERP integrating POS, IoT, and cloud hybrid analytics.
-• IdolQueue (i-QMS): Smart queue automation (Flutter + Node.js + Hive + MQTT).
+- IdolMEA ERP: Retail ERP integrating POS, IoT, and cloud hybrid analytics.
+- IdolQueue (i-QMS): Smart queue automation (Flutter + Node.js + Hive + MQTT).
 
 Attached are my resume and a brief overview. Happy to share code samples and discuss how I can contribute to your team.
 

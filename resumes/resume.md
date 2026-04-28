@@ -10,7 +10,7 @@ Website: [https://www.uaecodes.com](https://www.uaecodes.com) | GitHub: [https:/
 ## Professional Summary
 
 Innovative **Software Engineer** with over **13 years of experience** in building intelligent, scalable, and distributed enterprise systems.
-Expert in **AI-driven automation**, **IoT ecosystems**, and **MVVM architecture** — with proven success across **ERP, QMS, POS, and retail IoT infrastructures**.
+Expert in **AI-driven automation**, **IoT ecosystems**, and **MVVM architecture** - with proven success across **ERP, QMS, POS, and retail IoT infrastructures**.
 Bridges hardware and software, creating hybrid cloud + local ecosystems that are **secure, real-time, and modular**.
 
 Delivers production-ready systems blending **Flutter, Node.js, Python, WPF, and Kotlin**, with strong foundations in **DevOps, AI, and networking**.
@@ -34,23 +34,23 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ## Professional Experience
 
-### **Software Engineer — Idol Technology LLC (Dubai, UAE)**
+### **Software Engineer - Idol Technology LLC (Dubai, UAE)**
 
-📆 *Aug 2024 – Present*
+ *Aug 2024 - Present*
 
 - Architected **IdolMEA ERP** integrating **POS, QMS, IoT automation, and AI vision** modules.
 - Built **IdolQueue (i-QMS)** in Flutter + Node.js with **Hive offline sync**, **MQTT events**, and **multi-branch dashboards**.
 - Developed **AI theft detection** (YOLO) for **self-checkout kiosks** with LED/GPIO feedback via **AIDL interface**.
 - Designed **IdolVPN mesh (WireGuard)** network for secure multi-branch communication and API routing.
 - Integrated **WhatsApp/Telegram chat automation** for live queue alerts and service updates.
-- Created **hybrid cloud sync engine** (MySQL ↔ Hive) enabling offline analytics and recovery.
+- Created **hybrid cloud sync engine** (MySQL <-> Hive) enabling offline analytics and recovery.
 - Engineered **Android AIDL bridge** for Flutter hardware control in retail edge devices.
 
 ---
 
-### **Senior Software Engineer — Screl Info Pvt Ltd (India / UAE)**
+### **Senior Software Engineer - Screl Info Pvt Ltd (India / UAE)**
 
-📆 *Apr 2019 – Jan 2024*
+ *Apr 2019 - Jan 2024*
 
 - Designed and deployed **SincA ERP**, combining Flutter, Node.js, and AI analytics in Python.
 - Built **AI dashboards**, OCR systems, and predictive models using OpenAI and TensorFlow.
@@ -61,9 +61,9 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ---
 
-### **Software Developer — Sincap Info Pvt Ltd (Calicut, India)**
+### **Software Developer - Sincap Info Pvt Ltd (Calicut, India)**
 
-📆 *Mar 2014 – Mar 2019*
+ *Mar 2014 - Mar 2019*
 
 - Developed enterprise ERP and billing systems using **WPF (C#)** and **PHP/MySQL**.
 - Improved UI responsiveness, caching, and modularization for accounting/reporting modules.
@@ -82,7 +82,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 - **ESL Tools:** Solum/OEPL tag management, ESP32 flash tools, and MQTT controllers.
 - **LampAidlInterface:** Android Kotlin + Flutter IPC for real-time LED and lamp automation.
 - **Local AI Agents:** Offline AI agents (Qwen3/OpenAI) embedded into retail devices.
-- **Hybrid Sync Engine:** Offline-first delta tracking engine (MySQL ↔ Hive) for POS continuity.
+- **Hybrid Sync Engine:** Offline-first delta tracking engine (MySQL <-> Hive) for POS continuity.
 
 ---
 
@@ -105,7 +105,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 ## Research & Innovation Highlights
 
 - **AI-Edge Retail Mesh:** Hybrid inference + MQTT layer for low-latency AI automation.
-- **Offline-First ERP Engine:** MySQL ↔ Hive replication with delta conflict resolution.
+- **Offline-First ERP Engine:** MySQL <-> Hive replication with delta conflict resolution.
 - **LLM Queue Copilot:** LangChain-based ERP assistant managing service queues via voice/text.
 - **Self-Healing VPN Network:** MikroTik + WireGuard mesh with failover and script automation.
 - **Retail Vision System:** AI-based theft detection integrated with LED signaling via AIDL.
@@ -115,10 +115,10 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 ## Open-Source & Community Contributions
 
 - **GitHub Projects:**
-  - [`idol-mea`](https://github.com/faztrick) — ERP hybrid architecture
-  - `idolqueue` — Flutter QMS framework
-  - `esl-flasher` — ESP32/OEPL flashing utilities
-  - `idolvpn-tools` — MikroTik WireGuard auto configuration
+  - [`idol-mea`](https://github.com/faztrick) - ERP hybrid architecture
+  - `idolqueue` - Flutter QMS framework
+  - `esl-flasher` - ESP32/OEPL flashing utilities
+  - `idolvpn-tools` - MikroTik WireGuard auto configuration
 - Contributor to open firmware flashing and MQTT automation toolkits.
 - Active mentor for Flutter MVVM and ESP-based automation communities.
 
@@ -182,7 +182,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 ## Vision Statement
 
-> “My goal is to build globally deployable **AI-driven retail ecosystems**, where every device, queue, and operation communicates intelligently across secure hybrid networks — combining automation, edge AI, and human simplicity.”
+> "My goal is to build globally deployable **AI-driven retail ecosystems**, where every device, queue, and operation communicates intelligently across secure hybrid networks - combining automation, edge AI, and human simplicity."
 
 ---
 
@@ -190,7 +190,7 @@ Experienced in **MikroTik RouterOS, WireGuard**, and **Dockerized microservices*
 
 **Diploma in Computer Engineering**
 JDT Islam Polytechnic, Calicut, Kerala, India
-📆 June 2010 – March 2013
+ June 2010 - March 2013
 
 ---
 
@@ -207,7 +207,7 @@ JDT Islam Polytechnic, Calicut, Kerala, India
 ## Additional Information
 
 - **Nationality:** Indian
-- **Visa:** Company Visa
+- **Visa:** Visit Visa
 - **Languages:** English, Malayalam, Hindi
 - **Portfolio:** [https://www.uaecodes.com](https://www.uaecodes.com)
 - **Current Focus:** Edge AI, hybrid retail infrastructure, and IoT-led automation systems

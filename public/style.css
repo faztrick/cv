@@ -172,6 +172,11 @@ a { color: inherit; text-decoration: none; }
     color: var(--text-strong);
     letter-spacing: -0.01em;
 }
+.header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+}
 
 .nav { display: flex; gap: 0.25rem; }
 .nav__link {
@@ -191,6 +196,55 @@ a { color: inherit; text-decoration: none; }
 }
 .nav__link i { font-size: 1rem; }
 .nav__link span { font-size: 0.875rem; }
+
+.header-auth {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.auth-pill {
+    display: inline-flex;
+    align-items: center;
+    max-width: 20rem;
+    padding: 0.45rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 9999px;
+    background: rgba(59, 130, 246, 0.08);
+    color: var(--muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.auth-pill--active {
+    color: var(--brand-dark);
+    background: rgba(16, 185, 129, 0.14);
+    border-color: rgba(16, 185, 129, 0.28);
+}
+
+.auth-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: 0.5rem;
+    color: var(--text-strong);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    background: #eff6ff;
+    transition: all 0.2s ease;
+}
+
+.auth-link:hover {
+    background: #dbeafe;
+}
+
+.is-hidden {
+    display: none !important;
+}
 
 .nav-toggle {
     display: none;
@@ -1082,6 +1136,9 @@ a { color: inherit; text-decoration: none; }
 @media (max-width: 720px) {
     .container { padding: 0 var(--space-4); }
     .brand__name { display: none; }
+    .header-actions {
+        gap: 0.5rem;
+    }
     .nav-toggle { display: inline-grid; }
     .nav {
         position: absolute;
@@ -1096,6 +1153,13 @@ a { color: inherit; text-decoration: none; }
         flex-direction: column;
     }
     .nav.open { display: flex; }
+    .header-auth {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+    .auth-pill {
+        max-width: 12rem;
+    }
     .cards { grid-template-columns: 1fr; }
     .skills { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .contact { grid-template-columns: 1fr; text-align: center; }
@@ -1159,6 +1223,9 @@ a { color: inherit; text-decoration: none; }
         justify-content: center;
     }
 }
+.header-actions {
+    gap: 0.5rem;
+}
 
 @media (max-width: 440px) {
     .container { padding: 0 var(--space-3); }
@@ -1171,6 +1238,10 @@ a { color: inherit; text-decoration: none; }
     .profile-header {
         padding: 1rem;
         border-radius: var(--radius);
+    .header-auth {
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
     }
     .profile-header__avatar {
         width: 3rem;

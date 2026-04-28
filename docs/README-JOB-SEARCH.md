@@ -201,7 +201,7 @@ Post-interview appreciation and reinforcement.
 
 ### Current Status
 
-- Based in Dubai (Company Visa)
+- Based in Dubai (Visit Visa)
 - Currently employed at Idol Technology LLC
 - Available for new opportunities
 - Salary expectation: 12k-18k AED
@@ -323,6 +323,6 @@ Post-interview appreciation and reinforcement.
 
 ---
 
-**Good luck with your job search! 🚀**
+**Good luck with your job search! **
 
 Remember: You have strong skills, proven experience, and are based in Dubai. Target roles that value your unique combination of AI, IoT, and enterprise system expertise.

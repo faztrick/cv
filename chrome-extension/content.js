@@ -366,32 +366,6 @@ function autoFillForm(cvData, options = {}) {
   return { success: true, filledCount, message: `Filled ${filledCount} fields` };
 }
 
-// Click apply button
-function clickApplyButton() {
-  const platform = detectPlatform();
-  const extractor = JOB_EXTRACTORS[platform];
-
-  if (extractor?.applyButton) {
-    const btn = extractor.applyButton();
-    if (btn) {
-      btn.click();
-      return true;
-    }
-  }
-
-  // Generic apply button search
-  const applyButtons = document.querySelectorAll('button, a');
-  for (const btn of applyButtons) {
-    const text = btn.textContent.toLowerCase();
-    if (text.includes('apply') || text.includes('submit')) {
-      btn.click();
-      return true;
-    }
-  }
-
-  return false;
-}
-
 // Message listener
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   console.log('Content script received:', request.action);
@@ -406,22 +380,13 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       sendResponse({ success: fillResult.success, message: fillResult.message, error: fillResult.error });
       break;
 
-    case 'autoFillSubmit':
-      const fillRes = autoFillForm(request.cvData, request.options);
-      if (fillRes.success) {
-        setTimeout(() => clickApplyButton(), 1000);
-      }
-      sendResponse({ success: fillRes.success, message: fillRes.message, job: getJobInfo() });
-      break;
-
     case 'highlight':
       const count = highlightFields();
       sendResponse({ success: true, message: `Highlighted ${count} fields` });
       break;
 
     case 'apply':
-      const clicked = clickApplyButton();
-      sendResponse({ success: clicked, message: clicked ? 'Apply button clicked' : 'Apply button not found', job: getJobInfo() });
+      sendResponse({ success: false, error: 'Automatic submission is disabled for safety. Review and submit manually.', job: getJobInfo() });
       break;
 
     case 'saveJob':
@@ -473,7 +438,6 @@ function createFloatingButton() {
     <div class="cv-fab-menu">
       <button class="cv-fab-btn" data-action="autoFill" title="Auto-Fill">✨</button>
       <button class="cv-fab-btn" data-action="highlight" title="Highlight">🔍</button>
-      <button class="cv-fab-btn" data-action="apply" title="Apply">📤</button>
     </div>
   `;
   document.body.appendChild(fab);
@@ -493,8 +457,6 @@ function createFloatingButton() {
         autoFillForm(result.cvAutoApply_cvData, result.cvAutoApply_options);
       } else if (action === 'highlight') {
         highlightFields();
-      } else if (action === 'apply') {
-        clickApplyButton();
       }
     });
   });

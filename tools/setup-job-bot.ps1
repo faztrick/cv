@@ -1,6 +1,6 @@
 [CmdletBinding()]
 param(
-  [ValidateSet('LinkedInPython', 'LinkedInNode', 'IndeedPython')]
+  [ValidateSet('LinkedInPython', 'LinkedInNode', 'IndeedPython', 'AIHawkPython')]
   [string]$RepoChoice = 'LinkedInPython',
 
   [string]$BaseDir = 'automation\repos',
@@ -17,7 +17,7 @@ function Test-Command {
   return $null -ne $cmd
 }
 
-function Ensure-Dir {
+function Ensure-Directory {
   param([Parameter(Mandatory)][string]$Path)
   if (-not (Test-Path -LiteralPath $Path)) {
     New-Item -ItemType Directory -Path $Path | Out-Null
@@ -26,34 +26,40 @@ function Ensure-Dir {
 
 $workspaceRoot = Split-Path -Parent $PSCommandPath | Split-Path -Parent
 $targetRoot = Join-Path $workspaceRoot $BaseDir
-Ensure-Dir -Path $targetRoot
+Ensure-Directory -Path $targetRoot
 
-# Resolve repo details
-$repoUrl = ''
-$destDir = ''
-$projectType = ''
-$runHint = ''
-
-switch ($RepoChoice) {
-  'LinkedInPython' {
-    $repoUrl = 'https://github.com/madingess/EasyApplyBot.git'
-    $destDir = 'EasyApplyBot'
-    $projectType = 'python'
-    $runHint = 'python .\main.py'
+$repoMap = @{
+  LinkedInPython = @{
+    RepoUrl = 'https://github.com/madingess/EasyApplyBot.git'
+    DestDir = 'EasyApplyBot'
+    ProjectType = 'python'
+    RunHint = 'python .\main.py'
   }
-  'LinkedInNode' {
-    $repoUrl = 'https://github.com/adnanedrief/linkedin-job-apply-automation.git'
-    $destDir = 'linkedin-job-apply-automation'
-    $projectType = 'node'
-    $runHint = 'node index.js'
+  LinkedInNode = @{
+    RepoUrl = 'https://github.com/adnanedrief/linkedin-job-apply-automation.git'
+    DestDir = 'linkedin-job-apply-automation'
+    ProjectType = 'node'
+    RunHint = 'node index.js'
   }
-  'IndeedPython' {
-    $repoUrl = 'https://github.com/meteor314/indeed_bot.git'
-    $destDir = 'indeed_bot'
-    $projectType = 'python'
-    $runHint = 'python .\indeed_bot.py'
+  IndeedPython = @{
+    RepoUrl = 'https://github.com/meteor314/indeed_bot.git'
+    DestDir = 'indeed_bot'
+    ProjectType = 'python'
+    RunHint = 'python .\indeed_bot.py'
+  }
+  AIHawkPython = @{
+    RepoUrl = 'https://github.com/feder-cr/Jobs_Applier_AI_Agent_AIHawk.git'
+    DestDir = 'AIHawkPython'
+    ProjectType = 'python'
+    RunHint = 'python .\main.py'
   }
 }
+
+$selection = $repoMap[$RepoChoice]
+$repoUrl = $selection.RepoUrl
+$destDir = $selection.DestDir
+$projectType = $selection.ProjectType
+$runHint = $selection.RunHint
 
 Write-Host "Target: $RepoChoice => $repoUrl" -ForegroundColor Cyan
 
@@ -95,13 +101,13 @@ try {
         Write-Warning 'python is not on PATH. Install Python 3.10+ and re-run. https://www.python.org/downloads/'
         break
       }
-      # Create venv if missing
-      if (-not (Test-Path -LiteralPath '.\\.venv')) {
+
+      if (-not (Test-Path -LiteralPath '.\.venv')) {
         Write-Host 'Creating virtual environment (.venv)' -ForegroundColor Cyan
         python -m venv .venv
       }
-      # Activate and install requirements
-      $venvActivate = '.\\.venv\\Scripts\\Activate.ps1'
+
+      $venvActivate = '.\.venv\Scripts\Activate.ps1'
       if (Test-Path -LiteralPath $venvActivate) {
         Write-Host 'Activating venv and installing requirements' -ForegroundColor Cyan
         . $venvActivate
@@ -125,6 +131,7 @@ try {
         Write-Warning 'node is not on PATH. Install Node.js 18+ and re-run. https://nodejs.org/en/download'
         break
       }
+
       if (Test-Path -LiteralPath 'package-lock.json') {
         npm ci
       }
@@ -146,16 +153,25 @@ Write-Host 'Next steps:' -ForegroundColor Green
 switch ($RepoChoice) {
   'LinkedInPython' {
     Write-Host "1) Edit config.yaml in $destPath (email, password, positions, locations, uploads)."
-    Write-Host "2) Run: `n`  cd `"$destPath`"; .\\.venv\\Scripts\\Activate.ps1; $runHint"
+    Write-Host '2) Run:'
+    Write-Host "   cd `"$destPath`"; .\.venv\Scripts\Activate.ps1; $runHint"
   }
   'LinkedInNode' {
-    Write-Host "1) Edit config.json in $destPath (credentials + search criteria)."
-    Write-Host "2) Run: `n`  cd `"$destPath`"; $runHint"
+     Write-Host '1) Add LINKEDIN_EMAIL and LINKEDIN_PASSWORD to the workspace root .env file.'
+     Write-Host '2) Optionally edit data\linkedin-bot-settings.json for keyword/location/pages.'
+     Write-Host '3) Run:'
+     Write-Host '   .\automation\run-linkedin-bot.ps1'
   }
   'IndeedPython' {
     Write-Host "1) Edit config.yaml in $destPath (base_url, language, user_data_dir)."
-    Write-Host "2) Ensure profile and CV are configured in Indeed."
-    Write-Host "3) Run: `n`  cd `"$destPath`"; .\\.venv\\Scripts\\Activate.ps1; $runHint"
+    Write-Host '2) Ensure profile and CV are configured in Indeed.'
+    Write-Host '3) Run:'
+    Write-Host "   cd `"$destPath`"; .\.venv\Scripts\Activate.ps1; $runHint"
+  }
+  'AIHawkPython' {
+    Write-Host "1) Review the AIHawk configuration files in $destPath and keep credentials out of git."
+    Write-Host '2) Run:'
+    Write-Host "   cd `"$destPath`"; .\.venv\Scripts\Activate.ps1; $runHint"
   }
 }
 

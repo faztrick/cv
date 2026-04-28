@@ -204,7 +204,7 @@ function buildOpening(jobData, cvData, tone) {
   } else if (tone === 'technical') {
     return `I'm applying for the ${position} role at ${company}. As a Software Architect with 13+ years of experience, I specialize in building scalable, production-ready systems using TypeScript/Node.js, Flutter, Python, and modern DevOps practices. I'm currently based in Dubai and immediately available.`;
   } else { // professional
-    return `I'm a Dubai-based Software Architect and hands-on engineer with 13+ years building production systems (ERP/POS/QMS/IoT) using TypeScript/Node.js, Flutter, Python, and Docker. I'm immediately available in UAE (Company Visa) and interested in the ${position} opportunity at ${company}.`;
+    return `I'm a Dubai-based Software Architect and hands-on engineer with 13+ years building production systems (ERP/POS/QMS/IoT) using TypeScript/Node.js, Flutter, Python, and Docker. I'm currently in UAE on Visit Visa, immediately available, and interested in the ${position} opportunity at ${company}.`;
   }
 }
 
