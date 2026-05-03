@@ -52,6 +52,7 @@
   "author": "Muhammed Fasil PV <faztrick@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "@azure/msal-node": "^5.1.5",
     "@google-cloud/storage": "^7.18.0",
     "@modelcontextprotocol/sdk": "^1.0.0",
     "body-parser": "^2.2.1",

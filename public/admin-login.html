@@ -127,12 +127,68 @@
             color: var(--accent);
             text-decoration: none;
         }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 16px 0;
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .btn-microsoft {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--panel-soft);
+            color: var(--text);
+            font-weight: 600;
+            font-size: 0.97rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none;
+            transition: background 0.15s;
+        }
+
+        .btn-microsoft:hover {
+            background: #243347;
+        }
+
+        .btn-microsoft svg {
+            flex-shrink: 0;
+        }
     </style>
 </head>
 <body>
     <main class="card">
         <h1>Admin Login</h1>
         <p>Use the local admin password to unlock the panel server. If configured, the server will also ask for a security answer.</p>
+
+        <div id="azureSection" class="hidden">
+            <a id="azureBtn" href="#" class="btn-microsoft">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 21 21">
+                    <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
+                    <rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
+                    <rect x="1" y="11" width="9" height="9" fill="#00a4ef"/>
+                    <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
+                </svg>
+                Sign in with Microsoft
+            </a>
+            <div id="azureDivider" class="divider hidden"><span>or use password</span></div>
+        </div>
 
         <form id="loginForm">
             <label for="password">Password</label>
@@ -166,6 +222,9 @@
         const questionWrap = document.getElementById('securityQuestionWrap');
         const questionLabel = document.getElementById('securityQuestionLabel');
         const answerInput = document.getElementById('securityAnswer');
+        const azureSection = document.getElementById('azureSection');
+        const azureBtn = document.getElementById('azureBtn');
+        const azureDivider = document.getElementById('azureDivider');
 
         function setMessage(element, text) {
             element.textContent = text || '';
@@ -177,7 +236,17 @@
                 const response = await fetch('/api/admin/auth/status', { credentials: 'same-origin' });
                 const payload = await response.json();
 
-                if (!payload.configured) {
+                if (payload.azureAdConfigured) {
+                    azureBtn.href = `/api/admin/auth/azure?next=${encodeURIComponent(nextTarget)}`;
+                    azureSection.classList.remove('hidden');
+                    if (payload.configured) {
+                        azureDivider.classList.remove('hidden');
+                    } else {
+                        form.classList.add('hidden');
+                    }
+                }
+
+                if (!payload.configured && !payload.azureAdConfigured) {
                     setMessage(hintEl, 'ADMIN_PASSWORD is not configured on the server yet. Add it to .env before using this page.');
                     form.classList.add('hidden');
                     return;

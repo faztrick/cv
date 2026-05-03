@@ -8,6 +8,7 @@ const { spawn, spawnSync } = require('child_process');
 const { Client, LocalAuth, MessageMedia } = require('whatsapp-web.js');
 const QRCode = require('qrcode');
 const { SkillsJobMatcher } = require('./scripts/skills-job-matcher');
+const msal = require('@azure/msal-node');
 
 // Load local env vars (SMTP creds, model settings, etc.) when running the panel.
 // Safe: this server is intended for local use.
@@ -240,6 +241,48 @@ function sendAdminUnauthorized(req, res) {
     return res.redirect(`/admin-login.html?next=${nextTarget}`);
 }
 
+// --- Azure AD / MSAL helpers ---
+
+function getAzureAdConfig() {
+    return {
+        clientId: process.env.AZURE_AD_CLIENT_ID || '',
+        clientSecret: process.env.AZURE_AD_CLIENT_SECRET || '',
+        tenantId: process.env.AZURE_TENANT_ID || 'common',
+        redirectUri: process.env.AZURE_AD_REDIRECT_URI || `http://localhost:${PORT}/api/admin/auth/azure/callback`,
+        adminEmails: (process.env.AZURE_AD_ADMIN_EMAILS || '')
+            .split(',')
+            .map(e => e.trim().toLowerCase())
+            .filter(Boolean)
+    };
+}
+
+function isAzureAdConfigured() {
+    const { clientId, clientSecret } = getAzureAdConfig();
+    return Boolean(clientId && clientSecret);
+}
+
+function createMsalClient() {
+    const { clientId, clientSecret, tenantId } = getAzureAdConfig();
+    return new msal.ConfidentialClientApplication({
+        auth: {
+            clientId,
+            clientSecret,
+            authority: `https://login.microsoftonline.com/${tenantId}`
+        }
+    });
+}
+
+// In-memory OAuth state store for CSRF protection (keyed by random state param, TTL 10 min)
+const azureAuthStates = new Map();
+const AZURE_STATE_TTL_MS = 10 * 60 * 1000;
+
+function pruneAzureStates() {
+    const now = Date.now();
+    for (const [key, value] of azureAuthStates) {
+        if (now > value.expiresAt) azureAuthStates.delete(key);
+    }
+}
+
 // Ensure data dir exists
 if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
 
@@ -247,7 +290,8 @@ app.get('/api/admin/auth/status', (req, res) => {
     res.json({
         authenticated: isAdminAuthenticated(req),
         configured: Boolean(getAdminPassword()),
-        securityQuestion: getAdminSecurityQuestion() || null
+        securityQuestion: getAdminSecurityQuestion() || null,
+        azureAdConfigured: isAzureAdConfigured()
     });
 });
 
@@ -280,12 +324,86 @@ app.post('/api/admin/auth/logout', (req, res) => {
     res.json({ success: true });
 });
 
+// Azure AD login — redirect to Microsoft login page
+app.get('/api/admin/auth/azure', async (req, res) => {
+    if (!isAzureAdConfigured()) {
+        return res.status(503).type('text').send('Azure AD is not configured. Set AZURE_AD_CLIENT_ID and AZURE_AD_CLIENT_SECRET in .env');
+    }
+
+    pruneAzureStates();
+    const state = crypto.randomBytes(16).toString('hex');
+    // Sanitise next: must be a relative path (starts with / but not //) to prevent open redirect
+    const rawNext = typeof req.query.next === 'string' ? req.query.next : '/panel';
+    const next = /^\/(?:[^/]|$)/.test(rawNext) ? rawNext : '/panel';
+    azureAuthStates.set(state, { next, expiresAt: Date.now() + AZURE_STATE_TTL_MS });
+
+    try {
+        const msalClient = createMsalClient();
+        const { redirectUri } = getAzureAdConfig();
+        const authUrl = await msalClient.getAuthCodeUrl({
+            scopes: ['openid', 'profile', 'email'],
+            redirectUri,
+            state
+        });
+        res.redirect(authUrl);
+    } catch (err) {
+        console.error('Azure AD auth URL error:', err);
+        res.status(500).type('text').send('Failed to initiate Azure AD login');
+    }
+});
+
+// Azure AD callback — exchange code, verify email, set session
+app.get('/api/admin/auth/azure/callback', async (req, res) => {
+    const { code, state, error, error_description } = req.query;
+
+    if (error) {
+        console.error('Azure AD callback error:', error, error_description);
+        return res.status(401).type('text').send(`Azure AD login failed: ${String(error_description || error)}`);
+    }
+
+    pruneAzureStates();
+    const stateEntry = azureAuthStates.get(state);
+    if (!stateEntry) {
+        return res.status(400).type('text').send('Invalid or expired login state. Please try again.');
+    }
+    azureAuthStates.delete(state);
+
+    // stateEntry.next was already validated to be a relative path when stored
+    const nextPath = typeof stateEntry.next === 'string' && /^\/(?:[^/]|$)/.test(stateEntry.next)
+        ? stateEntry.next
+        : '/panel';
+
+    try {
+        const msalClient = createMsalClient();
+        const { redirectUri, adminEmails } = getAzureAdConfig();
+        const tokenResponse = await msalClient.acquireTokenByCode({
+            code,
+            scopes: ['openid', 'profile', 'email'],
+            redirectUri
+        });
+
+        const userEmail = (tokenResponse.account?.username || '').toLowerCase();
+
+        if (adminEmails.length === 0) {
+            console.warn('AZURE_AD_ADMIN_EMAILS is not set — any authenticated Azure AD user can access the admin panel.');
+        } else if (!adminEmails.includes(userEmail)) {
+            return res.status(403).type('text').send(`Access denied: ${userEmail} is not in the allowed admin list.`);
+        }
+
+        setAdminSessionCookie(res);
+        res.redirect(nextPath);
+    } catch (err) {
+        console.error('Azure AD token exchange error:', err);
+        res.status(500).type('text').send('Azure AD authentication failed. Please try again.');
+    }
+});
+
 app.use((req, res, next) => {
     if (!isProtectedAdminRequest(req.path)) {
         return next();
     }
 
-    if (!getAdminPassword()) {
+    if (!getAdminPassword() && !isAzureAdConfigured()) {
         if (req.path.startsWith('/api/')) {
             return res.status(503).json({ error: 'ADMIN_PASSWORD is not configured on the server' });
         }
