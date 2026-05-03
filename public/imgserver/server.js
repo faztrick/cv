@@ -76,8 +76,8 @@ app.get('/', (req, res) => {
 app.post('/v1/savebese64file', async (req, res) => {
   const { body } = req;
   try {
-    const api_key = body.api_key;
-    let filename = body.filename ?? "image.jpg";
+    const api_key = path.basename(String(body.api_key || ''));
+    let filename = path.basename(body.filename ?? "image.jpg");
     const base64Data = body.file ?? "";
     const appDomain = process.env.APP_DOMAIN || 'uaecodes.com';
     const buffer = Buffer.from(base64Data, 'base64');
@@ -483,7 +483,7 @@ app.get('/showallimg', async (req, res) => {
 // Delete single image
 app.delete('/delete_image/:filename', async (req, res) => {
   const folderPath = './data/key/documents';
-  const filename = req.params.filename;
+  const filename = path.basename(req.params.filename);
 
   try {
     if (blobContainerClient) {
