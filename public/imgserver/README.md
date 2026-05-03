@@ -398,7 +398,7 @@ az group delete --name $ResourceGroup --yes --no-wait
 1. ✅ Deploy application to Azure
 2. ✅ Configure custom domain
 3. ✅ Enable HTTPS/SSL
-4. ⏳ Add Azure Blob Storage for scalable file storage
+4. ✅ Add Azure Blob Storage for scalable file storage
 5. ⏳ Configure Application Insights for monitoring
 6. ⏳ Set up CI/CD with GitHub Actions
 

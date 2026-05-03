@@ -6,6 +6,31 @@ const fsSync = require('fs');
 const https = require('https');
 const cors = require('cors');
 const path = require("path");
+const { BlobServiceClient, StorageSharedKeyCredential } = require('@azure/storage-blob');
+
+// Azure Blob Storage setup (optional — falls back to local disk when not configured)
+const AZURE_STORAGE_ACCOUNT = process.env.AZURE_STORAGE_ACCOUNT;
+const AZURE_STORAGE_KEY = process.env.AZURE_STORAGE_KEY;
+const AZURE_STORAGE_CONNECTION_STRING = process.env.AZURE_STORAGE_CONNECTION_STRING;
+const AZURE_STORAGE_CONTAINER = process.env.AZURE_STORAGE_CONTAINER || 'images';
+
+let blobContainerClient = null;
+
+if (AZURE_STORAGE_CONNECTION_STRING) {
+  const blobServiceClient = BlobServiceClient.fromConnectionString(AZURE_STORAGE_CONNECTION_STRING);
+  blobContainerClient = blobServiceClient.getContainerClient(AZURE_STORAGE_CONTAINER);
+  console.log(`Azure Blob Storage connected via connection string (container: ${AZURE_STORAGE_CONTAINER})`);
+} else if (AZURE_STORAGE_ACCOUNT && AZURE_STORAGE_KEY) {
+  const sharedKeyCredential = new StorageSharedKeyCredential(AZURE_STORAGE_ACCOUNT, AZURE_STORAGE_KEY);
+  const blobServiceClient = new BlobServiceClient(
+    `https://${AZURE_STORAGE_ACCOUNT}.blob.core.windows.net`,
+    sharedKeyCredential
+  );
+  blobContainerClient = blobServiceClient.getContainerClient(AZURE_STORAGE_CONTAINER);
+  console.log(`Azure Blob Storage connected via account key (container: ${AZURE_STORAGE_CONTAINER})`);
+} else {
+  console.log('Azure Blob Storage not configured — using local disk storage');
+}
 
 // Middleware
 app.use(express.json({ limit: process.env.MAX_FILE_SIZE || '30mb' }));
@@ -54,27 +79,37 @@ app.post('/v1/savebese64file', async (req, res) => {
     const api_key = body.api_key;
     let filename = body.filename ?? "image.jpg";
     const base64Data = body.file ?? "";
-    const basePath = 'data/';
-    const userPath = path.join(basePath, api_key);
     const appDomain = process.env.APP_DOMAIN || 'uaecodes.com';
+    const buffer = Buffer.from(base64Data, 'base64');
 
     console.log(`Filename= ${filename}`);
 
-    // Ensure destination path exists
-    const destinationPath = path.join(userPath, 'documents');
-    await fs.mkdir(destinationPath, { recursive: true });
+    let fileUrl;
 
-    // Decode base64 and save the file
-    const buffer = Buffer.from(base64Data, 'base64');
-    await fs.writeFile(path.join(destinationPath, filename), buffer);
+    if (blobContainerClient) {
+      // Upload to Azure Blob Storage
+      const blobName = `${api_key}/documents/${filename}`;
+      const blockBlobClient = blobContainerClient.getBlockBlobClient(blobName);
+      await blockBlobClient.upload(buffer, buffer.length, {
+        blobHTTPHeaders: { blobContentType: `image/${path.extname(filename).slice(1).toLowerCase() || 'jpeg'}` }
+      });
+      fileUrl = blockBlobClient.url;
+    } else {
+      // Fall back to local disk storage
+      const basePath = 'data/';
+      const userPath = path.join(basePath, api_key);
+      const destinationPath = path.join(userPath, 'documents');
+      await fs.mkdir(destinationPath, { recursive: true });
+      await fs.writeFile(path.join(destinationPath, filename), buffer);
 
-    // Return URL with proper protocol (Azure App Service handles HTTPS)
-    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
-    const port = process.env.NODE_ENV === 'production' ? '' : ':2211';
+      const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+      const port = process.env.NODE_ENV === 'production' ? '' : ':2211';
+      fileUrl = `${protocol}://${appDomain}${port}/${api_key}/documents/${filename}`;
+    }
 
     return res.status(200).json({
       message: "File saved successfully.",
-      url: `${protocol}://${appDomain}${port}/${api_key}/documents/${filename}`
+      url: fileUrl
     });
   } catch (err) {
     console.log(err.message);
@@ -90,36 +125,53 @@ app.get('/showallimg', async (req, res) => {
   const sortOrder = req.query.sort || 'desc';
 
   try {
-    // Ensure directory exists
-    try {
-      await fs.access(folderPath);
-    } catch {
-      await fs.mkdir(folderPath, { recursive: true });
-    }
-
-    const items = await fs.readdir(folderPath);
-
-    // Filter only image files
+    let itemsWithStats = [];
     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
-    const imageFiles = items.filter(item => {
-      const ext = path.extname(item).toLowerCase();
-      return imageExtensions.includes(ext);
-    });
 
-    // Get file stats and sort by date
-    const itemsWithStatsPromises = imageFiles.map(async (item) => {
-      const filePath = path.join(folderPath, item);
-      const stats = await fs.stat(filePath);
-      return {
-        item,
-        mtime: stats.mtime,
-        size: stats.size,
-        formattedDate: stats.mtime.toLocaleDateString(),
-        formattedTime: stats.mtime.toLocaleTimeString()
-      };
-    });
+    if (blobContainerClient) {
+      // List blobs from Azure Blob Storage
+      for await (const blob of blobContainerClient.listBlobsFlat()) {
+        const ext = path.extname(blob.name).toLowerCase();
+        if (imageExtensions.includes(ext)) {
+          const mtime = blob.properties.lastModified || new Date(0);
+          itemsWithStats.push({
+            item: path.basename(blob.name),
+            blobName: blob.name,
+            blobUrl: `${blobContainerClient.url}/${blob.name}`,
+            mtime,
+            size: blob.properties.contentLength || 0,
+            formattedDate: mtime.toLocaleDateString(),
+            formattedTime: mtime.toLocaleTimeString()
+          });
+        }
+      }
+    } else {
+      // Fall back to local disk
+      try {
+        await fs.access(folderPath);
+      } catch {
+        await fs.mkdir(folderPath, { recursive: true });
+      }
 
-    const itemsWithStats = await Promise.all(itemsWithStatsPromises);
+      const items = await fs.readdir(folderPath);
+      const imageFiles = items.filter(item => imageExtensions.includes(path.extname(item).toLowerCase()));
+
+      const itemsWithStatsPromises = imageFiles.map(async (item) => {
+        const filePath = path.join(folderPath, item);
+        const stats = await fs.stat(filePath);
+        return {
+          item,
+          blobName: null,
+          blobUrl: null,
+          mtime: stats.mtime,
+          size: stats.size,
+          formattedDate: stats.mtime.toLocaleDateString(),
+          formattedTime: stats.mtime.toLocaleTimeString()
+        };
+      });
+
+      itemsWithStats = await Promise.all(itemsWithStatsPromises);
+    }
 
     // Sort by date
     itemsWithStats.sort((a, b) => {
@@ -339,14 +391,16 @@ app.get('/showallimg', async (req, res) => {
       </div>`;
     } else {
       html += '<div class="grid-container">';
-      paginatedItems.forEach(({ item, formattedDate, formattedTime, size }) => {
+      paginatedItems.forEach(({ item, blobUrl, formattedDate, formattedTime, size }) => {
         const uidMatch = item.match(/([a-zA-Z0-9]+)\.(jpg|jpeg|png|gif|bmp|webp)$/i);
         const extractedUID = uidMatch ? uidMatch[1] : 'N/A';
         const fileSizeKB = Math.round(size / 1024);
+        const imgSrc = blobUrl || `/data/key/documents/${encodeURIComponent(item)}`;
+        const viewHref = blobUrl || `/data/key/documents/${encodeURIComponent(item)}`;
         html += `
         <div class="grid-item">
           <div class="image-container">
-            <img class="image" src="/data/key/documents/${encodeURIComponent(item)}" alt="${item}" loading="lazy">
+            <img class="image" src="${imgSrc}" alt="${item}" loading="lazy">
             <div class="image-overlay">${fileSizeKB} KB</div>
           </div>
           <div class="image-info">
@@ -357,7 +411,7 @@ app.get('/showallimg', async (req, res) => {
               <span>🕒 ${formattedTime}</span>
             </div>
             <div class="image-actions">
-              <a href="/data/key/documents/${encodeURIComponent(item)}" target="_blank" class="btn btn-view">👁️ View</a>
+              <a href="${viewHref}" target="_blank" class="btn btn-view">👁️ View</a>
               <button onclick="deleteImage('${item.replace(/'/g, "\\'")}' )" class="btn btn-delete">🗑️ Delete</button>
             </div>
           </div>
@@ -430,10 +484,25 @@ app.get('/showallimg', async (req, res) => {
 app.delete('/delete_image/:filename', async (req, res) => {
   const folderPath = './data/key/documents';
   const filename = req.params.filename;
-  const filePath = path.join(folderPath, filename);
 
   try {
-    await fs.unlink(filePath);
+    if (blobContainerClient) {
+      // Try to find the blob by base filename across all prefixes
+      let deleted = false;
+      for await (const blob of blobContainerClient.listBlobsFlat()) {
+        if (path.basename(blob.name) === filename) {
+          await blobContainerClient.getBlockBlobClient(blob.name).delete();
+          deleted = true;
+          break;
+        }
+      }
+      if (!deleted) {
+        return res.status(404).json({ error: 'Image not found' });
+      }
+    } else {
+      const filePath = path.join(folderPath, filename);
+      await fs.unlink(filePath);
+    }
     res.json({ message: 'Image deleted successfully' });
   } catch (err) {
     console.error(`Error deleting file: ${err}`);
@@ -451,20 +520,31 @@ app.delete('/delete_images_by_date', async (req, res) => {
   end.setHours(23, 59, 59, 999);
 
   try {
-    const items = await fs.readdir(folderPath);
-
     let deletedCount = 0;
     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
 
-    for (const item of items) {
-      const ext = path.extname(item).toLowerCase();
-      if (imageExtensions.includes(ext)) {
-        const filePath = path.join(folderPath, item);
-        const stats = await fs.stat(filePath);
-
-        if (stats.mtime >= start && stats.mtime <= end) {
-          await fs.unlink(filePath);
-          deletedCount++;
+    if (blobContainerClient) {
+      for await (const blob of blobContainerClient.listBlobsFlat()) {
+        const ext = path.extname(blob.name).toLowerCase();
+        if (imageExtensions.includes(ext)) {
+          const mtime = blob.properties.lastModified || new Date(0);
+          if (mtime >= start && mtime <= end) {
+            await blobContainerClient.getBlockBlobClient(blob.name).delete();
+            deletedCount++;
+          }
+        }
+      }
+    } else {
+      const items = await fs.readdir(folderPath);
+      for (const item of items) {
+        const ext = path.extname(item).toLowerCase();
+        if (imageExtensions.includes(ext)) {
+          const filePath = path.join(folderPath, item);
+          const stats = await fs.stat(filePath);
+          if (stats.mtime >= start && stats.mtime <= end) {
+            await fs.unlink(filePath);
+            deletedCount++;
+          }
         }
       }
     }
@@ -482,21 +562,33 @@ app.delete('/delete_images_by_uid/:uid', async (req, res) => {
   const uid = req.params.uid;
 
   try {
-    const items = await fs.readdir(folderPath);
-
     let deletedCount = 0;
     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
 
-    for (const item of items) {
-      const ext = path.extname(item).toLowerCase();
-      if (imageExtensions.includes(ext)) {
-        const uidMatch = item.match(/([a-zA-Z0-9]+)\.(jpg|jpeg|png|gif|bmp|webp)$/i);
-        const extractedUID = uidMatch ? uidMatch[1] : '';
-
-        if (extractedUID === uid) {
-          const filePath = path.join(folderPath, item);
-          await fs.unlink(filePath);
-          deletedCount++;
+    if (blobContainerClient) {
+      for await (const blob of blobContainerClient.listBlobsFlat()) {
+        const ext = path.extname(blob.name).toLowerCase();
+        if (imageExtensions.includes(ext)) {
+          const uidMatch = path.basename(blob.name).match(/([a-zA-Z0-9]+)\.(jpg|jpeg|png|gif|bmp|webp)$/i);
+          const extractedUID = uidMatch ? uidMatch[1] : '';
+          if (extractedUID === uid) {
+            await blobContainerClient.getBlockBlobClient(blob.name).delete();
+            deletedCount++;
+          }
+        }
+      }
+    } else {
+      const items = await fs.readdir(folderPath);
+      for (const item of items) {
+        const ext = path.extname(item).toLowerCase();
+        if (imageExtensions.includes(ext)) {
+          const uidMatch = item.match(/([a-zA-Z0-9]+)\.(jpg|jpeg|png|gif|bmp|webp)$/i);
+          const extractedUID = uidMatch ? uidMatch[1] : '';
+          if (extractedUID === uid) {
+            const filePath = path.join(folderPath, item);
+            await fs.unlink(filePath);
+            deletedCount++;
+          }
         }
       }
     }
