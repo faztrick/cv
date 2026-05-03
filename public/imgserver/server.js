@@ -80,6 +80,19 @@ app.post('/v1/savebese64file', async (req, res) => {
     let filename = path.basename(body.filename ?? "image.jpg");
     const base64Data = body.file ?? "";
     const appDomain = process.env.APP_DOMAIN || 'uaecodes.com';
+
+    if (!api_key || !/^[a-zA-Z0-9_-]+$/.test(api_key)) {
+      return res.status(400).json({ error: 'Invalid api_key' });
+    }
+
+    const ALLOWED_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp']);
+    const ext = path.extname(filename).toLowerCase();
+    if (!ALLOWED_EXTENSIONS.has(ext)) {
+      return res.status(400).json({ error: 'Unsupported file type' });
+    }
+    const MIME_MAP = { '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.gif': 'image/gif', '.bmp': 'image/bmp', '.webp': 'image/webp' };
+    const contentType = MIME_MAP[ext];
+
     const buffer = Buffer.from(base64Data, 'base64');
 
     console.log(`Filename= ${filename}`);
@@ -91,7 +104,7 @@ app.post('/v1/savebese64file', async (req, res) => {
       const blobName = `${api_key}/documents/${filename}`;
       const blockBlobClient = blobContainerClient.getBlockBlobClient(blobName);
       await blockBlobClient.upload(buffer, buffer.length, {
-        blobHTTPHeaders: { blobContentType: `image/${path.extname(filename).slice(1).toLowerCase() || 'jpeg'}` }
+        blobHTTPHeaders: { blobContentType: contentType }
       });
       fileUrl = blockBlobClient.url;
     } else {
