@@ -79,3 +79,9 @@ out/
 result.txt
 tools/*.exe
 Fasil_0373 copy.JPG
+
+# Local Claude settings (personal permissions)
+.claude/
+
+# Serena MCP logs
+serena_log.txt
