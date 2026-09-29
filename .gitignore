@@ -90,6 +90,7 @@ serena_log.txt
 frontend/.ssr/
 tmp/pdfs/
 output/playwright/
+.playwright-cli/
 !output/pdf/Muhammed-Fasil-PV-CV.pdf
 deploy/cloudflare-credentials.json
 deploy/cloudflare.yml
