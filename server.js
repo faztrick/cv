@@ -60,7 +60,6 @@ const ALLOWED_RUN_COMMANDS = new Map([
     ['npm run playwright-naukrigulf', { command: 'npm', args: ['run', 'playwright-naukrigulf'] }],
     ['npm run parse-cv', { command: 'npm', args: ['run', 'parse-cv'] }],
     ['python scripts/render_pdf.py', { command: 'python', args: ['scripts/render_pdf.py'] }],
-    ['npm run clean-cache', { command: 'npm', args: ['run', 'clean-cache'] }]
 ]);
 
 function isPathInsideRepo(candidatePath) {

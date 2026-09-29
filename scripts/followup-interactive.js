@@ -152,14 +152,6 @@ ${cvData.personalInfo.portfolio}`;
         console.log('═══════════════════════════════════════════════════════════════');
         console.log('\n📋 Message ready! Copy and paste it into the chat.\n');
 
-        // Copy to clipboard (Windows)
-        try {
-            const { exec } = require('child_process');
-            exec(`echo ${JSON.stringify(fullMessage)} | clip`, (err) => {
-                if (!err) console.log('✅ Message copied to clipboard!\n');
-            });
-        } catch (e) {}
-
         // Log the follow-up
         const logFile = path.join(__dirname, '../data/followup-log.json');
         let log = [];

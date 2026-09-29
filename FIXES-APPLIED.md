@@ -53,7 +53,6 @@ This document details all fixes applied to restore full functionality to the CV 
 ✅ `npm run job-agent` - Shows job search profile
 ✅ `npm run smart-email` - Generates personalized emails
 ✅ `npm run email-variants` - Generates email tone variants
-✅ `npm run clean-cache` - Cleans browser caches
 ✅ `npm run panel` - Starts web server
 ✅ `npm run outreach` - Outreach manager
 ✅ `npm run auto-fill` - Universal auto-fill agent

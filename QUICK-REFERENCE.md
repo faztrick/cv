@@ -61,7 +61,6 @@ npm run outreach
 
 ```bash
 # Clean browser cache
-npm run clean-cache
 ```
 
 ## Recent Fixes (December 2025)

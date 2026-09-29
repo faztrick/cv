@@ -102,9 +102,7 @@
                 <button class="btn btn-sm btn-outline-info me-2" onclick="logoutAdmin()">
                     <i class="fas fa-right-from-bracket me-1"></i> Logout
                 </button>
-                <button class="btn btn-sm btn-outline-danger" onclick="clearLocks()">
-                    <i class="fas fa-skull me-1"></i> Kill All & Clear Locks
-                </button>
+
             </div>
         </div>
     </nav>
@@ -343,11 +341,7 @@
                                     <i class="fas fa-pen-fancy me-2"></i>Auto-Fill
                                 </button>
                             </div>
-                            <div class="col-6">
-                                <button class="btn btn-outline-danger w-100" onclick="apiCall('/api/clean-cache')">
-                                    <i class="fas fa-trash me-2"></i>Clean Cache
-                                </button>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -459,13 +453,6 @@
             await apiCall('/api/open-emails');
         }
 
-        async function clearLocks() {
-            if(confirm('Are you sure? This will close all Chrome windows.')) {
-                await apiCall('/api/clear-locks');
-                // Reset status indicators
-                document.querySelectorAll('.status-badge').forEach(el => el.classList.remove('status-active'));
-            }
-        }
 
         async function stopProcess(id) {
             await apiCall(`/api/stop/${id}`);

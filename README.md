@@ -145,7 +145,6 @@ npm run indeed-stats          # View Indeed application statistics
 ```bash
 npm run generate-emails       # Original email generator
 npm run job-agent             # View job search profile
-npm run clean-cache           # Clean Puppeteer cache
 ```
 
 ## 📁 Project Structure
@@ -159,7 +158,6 @@ cv/
 │   ├── generate-job-emails.js      # Email generator CLI
 │   ├── email-templates.js          # Email template library
 │   ├── job-search-agent.js         # Profile & search config
-│   └── delete-puppeteer-cache.js   # Cache cleanup
 │
 ├── resumes/                        # Resume files
 │   ├── resume.md                   # Master resume (ATS-friendly)
@@ -444,7 +442,6 @@ npm run generate-emails
 npm run job-agent
 
 # Clean cache
-npm run clean-cache
 ```
 
 ## 📄 License

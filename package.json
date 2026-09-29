@@ -16,7 +16,6 @@
     "generate-emails": "node scripts/generate-job-emails.js",
     "job-agent": "node scripts/job-search-agent.js",
     "job-search": "node scripts/job-search-agent.js --search",
-    "clean-cache": "node scripts/delete-puppeteer-cache.js",
     "install-puppeteer": "npm install puppeteer",
     "parse-cv": "node scripts/cv-parser.js --sync-data",
     "parse-cv:flutter": "node scripts/cv-parser.js --resume resumes/variants/resume-flutter-fullstack.md --sync-data",
