@@ -85,3 +85,11 @@ Fasil_0373 copy.JPG
 
 # Serena MCP logs
 serena_log.txt
+
+# Portfolio compilation and CV export previews
+frontend/.ssr/
+tmp/pdfs/
+output/playwright/
+!output/pdf/Muhammed-Fasil-PV-CV.pdf
+deploy/cloudflare-credentials.json
+deploy/cloudflare.yml

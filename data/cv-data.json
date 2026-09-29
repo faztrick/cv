@@ -1,7 +1,7 @@
 {
   "personalInfo": {
     "name": "MUHAMMED FASIL PV",
-    "title": "Senior Full-Stack Engineer | React, Flutter, Node.js, AI & IoT Platforms",
+    "title": "Senior Full-Stack Engineer | Applied AI & Enterprise Systems",
     "email": "faztrick@gmail.com",
     "phone": "+971 555923545",
     "location": "Dubai, UAE",
@@ -11,7 +11,7 @@
     "whatsapp": "https://wa.me/971555923545",
     "website": "https://www.uaecodes.com"
   },
-  "summary": "Dubai-based Senior Full-Stack Engineer with 13+ years delivering production ERP, QMS, POS, retail automation and AI-enabled platforms. Strong across React, TypeScript, Node.js, Flutter, Python, Docker, MySQL and cloud deployments, with hands-on delivery from architecture to rollout and support. Currently in UAE on Visit Visa and immediately available for onsite or hybrid roles in Dubai, Abu Dhabi, and Sharjah.",
+  "summary": "Senior full-stack engineer with 12+ years of experience delivering enterprise applications, retail systems, and AI-enabled software. Hands-on across React, TypeScript, Node.js, Python, and Flutter, from user interfaces and APIs to offline synchronization, cloud deployment, and device integration. Recent projects combine AI-assisted sales calling, lead management, speech transcription, and speaker diarization. Based in Dubai and open to senior full-stack and applied AI opportunities.",
   "skills": [
     "Flutter",
     "Dart",
@@ -47,7 +47,27 @@
     "Hive",
     "ObjectBox",
     "MikroTik",
-    "WireGuard"
+    "WireGuard",
+    "React",
+    "MobX",
+    "MVVM",
+    "Vite",
+    "Flask",
+    "Speech-to-text",
+    "Speaker diarization",
+    "WhisperX",
+    "pyannote.audio",
+    "Audio processing",
+    "WaveSurfer.js",
+    "Local AI deployment",
+    "Linux",
+    "REST APIs",
+    "WebRTC",
+    "SIP",
+    "Socket.IO",
+    "PostgreSQL",
+    "Redis",
+    "CRM workflows"
   ],
   "experience": [
     {
@@ -55,24 +75,80 @@
       "company": "Idol Technology LLC",
       "location": "Dubai, UAE",
       "duration": "Aug 2024 – Present",
-      "description": "Architected **IdolMEA ERP** integrating **POS, QMS, IoT automation, and AI vision** modules. Built **IdolQueue (i-QMS)** in Flutter + Node.js with **Hive offline sync**, **MQTT events**, and **multi-branch dashboards**. Developed **AI theft detection** (YOLO) for **self-checkout kiosks** with LED/GPIO feedback via **AIDL interface**. Designed **IdolVPN mesh (WireGuard)** network for secure multi-branch communication and API routing. Integrated **WhatsApp/Telegram chat automation** for live queue alerts and service updates. Created **hybrid cloud sync engine** (MySQL ↔ Hive) enabling offline analytics and recovery. Engineered **Android AIDL bridge** for Flutter hardware control in retail edge devices."
+      "description": "Developed retail ERP modules spanning POS, queue management, IoT automation, and AI vision for multi-branch operations. Built offline-first queue management using Flutter, Node.js, Hive synchronization, MQTT events, and branch dashboards. Integrated YOLO-based self-checkout detection with Android AIDL hardware control and LED/GPIO feedback. Designed MySQL-Hive synchronization and WireGuard connectivity for distributed store systems.",
+      "bullets": [
+        "Developed retail ERP modules spanning POS, queue management, IoT automation, and AI vision for multi-branch operations.",
+        "Built offline-first queue management using Flutter, Node.js, Hive synchronization, MQTT events, and branch dashboards.",
+        "Integrated YOLO-based self-checkout detection with Android AIDL hardware control and LED/GPIO feedback.",
+        "Designed MySQL-Hive synchronization and WireGuard connectivity for distributed store systems."
+      ]
     },
     {
       "role": "Senior Software Engineer",
       "company": "Screl Info Pvt Ltd",
       "location": "India / UAE",
       "duration": "Apr 2019 – Jan 2024",
-      "description": "Designed and deployed **SincA ERP**, combining Flutter, Node.js, and AI analytics in Python. Built **AI dashboards**, OCR systems, and predictive models using OpenAI and TensorFlow. Automated WhatsApp/Telegram bots for invoice updates, support, and customer interaction. Dockerized microservices across local + cloud sync nodes with CI/CD pipelines. Implemented **AI queue prediction**, **dynamic pricing**, and **modular API architecture**. Mentored distributed teams across India and UAE in architecture, DevOps, and MVVM design."
+      "description": "Delivered SincA ERP applications with Flutter and Node.js, Python analytics, and modular backend APIs. Built AI dashboards, OCR capabilities, and WhatsApp/Telegram automation for operational workflows. Containerized services across local and cloud environments; mentored distributed teams in architecture, DevOps, and MVVM.",
+      "bullets": [
+        "Delivered SincA ERP applications with Flutter and Node.js, Python analytics, and modular backend APIs.",
+        "Built AI dashboards, OCR capabilities, and WhatsApp/Telegram automation for operational workflows.",
+        "Containerized services across local and cloud environments; mentored distributed teams in architecture, DevOps, and MVVM."
+      ]
     },
     {
       "role": "Software Developer",
       "company": "Sincap Info Pvt Ltd",
       "location": "Calicut, India",
       "duration": "Mar 2014 – Mar 2019",
-      "description": "Developed enterprise ERP and billing systems using **WPF (C#)** and **PHP/MySQL**. Improved UI responsiveness, caching, and modularization for accounting/reporting modules. Delivered solutions for 50+ enterprise clients with performance-tuned SQL databases."
+      "description": "Developed enterprise ERP and billing systems using WPF/C#, PHP, and MySQL. Improved database queries, caching, and reporting modules for solutions delivered to 50+ enterprise clients.",
+      "bullets": [
+        "Developed enterprise ERP and billing systems using WPF/C#, PHP, and MySQL.",
+        "Improved database queries, caching, and reporting modules for solutions delivered to 50+ enterprise clients."
+      ]
     }
   ],
   "projects": [
+    {
+      "name": "AI Sales Calling & Lead Management Platform",
+      "description": "A sales and calling workspace combining lead/contact management, browser-based calling, AI-assisted campaigns, live call tracking, and post-call reporting.",
+      "technologies": [
+        "React",
+        "MobX",
+        "MVVM",
+        "Flask",
+        "WebRTC",
+        "SIP",
+        "PostgreSQL",
+        "Redis",
+        "Socket.IO"
+      ],
+      "category": "Sales & Telephony",
+      "status": "Independent project",
+      "bullets": [
+        "Developed React and MobX MVVM interfaces for lead workflows, calling, organization management, and reporting.",
+        "Integrated Flask APIs, WebRTC/SIP calling, real-time events, and PostgreSQL-backed application data."
+      ]
+    },
+    {
+      "name": "Speech Transcription & Analysis Platform",
+      "description": "An audio and video transcription workspace with speaker diarization, time-aligned playback, searchable transcripts, and multiple export formats. A React interface connects to Flask services running local speech and audio models.",
+      "technologies": [
+        "React",
+        "Vite",
+        "Flask",
+        "Whisper",
+        "WhisperX",
+        "PyTorch",
+        "pyannote.audio",
+        "WaveSurfer.js"
+      ],
+      "status": "Independent project",
+      "category": "AI/ML",
+      "bullets": [
+        "Built a React interface for file-based transcription, playback synchronized to transcript segments, and export workflows.",
+        "Integrated Flask services with Whisper, WhisperX, and pyannote.audio for local transcription and speaker diarization."
+      ]
+    },
     {
       "name": "IdolMEA ERP",
       "description": "Enterprise retail platform integrating POS, QMS, IoT automation & AI analytics for 50+ GCC branches",
@@ -207,12 +283,73 @@
     "GITEX Dubai 2024 and 2025: AI self-checkout and QMS showcase",
     "50+ enterprise clients across retail, healthcare & hospitality",
     "Led cross-location teams with CI/CD & Docker pipelines",
-    "13+ years of full-stack development experience"
+    "12+ years of full-stack development experience"
   ],
   "availability": {
     "status": "Available Immediately",
     "location": "Dubai, UAE",
     "visa": "Visit Visa"
   },
-  "yearsOfExperience": 13
+  "yearsOfExperience": 12,
+  "asOf": "2026-09-29",
+  "skillGroups": {
+    "Application development": [
+      "React",
+      "TypeScript",
+      "JavaScript",
+      "Node.js",
+      "Python",
+      "Flutter",
+      "Dart",
+      "C#",
+      "Kotlin"
+    ],
+    "AI and speech": [
+      "Whisper",
+      "WhisperX",
+      "PyTorch",
+      "pyannote.audio",
+      "Speaker diarization",
+      "OpenAI",
+      "LangChain",
+      "YOLO"
+    ],
+    "Architecture and APIs": [
+      "MVVM",
+      "MobX",
+      "REST APIs",
+      "Flask",
+      "Offline-first synchronization",
+      "MQTT",
+      "Android AIDL"
+    ],
+    "Data and infrastructure": [
+      "Redis",
+      "PostgreSQL",
+      "MySQL",
+      "MongoDB",
+      "Firebase",
+      "Hive",
+      "Docker",
+      "Linux",
+      "Azure",
+      "GCP",
+      "Nginx",
+      "PM2"
+    ],
+    "Real-time and calling": [
+      "WebRTC",
+      "SIP",
+      "Socket.IO",
+      "CRM workflows",
+      "AI-assisted sales campaigns"
+    ]
+  },
+  "education": [
+    {
+      "qualification": "Diploma in Computer Engineering",
+      "institution": "JDT Islam Polytechnic, Calicut, Kerala, India",
+      "duration": "Jun 2010 - Mar 2013"
+    }
+  ]
 }

@@ -237,6 +237,7 @@ app.get('/admin-login', (req, res) => {
 });
 
 // Static files (this serves index.html at / by default - your old panel)
+app.use(express.static(path.join(__dirname, '..', 'frontend', 'dist')));
 app.use(express.static(path.join(__dirname, '../public')));
 
 // Store active processes

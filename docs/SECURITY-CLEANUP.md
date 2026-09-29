@@ -15,7 +15,7 @@ The panel is a local administrative tool. Run it with Node.js 22.12 or newer. It
 
 ## Verification and limits
 
-On 2026-09-29, the lockfile dependency audit reported zero known vulnerabilities. Changed JavaScript and inline scripts were parsed, and Git whitespace checks passed. No application, browser automation or tests were run at the owner's request. Browser compatibility after the Puppeteer major upgrade still needs operational verification before use.
+On 2026-09-29, the root and portfolio dependency audits reported zero known vulnerabilities. Changed JavaScript and inline scripts were parsed, and Git whitespace checks passed. The portfolio production build compiled successfully; desktop and mobile layouts and the two-page PDF were visually reviewed. No automated tests were run, as requested. The separate administration toolkit was not started; browser compatibility after its Puppeteer major upgrade still needs operational verification before use.
 
 The two local copies were consolidated with the newer resume changes. Older branch additions that restored unsafe browser controls or the obsolete image server were superseded rather than reintroduced; dependency branch changes were superseded by newer patched resolutions.
 

@@ -264,6 +264,7 @@ app.use((req, res, next) => {
     return sendAdminUnauthorized(req, res);
 });
 
+app.use(express.static(path.join(__dirname, 'frontend', 'dist')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // --- API ENDPOINTS ---
