@@ -1,8 +1,13 @@
-tunnel: 24a1d203-b94d-422e-aaad-a4b1ddd6be86
+# Replace with a tunnel created in the Cloudflare account managing both domains.
+tunnel: REPLACE_WITH_SAME_ACCOUNT_TUNNEL_UUID
 credentials-file: /home/ubuntu/projects/cv-site/deploy/cloudflare-credentials.json
 ingress:
   - hostname: faztrick.com
     service: http://127.0.0.1:18090
   - hostname: www.faztrick.com
+    service: http://127.0.0.1:18090
+  - hostname: uaecodes.com
+    service: http://127.0.0.1:18090
+  - hostname: www.uaecodes.com
     service: http://127.0.0.1:18090
   - service: http_status:404
