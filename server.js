@@ -1,6 +1,5 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+const { installRequestGuards, loginRateLimit, resolveContainedFile, fetchPublicText } = require('./scripts/http-security');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
@@ -19,8 +18,8 @@ const PORT = 3000;
 // Initialize skills matcher
 const skillsMatcher = new SkillsJobMatcher();
 
-app.use(cors());
-app.use(bodyParser.json());
+installRequestGuards(app, PORT);
+app.use(express.json({ limit: '100kb' }));
 
 // Paths
 const DATA_DIR = path.join(__dirname, 'data');
@@ -62,26 +61,8 @@ const ALLOWED_RUN_COMMANDS = new Map([
     ['python scripts/render_pdf.py', { command: 'python', args: ['scripts/render_pdf.py'] }],
 ]);
 
-function isPathInsideRepo(candidatePath) {
-    const resolvedPath = path.resolve(candidatePath);
-    return resolvedPath === REPO_ROOT || resolvedPath.startsWith(`${REPO_ROOT}${path.sep}`);
-}
-
 function resolveRepoFilePath(inputPath, expectedExtension) {
-    if (typeof inputPath !== 'string' || !inputPath.trim()) {
-        return null;
-    }
-
-    const resolvedPath = path.resolve(REPO_ROOT, inputPath);
-    if (!isPathInsideRepo(resolvedPath)) {
-        return null;
-    }
-
-    if (expectedExtension && path.extname(resolvedPath).toLowerCase() !== expectedExtension) {
-        return null;
-    }
-
-    return resolvedPath;
+    return resolveContainedFile(REPO_ROOT, inputPath, expectedExtension);
 }
 
 function checkWhatsAppRateLimit(number) {
@@ -97,29 +78,6 @@ function checkWhatsAppRateLimit(number) {
     return true;
 }
 
-function isSafeRemoteUrl(inputUrl) {
-    try {
-        const parsed = new URL(inputUrl);
-        if (!['http:', 'https:'].includes(parsed.protocol)) {
-            return false;
-        }
-
-        const hostname = parsed.hostname.toLowerCase();
-        const blockedHosts = new Set(['localhost', '127.0.0.1', '::1']);
-        if (blockedHosts.has(hostname)) {
-            return false;
-        }
-
-        if (/^(10\.|127\.|169\.254\.|172\.(1[6-9]|2\d|3[0-1])\.|192\.168\.)/.test(hostname)) {
-            return false;
-        }
-
-        return true;
-    } catch {
-        return false;
-    }
-}
-
 function getAdminPassword() {
     return typeof process.env.ADMIN_PASSWORD === 'string' ? process.env.ADMIN_PASSWORD : '';
 }
@@ -132,14 +90,20 @@ function getAdminSecurityAnswer() {
     return typeof process.env.ADMIN_SECURITY_ANSWER === 'string' ? process.env.ADMIN_SECURITY_ANSWER.trim() : '';
 }
 
+// A random startup secret prevents forging sessions when no secret is configured.
+const startupSessionSecret = crypto.randomBytes(32).toString('hex');
 function getAdminSessionSecret() {
     const configuredSecret = typeof process.env.ADMIN_SESSION_SECRET === 'string' ? process.env.ADMIN_SESSION_SECRET.trim() : '';
     if (configuredSecret) {
+        if (Buffer.byteLength(configuredSecret, 'utf8') < 32) throw new Error('ADMIN_SESSION_SECRET must contain at least 32 bytes');
         return configuredSecret;
     }
 
-    return crypto.createHash('sha256').update(`${REPO_ROOT}:local-admin-session`).digest('hex');
+    return startupSessionSecret;
 }
+
+// Reject weak configured secrets before accepting requests.
+getAdminSessionSecret();
 
 function safeEqual(left, right) {
     const leftBuffer = Buffer.from(left || '', 'utf8');
@@ -162,15 +126,15 @@ function parseCookies(cookieHeader) {
             return accumulator;
         }
 
-        accumulator[rawName] = decodeURIComponent(rawValue.join('='));
+        try { accumulator[rawName] = decodeURIComponent(rawValue.join('=')); } catch { return accumulator; }
         return accumulator;
-    }, {});
+    }, Object.create(null));
 }
 
 function createAdminSessionToken(expiresAt) {
     const payload = `admin:${expiresAt}`;
     const signature = crypto
-        .createHmac('sha256', getAdminSessionSecret())
+        .createHmac('sha256', crypto.createHmac('sha256', getAdminSessionSecret()).update(getAdminPassword()).digest())
         .update(payload)
         .digest('hex');
 
@@ -195,7 +159,7 @@ function verifyAdminSessionToken(token) {
         }
 
         const expectedSignature = crypto
-            .createHmac('sha256', getAdminSessionSecret())
+            .createHmac('sha256', crypto.createHmac('sha256', getAdminSessionSecret()).update(getAdminPassword()).digest())
             .update(`${scope}:${rawExpiry}`)
             .digest('hex');
 
@@ -223,6 +187,7 @@ function isAdminAuthenticated(req) {
 }
 
 function isProtectedAdminRequest(requestPath) {
+    requestPath = requestPath.toLowerCase();
     if (requestPath.startsWith('/api/') && !requestPath.startsWith('/api/admin/auth/')) {
         return true;
     }
@@ -250,7 +215,7 @@ app.get('/api/admin/auth/status', (req, res) => {
     });
 });
 
-app.post('/api/admin/auth/login', (req, res) => {
+app.post('/api/admin/auth/login', loginRateLimit, (req, res) => {
     const configuredPassword = getAdminPassword();
     if (!configuredPassword) {
         return res.status(503).json({ error: 'ADMIN_PASSWORD is not configured on the server' });
@@ -1061,8 +1026,9 @@ Muhammed Fasil PV
 🌐 https://www.uaecodes.com`;
     } else {
         // Application email
-        if (company.generatedEmailPath && fs.existsSync(company.generatedEmailPath)) {
-            body = fs.readFileSync(company.generatedEmailPath, 'utf8');
+        const emailPath = resolveContainedFile(EMAILS_DIR, typeof company.generatedEmailPath === 'string' ? path.resolve(REPO_ROOT, company.generatedEmailPath) : '', '.txt');
+        if (emailPath) {
+            body = fs.readFileSync(emailPath, 'utf8');
             body = body.replace(/^Subject:.*\r?\n/m, '').trim();
         } else {
             body = `Dear ${company.contactPerson || 'Hiring Manager'},
@@ -1123,8 +1089,9 @@ app.get('/api/outlook/bulk', (req, res) => {
             body = `Dear ${company.contactPerson || 'Hiring Manager'},\n\nFollowing up on my ${company.jobTitle} application...`;
         } else {
             subject = `Application - ${company.jobTitle} - ${company.name} - Muhammed Fasil PV`;
-            if (company.generatedEmailPath && fs.existsSync(company.generatedEmailPath)) {
-                body = fs.readFileSync(company.generatedEmailPath, 'utf8');
+            const emailPath = resolveContainedFile(EMAILS_DIR, typeof company.generatedEmailPath === 'string' ? path.resolve(REPO_ROOT, company.generatedEmailPath) : '', '.txt');
+            if (emailPath) {
+                body = fs.readFileSync(emailPath, 'utf8');
             } else {
                 body = 'Application email content...';
             }
@@ -1155,23 +1122,8 @@ app.post('/api/scrape/url', async (req, res) => {
         return res.status(400).json({ success: false, error: 'URL is required' });
     }
 
-    if (!isSafeRemoteUrl(url)) {
-        return res.status(400).json({ success: false, error: 'Only public http(s) URLs are allowed' });
-    }
-
     try {
-        // Use fetch to get the page content
-        const response = await fetch(url, {
-            headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-            }
-        });
-
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-        }
-
-        const html = await response.text();
+        const html = await fetchPublicText(url);
 
         // Extract text content (simple HTML stripping)
         const textContent = html
@@ -1254,6 +1206,9 @@ app.get('/api/indeed/config', (req, res) => {
 // Save Indeed Config
 app.post('/api/indeed/config', (req, res) => {
     const config = req.body;
+    if (config.email !== undefined && (typeof config.email !== 'string' || config.email.length > 254 || /[\r\n\0]/.test(config.email) || (config.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(config.email)))) {
+        return res.status(400).json({ error: 'A valid single-line email address is required' });
+    }
     // Persist only non-sensitive settings.
     const safeConfig = {
         email: config?.email || '',
@@ -1273,7 +1228,7 @@ app.post('/api/indeed/config', (req, res) => {
     // Update or add Indeed credentials
     if (config.email) {
         if (envContent.includes('INDEED_EMAIL=')) {
-            envContent = envContent.replace(/INDEED_EMAIL=.*/g, `INDEED_EMAIL=${config.email}`);
+            envContent = envContent.replace(/^INDEED_EMAIL=.*$/gm, () => `INDEED_EMAIL=${config.email}`);
         } else {
             envContent += `\nINDEED_EMAIL=${config.email}`;
         }
@@ -1491,6 +1446,6 @@ app.get('/admin-login', (req, res) => {
     res.redirect('/admin-login.html');
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '127.0.0.1', () => {
     console.log(`🚀 CV Panel Server running at http://localhost:${PORT}/panel`);
 });

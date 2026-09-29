@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="/js/admin-request.js"></script>
+    <script src="/js/vendor/purify.js"></script>
+    <script src="/js/admin-html.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CV & Job Search Panel</title>
@@ -449,19 +452,19 @@
                     container.classList.add('border-dashed');
                     // Reset container content if it was previously connected
                     if(container.querySelector('.fa-check-circle')) {
-                         container.innerHTML = `
+                         container.innerHTML = sanitizeAdminHtml(`
                             <div id="wa-spinner" class="hidden animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div>
                             <img id="wa-qr" src="${data.qr}" alt="QR Code" class="w-64 h-64 mb-4">
                             <div id="wa-status-text" class="text-xl font-bold text-gray-700">QR_READY</div>
                             <p id="wa-status-sub" class="text-sm text-gray-500 mt-2">Scan this QR code with your WhatsApp mobile app.</p>
-                         `;
+                         `);
                     }
                 } else if (data.status === 'CONNECTED' || data.status === 'AUTHENTICATED') {
                     qrImg.classList.add('hidden');
                     spinner.classList.add('hidden');
                     container.classList.add('border-green-500');
                     container.classList.remove('border-dashed');
-                    container.innerHTML = '<i class="fas fa-check-circle text-6xl text-green-500 mb-4"></i><div class="text-xl font-bold text-green-600">Connected</div><p class="text-sm text-gray-500 mt-2">Ready to automate.</p>';
+                    container.innerHTML = sanitizeAdminHtml('<i class="fas fa-check-circle text-6xl text-green-500 mb-4"></i><div class="text-xl font-bold text-green-600">Connected</div><p class="text-sm text-gray-500 mt-2">Ready to automate.</p>');
                 } else {
                     // Loading or Disconnected
                     qrImg.classList.add('hidden');
@@ -486,7 +489,7 @@
             const res = await fetch('/api/companies');
             const data = await res.json();
             const tbody = document.getElementById('companies-table');
-            tbody.innerHTML = '';
+            tbody.innerHTML = sanitizeAdminHtml('');
 
             data.forEach(c => {
                 let statusColor = 'bg-gray-100 text-gray-800';
@@ -504,7 +507,7 @@
                         </td>
                     </tr>
                 `;
-                tbody.innerHTML += row;
+                tbody.innerHTML += sanitizeAdminHtml(row);
             });
             updateStats(data);
         }
@@ -559,7 +562,7 @@
             const res = await fetch('/api/emails');
             const emails = await res.json();
             const list = document.getElementById('email-list');
-            list.innerHTML = '';
+            list.innerHTML = sanitizeAdminHtml('');
 
             emails.forEach(email => {
                 const li = document.createElement('li');
@@ -588,7 +591,7 @@
         // --- UI Helpers ---
         function logToConsole(text) {
             const consoleEl = document.getElementById('console-output');
-            consoleEl.innerHTML += `\n${text}`;
+            consoleEl.innerHTML += sanitizeAdminHtml(`\n${text}`);
             consoleEl.scrollTop = consoleEl.scrollHeight;
         }
 

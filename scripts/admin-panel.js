@@ -3,7 +3,7 @@ const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
-const cors = require('cors');
+const { installRequestGuards, loginRateLimit } = require('./http-security');
 
 require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
@@ -27,8 +27,8 @@ const ADMIN_PROTECTED_PATHS = new Set([
     '/panel-skills.html'
 ]);
 
-app.use(cors());
-app.use(express.json());
+installRequestGuards(app, PORT);
+app.use(express.json({ limit: '100kb' }));
 
 function getAdminPassword() {
     return typeof process.env.ADMIN_PASSWORD === 'string' ? process.env.ADMIN_PASSWORD : '';
@@ -42,14 +42,20 @@ function getAdminSecurityAnswer() {
     return typeof process.env.ADMIN_SECURITY_ANSWER === 'string' ? process.env.ADMIN_SECURITY_ANSWER.trim() : '';
 }
 
+// A random startup secret prevents forging sessions when no secret is configured.
+const startupSessionSecret = crypto.randomBytes(32).toString('hex');
 function getAdminSessionSecret() {
     const configuredSecret = typeof process.env.ADMIN_SESSION_SECRET === 'string' ? process.env.ADMIN_SESSION_SECRET.trim() : '';
     if (configuredSecret) {
+        if (Buffer.byteLength(configuredSecret, 'utf8') < 32) throw new Error('ADMIN_SESSION_SECRET must contain at least 32 bytes');
         return configuredSecret;
     }
 
-    return crypto.createHash('sha256').update(`${REPO_ROOT}:local-admin-session`).digest('hex');
+    return startupSessionSecret;
 }
+
+// Reject weak configured secrets before accepting requests.
+getAdminSessionSecret();
 
 function safeEqual(left, right) {
     const leftBuffer = Buffer.from(left || '', 'utf8');
@@ -72,15 +78,15 @@ function parseCookies(cookieHeader) {
             return accumulator;
         }
 
-        accumulator[rawName] = decodeURIComponent(rawValue.join('='));
+        try { accumulator[rawName] = decodeURIComponent(rawValue.join('=')); } catch { return accumulator; }
         return accumulator;
-    }, {});
+    }, Object.create(null));
 }
 
 function createAdminSessionToken(expiresAt) {
     const payload = `admin:${expiresAt}`;
     const signature = crypto
-        .createHmac('sha256', getAdminSessionSecret())
+        .createHmac('sha256', crypto.createHmac('sha256', getAdminSessionSecret()).update(getAdminPassword()).digest())
         .update(payload)
         .digest('hex');
 
@@ -105,7 +111,7 @@ function verifyAdminSessionToken(token) {
         }
 
         const expectedSignature = crypto
-            .createHmac('sha256', getAdminSessionSecret())
+            .createHmac('sha256', crypto.createHmac('sha256', getAdminSessionSecret()).update(getAdminPassword()).digest())
             .update(`${scope}:${rawExpiry}`)
             .digest('hex');
 
@@ -133,6 +139,7 @@ function isAdminAuthenticated(req) {
 }
 
 function isProtectedAdminRequest(requestPath) {
+    requestPath = requestPath.toLowerCase();
     if (requestPath.startsWith('/api/') && !requestPath.startsWith('/api/admin/auth/')) {
         return true;
     }
@@ -157,7 +164,7 @@ app.get('/api/admin/auth/status', (req, res) => {
     });
 });
 
-app.post('/api/admin/auth/login', (req, res) => {
+app.post('/api/admin/auth/login', loginRateLimit, (req, res) => {
     const configuredPassword = getAdminPassword();
     if (!configuredPassword) {
         return res.status(503).json({ error: 'ADMIN_PASSWORD is not configured on the server' });
@@ -389,7 +396,7 @@ app.get('/api/status', (req, res) => {
     });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '127.0.0.1', () => {
     console.log(`\n🚀 Admin Panel running at http://localhost:${PORT}`);
     console.log(`   Open your browser to control all tools`);
 });

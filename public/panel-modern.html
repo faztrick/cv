@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
+    <script src="/js/admin-request.js"></script>
+    <script src="/js/vendor/purify.js"></script>
+    <script src="/js/admin-html.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Career Admin Panel</title>
@@ -292,7 +295,7 @@
                     <button onclick="showTab('whatsapp')" class="compact-btn bg-emerald-600 hover:bg-emerald-700 text-white">
                         <i class="fab fa-whatsapp mr-2"></i>WhatsApp
                     </button>
-                    <button onclick="window.open('cv.html', '_blank')" class="compact-btn bg-orange-600 hover:bg-orange-700 text-white">
+                    <button onclick="openAdminUrl('cv.html', '_blank')" class="compact-btn bg-orange-600 hover:bg-orange-700 text-white">
                         <i class="fas fa-eye mr-2"></i>View CV
                     </button>
                 </div>
@@ -2619,16 +2622,16 @@
 
         function renderSkills() {
             const container = document.getElementById('cv-skills-container');
-            container.innerHTML = '';
+            container.innerHTML = sanitizeAdminHtml('');
 
             if (cvData.skills && Array.isArray(cvData.skills)) {
                 cvData.skills.forEach((skill, index) => {
                     const tag = document.createElement('span');
                     tag.className = 'px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs font-medium flex items-center gap-2';
-                    tag.innerHTML = `
+                    tag.innerHTML = sanitizeAdminHtml(`
                         ${skill}
-                        <button onclick="removeSkill(${index})" class="hover:text-red-500"><i class="fas fa-times"></i></button>
-                    `;
+                        <button data-cv-click="${cvAction('removeSkill', [index])}" class="hover:text-red-500"><i class="fas fa-times"></i></button>
+                    `);
                     container.appendChild(tag);
                 });
             }
@@ -2652,30 +2655,30 @@
 
         function renderExperience() {
             const container = document.getElementById('cv-experience-list');
-            container.innerHTML = '';
+            container.innerHTML = sanitizeAdminHtml('');
 
             if (cvData.experience && Array.isArray(cvData.experience)) {
                 cvData.experience.forEach((exp, index) => {
                     const item = document.createElement('div');
                     item.className = 'border border-gray-200 dark:border-gray-700 rounded-lg p-4';
-                    item.innerHTML = `
+                    item.innerHTML = sanitizeAdminHtml(`
                         <div class="flex justify-between items-start">
                             <div class="flex-1">
                                 <div class="grid grid-cols-2 gap-2 mb-2">
-                                    <input type="text" value="${exp.role || ''}" class="compact-input font-medium" placeholder="Role" onchange="updateExperience(${index}, 'role', this.value)">
-                                    <input type="text" value="${exp.company || ''}" class="compact-input" placeholder="Company" onchange="updateExperience(${index}, 'company', this.value)">
+                                    <input type="text" value="${exp.role || ''}" class="compact-input font-medium" placeholder="Role" data-cv-change="${cvAction('updateExperience', [index, 'role'], true)}">
+                                    <input type="text" value="${exp.company || ''}" class="compact-input" placeholder="Company" data-cv-change="${cvAction('updateExperience', [index, 'company'], true)}">
                                 </div>
                                 <div class="grid grid-cols-2 gap-2 mb-2">
-                                    <input type="text" value="${exp.period || ''}" class="compact-input text-sm" placeholder="Period" onchange="updateExperience(${index}, 'period', this.value)">
-                                    <input type="text" value="${exp.location || ''}" class="compact-input text-sm" placeholder="Location" onchange="updateExperience(${index}, 'location', this.value)">
+                                    <input type="text" value="${exp.period || ''}" class="compact-input text-sm" placeholder="Period" data-cv-change="${cvAction('updateExperience', [index, 'period'], true)}">
+                                    <input type="text" value="${exp.location || ''}" class="compact-input text-sm" placeholder="Location" data-cv-change="${cvAction('updateExperience', [index, 'location'], true)}">
                                 </div>
-                                <textarea class="compact-input w-full text-sm h-20 resize-none" placeholder="Description" onchange="updateExperience(${index}, 'description', this.value)">${exp.description || ''}</textarea>
+                                <textarea class="compact-input w-full text-sm h-20 resize-none" placeholder="Description" data-cv-change="${cvAction('updateExperience', [index, 'description'], true)}">${exp.description || ''}</textarea>
                             </div>
-                            <button onclick="removeExperience(${index})" class="ml-4 btn-icon text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20">
+                            <button data-cv-click="${cvAction('removeExperience', [index])}" class="ml-4 btn-icon text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </div>
-                    `;
+                    `);
                     container.appendChild(item);
                 });
             }
@@ -2755,7 +2758,7 @@
 
             const logEl = document.getElementById('wa-log');
             if (logEl) {
-                logEl.innerHTML = waLogEntries.join('');
+                logEl.innerHTML = sanitizeAdminHtml(waLogEntries.join(''));
                 logEl.scrollTop = logEl.scrollHeight;
             }
         }
@@ -2773,10 +2776,10 @@
             };
 
             const config = colors[status] || { dot: 'bg-gray-400', text: 'text-gray-500', label: status };
-            indicator.innerHTML = `
+            indicator.innerHTML = sanitizeAdminHtml(`
                 <div class="w-2 h-2 ${config.dot} rounded-full"></div>
                 <span class="${config.text}">${config.label}</span>
-            `;
+            `);
         }
 
         function startWhatsAppPolling() {
@@ -2820,7 +2823,7 @@
                     statusSub.textContent = 'Scan with WhatsApp mobile app';
                     addWhatsAppLog('QR Code ready for scanning', 'warning');
                     if(container.querySelector('.fa-check-circle')) {
-                         container.innerHTML = `<div id="wa-spinner" class="hidden animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div><img id="wa-qr" src="${data.qr}" class="w-64 h-64 mb-4 border-4 border-white dark:border-gray-600 rounded-lg shadow-lg"><div id="wa-status-text" class="text-xl font-bold text-gray-700 dark:text-white">QR_READY</div><p id="wa-status-sub" class="text-sm text-gray-500 dark:text-gray-400 mt-2">Scan with WhatsApp mobile app</p>`;
+                         container.innerHTML = sanitizeAdminHtml(`<div id="wa-spinner" class="hidden animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mb-4"></div><img id="wa-qr" src="${data.qr}" class="w-64 h-64 mb-4 border-4 border-white dark:border-gray-600 rounded-lg shadow-lg"><div id="wa-status-text" class="text-xl font-bold text-gray-700 dark:text-white">QR_READY</div><p id="wa-status-sub" class="text-sm text-gray-500 dark:text-gray-400 mt-2">Scan with WhatsApp mobile app</p>`);
                     }
                 } else if (data.status === 'CONNECTED' || data.status === 'AUTHENTICATED') {
                     if (prevStatus !== data.status) {
@@ -2828,7 +2831,7 @@
                     }
                     qrImg.classList.add('hidden');
                     spinner.classList.add('hidden');
-                    container.innerHTML = '<i class="fas fa-check-circle text-6xl text-green-500 mb-4"></i><div class="text-xl font-bold text-green-600">Connected</div><p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Ready to use</p>';
+                    container.innerHTML = sanitizeAdminHtml('<i class="fas fa-check-circle text-6xl text-green-500 mb-4"></i><div class="text-xl font-bold text-green-600">Connected</div><p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Ready to use</p>');
                 } else {
                     qrImg.classList.add('hidden');
                     spinner.classList.remove('hidden');
@@ -2858,7 +2861,7 @@
             waLogEntries = [];
             const logEl = document.getElementById('wa-log');
             if (logEl) {
-                logEl.innerHTML = '<div class="text-gray-500">Log cleared</div>';
+                logEl.innerHTML = sanitizeAdminHtml('<div class="text-gray-500">Log cleared</div>');
                 addWhatsAppLog('Log cleared', 'info');
             }
         }
@@ -2929,19 +2932,19 @@
             const res = await fetch('/api/companies');
             const data = await res.json();
             const tbody = document.getElementById('companies-table');
-            tbody.innerHTML = '';
+            tbody.innerHTML = sanitizeAdminHtml('');
             data.forEach(c => {
                 let statusColor = 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300';
                 if(c.status === 'Generated') statusColor = 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300';
                 if(c.status === 'Sent') statusColor = 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300';
-                tbody.innerHTML += `
+                tbody.innerHTML += sanitizeAdminHtml(`
                     <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                         <td class="px-4 py-3 font-medium text-gray-800 dark:text-white">${c.name}</td>
                         <td class="px-4 py-3 text-gray-600 dark:text-gray-400">${c.jobTitle}</td>
                         <td class="px-4 py-3"><span class="px-2 py-1 rounded-full text-xs ${statusColor}">${c.status}</span></td>
                         <td class="px-4 py-3 text-right"><button class="btn-icon hover:bg-gray-100 dark:hover:bg-gray-700"><i class="fas fa-edit text-gray-600 dark:text-gray-400"></i></button></td>
                     </tr>
-                `;
+                `);
             });
             updateStats(data);
         }
@@ -2972,7 +2975,7 @@
             const res = await fetch('/api/emails');
             const emails = await res.json();
             const list = document.getElementById('email-list');
-            list.innerHTML = '';
+            list.innerHTML = sanitizeAdminHtml('');
             emails.forEach(email => {
                 const li = document.createElement('li');
                 li.className = 'p-3 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer text-sm text-gray-700 dark:text-gray-300';
@@ -3065,13 +3068,13 @@
                 rows.push(`</div>`);
 
                 if (detailsEl) {
-                    detailsEl.innerHTML = rows.join('');
+                    detailsEl.innerHTML = sanitizeAdminHtml(rows.join(''));
                     detailsEl.classList.remove('hidden');
                 }
             } catch (e) {
                 setEmailPreflightBadge('bad', 'Preflight failed');
                 if (detailsEl) {
-                    detailsEl.innerHTML = `<div class="text-red-600 dark:text-red-400">Failed to run preflight: ${e.message}</div>`;
+                    detailsEl.innerHTML = sanitizeAdminHtml(`<div class="text-red-600 dark:text-red-400">Failed to run preflight: ${e.message}</div>`);
                     detailsEl.classList.remove('hidden');
                 }
             }
@@ -3270,7 +3273,7 @@
                 const logEl = document.getElementById('ai-agent-log');
                 // Clear and rebuild logs to avoid duplicates (simple approach)
                 // Ideally we'd only append new ones, but this is safer for sync
-                logEl.innerHTML = '';
+                logEl.innerHTML = sanitizeAdminHtml('');
                 data.logs.forEach(log => {
                     const div = document.createElement('div');
                     div.className = log.includes('ERROR') ? 'text-red-400' : 'text-green-400';
@@ -3293,14 +3296,14 @@
         function logAIAgent(msg) {
             const logEl = document.getElementById('ai-agent-log');
             const time = new Date().toLocaleTimeString();
-            logEl.innerHTML += `<div><span class="text-gray-500">[${time}]</span> ${msg}</div>`;
+            logEl.innerHTML += sanitizeAdminHtml(`<div><span class="text-gray-500">[${time}]</span> ${msg}</div>`);
             logEl.scrollTop = logEl.scrollHeight;
         }
 
         function updateAgentStatus(text, badgeClass, dotClass) {
             const badge = document.getElementById('agent-status-badge');
             badge.className = `px-3 py-1 rounded-full text-sm font-medium flex items-center gap-2 ${badgeClass}`;
-            badge.innerHTML = `<div class="w-2 h-2 rounded-full ${dotClass}"></div> ${text}`;
+            badge.innerHTML = sanitizeAdminHtml(`<div class="w-2 h-2 rounded-full ${dotClass}"></div> ${text}`);
         }
 
         // Init after the full script is evaluated so template data exists.
@@ -3321,9 +3324,9 @@
                 if (data.personalInfo) {
                     document.getElementById('dash-name').textContent = data.personalInfo.name || 'Name';
                     document.getElementById('dash-title').textContent = data.personalInfo.title || 'Title';
-                    document.getElementById('dash-location').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${data.personalInfo.location || 'Location'}`;
-                    document.getElementById('dash-email').innerHTML = `<i class="fas fa-envelope"></i> ${data.personalInfo.email || 'Email'}`;
-                    document.getElementById('dash-phone').innerHTML = `<i class="fas fa-phone"></i> ${data.personalInfo.phone || 'Phone'}`;
+                    document.getElementById('dash-location').innerHTML = sanitizeAdminHtml(`<i class="fas fa-map-marker-alt"></i> ${data.personalInfo.location || 'Location'}`);
+                    document.getElementById('dash-email').innerHTML = sanitizeAdminHtml(`<i class="fas fa-envelope"></i> ${data.personalInfo.email || 'Email'}`);
+                    document.getElementById('dash-phone').innerHTML = sanitizeAdminHtml(`<i class="fas fa-phone"></i> ${data.personalInfo.phone || 'Phone'}`);
                 }
 
                 // Availability
@@ -3335,23 +3338,23 @@
                 if (data.skills && Array.isArray(data.skills)) {
                     const skillsContainer = document.getElementById('dash-skills');
                     const topSkills = data.skills.slice(0, 15); // Show top 15
-                    skillsContainer.innerHTML = topSkills.map(skill =>
+                    skillsContainer.innerHTML = sanitizeAdminHtml(topSkills.map(skill =>
                         `<span class="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs">${skill}</span>`
-                    ).join('');
+                    ).join(''));
                     document.getElementById('stat-skills').textContent = data.skills.length;
                 }
 
                 // Experience
                 if (data.experience && Array.isArray(data.experience)) {
                     const expContainer = document.getElementById('dash-experience');
-                    expContainer.innerHTML = data.experience.map(exp => `
+                    expContainer.innerHTML = sanitizeAdminHtml(data.experience.map(exp => `
                         <div class="flex items-start gap-3 text-sm border-l-2 border-blue-500 pl-3">
                             <div class="flex-1">
                                 <p class="font-medium text-gray-800 dark:text-white">${exp.role}</p>
                                 <p class="text-xs text-gray-600 dark:text-gray-400">${exp.company} • ${exp.duration}</p>
                             </div>
                         </div>
-                    `).join('');
+                    `).join(''));
                 }
 
                 // Projects count
@@ -3362,12 +3365,12 @@
                 // Highlights
                 if (data.highlights && Array.isArray(data.highlights)) {
                     const highlightsContainer = document.getElementById('dash-highlights');
-                    highlightsContainer.innerHTML = data.highlights.map(h => `
+                    highlightsContainer.innerHTML = sanitizeAdminHtml(data.highlights.map(h => `
                         <div class="flex items-center gap-2 p-2 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
                             <i class="fas fa-star text-amber-500 text-xs"></i>
                             <span class="text-sm text-gray-700 dark:text-gray-300">${h}</span>
                         </div>
-                    `).join('');
+                    `).join(''));
                 }
 
             } catch (error) {
@@ -3501,7 +3504,7 @@ Muhammed Fasil
             const encodedMessage = encodeURIComponent(message);
             const waUrl = `https://wa.me/${cleanNumber}?text=${encodedMessage}`;
 
-            window.open(waUrl, '_blank');
+            openAdminUrl(waUrl, '_blank');
             addWhatsAppLog(`Opened WhatsApp link for ${cleanNumber}`, 'info');
         }
 
@@ -3564,7 +3567,7 @@ Muhammed Fasil
                 });
             }
 
-            tbody.innerHTML = filtered.map(company => {
+            tbody.innerHTML = sanitizeAdminHtml(filtered.map(company => {
                 const status = company.status || 'Pending';
                 const statusColors = {
                     'Pending': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300',
@@ -3586,7 +3589,7 @@ Muhammed Fasil
                         </td>
                         <td class="px-4 py-3 text-gray-700 dark:text-gray-300">${company.jobTitle || company.type || 'N/A'}</td>
                         <td class="px-4 py-3">
-                            <select onchange="updateCompanyStatus('${company.id}', this.value)" class="text-xs px-2 py-1 rounded-full border-0 ${statusClass}">
+                            <select data-cv-change="${cvAction('updateCompanyStatus', [company.id], true)}" class="text-xs px-2 py-1 rounded-full border-0 ${statusClass}">
                                 <option value="Pending" ${status === 'Pending' ? 'selected' : ''}>Pending</option>
                                 <option value="Applied" ${status === 'Applied' ? 'selected' : ''}>Applied</option>
                                 <option value="Followed Up" ${status === 'Followed Up' ? 'selected' : ''}>Followed Up</option>
@@ -3605,20 +3608,20 @@ Muhammed Fasil
                         </td>
                         <td class="px-4 py-3 text-right">
                             <div class="flex gap-1 justify-end">
-                                <button onclick="openOutlookCompose('${company.id}', 'apply')" class="btn-icon bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 text-blue-600" title="Send Application Email">
+                                <button data-cv-click="${cvAction('openOutlookCompose', [company.id, 'apply'])}" class="btn-icon bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 text-blue-600" title="Send Application Email">
                                     <i class="fas fa-envelope"></i>
                                 </button>
-                                <button onclick="openOutlookCompose('${company.id}', 'followup')" class="btn-icon bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-200 text-purple-600" title="Send Follow-up">
+                                <button data-cv-click="${cvAction('openOutlookCompose', [company.id, 'followup'])}" class="btn-icon bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-200 text-purple-600" title="Send Follow-up">
                                     <i class="fas fa-reply"></i>
                                 </button>
-                                <button onclick="markAsApplied('${company.id}')" class="btn-icon bg-green-100 dark:bg-green-900/30 hover:bg-green-200 text-green-600" title="Mark as Applied">
+                                <button data-cv-click="${cvAction('markAsApplied', [company.id])}" class="btn-icon bg-green-100 dark:bg-green-900/30 hover:bg-green-200 text-green-600" title="Mark as Applied">
                                     <i class="fas fa-check"></i>
                                 </button>
                             </div>
                         </td>
                     </tr>
                 `;
-            }).join('');
+            }).join(''));
         }
 
         async function updateCompanyStatus(id, status) {
@@ -3662,7 +3665,7 @@ Muhammed Fasil
                 const data = await res.json();
 
                 if (data.url) {
-                    window.open(data.url, '_blank');
+                    openAdminUrl(data.url, '_blank');
 
                     // If sending application, offer to mark as applied
                     if (type === 'apply') {
@@ -3698,17 +3701,17 @@ Muhammed Fasil
                     const listEl = document.getElementById('followup-list');
 
                     countEl.textContent = `${followups.length} application${followups.length > 1 ? 's' : ''} need follow-up`;
-                    listEl.innerHTML = followups.map(c => `
+                    listEl.innerHTML = sanitizeAdminHtml(followups.map(c => `
                         <div class="flex items-center justify-between p-2 bg-white dark:bg-gray-800 rounded-lg">
                             <div>
                                 <span class="font-medium text-gray-800 dark:text-white">${c.name}</span>
                                 <span class="text-xs text-gray-500 ml-2">Due: ${c.followUpDate}</span>
                             </div>
-                            <button onclick="openOutlookCompose('${c.id}', 'followup')" class="compact-btn bg-purple-600 hover:bg-purple-700 text-white text-xs">
+                            <button data-cv-click="${cvAction('openOutlookCompose', [c.id, 'followup'])}" class="compact-btn bg-purple-600 hover:bg-purple-700 text-white text-xs">
                                 <i class="fas fa-reply mr-1"></i>Follow Up
                             </button>
                         </div>
-                    `).join('');
+                    `).join(''));
 
                     alert.classList.remove('hidden');
                 }
@@ -3949,11 +3952,11 @@ Muhammed Fasil
             countEl.textContent = scrapedContacts.length;
 
             if (scrapedContacts.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No contacts scraped yet. Enter a URL or paste text to extract contacts.</td></tr>';
+                tbody.innerHTML = sanitizeAdminHtml('<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No contacts scraped yet. Enter a URL or paste text to extract contacts.</td></tr>');
                 return;
             }
 
-            tbody.innerHTML = scrapedContacts.map(contact => `
+            tbody.innerHTML = sanitizeAdminHtml(scrapedContacts.map(contact => `
                 <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                     <td class="px-4 py-2">
                         <input type="checkbox" class="contact-checkbox rounded" data-id="${contact.id}">
@@ -3968,20 +3971,20 @@ Muhammed Fasil
                         ${contact.phone ? `<a href="tel:${contact.phone}" class="text-green-600 hover:underline">${contact.phone}</a>` : '<span class="text-gray-400">-</span>'}
                     </td>
                     <td class="px-4 py-2">
-                        <input type="text" value="${contact.name || ''}" class="compact-input text-xs w-full" onchange="updateContactName('${contact.id}', this.value)">
+                        <input type="text" value="${contact.name || ''}" class="compact-input text-xs w-full" data-cv-change="${cvAction('updateContactName', [contact.id], true)}">
                     </td>
                     <td class="px-4 py-2 text-right">
                         <div class="flex gap-1 justify-end">
-                            <button onclick="copyContact('${contact.id}')" class="btn-icon bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-600" title="Copy">
+                            <button data-cv-click="${cvAction('copyContact', [contact.id])}" class="btn-icon bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 text-gray-600" title="Copy">
                                 <i class="fas fa-copy text-xs"></i>
                             </button>
-                            <button onclick="deleteContact('${contact.id}')" class="btn-icon bg-red-100 dark:bg-red-900/30 hover:bg-red-200 text-red-600" title="Delete">
+                            <button data-cv-click="${cvAction('deleteContact', [contact.id])}" class="btn-icon bg-red-100 dark:bg-red-900/30 hover:bg-red-200 text-red-600" title="Delete">
                                 <i class="fas fa-trash text-xs"></i>
                             </button>
                         </div>
                     </td>
                 </tr>
-            `).join('');
+            `).join(''));
         }
 
         // Toggle select all
@@ -4140,12 +4143,12 @@ Muhammed Fasil
                 error: 'text-red-400',
                 warning: 'text-yellow-400'
             };
-            logEl.innerHTML += `<div class="${colors[type] || 'text-green-400'}">[${timestamp}] ${message}</div>`;
+            logEl.innerHTML += sanitizeAdminHtml(`<div class="${colors[type] || 'text-green-400'}">[${timestamp}] ${message}</div>`);
             logEl.scrollTop = logEl.scrollHeight;
         }
 
         function clearIndeedLog() {
-            document.getElementById('indeed-log').innerHTML = 'Log cleared. Ready to search...';
+            document.getElementById('indeed-log').innerHTML = sanitizeAdminHtml('Log cleared. Ready to search...');
         }
 
         // Start Indeed search
@@ -4220,12 +4223,12 @@ Muhammed Fasil
 
                 // Update log
                 const logEl = document.getElementById('indeed-log');
-                logEl.innerHTML = data.logs.map(log => {
+                logEl.innerHTML = sanitizeAdminHtml(data.logs.map(log => {
                     const color = log.includes('ERROR') ? 'text-red-400' :
                                   log.includes('✅') || log.includes('✓') ? 'text-green-400' :
                                   log.includes('⚠️') ? 'text-yellow-400' : 'text-green-400';
                     return `<div class="${color}">${log}</div>`;
-                }).join('');
+                }).join(''));
                 logEl.scrollTop = logEl.scrollHeight;
 
                 // Update status
@@ -4244,7 +4247,7 @@ Muhammed Fasil
         // Update Indeed status indicator
         function updateIndeedStatus(text, dotClass) {
             const statusEl = document.getElementById('indeed-agent-status');
-            statusEl.innerHTML = `<div class="w-2 h-2 ${dotClass} rounded-full"></div><span class="text-sm">${text}</span>`;
+            statusEl.innerHTML = sanitizeAdminHtml(`<div class="w-2 h-2 ${dotClass} rounded-full"></div><span class="text-sm">${text}</span>`);
         }
 
         // Load Indeed jobs
@@ -4264,11 +4267,11 @@ Muhammed Fasil
             const tbody = document.getElementById('indeed-jobs-table');
 
             if (indeedJobs.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No jobs found. Click "Search Jobs" to find matching positions.</td></tr>';
+                tbody.innerHTML = sanitizeAdminHtml('<tr><td colspan="7" class="px-4 py-8 text-center text-gray-500 dark:text-gray-400">No jobs found. Click "Search Jobs" to find matching positions.</td></tr>');
                 return;
             }
 
-            tbody.innerHTML = indeedJobs.map((job, index) => {
+            tbody.innerHTML = sanitizeAdminHtml(indeedJobs.map((job, index) => {
                 const matchScore = job.matchScore || 0;
                 const matchColor = matchScore >= 70 ? 'bg-green-500' :
                                    matchScore >= 50 ? 'bg-yellow-500' : 'bg-orange-500';
@@ -4291,20 +4294,20 @@ Muhammed Fasil
                         </td>
                         <td class="px-3 py-2 text-right">
                             <div class="flex gap-1 justify-end">
-                                <button onclick="openJobUrl(${index})" class="btn-icon bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 text-blue-600" title="Open Job">
+                                <button data-cv-click="${cvAction('openJobUrl', [index])}" class="btn-icon bg-blue-100 dark:bg-blue-900/30 hover:bg-blue-200 text-blue-600" title="Open Job">
                                     <i class="fas fa-external-link-alt text-xs"></i>
                                 </button>
-                                <button onclick="applyToSingleJob(${index})" class="btn-icon bg-green-100 dark:bg-green-900/30 hover:bg-green-200 text-green-600" title="Apply">
+                                <button data-cv-click="${cvAction('applyToSingleJob', [index])}" class="btn-icon bg-green-100 dark:bg-green-900/30 hover:bg-green-200 text-green-600" title="Apply">
                                     <i class="fas fa-paper-plane text-xs"></i>
                                 </button>
-                                <button onclick="addJobToCompanies(${index})" class="btn-icon bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-200 text-purple-600" title="Add to Companies">
+                                <button data-cv-click="${cvAction('addJobToCompanies', [index])}" class="btn-icon bg-purple-100 dark:bg-purple-900/30 hover:bg-purple-200 text-purple-600" title="Add to Companies">
                                     <i class="fas fa-plus text-xs"></i>
                                 </button>
                             </div>
                         </td>
                     </tr>
                 `;
-            }).join('');
+            }).join(''));
         }
 
         // Toggle select all jobs
@@ -4316,7 +4319,7 @@ Muhammed Fasil
         // Open job URL
         function openJobUrl(index) {
             if (indeedJobs[index]) {
-                window.open(indeedJobs[index].url, '_blank');
+                openAdminUrl(indeedJobs[index].url, '_blank');
             }
         }
 
@@ -4515,7 +4518,7 @@ Muhammed Fasil
             };
             document.getElementById('nav-url').value = urls[platform] || '';
             addAutomationLog(`📍 Quick nav: ${platform} - ${urls[platform]}`, 'info');
-            window.open(urls[platform], '_blank');
+            openAdminUrl(urls[platform], '_blank');
         }
 
         async function autoFillCurrentPage() {
@@ -4641,13 +4644,13 @@ Muhammed Fasil
                 error: 'text-red-400',
                 warning: 'text-yellow-400'
             };
-            logEl.innerHTML += `<div class="${colors[type] || 'text-green-400'}">[${timestamp}] ${message}</div>`;
+            logEl.innerHTML += sanitizeAdminHtml(`<div class="${colors[type] || 'text-green-400'}">[${timestamp}] ${message}</div>`);
             logEl.scrollTop = logEl.scrollHeight;
         }
 
         function clearAutomationLog() {
             const logEl = document.getElementById('automation-log');
-            if (logEl) logEl.innerHTML = '<div class="text-gray-500">Log cleared. Ready for automation...</div>';
+            if (logEl) logEl.innerHTML = sanitizeAdminHtml('<div class="text-gray-500">Log cleared. Ready for automation...</div>');
         }
 
         // Run shell command via API (shared across all tabs)
@@ -4796,13 +4799,13 @@ https://linkedin.com/in/faztrick`
                 warning: 'text-yellow-400',
                 system: 'text-purple-400'
             };
-            logEl.innerHTML += `<div class="${colors[type] || 'text-green-400'}">[${timestamp}] ${message}</div>`;
+            logEl.innerHTML += sanitizeAdminHtml(`<div class="${colors[type] || 'text-green-400'}">[${timestamp}] ${message}</div>`);
             logEl.scrollTop = logEl.scrollHeight;
         }
 
         function clearQuickApplyLog() {
             const logEl = document.getElementById('quick-apply-log');
-            if (logEl) logEl.innerHTML = 'Log cleared. Ready to apply...';
+            if (logEl) logEl.innerHTML = sanitizeAdminHtml('Log cleared. Ready to apply...');
         }
 
         function applyJob(company) {
@@ -4811,7 +4814,7 @@ https://linkedin.com/in/faztrick`
             if (url) {
                 console.log('Opening URL:', url);
                 // Try window.open first
-                const newWindow = window.open(url, '_blank');
+                const newWindow = openAdminUrl(url, '_blank');
                 if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
                     // Popup blocked - use link click workaround
                     console.log('Popup blocked, using link workaround');
@@ -4832,7 +4835,7 @@ https://linkedin.com/in/faztrick`
 
         function applyAllEmirates() {
             addQuickApplyLog('🛫 Opening ALL Emirates IT jobs...', 'system');
-            window.open(jobLinks['emirates-ai'], '_blank');
+            openAdminUrl(jobLinks['emirates-ai'], '_blank');
             addQuickApplyLog('✅ Opened Emirates IT Careers Portal', 'success');
             addQuickApplyLog('📋 Available positions:', 'info');
             addQuickApplyLog('   1. Senior Software Engineer - AI (Deadline: Dec 19)', 'info');
@@ -4847,7 +4850,7 @@ https://linkedin.com/in/faztrick`
             const tabbyJobs = ['tabby-backend', 'tabby-frontend', 'tabby-qa', 'tabby-manager'];
             tabbyJobs.forEach((job, index) => {
                 setTimeout(() => {
-                    window.open(jobLinks[job], '_blank');
+                    openAdminUrl(jobLinks[job], '_blank');
                     addQuickApplyLog(`✅ Opened ${job}`, 'success');
                 }, index * 500);
             });
@@ -4858,16 +4861,16 @@ https://linkedin.com/in/faztrick`
             addQuickApplyLog('🚀 Opening ALL 26 job applications...', 'system');
 
             // Original jobs
-            window.open(jobLinks.tcs, '_blank');
+            openAdminUrl(jobLinks.tcs, '_blank');
             addQuickApplyLog('✅ Opened TCS Flutter Developer', 'success');
 
             setTimeout(() => {
-                window.open(jobLinks['emirates-ai'], '_blank');
+                openAdminUrl(jobLinks['emirates-ai'], '_blank');
                 addQuickApplyLog('✅ Opened Emirates IT Careers (4 positions)', 'success');
             }, 500);
 
             setTimeout(() => {
-                window.open(jobLinks['360tf'], '_blank');
+                openAdminUrl(jobLinks['360tf'], '_blank');
                 addQuickApplyLog('✅ Opened 360tf application', 'success');
             }, 1000);
 
@@ -4879,7 +4882,7 @@ https://linkedin.com/in/faztrick`
             ];
             devDubaiJobs.forEach((job, index) => {
                 setTimeout(() => {
-                    window.open(jobLinks[job], '_blank');
+                    openAdminUrl(jobLinks[job], '_blank');
                     addQuickApplyLog(`✅ Opened ${job}`, 'success');
                 }, 1500 + (index * 500));
             });
@@ -4891,7 +4894,7 @@ https://linkedin.com/in/faztrick`
             ];
             careemJobs.forEach((job, index) => {
                 setTimeout(() => {
-                    window.open(jobLinks[job], '_blank');
+                    openAdminUrl(jobLinks[job], '_blank');
                     addQuickApplyLog(`✅ Opened ${job}`, 'success');
                 }, 7000 + (index * 500));
             });
@@ -4900,7 +4903,7 @@ https://linkedin.com/in/faztrick`
             const tabbyJobs = ['tabby-backend', 'tabby-frontend', 'tabby-qa', 'tabby-manager'];
             tabbyJobs.forEach((job, index) => {
                 setTimeout(() => {
-                    window.open(jobLinks[job], '_blank');
+                    openAdminUrl(jobLinks[job], '_blank');
                     addQuickApplyLog(`✅ Opened ${job}`, 'success');
                 }, 10000 + (index * 500));
             });
@@ -4921,7 +4924,7 @@ https://linkedin.com/in/faztrick`
         }
 
         function openJobTracker() {
-            window.open('/JOB-TRACKER-DEC-2025.md', '_blank');
+            openAdminUrl('/JOB-TRACKER-DEC-2025.md', '_blank');
             addQuickApplyLog('📋 Opened Job Tracker', 'info');
         }
 
@@ -4934,7 +4937,7 @@ https://linkedin.com/in/faztrick`
             ];
             devDubaiJobs.forEach((job, index) => {
                 setTimeout(() => {
-                    window.open(jobLinks[job], '_blank');
+                    openAdminUrl(jobLinks[job], '_blank');
                     addQuickApplyLog(`✅ Opened ${job}`, 'success');
                 }, index * 500);
             });
@@ -4949,7 +4952,7 @@ https://linkedin.com/in/faztrick`
             ];
             careemJobs.forEach((job, index) => {
                 setTimeout(() => {
-                    window.open(jobLinks[job], '_blank');
+                    openAdminUrl(jobLinks[job], '_blank');
                     addQuickApplyLog(`✅ Opened ${job}`, 'success');
                 }, index * 500);
             });
@@ -5032,7 +5035,7 @@ https://linkedin.com/in/faztrick`
 
             if (url) {
                 // Open job in new tab
-                const newWindow = window.open(url, '_blank');
+                const newWindow = openAdminUrl(url, '_blank');
                 if (!newWindow || newWindow.closed) {
                     // Fallback for popup blockers
                     const link = document.createElement('a');
@@ -5067,7 +5070,7 @@ https://linkedin.com/in/faztrick`
             }
 
             document.getElementById('btn-auto-start').disabled = false;
-            document.getElementById('btn-auto-start').innerHTML = '<i class="fas fa-play mr-2"></i>RESUME';
+            document.getElementById('btn-auto-start').innerHTML = sanitizeAdminHtml('<i class="fas fa-play mr-2"></i>RESUME');
             document.getElementById('btn-auto-pause').disabled = true;
 
             updateAutoStatus('Paused', 'bg-yellow-500');
@@ -5082,7 +5085,7 @@ https://linkedin.com/in/faztrick`
             }
 
             document.getElementById('btn-auto-start').disabled = false;
-            document.getElementById('btn-auto-start').innerHTML = '<i class="fas fa-play mr-2"></i>START AUTO';
+            document.getElementById('btn-auto-start').innerHTML = sanitizeAdminHtml('<i class="fas fa-play mr-2"></i>START AUTO');
             document.getElementById('btn-auto-pause').disabled = true;
             document.getElementById('btn-auto-stop').disabled = true;
             document.getElementById('auto-delay').disabled = false;
@@ -5105,7 +5108,7 @@ https://linkedin.com/in/faztrick`
 
             updateAutoProgress();
             updateAutoStatus('Ready', 'bg-gray-400');
-            document.getElementById('btn-auto-start').innerHTML = '<i class="fas fa-play mr-2"></i>START AUTO';
+            document.getElementById('btn-auto-start').innerHTML = sanitizeAdminHtml('<i class="fas fa-play mr-2"></i>START AUTO');
             addQuickApplyLog('🔄 Auto apply RESET. Ready to start fresh.', 'info');
         }
 
@@ -5113,7 +5116,7 @@ https://linkedin.com/in/faztrick`
             autoApplyState.isRunning = false;
 
             document.getElementById('btn-auto-start').disabled = false;
-            document.getElementById('btn-auto-start').innerHTML = '<i class="fas fa-play mr-2"></i>START AUTO';
+            document.getElementById('btn-auto-start').innerHTML = sanitizeAdminHtml('<i class="fas fa-play mr-2"></i>START AUTO');
             document.getElementById('btn-auto-pause').disabled = true;
             document.getElementById('btn-auto-stop').disabled = true;
             document.getElementById('auto-delay').disabled = false;
@@ -5148,14 +5151,14 @@ https://linkedin.com/in/faztrick`
             const entry = `<div class="${colors[type] || 'text-green-400'}">[${timestamp}] ${message}</div>`;
             adminLogEntries.push(entry);
             if (adminLogEntries.length > 200) adminLogEntries.shift();
-            logEl.innerHTML = adminLogEntries.join('');
+            logEl.innerHTML = sanitizeAdminHtml(adminLogEntries.join(''));
             logEl.scrollTop = logEl.scrollHeight;
         }
 
         function clearAdminLog() {
             adminLogEntries = [];
             const logEl = document.getElementById('admin-log');
-            if (logEl) logEl.innerHTML = '<div class="text-gray-500">Log cleared. Ready...</div>';
+            if (logEl) logEl.innerHTML = sanitizeAdminHtml('<div class="text-gray-500">Log cleared. Ready...</div>');
         }
 
         function updateAdminStatus(text, color) {
@@ -5196,7 +5199,7 @@ https://linkedin.com/in/faztrick`
                 if (data.success) {
                     addAdminLog(`✅ Follow-up Tool ready at http://localhost:${data.port}`, 'success');
                     updateAdminStatus('Running', 'bg-green-500');
-                    window.open(`http://localhost:${data.port}`, '_blank');
+                    openAdminUrl(`http://localhost:${data.port}`, '_blank');
                     refreshProcesses();
                 }
             } catch (e) {
@@ -5343,19 +5346,19 @@ https://linkedin.com/in/faztrick`
                 if (!container) return;
 
                 if (data.processes.length === 0) {
-                    container.innerHTML = '<p class="text-sm text-gray-500 dark:text-gray-400">No active processes</p>';
+                    container.innerHTML = sanitizeAdminHtml('<p class="text-sm text-gray-500 dark:text-gray-400">No active processes</p>');
                 } else {
-                    container.innerHTML = data.processes.map(proc => `
+                    container.innerHTML = sanitizeAdminHtml(data.processes.map(proc => `
                         <div class="flex items-center justify-between p-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
                             <div class="flex items-center gap-2">
                                 <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                                 <span class="text-sm font-medium text-gray-800 dark:text-white">${proc}</span>
                             </div>
-                            <button onclick="stopProcess('${proc}')" class="btn-icon bg-red-100 dark:bg-red-900/30 hover:bg-red-200 text-red-600" title="Stop">
+                            <button data-cv-click="${cvAction('stopProcess', [proc])}" class="btn-icon bg-red-100 dark:bg-red-900/30 hover:bg-red-200 text-red-600" title="Stop">
                                 <i class="fas fa-stop text-xs"></i>
                             </button>
                         </div>
-                    `).join('');
+                    `).join(''));
                 }
             } catch (e) {
                 console.error('Failed to refresh processes:', e);
@@ -5455,9 +5458,9 @@ https://linkedin.com/in/faztrick`
                 system: 'text-purple-400'
             };
 
-            logEl.innerHTML = filtered.map(e =>
+            logEl.innerHTML = sanitizeAdminHtml(filtered.map(e =>
                 `<div class="${colors[e.type] || 'text-green-400'}">${e.message}</div>`
-            ).join('');
+            ).join(''));
 
             if (autoScrollEnabled) {
                 logEl.scrollTop = logEl.scrollHeight;
@@ -5467,7 +5470,7 @@ https://linkedin.com/in/faztrick`
         function clearSystemLog() {
             systemLogEntries = [];
             const logEl = document.getElementById('system-log');
-            if (logEl) logEl.innerHTML = '<div class="text-gray-500">Log cleared</div>';
+            if (logEl) logEl.innerHTML = sanitizeAdminHtml('<div class="text-gray-500">Log cleared</div>');
         }
 
         function exportSystemLog() {
@@ -5485,7 +5488,7 @@ https://linkedin.com/in/faztrick`
             autoScrollEnabled = !autoScrollEnabled;
             const btn = document.getElementById('btn-autoscroll');
             if (btn) {
-                btn.innerHTML = `<i class="fas fa-arrow-down mr-2"></i>Auto-scroll: ${autoScrollEnabled ? 'ON' : 'OFF'}`;
+                btn.innerHTML = sanitizeAdminHtml(`<i class="fas fa-arrow-down mr-2"></i>Auto-scroll: ${autoScrollEnabled ? 'ON' : 'OFF'}`);
                 btn.className = autoScrollEnabled
                     ? 'compact-btn bg-blue-600 hover:bg-blue-700 text-white'
                     : 'compact-btn bg-gray-600 hover:bg-gray-700 text-white';

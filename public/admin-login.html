@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="/js/admin-request.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Login</title>
@@ -158,7 +159,9 @@
 
     <script>
         const params = new URLSearchParams(window.location.search);
-        const nextTarget = params.get('next') || '/panel';
+        const requestedNext = params.get('next') || '/panel';
+        const allowedTargets = new Set(['/panel', '/admin', '/panel-modern', '/panel-skills', '/panel-classic', '/admin-old', '/old-panel']);
+        const nextTarget = allowedTargets.has(requestedNext) ? requestedNext : '/panel';
         const form = document.getElementById('loginForm');
         const statusEl = document.getElementById('status');
         const errorEl = document.getElementById('error');

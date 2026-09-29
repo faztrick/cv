@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="/js/admin-request.js"></script>
+    <script src="/js/vendor/purify.js"></script>
+    <script src="/js/admin-html.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CV Skills & Job Search Panel</title>
@@ -436,17 +439,17 @@
 
         function renderSkillsCategories(categories) {
             const container = document.getElementById('skills-categories');
-            container.innerHTML = '';
+            container.innerHTML = sanitizeAdminHtml('');
 
             for (const [category, skills] of Object.entries(categories)) {
                 const card = document.createElement('div');
                 card.className = 'card';
-                card.innerHTML = `
+                card.innerHTML = sanitizeAdminHtml(`
                     <h3 class="font-bold text-white mb-3"><i class="fas fa-layer-group mr-2 text-blue-400"></i>${category}</h3>
                     <div class="flex flex-wrap gap-2">
-                        ${skills.map(skill => `<span class="skill-tag" onclick="searchForSkill('${skill}')">${skill}</span>`).join('')}
+                        ${skills.map(skill => `<span class="skill-tag" data-cv-click="${cvAction('searchForSkill', [skill])}">${skill}</span>`).join('')}
                     </div>
-                `;
+                `);
                 container.appendChild(card);
             }
         }
@@ -482,7 +485,7 @@
 
         function renderRecommendedSearches() {
             const grid = document.getElementById('recommended-grid');
-            grid.innerHTML = '';
+            grid.innerHTML = sanitizeAdminHtml('');
 
             // Group by query
             const grouped = {};
@@ -499,16 +502,16 @@
                 const priority = recs[0].priority;
                 const priorityColor = priority === 'high' ? 'text-emerald-400' : 'text-amber-400';
 
-                card.innerHTML = `
+                card.innerHTML = sanitizeAdminHtml(`
                     <div class="flex justify-between items-start mb-2">
                         <h4 class="font-bold text-white">${query}</h4>
                         <span class="${priorityColor} text-xs"><i class="fas fa-star"></i> ${priority}</span>
                     </div>
                     <div class="flex gap-1 mb-3">${platforms}</div>
                     <div class="flex gap-2">
-                        ${recs.map(r => `<button onclick="runSearch('${r.platform}', '${query}')" class="btn btn-sm btn-secondary flex-1">${r.platform}</button>`).join('')}
+                        ${recs.map(r => `<button data-cv-click="${cvAction('runSearch', [r.platform, query])}" class="btn btn-sm btn-secondary flex-1">${r.platform}</button>`).join('')}
                     </div>
-                `;
+                `);
                 grid.appendChild(card);
             }
         }
@@ -594,7 +597,7 @@
                 const stopBtn = document.getElementById('btn-stop');
 
                 if (data.logs.length > 0) {
-                    consoleEl.innerHTML = data.logs.map(l => `<p>${l}</p>`).join('');
+                    consoleEl.innerHTML = sanitizeAdminHtml(data.logs.map(l => `<p>${l}</p>`).join(''));
                     consoleEl.scrollTop = consoleEl.scrollHeight;
                 }
 
@@ -626,7 +629,7 @@
         }
 
         function clearLogs() {
-            document.getElementById('automation-console').innerHTML = '<p class="text-slate-500">Logs cleared.</p>';
+            document.getElementById('automation-console').innerHTML = sanitizeAdminHtml('<p class="text-slate-500">Logs cleared.</p>');
         }
 
         // --- Tracker ---
@@ -636,10 +639,10 @@
                 const companies = await res.json();
 
                 const tbody = document.getElementById('tracker-table');
-                tbody.innerHTML = '';
+                tbody.innerHTML = sanitizeAdminHtml('');
 
                 if (companies.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="5" class="p-4 text-center text-slate-500">No applications tracked yet.</td></tr>';
+                    tbody.innerHTML = sanitizeAdminHtml('<tr><td colspan="5" class="p-4 text-center text-slate-500">No applications tracked yet.</td></tr>');
                     return;
                 }
 
@@ -649,13 +652,13 @@
 
                     const row = document.createElement('tr');
                     row.className = 'border-b border-slate-700 hover:bg-slate-800/50';
-                    row.innerHTML = `
+                    row.innerHTML = sanitizeAdminHtml(`
                         <td class="p-4 font-medium text-white">${c.name}</td>
                         <td class="p-4 text-slate-400">${c.jobTitle || 'N/A'}</td>
                         <td class="p-4"><span class="platform-badge platform-${(c.type || 'other').toLowerCase()}">${c.type || 'Other'}</span></td>
                         <td class="p-4"><span class="px-2 py-1 rounded-full text-xs font-bold ${statusColor}">${c.status}</span></td>
                         <td class="p-4 text-slate-500">${c.appliedDate || '-'}</td>
-                    `;
+                    `);
                     tbody.appendChild(row);
                 }
             } catch (e) {

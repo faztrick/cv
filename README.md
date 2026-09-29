@@ -408,7 +408,7 @@ Use `job-tracker-uae.csv` to track applications:
 
 ### Requirements
 
-- Node.js >= 14.0.0
+- Node.js >= 22.12.0
 - PowerShell (for automation scripts)
 - Azure CLI (for deployment)
 

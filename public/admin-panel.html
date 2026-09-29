@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="/js/admin-request.js"></script>
+    <script src="/js/vendor/purify.js"></script>
+    <script src="/js/admin-html.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🚀 Job Automation Admin Panel</title>
@@ -382,13 +385,13 @@
             // Clean ANSI codes
             const cleanMessage = message.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g, '');
 
-            div.innerHTML = `<span class="log-time">[${time}]</span> <span class="log-${type}">${cleanMessage}</span>`;
+            div.innerHTML = sanitizeAdminHtml(`<span class="log-time">[${time}]</span> <span class="log-${type}">${cleanMessage}</span>`);
             logWindow.appendChild(div);
             logWindow.scrollTop = logWindow.scrollHeight;
         }
 
         function clearLogs() {
-            logWindow.innerHTML = '';
+            logWindow.innerHTML = sanitizeAdminHtml('');
         }
 
         async function apiCall(endpoint, method = 'POST', body = {}) {
@@ -445,7 +448,7 @@
                 link.href = `http://localhost:${res.port}`;
                 link.classList.remove('d-none');
                 // Open in new tab automatically
-                window.open(`http://localhost:${res.port}`, '_blank');
+                openAdminUrl(`http://localhost:${res.port}`, '_blank');
             }
         }
 
@@ -548,7 +551,7 @@ https://linkedin.com/in/faztrick`
         function applyJob(company) {
             const url = jobLinks[company];
             if (url) {
-                window.open(url, '_blank');
+                openAdminUrl(url, '_blank');
                 addLog(`✅ Opened ${company.toUpperCase()} application page`, 'success');
             } else {
                 addLog(`❌ No URL found for ${company}`, 'error');
@@ -557,7 +560,7 @@ https://linkedin.com/in/faztrick`
 
         function applyAllEmirates() {
             addLog('🛫 Opening ALL Emirates IT jobs...', 'system');
-            window.open(jobLinks['emirates-ai'], '_blank');
+            openAdminUrl(jobLinks['emirates-ai'], '_blank');
             addLog('✅ Opened Emirates IT Careers Portal', 'success');
             addLog('📋 Available positions:', 'info');
             addLog('   1. Senior Software Engineer - AI (Deadline: Dec 19)', 'info');
@@ -570,16 +573,16 @@ https://linkedin.com/in/faztrick`
         function applyAllJobs() {
             addLog('🚀 Opening ALL job applications...', 'system');
 
-            window.open(jobLinks.tcs, '_blank');
+            openAdminUrl(jobLinks.tcs, '_blank');
             addLog('✅ Opened TCS Flutter Developer', 'success');
 
             setTimeout(() => {
-                window.open(jobLinks['emirates-ai'], '_blank');
+                openAdminUrl(jobLinks['emirates-ai'], '_blank');
                 addLog('✅ Opened Emirates IT Careers (4 positions)', 'success');
             }, 1000);
 
             setTimeout(() => {
-                window.open(jobLinks['360tf'], '_blank');
+                openAdminUrl(jobLinks['360tf'], '_blank');
                 addLog('✅ Opened 360tf application', 'success');
             }, 2000);
 
@@ -600,7 +603,7 @@ https://linkedin.com/in/faztrick`
 
         function openJobTracker() {
             // Open the job tracker markdown file
-            window.open('/JOB-TRACKER-DEC-2025.md', '_blank');
+            openAdminUrl('/JOB-TRACKER-DEC-2025.md', '_blank');
             addLog('Opened Job Tracker', 'info');
         }
     </script>
