@@ -10,7 +10,6 @@ All notable changes to this project will be documented in this file.
 
 - **Main Entry Point**: `index.js` - CLI application with help menu and project overview
 - **Package Configuration**: Updated `package.json` with proper Node.js app structure
-  - Added npm scripts: `start`, `generate-emails`, `job-agent`, `clean-cache`
   - Added proper metadata and keywords
   - Set Node.js engine requirement (>=14.0.0)
 - **Scripts Documentation**: `scripts/README.md` - Comprehensive documentation for all scripts
@@ -27,7 +26,6 @@ All notable changes to this project will be documented in this file.
   - `generate-job-emails.js` → `scripts/generate-job-emails.js`
   - `job-search-agent.js` → `scripts/job-search-agent.js`
   - `email-templates.js` → `scripts/email-templates.js`
-  - `delete-puppeteer-cache.js` → `scripts/delete-puppeteer-cache.js`
 - **Updated Package Structure**:
   - Changed main entry from `email-templates.js` to `index.js`
   - Added descriptive package name: `cv-job-search-toolkit`
@@ -70,7 +68,6 @@ cv/
 │   ├── generate-job-emails.js  # Moved from root
 │   ├── email-templates.js      # Moved from root
 │   ├── job-search-agent.js     # Moved from root
-│   └── delete-puppeteer-cache.js # Moved from root
 │
 └── [existing folders unchanged]
 ```
@@ -88,7 +85,6 @@ npm run generate-emails
 npm run job-agent
 
 # Clean cache
-npm run clean-cache
 ```
 
 ### 📝 Migration Notes

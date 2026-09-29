@@ -11,7 +11,6 @@ All `.js` files moved from root to `scripts/` folder:
 - ✓ `generate-job-emails.js` → `scripts/generate-job-emails.js`
 - ✓ `job-search-agent.js` → `scripts/job-search-agent.js`
 - ✓ `email-templates.js` → `scripts/email-templates.js`
-- ✓ `delete-puppeteer-cache.js` → `scripts/delete-puppeteer-cache.js`
 
 ### 2. **Created Main Entry Point**
 
@@ -34,7 +33,6 @@ All `.js` files moved from root to `scripts/` folder:
 - ✓ `npm start` - Show help menu
 - ✓ `npm run generate-emails` - Generate job emails
 - ✓ `npm run job-agent` - View job profile
-- ✓ `npm run clean-cache` - Clean cache
 
 ## 🚀 Quick Start Guide
 
@@ -59,7 +57,6 @@ npm run job-agent
 ### Clean Puppeteer Cache
 
 ```bash
-npm run clean-cache
 ```
 
 ## 📁 New Project Structure
@@ -76,7 +73,6 @@ cv/
 │   ├── generate-job-emails.js
 │   ├── email-templates.js
 │   ├── job-search-agent.js
-│   └── delete-puppeteer-cache.js
 │
 ├── resumes/                        # Unchanged
 ├── cover-letters/                  # Unchanged

@@ -1989,9 +1989,7 @@
                 </div>
                 <div class="bg-white dark:bg-gray-800 rounded-xl p-5 shadow-sm">
                     <h3 class="font-semibold text-gray-800 dark:text-white mb-4">Maintenance</h3>
-                    <button onclick="runCommand('npm run clean-cache')" class="compact-btn bg-orange-600 hover:bg-orange-700 text-white w-full text-left">
-                        <i class="fas fa-broom mr-2"></i>Clean Cache
-                    </button>
+
                 </div>
             </div>
         </div>
@@ -2364,9 +2362,7 @@
                     <button onclick="openGmailDrafts()" class="compact-btn bg-red-500 text-white hover:bg-red-400 py-3">
                         <i class="fas fa-envelope-open mr-2"></i>Open Gmail Drafts
                     </button>
-                    <button onclick="clearLocks()" class="compact-btn bg-yellow-500 text-white hover:bg-yellow-400 py-3">
-                        <i class="fas fa-unlock mr-2"></i>Clear Locks
-                    </button>
+
                 </div>
             </div>
 
@@ -2400,12 +2396,8 @@
                         Maintenance
                     </h3>
                     <div class="space-y-3">
-                        <button onclick="cleanCache()" class="compact-btn bg-gray-600 hover:bg-gray-700 text-white w-full text-left">
-                            <i class="fas fa-broom mr-2"></i>Clean Puppeteer Cache
-                        </button>
-                        <button onclick="clearLocks()" class="compact-btn bg-yellow-600 hover:bg-yellow-700 text-white w-full text-left">
-                            <i class="fas fa-unlock mr-2"></i>Clear Browser Locks
-                        </button>
+
+
                         <button onclick="stopAllProcesses()" class="compact-btn bg-red-600 hover:bg-red-700 text-white w-full text-left">
                             <i class="fas fa-stop-circle mr-2"></i>Stop All Processes
                         </button>
@@ -5224,17 +5216,6 @@ https://linkedin.com/in/faztrick`
             }
         }
 
-        // Clear Locks
-        async function clearLocks() {
-            addAdminLog('🔓 Clearing browser locks...', 'system');
-            try {
-                const res = await fetch('/api/clear-locks', { method: 'POST' });
-                const data = await res.json();
-                addAdminLog(`✅ Cleared ${data.cleared} lock files`, 'success');
-            } catch (e) {
-                addAdminLog(`❌ Error: ${e.message}`, 'error');
-            }
-        }
 
         // CV Parser
         async function runCVParser() {
@@ -5280,16 +5261,6 @@ https://linkedin.com/in/faztrick`
             }
         }
 
-        // Clean Cache
-        async function cleanCache() {
-            addAdminLog('🧹 Cleaning Puppeteer cache...', 'system');
-            try {
-                await fetch('/api/clean-cache', { method: 'POST' });
-                addAdminLog('✅ Cache cleanup started', 'success');
-            } catch (e) {
-                addAdminLog(`❌ Error: ${e.message}`, 'error');
-            }
-        }
 
         // Stop All Processes
         async function stopAllProcesses() {

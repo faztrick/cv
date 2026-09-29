@@ -1,5 +1,5 @@
 const express = require('express');
-const { spawn, exec } = require('child_process');
+const { spawn } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
@@ -362,46 +362,6 @@ app.post('/api/auto-fill', (req, res) => {
     child.stdout.on('data', (data) => broadcastLog(data.toString().trim()));
     child.stderr.on('data', (data) => broadcastLog(data.toString().trim(), 'error'));
     res.json({ success: true });
-});
-
-// API: Clean Cache
-app.post('/api/clean-cache', (req, res) => {
-    broadcastLog('🧹 Cleaning Puppeteer Cache...', 'system');
-    const child = spawn('node', ['scripts/delete-puppeteer-cache.js'], {
-        cwd: path.join(__dirname, '..'),
-        env: { ...process.env, FORCE_COLOR: 'true' }
-    });
-    child.stdout.on('data', (data) => broadcastLog(data.toString().trim()));
-    child.stderr.on('data', (data) => broadcastLog(data.toString().trim(), 'error'));
-    res.json({ success: true });
-});
-
-// API: Clear Locks
-app.post('/api/clear-locks', (req, res) => {
-    const lockPath = path.join(__dirname, '../user_data/playwright');
-    const locks = ['SingletonLock', 'SingletonSocket', 'SingletonCookie'];
-
-    let cleared = 0;
-    locks.forEach(file => {
-        const p = path.join(lockPath, file);
-        if (fs.existsSync(p)) {
-            try {
-                fs.unlinkSync(p);
-                cleared++;
-            } catch (e) {
-                broadcastLog(`Failed to delete ${file}: ${e.message}`, 'error');
-            }
-        }
-    });
-
-    broadcastLog(`🧹 Cleared ${cleared} lock files`, 'success');
-
-    // Also kill chrome processes
-    exec('taskkill /F /IM chrome.exe /T', (err) => {
-        if (!err) broadcastLog('💀 Killed Chrome processes', 'success');
-    });
-
-    res.json({ success: true, cleared });
 });
 
 // API: Stop Process

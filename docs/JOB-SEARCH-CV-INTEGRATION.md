@@ -412,7 +412,6 @@ function buildOpening(jobData, cvData, tone) {
 | `npm run email-variants` | Generate email in 3 different tones |
 | `npm run batch-emails` | Generate emails for multiple jobs |
 | `npm run job-search` | Search all platforms (LinkedIn, Indeed, Bayt) |
-| `npm run clean-cache` | Clean Puppeteer cache |
 
 ---
 

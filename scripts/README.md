@@ -68,20 +68,6 @@ const email = generateEmail('general', {
 });
 ```
 
-### 🧹 delete-puppeteer-cache.js
-
-Utility to clean Puppeteer cache directory.
-
-**Usage:**
-
-```bash
-npm run clean-cache
-# or
-node scripts/delete-puppeteer-cache.js
-```
-
-## Configuration
-
 ### Updating Your Profile
 
 Edit `job-search-agent.js` to update:
